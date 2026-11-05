@@ -1,0 +1,357 @@
+{
+  "timestamp": "2026-11-05T07:16:35.737579",
+  "total_questions": 20,
+  "metrics": {
+    "citation_correctness_pct": 90.0,
+    "concept_accuracy_pct": 80.0,
+    "hallucination_rate_pct": 0.0,
+    "average_latency_ms": 20.62,
+    "average_tokens_per_answer": 66.9
+  },
+  "taxonomy_failures": {
+    "retrieval": 2,
+    "model": 2
+  },
+  "results": [
+    {
+      "id": "q01",
+      "question": "What is Python and how does it execute code?",
+      "expected_chunk": "py_intro_01",
+      "cited_chunks": [
+        "py_mod_12",
+        "py_list_05"
+      ],
+      "citation_correct": false,
+      "accurate": false,
+      "coverage_ratio": 0.0,
+      "hallucinated": false,
+      "tokens": 63,
+      "latency_ms": 20.31,
+      "failure_taxonomy": "retrieval",
+      "response_preview": "Based on verified course material: A module in Python is simply a Python file (.py) containing functions, classes, and definitions. Modules ..."
+    },
+    {
+      "id": "q02",
+      "question": "How do variables work in Python? Do we declare data types explicitly?",
+      "expected_chunk": "py_var_02",
+      "cited_chunks": [
+        "py_var_02",
+        "py_types_03"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 62,
+      "latency_ms": 20.81,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Variables in Python are dynamically typed references to objects in memory. You do not declare variable ty..."
+    },
+    {
+      "id": "q03",
+      "question": "What is the difference between the / and // division operators in Python?",
+      "expected_chunk": "py_types_03",
+      "cited_chunks": [
+        "py_types_03",
+        "py_func_08"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 69,
+      "latency_ms": 20.55,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Python includes fundamental built-in data types: int for integers, float for decimal numbers, bool for bo..."
+    },
+    {
+      "id": "q04",
+      "question": "Are strings in Python mutable or immutable?",
+      "expected_chunk": "py_str_04",
+      "cited_chunks": [
+        "py_str_04",
+        "py_dict_06"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 57,
+      "latency_ms": 20.62,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Strings in Python are ordered sequences of Unicode characters enclosed in single, double, or triple quote..."
+    },
+    {
+      "id": "q05",
+      "question": "What does list.append() return and how does it affect the list?",
+      "expected_chunk": "py_list_05",
+      "cited_chunks": [
+        "py_list_05",
+        "py_func_08"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 80,
+      "latency_ms": 20.52,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: A list in Python is an ordered, mutable sequence that can contain items of different data types. Lists ar..."
+    },
+    {
+      "id": "q06",
+      "question": "Does assigning b = a create a new independent copy of a list in Python?",
+      "expected_chunk": "py_list_05",
+      "cited_chunks": [
+        "py_list_05",
+        "py_func_08"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 80,
+      "latency_ms": 20.89,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: A list in Python is an ordered, mutable sequence that can contain items of different data types. Lists ar..."
+    },
+    {
+      "id": "q07",
+      "question": "What kinds of data types can be used as keys in a Python dictionary?",
+      "expected_chunk": "py_dict_06",
+      "cited_chunks": [
+        "py_dict_06",
+        "py_types_03"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 58,
+      "latency_ms": 20.4,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: A dictionary (dict) is an associative mapping of key-value pairs enclosed in curly braces {}. Keys must b..."
+    },
+    {
+      "id": "q08",
+      "question": "How is a tuple different from a list in Python?",
+      "expected_chunk": "py_tuple_set_07",
+      "cited_chunks": [
+        "py_list_05",
+        "py_mod_12"
+      ],
+      "citation_correct": false,
+      "accurate": false,
+      "coverage_ratio": 0.0,
+      "hallucinated": false,
+      "tokens": 80,
+      "latency_ms": 20.47,
+      "failure_taxonomy": "retrieval",
+      "response_preview": "Based on verified course material: A list in Python is an ordered, mutable sequence that can contain items of different data types. Lists ar..."
+    },
+    {
+      "id": "q09",
+      "question": "What is a set in Python and can it contain duplicate elements?",
+      "expected_chunk": "py_tuple_set_07",
+      "cited_chunks": [
+        "py_tuple_set_07",
+        "py_list_05"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 64,
+      "latency_ms": 20.53,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Tuples are ordered, immutable sequences defined using parentheses (). Once created, elements of a tuple c..."
+    },
+    {
+      "id": "q10",
+      "question": "Why should mutable objects like empty lists not be used as default arguments in functions?",
+      "expected_chunk": "py_func_08",
+      "cited_chunks": [
+        "py_func_08",
+        "py_list_05"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 0.67,
+      "hallucinated": false,
+      "tokens": 70,
+      "latency_ms": 20.51,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Functions in Python are defined using the def keyword followed by the function name and parameter list. A..."
+    },
+    {
+      "id": "q11",
+      "question": "In Python range(start, stop), is the stop number included in the output?",
+      "expected_chunk": "py_ctrl_09",
+      "cited_chunks": [
+        "py_ctrl_09",
+        "py_str_04"
+      ],
+      "citation_correct": true,
+      "accurate": false,
+      "coverage_ratio": 0.33,
+      "hallucinated": false,
+      "tokens": 77,
+      "latency_ms": 20.81,
+      "failure_taxonomy": "model",
+      "response_preview": "Based on verified course material: Conditional statements in Python use if, elif, and else blocks with indentation defining the scope. Pytho..."
+    },
+    {
+      "id": "q12",
+      "question": "Which keyword is used to terminate a loop immediately in Python?",
+      "expected_chunk": "py_ctrl_09",
+      "cited_chunks": [
+        "py_ctrl_09",
+        "py_mod_12"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 77,
+      "latency_ms": 20.74,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Conditional statements in Python use if, elif, and else blocks with indentation defining the scope. Pytho..."
+    },
+    {
+      "id": "q13",
+      "question": "What is the role of __init__ in a Python class?",
+      "expected_chunk": "py_oop_10",
+      "cited_chunks": [
+        "py_oop_10",
+        "py_list_05"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 56,
+      "latency_ms": 20.74,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Python supports object-oriented programming with classes defined using the class keyword. The initializer..."
+    },
+    {
+      "id": "q14",
+      "question": "What function checks if an object is an instance of a class or a subclass?",
+      "expected_chunk": "py_oop_10",
+      "cited_chunks": [
+        "py_oop_10",
+        "py_func_08"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 56,
+      "latency_ms": 20.57,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Python supports object-oriented programming with classes defined using the class keyword. The initializer..."
+    },
+    {
+      "id": "q15",
+      "question": "Which block in try/except is guaranteed to run regardless of whether an exception occurred?",
+      "expected_chunk": "py_err_11",
+      "cited_chunks": [
+        "py_err_11",
+        "py_mod_12"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 56,
+      "latency_ms": 20.73,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Errors in Python are managed with try, except, else, and finally blocks. Code that might raise an excepti..."
+    },
+    {
+      "id": "q16",
+      "question": "How do you import a specific function from a module in Python?",
+      "expected_chunk": "py_mod_12",
+      "cited_chunks": [
+        "py_mod_12",
+        "py_var_02"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 63,
+      "latency_ms": 20.71,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: A module in Python is simply a Python file (.py) containing functions, classes, and definitions. Modules ..."
+    },
+    {
+      "id": "q17",
+      "question": "What value does __name__ have when a Python file is run directly?",
+      "expected_chunk": "py_mod_12",
+      "cited_chunks": [
+        "py_mod_12",
+        "py_dict_06"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 63,
+      "latency_ms": 20.35,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: A module in Python is simply a Python file (.py) containing functions, classes, and definitions. Modules ..."
+    },
+    {
+      "id": "q18",
+      "question": "Which built-in Python data type is used to store boolean True or False?",
+      "expected_chunk": "py_types_03",
+      "cited_chunks": [
+        "py_types_03",
+        "py_dict_06"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 69,
+      "latency_ms": 20.65,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Python includes fundamental built-in data types: int for integers, float for decimal numbers, bool for bo..."
+    },
+    {
+      "id": "q19",
+      "question": "How can you safely retrieve a value from a dictionary with a fallback default?",
+      "expected_chunk": "py_dict_06",
+      "cited_chunks": [
+        "py_dict_06",
+        "py_func_08"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 0.67,
+      "hallucinated": false,
+      "tokens": 58,
+      "latency_ms": 20.76,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: A dictionary (dict) is an associative mapping of key-value pairs enclosed in curly braces {}. Keys must b..."
+    },
+    {
+      "id": "q20",
+      "question": "How does Python slicing syntax list[start:stop] work regarding indices?",
+      "expected_chunk": "py_list_05",
+      "cited_chunks": [
+        "py_list_05",
+        "py_str_04"
+      ],
+      "citation_correct": true,
+      "accurate": false,
+      "coverage_ratio": 0.0,
+      "hallucinated": false,
+      "tokens": 80,
+      "latency_ms": 20.77,
+      "failure_taxonomy": "model",
+      "response_preview": "Based on verified course material: A list in Python is an ordered, mutable sequence that can contain items of different data types. Lists ar..."
+    }
+  ]
+}

@@ -1,17 +1,22 @@
-# Use an official Python runtime as a parent image
-FROM python:3.10-slim
+# Parivestra AI Tutor - Backend Dockerfile
+FROM python:3.11-slim
 
-# Set the working directory in the container
 WORKDIR /app
 
-# Copy the requirements file into the container
-COPY requirements.txt .
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install any needed packages specified in requirements.txt
+# Copy and install python dependencies
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application code into the container
+# Copy application source code
 COPY . .
 
-# Command to run the application
-CMD ["python", "main.py"]
+# Expose API port
+EXPOSE 8001
+
+# Start FastAPI backend with Uvicorn on port 8001
+CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8001"]

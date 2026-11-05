@@ -1,0 +1,123 @@
+[
+  {
+    "id": "q01",
+    "question": "What is Python and how does it execute code?",
+    "expected_chunk": "py_intro_01",
+    "key_points": ["interpreted", "line by line", "high-level"]
+  },
+  {
+    "id": "q02",
+    "question": "How do variables work in Python? Do we declare data types explicitly?",
+    "expected_chunk": "py_var_02",
+    "key_points": ["dynamically typed", "no explicit", "object"]
+  },
+  {
+    "id": "q03",
+    "question": "What is the difference between the / and // division operators in Python?",
+    "expected_chunk": "py_types_03",
+    "key_points": ["float", "floor division", "integer"]
+  },
+  {
+    "id": "q04",
+    "question": "Are strings in Python mutable or immutable?",
+    "expected_chunk": "py_str_04",
+    "key_points": ["immutable", "cannot be modified"]
+  },
+  {
+    "id": "q05",
+    "question": "What does list.append() return and how does it affect the list?",
+    "expected_chunk": "py_list_05",
+    "key_points": ["in place", "none", "modifies"]
+  },
+  {
+    "id": "q06",
+    "question": "Does assigning b = a create a new independent copy of a list in Python?",
+    "expected_chunk": "py_list_05",
+    "key_points": ["reference", "same list", "copy"]
+  },
+  {
+    "id": "q07",
+    "question": "What kinds of data types can be used as keys in a Python dictionary?",
+    "expected_chunk": "py_dict_06",
+    "key_points": ["immutable", "hashable", "keys"]
+  },
+  {
+    "id": "q08",
+    "question": "How is a tuple different from a list in Python?",
+    "expected_chunk": "py_tuple_set_07",
+    "key_points": ["immutable", "parentheses", "cannot be changed"]
+  },
+  {
+    "id": "q09",
+    "question": "What is a set in Python and can it contain duplicate elements?",
+    "expected_chunk": "py_tuple_set_07",
+    "key_points": ["unordered", "unique", "no duplicate"]
+  },
+  {
+    "id": "q10",
+    "question": "Why should mutable objects like empty lists not be used as default arguments in functions?",
+    "expected_chunk": "py_func_08",
+    "key_points": ["evaluated once", "definition", "persist"]
+  },
+  {
+    "id": "q11",
+    "question": "In Python range(start, stop), is the stop number included in the output?",
+    "expected_chunk": "py_ctrl_09",
+    "key_points": ["stop - 1", "exclusive", "not included"]
+  },
+  {
+    "id": "q12",
+    "question": "Which keyword is used to terminate a loop immediately in Python?",
+    "expected_chunk": "py_ctrl_09",
+    "key_points": ["break", "exit", "loop"]
+  },
+  {
+    "id": "q13",
+    "question": "What is the role of __init__ in a Python class?",
+    "expected_chunk": "py_oop_10",
+    "key_points": ["initializer", "attributes", "self"]
+  },
+  {
+    "id": "q14",
+    "question": "What function checks if an object is an instance of a class or a subclass?",
+    "expected_chunk": "py_oop_10",
+    "key_points": ["isinstance", "subclass", "instance"]
+  },
+  {
+    "id": "q15",
+    "question": "Which block in try/except is guaranteed to run regardless of whether an exception occurred?",
+    "expected_chunk": "py_err_11",
+    "key_points": ["finally", "always executes", "cleanup"]
+  },
+  {
+    "id": "q16",
+    "question": "How do you import a specific function from a module in Python?",
+    "expected_chunk": "py_mod_12",
+    "key_points": ["from", "import", "module"]
+  },
+  {
+    "id": "q17",
+    "question": "What value does __name__ have when a Python file is run directly?",
+    "expected_chunk": "py_mod_12",
+    "key_points": ["__main__", "directly", "main"]
+  },
+  {
+    "id": "q18",
+    "question": "Which built-in Python data type is used to store boolean True or False?",
+    "expected_chunk": "py_types_03",
+    "key_points": ["bool", "boolean", "true or false"]
+  },
+  {
+    "id": "q19",
+    "question": "How can you safely retrieve a value from a dictionary with a fallback default?",
+    "expected_chunk": "py_dict_06",
+    "key_points": ["get()", "default", "key"]
+  },
+  {
+    "id": "q20",
+    "question": "How does Python slicing syntax list[start:stop] work regarding indices?",
+    "expected_chunk": "py_list_05",
+    "key_points": ["inclusive", "exclusive", "slice"]
+  }
+]
+

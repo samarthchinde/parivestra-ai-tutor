@@ -1,7 +1,84 @@
+import { useEffect, useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { navigation } from "../data/navigation";
+import { checkHealth } from "../api/client";
 
 export default function AppLayout() {
+  const [health, setHealth] = useState({ status: "checking" });
+
+  useEffect(() => {
+    let mounted = true;
+    async function probe() {
+      const h = await checkHealth();
+      if (mounted) setHealth(h);
+    }
+    probe();
+    const interval = setInterval(probe, 30000);
+    return () => {
+      mounted = false;
+      clearInterval(interval);
+    };
+  }, []);
+
+  const getStatusBadge = () => {
+    if (health.status === "checking") {
+      return (
+        <span style={{ fontSize: 11, display: "flex", alignItems: "center", gap: 6, color: "#888" }}>
+          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ccc" }} />
+          Connecting...
+        </span>
+      );
+    }
+    if (health.status === "ok") {
+      const llmHealthy = health.llm && health.llm.status === "healthy";
+      return (
+        <span
+          style={{
+            fontSize: 11,
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            color: llmHealthy ? "#16a34a" : "#d97706",
+            background: llmHealthy ? "#dcfce7" : "#fef3c7",
+            padding: "4px 8px",
+            borderRadius: 12,
+            fontWeight: 600,
+          }}
+          title={llmHealthy ? `Connected to ${health.llm?.model}` : "Backend online; LLM offline"}
+        >
+          <span
+            style={{
+              width: 8,
+              height: 8,
+              borderRadius: "50%",
+              background: llmHealthy ? "#16a34a" : "#d97706",
+            }}
+          />
+          {llmHealthy ? "LLM & Backend Active" : "Backend Ready (LLM Offline)"}
+        </span>
+      );
+    }
+    return (
+      <span
+        style={{
+          fontSize: 11,
+          display: "flex",
+          alignItems: "center",
+          gap: 6,
+          color: "#dc2626",
+          background: "#fee2e2",
+          padding: "4px 8px",
+          borderRadius: 12,
+          fontWeight: 600,
+        }}
+        title="Backend unreachable; using browser offline fallback"
+      >
+        <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#dc2626" }} />
+        Offline Mode
+      </span>
+    );
+  };
+
   return (
     <div className="app-shell">
       <aside className="sidebar">
@@ -9,8 +86,14 @@ export default function AppLayout() {
         <p className="nav-caption">PERSONAL LEARNING SPACE</p>
         <nav>
           {navigation.map(({ label, path, icon: Icon }) => (
-            <NavLink key={path} to={path} end={path === "/"} className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}>
-              <Icon size={18} /><span>{label}</span>
+            <NavLink
+              key={path}
+              to={path}
+              end={path === "/"}
+              className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
+            >
+              <Icon size={18} />
+              <span>{label}</span>
             </NavLink>
           ))}
         </nav>
@@ -21,10 +104,19 @@ export default function AppLayout() {
       </aside>
       <main className="main">
         <header className="topbar">
-          <span>Parivestra <b>/</b> Learning space</span>
-          <div className="user-chip"><span className="avatar">A</span> Alex Morgan</div>
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            <span>
+              Parivestra <b>/</b> Learning space
+            </span>
+            {getStatusBadge()}
+          </div>
+          <div className="user-chip">
+            <span className="avatar">A</span> Alex Morgan
+          </div>
         </header>
-        <section className="content"><Outlet /></section>
+        <section className="content">
+          <Outlet />
+        </section>
       </main>
     </div>
   );
