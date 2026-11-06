@@ -1,0 +1,136 @@
+import requests
+import json
+import os
+import time
+import threading
+
+API_URL = "http://localhost:11434/api/chat"
+MODEL = "qwen3:4b"
+MEMORY_FILE = "memory.json"
+
+# Keep only recent conversation messages (system prompt is kept separately).
+MAX_HISTORY_MESSAGES = 12
+REQUEST_TIMEOUT = 180
+
+SYSTEM_PROMPT = {
+    "role": "system",
+    "content": (
+        "You are a helpful AI assistant. Use the conversation context "
+        "to understand the user. Give clear, concise answers."
+    )
+}
+
+
+def load_memory():
+    """Load saved conversation history, or start a fresh conversation."""
+    if os.path.exists(MEMORY_FILE):
+        try:
+            with open(MEMORY_FILE, "r", encoding="utf-8") as file:
+                saved = json.load(file)
+
+            # Keep only valid user/assistant messages.
+            if isinstance(saved, list):
+                return [
+                    message for message in saved
+                    if isinstance(message, dict)
+                    and message.get("role") in ("user", "assistant")
+                    and isinstance(message.get("content"), str)
+                ][-MAX_HISTORY_MESSAGES:]
+        except (json.JSONDecodeError, OSError):
+            print("Warning: memory.json could not be read. Starting new memory.")
+
+    return []
+
+
+def save_memory(messages):
+    """Save recent conversation history."""
+    with open(MEMORY_FILE, "w", encoding="utf-8") as file:
+        json.dump(messages[-MAX_HISTORY_MESSAGES:], file, indent=2, ensure_ascii=False)
+
+
+def show_waiting_message(stop_event):
+    """Show a small animated waiting indicator while Ollama is responding."""
+    dots = 0
+    while not stop_event.wait(0.5):
+        dots = (dots + 1) % 4
+        print(f"\rAI is thinking... Please wait{'.' * dots}   ", end="", flush=True)
+
+
+def chat(user_input, messages):
+    messages.append({"role": "user", "content": user_input})
+
+    # Send only the recent history plus the system prompt.
+    payload_messages = [SYSTEM_PROMPT] + messages[-MAX_HISTORY_MESSAGES:]
+
+    stop_event = threading.Event()
+    waiting_thread = threading.Thread(
+        target=show_waiting_message,
+        args=(stop_event,),
+        daemon=True
+    )
+    waiting_thread.start()
+
+    try:
+        response = requests.post(
+            API_URL,
+            json={
+                "model": MODEL,
+                "messages": payload_messages,
+                "stream": False,
+                "options": {
+                    "temperature": 0.7
+                }
+            },
+            timeout=REQUEST_TIMEOUT
+        )
+        response.raise_for_status()
+        answer = response.json()["message"]["content"].strip()
+
+        messages.append({"role": "assistant", "content": answer})
+        # Keep memory bounded so the next request is lighter.
+        del messages[:-MAX_HISTORY_MESSAGES]
+        save_memory(messages)
+
+        return answer
+
+    except requests.exceptions.ConnectionError:
+                 return (
+            "I couldn't connect to Ollama. Please check that Ollama is running "
+            "and that the model is installed."
+        )
+    except requests.exceptions.Timeout:
+        return "The response took too long. Please try again."
+    except requests.exceptions.HTTPError as error:
+        return f"Ollama returned an HTTP error: {error}"
+    except (KeyError, ValueError, json.JSONDecodeError):
+        return "I received an unexpected response from Ollama."
+    finally:
+        stop_event.set()
+        waiting_thread.join(timeout=1)
+        print("\r" + " " * 60 + "\r", end="", flush=True)
+
+
+def main():
+    memory = load_memory()
+    print("AI Assistant Started! Type 'exit' to stop.")
+    print("How can I help you ?\n")
+    while True:
+        try:
+            user_input = input("\nYou: ").strip()
+        except (KeyboardInterrupt, EOFError):
+            print("\nGoodbye!")
+            break
+
+        if not user_input:
+            continue
+
+        if user_input.lower() in ("exit", "quit"):
+            print("Goodbye!")
+            break
+
+        answer = chat(user_input, memory)
+        print("\nAI:", answer)
+
+
+if __name__ == "__main__":
+    main()
