@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { RotateCcw, Sparkles, AlertCircle, HelpCircle, ArrowRight } from "lucide-react";
 import { PageHeader } from "../components/UI";
 import { questionBank } from "../assessment/questionBank";
 import { saveProgress, getProgress } from "../assessment/progressStorage";
@@ -6,8 +8,13 @@ import { generatePracticeQuestions, submitPracticeAnswer } from "../api/client";
 import "../assessment/assessment.css";
 
 export default function Practice() {
+  const [searchParams] = useSearchParams();
+  const initialTopic = searchParams.get("topic") || "";
+  const initialSubject = searchParams.get("subject") || "Python";
+
   const [page, setPage] = useState("dashboard"); // dashboard, quiz, feedback, result, progress
-  const [subject, setSubject] = useState("Python");
+  const [subject, setSubject] = useState(initialSubject);
+  const [topic, setTopic] = useState(initialTopic);
   const [difficulty, setDifficulty] = useState("Beginner");
   const [questions, setQuestions] = useState([]);
   const [current, setCurrent] = useState(0);
@@ -16,11 +23,13 @@ export default function Practice() {
   const [history, setHistory] = useState([]);
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [progressText, setProgressText] = useState("Generating Fresh Questions...");
+  const [loadError, setLoadError] = useState(null);
   const [error, setError] = useState("");
   const [result, setResult] = useState(null);
-  const [isApiMode, setIsApiMode] = useState(true);
   const [questionStartTime, setQuestionStartTime] = useState(Date.now());
   const [lastFeedback, setLastFeedback] = useState(null);
+  const [previousSetIds, setPreviousSetIds] = useState([]);
 
   const subjects = [
     "Python",
@@ -42,7 +51,10 @@ export default function Practice() {
 
   useEffect(() => {
     loadHistory();
-  }, []);
+    if (initialTopic) {
+      setTopic(initialTopic);
+    }
+  }, [initialTopic]);
 
   const totalAttempts = history.length;
   const averageScore = totalAttempts
@@ -57,35 +69,104 @@ export default function Practice() {
     0
   );
 
-  async function startQuiz() {
+  function startOfflineQuiz(overrideDifficulty = null) {
+    setLoading(false);
+    setLoadError(null);
     setError("");
-    setLoading(true);
+    const diffToUse = overrideDifficulty || difficulty;
+    const filtered = questionBank.filter(
+      (q) =>
+        (subject === "All" || q.topic.toLowerCase() === subject.toLowerCase()) &&
+        q.difficulty.toLowerCase() === diffToUse.toLowerCase() &&
+        !previousSetIds.includes(q.id)
+    );
+    const chosen = filtered.length >= 3 ? filtered : questionBank.slice(0, 5);
+    const fetchedQuestions = chosen.map((q, idx) => ({
+      ...q,
+      id: q.id || `bundled_${idx}_${Date.now()}`,
+      source: "fallback",
+    }));
+    setPreviousSetIds(fetchedQuestions.map((q) => q.id));
+    setQuestions(fetchedQuestions);
+    setCurrent(0);
+    setAnswers([]);
+    setSelected("");
+    setResult(null);
+    setLastFeedback(null);
+    setQuestionStartTime(Date.now());
+    setPage("quiz");
+  }
 
+  async function startQuiz(overrideDifficulty = null) {
+    setError("");
+    setLoadError(null);
+    setLoading(true);
+    setProgressText("Checking pre-warmed AI question pool...");
+
+    const diffToUse = overrideDifficulty || difficulty;
     let fetchedQuestions = [];
-    let usingApi = true;
+
+    // Live progress timer
+    let step = 0;
+    const progressTimer = setInterval(() => {
+      step += 1;
+      if (step === 1) setProgressText("Generating question 1 of 4 from local Gemma 4...");
+      else if (step === 2) setProgressText("Validating question & options...");
+      else if (step === 3) setProgressText("Generating question 2 of 4...");
+      else if (step === 4) setProgressText("Generating question 3 of 4...");
+      else if (step >= 5) setProgressText("Finalizing practice questions...");
+    }, 4500);
 
     try {
       const apiRes = await generatePracticeQuestions({
         subject: subject === "All" ? "Python" : subject,
-        difficulty,
-        count: 5,
+        topic: topic || undefined,
+        difficulty: diffToUse,
+        count: 4,
+        timeoutMs: 45000,
       });
+
+      clearInterval(progressTimer);
 
       if (apiRes && apiRes.questions && apiRes.questions.length > 0) {
         fetchedQuestions = apiRes.questions;
+        setPreviousSetIds(fetchedQuestions.map((q) => q.id));
       } else {
         throw new Error("No questions returned from API");
       }
     } catch (apiErr) {
-      console.warn("Backend practice generation unreachable, using local fallback:", apiErr);
-      usingApi = false;
+      clearInterval(progressTimer);
+      console.warn("Backend practice generation failed or timed out:", apiErr);
+
+      let reason = "no valid questions";
+      const errStr = apiErr.message || "";
+      if (errStr.includes("timed out") || errStr.includes("timeout")) {
+        reason = "took too long (>45s)";
+      } else if (errStr.includes("Failed to fetch") || errStr.includes("NetworkError")) {
+        reason = "model offline";
+      }
+
+      setLoadError({
+        message: errStr || "Local LLM question generation timed out or failed.",
+        reason,
+      });
+
+      // Also prepare fallback questions as safety net
       const filtered = questionBank.filter(
         (q) =>
           (subject === "All" || q.topic.toLowerCase() === subject.toLowerCase()) &&
-          q.difficulty.toLowerCase() === difficulty.toLowerCase()
+          q.difficulty.toLowerCase() === diffToUse.toLowerCase() &&
+          !previousSetIds.includes(q.id)
       );
-      fetchedQuestions = filtered.length > 0 ? filtered : questionBank.slice(0, 5);
+      const chosen = filtered.length >= 3 ? filtered : questionBank.slice(0, 4);
+      fetchedQuestions = chosen.map((q, idx) => ({
+        ...q,
+        id: q.id || `bundled_${idx}_${Date.now()}`,
+        source: "fallback",
+      }));
+      setPreviousSetIds(fetchedQuestions.map((q) => q.id));
     } finally {
+      clearInterval(progressTimer);
       setLoading(false);
     }
 
@@ -94,7 +175,6 @@ export default function Practice() {
       return;
     }
 
-    setIsApiMode(usingApi);
     setQuestions(fetchedQuestions);
     setCurrent(0);
     setAnswers([]);
@@ -121,7 +201,7 @@ export default function Practice() {
     let explanation = "";
     let misconception = null;
 
-    if (isApiMode && currentQ.id) {
+    if (currentQ.id) {
       try {
         const subRes = await submitPracticeAnswer({
           question_id: currentQ.id,
@@ -129,7 +209,7 @@ export default function Practice() {
           time_taken: timeTaken,
           hints_used: 0,
           subject: currentQ.subject || subject,
-          topic: currentQ.topic || subject,
+          topic: currentQ.topic || topic || subject,
           difficulty: currentQ.difficulty || difficulty,
           question: currentQ.question,
           options: currentQ.options,
@@ -141,7 +221,7 @@ export default function Practice() {
         explanation = subRes.explanation;
         misconception = subRes.misconception;
       } catch (err) {
-        console.warn("API submit failed, falling back to local grading:", err);
+        console.warn("API submit failed, using offline fallback grading:", err);
         isCorrect = selected.trim().toLowerCase() === (currentQ.answer || "").trim().toLowerCase();
         explanation = isCorrect
           ? "Correct! Well done."
@@ -161,7 +241,7 @@ export default function Practice() {
       selected,
       correctAnswer,
       isCorrect,
-      topic: currentQ.topic || subject,
+      topic: currentQ.topic || topic || subject,
       explanation,
       misconception,
     };
@@ -193,6 +273,7 @@ export default function Practice() {
 
     const newResult = {
       subject,
+      topic: topic || "Core",
       difficulty,
       totalQuestions: finalAnswers.length,
       correctAnswers: correct,
@@ -242,7 +323,7 @@ export default function Practice() {
     <div className="m7-dashboard">
       <PageHeader
         title="Assessment & Practice"
-        description="Test your knowledge with AI-generated or syllabus MCQs, track mastery, and identify misconceptions."
+        description="Fresh AI-generated questions with anti-repeat tracking, adaptive difficulty, and misconception diagnosis."
       />
 
       {error && <div className="m7-error">{error}</div>}
@@ -252,7 +333,7 @@ export default function Practice() {
           <section className="m7-welcome">
             <h2>Welcome to your learning space!</h2>
             <p>
-              Assess your knowledge, track your progress, and identify topics that need more practice.
+              Assess your knowledge, track your progress, and master concepts without seeing repeat questions.
             </p>
           </section>
 
@@ -287,15 +368,58 @@ export default function Practice() {
                 ))}
               </select>
 
-              <label>Choose Difficulty</label>
+              {topic && (
+                <div style={{ marginTop: 10, fontSize: 13, color: "#e95b30", fontWeight: 700 }}>
+                  Active Focus Topic: {topic}{" "}
+                  <button
+                    onClick={() => setTopic("")}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      color: "#6b7280",
+                      cursor: "pointer",
+                      fontSize: 12,
+                      textDecoration: "underline",
+                      marginLeft: 6,
+                    }}
+                  >
+                    (Clear)
+                  </button>
+                </div>
+              )}
+
+              <label style={{ marginTop: 14 }}>Choose Difficulty</label>
               <select value={difficulty} onChange={(e) => setDifficulty(e.target.value)}>
                 <option>Beginner</option>
                 <option>Intermediate</option>
                 <option>Advanced</option>
               </select>
 
-              <button className="m7-primary" onClick={startQuiz} disabled={loading}>
-                {loading ? "Generating Questions..." : "Start Assessment"}
+              {loadError && (
+                <div style={{ background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 8, padding: 12, marginTop: 14, color: "#991b1b", fontSize: 13 }}>
+                  <div style={{ fontWeight: 700, display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
+                    <AlertCircle size={16} /> Generation Status: {loadError.reason}
+                  </div>
+                  <p style={{ margin: "2px 0 10px 0", fontSize: 12, color: "#7f1d1d" }}>{loadError.message}</p>
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <button
+                      onClick={() => startQuiz()}
+                      style={{ background: "#dc2626", color: "#fff", border: "none", borderRadius: 6, padding: "6px 12px", fontSize: 12, fontWeight: 600, cursor: "pointer" }}
+                    >
+                      Try Again
+                    </button>
+                    <button
+                      onClick={() => startOfflineQuiz()}
+                      style={{ background: "#f1f5f9", color: "#334155", border: "1px solid #cbd5e1", borderRadius: 6, padding: "6px 12px", fontSize: 12, fontWeight: 600, cursor: "pointer" }}
+                    >
+                      Use Offline Set
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              <button className="m7-primary" onClick={() => startQuiz()} disabled={loading} style={{ marginTop: 14 }}>
+                {loading ? progressText : "Start Assessment"}
               </button>
             </section>
 
@@ -318,10 +442,63 @@ export default function Practice() {
       {page === "quiz" && questions.length > 0 && (
         <section className="m7-panel m7-quiz">
           <div className="m7-quiz-header">
-            <h2>{subject} Assessment {isApiMode && <span style={{ fontSize: 12, color: "#16a34a", fontWeight: 600 }}>• AI Active</span>}</h2>
-            <span>
-              Question {current + 1} of {questions.length}
-            </span>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <h2>{subject} Assessment</h2>
+              {questions[current].source === "ai" ? (
+                <span
+                  style={{
+                    background: "#f3e8ff",
+                    color: "#7e22ce",
+                    border: "1px solid #d8b4fe",
+                    padding: "2px 8px",
+                    borderRadius: 12,
+                    fontSize: 11,
+                    fontWeight: 700,
+                  }}
+                >
+                  ✨ AI Generated
+                </span>
+              ) : (
+                <span
+                  style={{
+                    background: "#f1f5f9",
+                    color: "#475569",
+                    border: "1px solid #cbd5e1",
+                    padding: "2px 8px",
+                    borderRadius: 12,
+                    fontSize: 11,
+                    fontWeight: 700,
+                  }}
+                >
+                  Offline Question Set
+                </span>
+              )}
+            </div>
+
+            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+              <span>
+                Question {current + 1} of {questions.length}
+              </span>
+              <button
+                onClick={() => startQuiz()}
+                title="Generate a completely new set of questions"
+                style={{
+                  background: "#f8fafc",
+                  border: "1px solid #e2e8f0",
+                  borderRadius: 6,
+                  padding: "4px 8px",
+                  fontSize: 11,
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 4,
+                  color: "#475569",
+                }}
+              >
+                <RotateCcw size={12} /> New Set
+              </button>
+            </div>
           </div>
 
           <div className="m7-progress-track">
@@ -333,7 +510,10 @@ export default function Practice() {
             />
           </div>
 
-          <p>Difficulty: {difficulty} · Topic: {questions[current].topic || subject}</p>
+          <p style={{ fontSize: 13, color: "#64748b", margin: "10px 0" }}>
+            Difficulty: <strong>{questions[current].difficulty || difficulty}</strong> · Topic:{" "}
+            <strong>{questions[current].topic || subject}</strong>
+          </p>
 
           <h2 className="m7-question">{questions[current].question}</h2>
 
@@ -352,7 +532,7 @@ export default function Practice() {
             onClick={submitCurrentAnswer}
             disabled={!selected || saving}
           >
-            {saving ? "Submitting..." : "Submit Answer"}
+            {saving ? "Evaluating Answer..." : "Submit Answer"}
           </button>
         </section>
       )}
@@ -361,7 +541,7 @@ export default function Practice() {
       {page === "feedback" && lastFeedback && (
         <section className="m7-panel m7-quiz">
           <div className="m7-quiz-header">
-            <h2>Question {current + 1} Feedback</h2>
+            <h2>Question {current + 1} Result</h2>
             <span
               style={{
                 padding: "4px 10px",
@@ -423,16 +603,33 @@ export default function Practice() {
                 marginBottom: 18,
               }}
             >
-              <strong>Conceptual Insight:</strong>
+              <strong>Detected Misconception:</strong>
               <p style={{ margin: "4px 0 0" }}>
                 <em>Correction:</em> {lastFeedback.misconception.correction}
               </p>
             </div>
           )}
 
-          <button className="m7-primary" onClick={nextOrFinish}>
-            {current + 1 === questions.length ? "Finish Assessment" : "Next Question →"}
-          </button>
+          <div style={{ display: "flex", gap: 10 }}>
+            <button className="m7-primary" onClick={nextOrFinish}>
+              {current + 1 === questions.length ? "Finish Assessment" : "Next Question →"}
+            </button>
+            <button
+              onClick={() => startQuiz()}
+              style={{
+                background: "#f8fafc",
+                border: "1px solid #e2e8f0",
+                borderRadius: 8,
+                padding: "0 14px",
+                fontSize: 13,
+                fontWeight: 600,
+                cursor: "pointer",
+                color: "#475569",
+              }}
+            >
+              New Question Set
+            </button>
+          </div>
         </section>
       )}
 
@@ -472,19 +669,25 @@ export default function Practice() {
 
           {saving && <p>Saving your progress...</p>}
 
-          <button className="m7-primary" onClick={goDashboard}>
-            Back to Dashboard
-          </button>
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 18 }}>
+            <button className="m7-primary" onClick={() => startQuiz()}>
+              Try Another Set
+            </button>
 
-          <button
-            className="m7-secondary"
-            onClick={() => {
-              loadHistory();
-              setPage("progress");
-            }}
-          >
-            View My Progress
-          </button>
+            <button className="m7-secondary" onClick={goDashboard}>
+              Back to Dashboard
+            </button>
+
+            <button
+              className="m7-secondary"
+              onClick={() => {
+                loadHistory();
+                setPage("progress");
+              }}
+            >
+              View My Progress
+            </button>
+          </div>
         </section>
       )}
 

@@ -5,6 +5,7 @@ import Tutor from "./pages/Tutor";
 import LearningPath from "./pages/LearningPath";
 import Subjects from "./pages/Subjects";
 import Practice from "./pages/Practice";
+import Games from "./pages/Games";
 import Progress from "./pages/Progress";
 import Resources from "./pages/Resources";
 import Settings from "./pages/Settings";
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="learning-path" element={<LearningPath />} />
         <Route path="subjects" element={<Subjects />} />
         <Route path="practice" element={<Practice />} />
+        <Route path="games" element={<Games />} />
         <Route path="progress" element={<Progress />} />
         <Route path="resources" element={<Resources />} />
         <Route path="settings" element={<Settings />} />

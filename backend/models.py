@@ -88,6 +88,62 @@ class Mastery(Base):
     user = relationship("User", back_populates="masteries")
 
 
+class GeneratedQuestion(Base):
+    __tablename__ = "generated_questions"
+
+    id = Column(String(64), primary_key=True, index=True)
+    subject = Column(String(100), nullable=False)
+    topic = Column(String(100), nullable=False)
+    difficulty = Column(String(50), nullable=False)
+    question_hash = Column(String(64), index=True, nullable=False)
+    stem = Column(Text, nullable=False)
+    options = Column(Text, nullable=False)  # JSON list
+    correct_index = Column(Integer, nullable=False)
+    source_chunk_id = Column(String(64), nullable=True)
+    status = Column(String(20), default="ready", index=True)
+    created_at = Column(DateTime, default=utc_now)
+
+
+class UserSeenQuestion(Base):
+    __tablename__ = "user_seen_questions"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(String(64), ForeignKey("users.id"), nullable=False, index=True)
+    question_id = Column(String(64), nullable=False)
+    question_hash = Column(String(64), index=True, nullable=False)
+    seen_at = Column(DateTime, default=utc_now)
+
+
+class GameSession(Base):
+    __tablename__ = "game_sessions"
+
+    id = Column(String(64), primary_key=True, index=True)
+    user_id = Column(String(64), ForeignKey("users.id"), nullable=False, index=True)
+    game_type = Column(String(50), default="bughunt")
+    score = Column(Integer, default=0)
+    lives = Column(Integer, default=3)
+    streak = Column(Integer, default=0)
+    round_number = Column(Integer, default=1)
+    current_snippet = Column(Text, nullable=False)
+    current_buggy_line = Column(Integer, nullable=False)
+    current_bug_type = Column(String(50), nullable=False)
+    current_explanation = Column(Text, nullable=False)
+    current_topic = Column(String(100), default="Python")
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=utc_now)
+
+
+class GameScore(Base):
+    __tablename__ = "game_scores"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(String(64), ForeignKey("users.id"), nullable=False, index=True)
+    user_name = Column(String(100), default="Student")
+    score = Column(Integer, default=0)
+    rounds_cleared = Column(Integer, default=0)
+    played_at = Column(DateTime, default=utc_now)
+
+
 class LLMLog(Base):
     __tablename__ = "llm_logs"
 
@@ -99,3 +155,23 @@ class LLMLog(Base):
     success = Column(Boolean, nullable=False)
     error_message = Column(Text, nullable=True)
     created_at = Column(DateTime, default=utc_now)
+
+
+class ResourceModel(Base):
+    __tablename__ = "resources"
+
+    id = Column(String(64), primary_key=True, index=True)
+    title = Column(String(200), nullable=False)
+    description = Column(Text, nullable=True)
+    subject = Column(String(100), default="Python", index=True)
+    topic = Column(String(100), default="General", index=True)
+    tags = Column(Text, default="[]")  # JSON list
+    file_type = Column(String(20), nullable=False)  # pdf, md, txt
+    original_filename = Column(String(255), nullable=False)
+    stored_path = Column(String(500), nullable=False)
+    file_size = Column(Integer, default=0)
+    uploader = Column(String(100), default="Faculty")
+    approved = Column(Boolean, default=False, index=True)
+    indexed_chunks_count = Column(Integer, default=0)
+    created_at = Column(DateTime, default=utc_now)
+

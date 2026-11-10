@@ -1,0 +1,138 @@
+[
+  {
+    "id": "bug_01",
+    "topic": "Lists",
+    "snippet": "numbers = [10, 20, 30, 40]\ntotal = 0\nfor i in range(len(numbers)):\n    total += numbers[i + 1]\nprint(\"Total:\", total)",
+    "buggy_line": 4,
+    "bug_type": "index_error",
+    "explanation": "Accessing numbers[i + 1] when i == len(numbers) - 1 raises an IndexError.",
+    "hint": "Check the list indexing on the last iteration of the loop."
+  },
+  {
+    "id": "bug_02",
+    "topic": "Strings",
+    "snippet": "greeting = \"hello world\"\ngreeting[0] = \"H\"\nprint(greeting.capitalize())",
+    "buggy_line": 2,
+    "bug_type": "immutable_error",
+    "explanation": "Strings in Python are immutable; item assignment greeting[0] = 'H' raises a TypeError.",
+    "hint": "Can individual characters of a string be modified in-place?"
+  },
+  {
+    "id": "bug_03",
+    "topic": "Control Flow",
+    "snippet": "count = 0\nwhile count < 5:\n    print(\"Processing item\", count)\n    count == count + 1\nprint(\"Done\")",
+    "buggy_line": 4,
+    "bug_type": "logic",
+    "explanation": "count == count + 1 is an equality check instead of assignment, causing an infinite loop.",
+    "hint": "Check the increment operation inside the while loop."
+  },
+  {
+    "id": "bug_04",
+    "topic": "Functions",
+    "snippet": "def calculate_discount(price, rate):\n    discount = price * (rate / 100)\n    final_price = price - discount\n\nresult = calculate_discount(100, 15)\nprint(\"Final:\", result + 5)",
+    "buggy_line": 3,
+    "bug_type": "wrong_output",
+    "explanation": "The function calculates final_price but does not return it, returning None by default.",
+    "hint": "What does a Python function return when no return statement is specified?"
+  },
+  {
+    "id": "bug_05",
+    "topic": "Data Types",
+    "snippet": "user_age = \"24\"\nnext_year_age = user_age + 1\nprint(\"Next year:\", next_year_age)",
+    "buggy_line": 2,
+    "bug_type": "type_error",
+    "explanation": "Adding an integer to a string (user_age + 1) raises a TypeError; user_age must be cast to int().",
+    "hint": "Look closely at the data type of user_age."
+  },
+  {
+    "id": "bug_06",
+    "topic": "Dictionaries",
+    "snippet": "student = {\"name\": \"Alice\", \"grade\": \"A\"}\nprint(\"Name:\", student[\"name\"])\nprint(\"Age:\", student[\"age\"])\nprint(\"Grade:\", student[\"grade\"])",
+    "buggy_line": 3,
+    "bug_type": "key_error",
+    "explanation": "Accessing student['age'] raises a KeyError because 'age' does not exist in the dictionary.",
+    "hint": "Which key does not exist in the dictionary definition?"
+  },
+  {
+    "id": "bug_07",
+    "topic": "Variables",
+    "snippet": "first_name = \"Alex\"\nlast_name = \"Morgan\"\nfull_name = firstname + \" \" + last_name\nprint(full_name)",
+    "buggy_line": 3,
+    "bug_type": "name_error",
+    "explanation": "Variable 'firstname' is referenced without an underscore, raising a NameError.",
+    "hint": "Compare the spelling of the variable in the assignment and expression."
+  },
+  {
+    "id": "bug_08",
+    "topic": "Lists",
+    "snippet": "scores = [88, 92, 79, 95]\nfor score in scores:\n    if score = 100:\n        print(\"Perfect score!\")",
+    "buggy_line": 3,
+    "bug_type": "syntax",
+    "explanation": "Using single '=' in an if statement condition is assignment syntax; equality check requires '=='.",
+    "hint": "Check the condition syntax in the if statement."
+  },
+  {
+    "id": "bug_09",
+    "topic": "Control Flow",
+    "snippet": "items = [\"apple\", \"banana\", \"cherry\"]\nfor i in range(1, len(items)):\n    print(\"Item:\", items[i])",
+    "buggy_line": 2,
+    "bug_type": "off-by-one",
+    "explanation": "range(1, len(items)) starts at index 1 and skips the first item 'apple' at index 0.",
+    "hint": "Which element does this loop omit?"
+  },
+  {
+    "id": "bug_10",
+    "topic": "Functions",
+    "snippet": "def append_tag(tag, tags=[]):\n    tags.append(tag)\n    return tags\n\nt1 = append_tag(\"python\")\nt2 = append_tag(\"ai\")\nprint(t2)",
+    "buggy_line": 1,
+    "bug_type": "logic",
+    "explanation": "Using a mutable default argument tags=[] causes state to persist across calls, yielding ['python', 'ai'].",
+    "hint": "What is risky about mutable default arguments in Python function definitions?"
+  },
+  {
+    "id": "bug_11",
+    "topic": "OOP",
+    "snippet": "class Car:\n    def __init__(self, brand):\n        brand = brand\n\nmy_car = Car(\"Toyota\")\nprint(my_car.brand)",
+    "buggy_line": 3,
+    "bug_type": "logic",
+    "explanation": "brand = brand assigns to a local variable instead of self.brand, so the instance attribute is never created.",
+    "hint": "How do you bind an attribute to an instance in an initializer?"
+  },
+  {
+    "id": "bug_12",
+    "topic": "Error Handling",
+    "snippet": "try:\n    value = int(\"not_a_number\")\nexcept TypeError:\n    print(\"Could not convert to integer\")",
+    "buggy_line": 3,
+    "bug_type": "logic",
+    "explanation": "Converting an invalid string with int() raises a ValueError, not a TypeError, so it won't be caught.",
+    "hint": "Which exception does int('abc') raise?"
+  },
+  {
+    "id": "bug_13",
+    "topic": "Lists",
+    "snippet": "items = [5, 1, 9, 3]\nsorted_items = items.sort()\nprint(\"Length:\", len(sorted_items))",
+    "buggy_line": 2,
+    "bug_type": "wrong_output",
+    "explanation": "items.sort() sorts the list in-place and returns None; len(sorted_items) raises a TypeError.",
+    "hint": "What is the return value of list.sort() vs sorted(list)?"
+  },
+  {
+    "id": "bug_14",
+    "topic": "Data Types",
+    "snippet": "total_items = 7\ncontainer_capacity = 2\ncontainers_needed = total_items / container_capacity\nprint(\"Containers:\", int(containers_needed))",
+    "buggy_line": 3,
+    "bug_type": "off-by-one",
+    "explanation": "7 / 2 = 3.5, and int(3.5) = 3 which drops the remaining item; 4 containers are required.",
+    "hint": "What happens to the remainder when you truncate floating-point division?"
+  },
+  {
+    "id": "bug_15",
+    "topic": "Tuples and Sets",
+    "snippet": "unique_keys = {10, 20, 30}\nfirst_key = unique_keys[0]\nprint(\"Key:\", first_key)",
+    "buggy_line": 2,
+    "bug_type": "type_error",
+    "explanation": "Sets in Python are unordered and do not support indexing (unique_keys[0] raises a TypeError).",
+    "hint": "Do set objects support bracket indexing?"
+  }
+]
+

@@ -16,6 +16,10 @@ LLM_PROVIDER: str = os.getenv("LLM_PROVIDER", "openai").lower()
 
 DATABASE_URL: str = os.getenv("DATABASE_URL", f"sqlite:///{ROOT_DIR / 'parivestra.db'}")
 
+ADMIN_KEY: str = os.getenv("ADMIN_KEY", "parivestra_admin_secret")
+RESOURCES_DIR: Path = ROOT_DIR / "data" / "resources"
+RESOURCES_DIR.mkdir(parents=True, exist_ok=True)
+
 CORS_ORIGINS: list[str] = [
     origin.strip()
     for origin in os.getenv("CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(",")

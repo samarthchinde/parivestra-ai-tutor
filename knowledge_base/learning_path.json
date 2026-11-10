@@ -1,0 +1,119 @@
+{
+  "subject": "Python",
+  "levels": [
+    {
+      "id": 1,
+      "name": "Level 1: Python Foundations",
+      "description": "Master core syntax, dynamic typing, and fundamental data types.",
+      "milestones": [
+        {
+          "id": "m1_1",
+          "title": "Introduction to Python",
+          "topic": "Introduction",
+          "description": "Python overview, syntax, interpreted execution, and print statement."
+        },
+        {
+          "id": "m1_2",
+          "title": "Variables & Typing",
+          "topic": "Variables",
+          "description": "Dynamic typing, variable assignment, naming rules, and references."
+        },
+        {
+          "id": "m1_3",
+          "title": "Numeric Operators & Booleans",
+          "topic": "Data Types",
+          "description": "Ints, floats, division vs floor division (/, //), and booleans."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Level 2: Collections & Data Structures",
+      "description": "Work with strings, lists, dictionaries, tuples, and sets.",
+      "milestones": [
+        {
+          "id": "m2_1",
+          "title": "Strings & Immutability",
+          "topic": "Strings",
+          "description": "String indexing, slicing, methods, and character immutability."
+        },
+        {
+          "id": "m2_2",
+          "title": "Lists & List Operations",
+          "topic": "Lists",
+          "description": "Zero-indexed mutable lists, append(), slice syntax, and copying."
+        },
+        {
+          "id": "m2_3",
+          "title": "Dictionaries & Key Lookups",
+          "topic": "Dictionaries",
+          "description": "Hashable keys, key-value mappings, and get() method."
+        },
+        {
+          "id": "m2_4",
+          "title": "Tuples & Sets",
+          "topic": "Tuples and Sets",
+          "description": "Immutable tuples and unique unordered set collections."
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Level 3: Logic, Loops & Functions",
+      "description": "Implement conditional branching, loops, and reusable modular functions.",
+      "milestones": [
+        {
+          "id": "m3_1",
+          "title": "Conditionals & Loops",
+          "topic": "Control Flow",
+          "description": "If-elif-else branching, range() loops, break, and continue."
+        },
+        {
+          "id": "m3_2",
+          "title": "Functions & Default Arguments",
+          "topic": "Functions",
+          "description": "def syntax, return values, parameters, and default argument traps."
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Level 4: Object-Oriented Programming",
+      "description": "Model complex entities with classes, methods, and inheritance.",
+      "milestones": [
+        {
+          "id": "m4_1",
+          "title": "Classes & Attributes",
+          "topic": "OOP",
+          "description": "Defining classes, __init__ initializer, and self instance reference."
+        },
+        {
+          "id": "m4_2",
+          "title": "Inheritance & Types",
+          "topic": "OOP",
+          "description": "Subclassing, method overriding, and isinstance() checks."
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Level 5: Error Handling & Modules",
+      "description": "Write resilient code with try/except and organize multi-file programs.",
+      "milestones": [
+        {
+          "id": "m5_1",
+          "title": "Exceptions & Error Handling",
+          "topic": "Error Handling",
+          "description": "try, except, else, and finally resource cleanup."
+        },
+        {
+          "id": "m5_2",
+          "title": "Modules & Packaging",
+          "topic": "Modules",
+          "description": "importing modules, packages, and __name__ == '__main__' guard."
+        }
+      ]
+    }
+  ]
+}
+

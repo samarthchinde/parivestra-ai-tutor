@@ -18,12 +18,31 @@ export function getUserId() {
 }
 
 /**
- * Standard headers with user identity.
+ * Retrieve or store admin access key.
+ */
+export function getAdminKey() {
+  return localStorage.getItem("parivestra_admin_key") || "";
+}
+
+export function setAdminKey(key) {
+  if (key && key.trim()) {
+    localStorage.setItem("parivestra_admin_key", key.trim());
+  } else {
+    localStorage.removeItem("parivestra_admin_key");
+  }
+}
+
+/**
+ * Standard headers with user identity and admin authorization if present.
  */
 function getHeaders(contentType = "application/json") {
   const headers = {
     "X-User-Id": getUserId(),
   };
+  const adminKey = getAdminKey();
+  if (adminKey) {
+    headers["X-Admin-Key"] = adminKey;
+  }
   if (contentType) {
     headers["Content-Type"] = contentType;
   }
@@ -71,16 +90,44 @@ export async function getProgressSummary() {
 }
 
 /**
- * Request question generation from practice agent.
+ * Fetch student learning path roadmap, levels, milestones, and XP.
  */
-export async function generatePracticeQuestions({ subject, topic, difficulty, count = 5 }) {
-  const res = await fetch(`${API_BASE_URL}/api/practice/generate`, {
-    method: "POST",
+export async function getLearningPath() {
+  const res = await fetch(`${API_BASE_URL}/api/learning-path`, {
+    method: "GET",
     headers: getHeaders(),
-    body: JSON.stringify({ subject, topic, difficulty, count }),
   });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return await res.json();
+}
+
+/**
+ * Request question generation from practice agent with 45s client timeout.
+ */
+export async function generatePracticeQuestions({ subject, topic, difficulty, count = 5, timeoutMs = 45000 }) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/practice/generate`, {
+      method: "POST",
+      headers: getHeaders(),
+      body: JSON.stringify({ subject, topic, difficulty, count }),
+      signal: controller.signal,
+    });
+    clearTimeout(timer);
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || err.error || `HTTP ${res.status}`);
+    }
+    return await res.json();
+  } catch (err) {
+    clearTimeout(timer);
+    if (err.name === "AbortError") {
+      throw new Error("Generation timed out after 45 seconds. The local LLM took too long to respond.");
+    }
+    throw err;
+  }
 }
 
 /**
@@ -159,4 +206,126 @@ export async function streamTutorChat({
     if (onError) onError(err);
   }
 }
+
+/**
+ * Bug Hunt Arena Game API
+ */
+export async function startBugHuntGame(topic = null) {
+  const res = await fetch(`${API_BASE_URL}/api/games/bughunt/start`, {
+    method: "POST",
+    headers: getHeaders(),
+    body: JSON.stringify({ topic }),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function submitBugHuntAnswer({ sessionId, selectedLine, selectedBugType, timeTakenSeconds = 10.0 }) {
+  const res = await fetch(`${API_BASE_URL}/api/games/bughunt/answer`, {
+    method: "POST",
+    headers: getHeaders(),
+    body: JSON.stringify({
+      session_id: sessionId,
+      selected_line: selectedLine,
+      selected_bug_type: selectedBugType,
+      time_taken_seconds: timeTakenSeconds,
+    }),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function getBugHuntHint(sessionId) {
+  const res = await fetch(`${API_BASE_URL}/api/games/bughunt/hint`, {
+    method: "POST",
+    headers: getHeaders(),
+    body: JSON.stringify({ session_id: sessionId }),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function getGameLeaderboard(limit = 10) {
+  const res = await fetch(`${API_BASE_URL}/api/games/leaderboard?limit=${limit}`, {
+    method: "GET",
+    headers: getHeaders(),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+/**
+ * Institute Resource Library API
+ */
+export async function getResources({ subject = null, topic = null, approved = null } = {}) {
+  const params = new URLSearchParams();
+  if (subject) params.append("subject", subject);
+  if (topic) params.append("topic", topic);
+  if (approved !== null && approved !== undefined) params.append("approved", approved);
+
+  const res = await fetch(`${API_BASE_URL}/api/resources?${params.toString()}`, {
+    method: "GET",
+    headers: getHeaders(),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export function getResourceDownloadUrl(resourceId) {
+  const adminKey = getAdminKey();
+  const url = new URL(`${API_BASE_URL}/api/resources/${resourceId}/download`);
+  return url.toString();
+}
+
+export async function uploadResource(formData) {
+  const res = await fetch(`${API_BASE_URL}/api/resources`, {
+    method: "POST",
+    headers: getHeaders(null), // Let browser set multipart boundary
+    body: formData,
+  });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({ detail: `HTTP ${res.status}` }));
+    throw new Error(errorData.detail || errorData.error || `HTTP ${res.status}`);
+  }
+  return await res.json();
+}
+
+export async function updateResource(resourceId, payload) {
+  const res = await fetch(`${API_BASE_URL}/api/resources/${resourceId}`, {
+    method: "PATCH",
+    headers: getHeaders(),
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({ detail: `HTTP ${res.status}` }));
+    throw new Error(errorData.detail || errorData.error || `HTTP ${res.status}`);
+  }
+  return await res.json();
+}
+
+export async function deleteResource(resourceId) {
+  const res = await fetch(`${API_BASE_URL}/api/resources/${resourceId}`, {
+    method: "DELETE",
+    headers: getHeaders(),
+  });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({ detail: `HTTP ${res.status}` }));
+    throw new Error(errorData.detail || errorData.error || `HTTP ${res.status}`);
+  }
+  return await res.json();
+}
+
+export async function reindexResource(resourceId) {
+  const res = await fetch(`${API_BASE_URL}/api/resources/${resourceId}/reindex`, {
+    method: "POST",
+    headers: getHeaders(),
+  });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({ detail: `HTTP ${res.status}` }));
+    throw new Error(errorData.detail || errorData.error || `HTTP ${res.status}`);
+  }
+  return await res.json();
+}
+
+
 

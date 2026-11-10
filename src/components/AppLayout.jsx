@@ -31,6 +31,10 @@ export default function AppLayout() {
     }
     if (health.status === "ok") {
       const llmHealthy = health.llm && health.llm.status === "healthy";
+      const tooltipText = llmHealthy
+        ? `Connected: ${health.llm?.model || "gemma-4"} at ${health.llm?.base_url} (${health.llm?.latency_ms}ms)`
+        : `LLM Offline (${health.llm?.base_url || "unknown"}): ${health.llm?.error || "Cannot connect to model server"}`;
+
       return (
         <span
           style={{
@@ -43,8 +47,9 @@ export default function AppLayout() {
             padding: "4px 8px",
             borderRadius: 12,
             fontWeight: 600,
+            cursor: "help",
           }}
-          title={llmHealthy ? `Connected to ${health.llm?.model}` : "Backend online; LLM offline"}
+          title={tooltipText}
         >
           <span
             style={{
@@ -54,7 +59,7 @@ export default function AppLayout() {
               background: llmHealthy ? "#16a34a" : "#d97706",
             }}
           />
-          {llmHealthy ? "LLM & Backend Active" : "Backend Ready (LLM Offline)"}
+          {llmHealthy ? `Active: ${health.llm?.model || "Gemma 4"}` : "Backend Ready (LLM Offline)"}
         </span>
       );
     }
@@ -70,8 +75,9 @@ export default function AppLayout() {
           padding: "4px 8px",
           borderRadius: 12,
           fontWeight: 600,
+          cursor: "help",
         }}
-        title="Backend unreachable; using browser offline fallback"
+        title={`Backend Unreachable: ${health.error || "Connecting to http://localhost:8001"}`}
       >
         <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#dc2626" }} />
         Offline Mode

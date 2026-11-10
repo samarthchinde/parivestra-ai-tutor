@@ -189,6 +189,40 @@ class BM25Retriever(BaseRetriever):
         filtered.sort(key=lambda x: x[1], reverse=True)
         return filtered[:top_k]
 
+    def _rebuild_index(self):
+        """Re-tokenize corpus and reinitialize BM25Okapi."""
+        self.corpus_tokens = [
+            tokenize(f"{c.title} {c.subject} {c.topic} {c.content}")
+            for c in self.chunks
+        ]
+        if self.corpus_tokens:
+            self.bm25 = BM25Okapi(self.corpus_tokens)
+        else:
+            self.bm25 = None
+
+    def add_chunks(self, new_chunks: List[Chunk]):
+        """Add new document chunks and refresh BM25 index."""
+        if not new_chunks:
+            return
+        existing_ids = {c.id for c in self.chunks}
+        for chk in new_chunks:
+            if chk.id in existing_ids:
+                self.chunks = [c for c in self.chunks if c.id != chk.id]
+            self.chunks.append(chk)
+            existing_ids.add(chk.id)
+        self._rebuild_index()
+
+    def remove_chunks_by_id(self, chunk_ids: List[str]):
+        """Remove chunks matching the provided chunk IDs and refresh index."""
+        if not chunk_ids:
+            return
+        ids_set = set(chunk_ids)
+        orig_len = len(self.chunks)
+        self.chunks = [c for c in self.chunks if c.id not in ids_set]
+        if len(self.chunks) != orig_len:
+            self._rebuild_index()
+
+
 
 # Singleton default retriever instance
 _default_retriever: Optional[BM25Retriever] = None
