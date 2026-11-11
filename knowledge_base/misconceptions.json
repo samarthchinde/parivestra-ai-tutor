@@ -1,0 +1,93 @@
+[
+  {
+    "id": "py_misc_01",
+    "topic": "Python",
+    "wrong_belief": "Variables must be declared with their data type like int x = 5",
+    "correction": "Python is dynamically typed; you do not declare variable types explicitly."
+  },
+  {
+    "id": "py_misc_02",
+    "topic": "Python",
+    "wrong_belief": "List indexing starts at 1",
+    "correction": "Python lists are zero-indexed, meaning the first element is at index 0."
+  },
+  {
+    "id": "py_misc_03",
+    "topic": "Python",
+    "wrong_belief": "Strings in Python can be modified in place (mutable)",
+    "correction": "Strings in Python are immutable; modifying them creates a new string object."
+  },
+  {
+    "id": "py_misc_04",
+    "topic": "Python",
+    "wrong_belief": "Assignment b = a creates an independent copy of a list",
+    "correction": "Assignment b = a binds b to the same list reference in memory, not a deep copy."
+  },
+  {
+    "id": "py_misc_05",
+    "topic": "Python",
+    "wrong_belief": "== and is do the exact same check",
+    "correction": "== checks value equality, whereas is checks object identity in memory."
+  },
+  {
+    "id": "py_misc_06",
+    "topic": "Python",
+    "wrong_belief": "Default argument values in functions are re-evaluated each call",
+    "correction": "Default arguments (like def f(x=[])) are evaluated once when the function is defined, causing mutable defaults to persist."
+  },
+  {
+    "id": "py_misc_07",
+    "topic": "Python",
+    "wrong_belief": "range(start, stop) includes the stop number",
+    "correction": "range(start, stop) generates numbers up to stop - 1; the stop value is exclusive."
+  },
+  {
+    "id": "py_misc_08",
+    "topic": "Python",
+    "wrong_belief": "Division operator / produces an integer if both operands are integers",
+    "correction": "In Python 3, / always returns a float. Floor division // returns an integer."
+  },
+  {
+    "id": "py_misc_09",
+    "topic": "Python",
+    "wrong_belief": "Tuples and lists are identical, just written with different brackets",
+    "correction": "Tuples are immutable sequences, while lists are mutable."
+  },
+  {
+    "id": "py_misc_10",
+    "topic": "Python",
+    "wrong_belief": "Dictionaries in Python are accessed using integer indices by default",
+    "correction": "Dictionaries are key-value mappings accessed by keys, not ordered numeric indices."
+  },
+  {
+    "id": "py_misc_11",
+    "topic": "Python",
+    "wrong_belief": "global keyword is required to read a global variable inside a function",
+    "correction": "global is only needed if you want to assign or modify the global variable, not just read it."
+  },
+  {
+    "id": "py_misc_12",
+    "topic": "Python",
+    "wrong_belief": "append() on a list returns the modified list",
+    "correction": "append() modifies the list in place and returns None."
+  },
+  {
+    "id": "py_misc_13",
+    "topic": "Python",
+    "wrong_belief": "try/except blocks catch all errors even SyntaxError at runtime",
+    "correction": "SyntaxError occurs at compile/parse time before try/except executes."
+  },
+  {
+    "id": "py_misc_14",
+    "topic": "Python",
+    "wrong_belief": "isinstance() and type() are completely interchangeable",
+    "correction": "isinstance() checks inheritance relationships, whereas type() checks exact type."
+  },
+  {
+    "id": "py_misc_15",
+    "topic": "Python",
+    "wrong_belief": "Set elements maintain insertion order like lists",
+    "correction": "Sets are unordered collections of unique elements (though recent Python optimizes internals, sets are mathematically unordered)."
+  }
+]
+

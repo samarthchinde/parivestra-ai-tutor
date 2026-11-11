@@ -1,0 +1,134 @@
+import { useEffect, useState } from "react";
+import { NavLink, Outlet } from "react-router-dom";
+import { navigation } from "../data/navigation";
+import { checkHealth } from "../api/client";
+import { Moon, Sun } from "lucide-react";
+
+export default function AppLayout() {
+  const [health, setHealth] = useState({ status: "checking" });
+  const [theme, setTheme] = useState(() => localStorage.getItem("parivestra_theme") || "light");
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem("parivestra_theme", theme);
+    window.dispatchEvent(new Event("parivestra-theme-change"));
+  }, [theme]);
+
+  useEffect(() => {
+    let mounted = true;
+    async function probe() {
+      const h = await checkHealth();
+      if (mounted) setHealth(h);
+    }
+    probe();
+    const interval = setInterval(probe, 30000);
+    return () => {
+      mounted = false;
+      clearInterval(interval);
+    };
+  }, []);
+
+  const getStatusBadge = () => {
+    if (health.status === "checking") {
+      return (
+        <span style={{ fontSize: 11, display: "flex", alignItems: "center", gap: 6, color: "#888" }}>
+          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ccc" }} />
+          Connecting...
+        </span>
+      );
+    }
+    if (health.status === "ok") {
+      const llmHealthy = health.llm && health.llm.status === "healthy";
+      return (
+        <span
+          style={{
+            fontSize: 11,
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            color: llmHealthy ? "#16a34a" : "#d97706",
+            background: llmHealthy ? "#dcfce7" : "#fef3c7",
+            padding: "4px 8px",
+            borderRadius: 12,
+            fontWeight: 600,
+          }}
+          title={llmHealthy ? `Connected to ${health.llm?.model}` : "Backend online; LLM offline"}
+        >
+          <span
+            style={{
+              width: 8,
+              height: 8,
+              borderRadius: "50%",
+              background: llmHealthy ? "#16a34a" : "#d97706",
+            }}
+          />
+          {llmHealthy ? "LLM & Backend Active" : "Backend Ready (LLM Offline)"}
+        </span>
+      );
+    }
+    return (
+      <span
+        style={{
+          fontSize: 11,
+          display: "flex",
+          alignItems: "center",
+          gap: 6,
+          color: "#dc2626",
+          background: "#fee2e2",
+          padding: "4px 8px",
+          borderRadius: 12,
+          fontWeight: 600,
+        }}
+        title="Backend unreachable; using browser offline fallback"
+      >
+        <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#dc2626" }} />
+        Offline Mode
+      </span>
+    );
+  };
+
+  return (
+    <div className="app-shell">
+      <aside className="sidebar">
+        <img className="brand-logo" src="/parivestra-logo.jpeg" alt="Parivestra logo" />
+        <p className="nav-caption">PERSONAL LEARNING SPACE</p>
+        <nav>
+          {navigation.map(({ label, path, icon: Icon }) => (
+            <NavLink
+              key={path}
+              to={path}
+              end={path === "/"}
+              className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
+            >
+              <Icon size={18} />
+              <span>{label}</span>
+            </NavLink>
+          ))}
+        </nav>
+        <div className="sidebar-note">
+          <strong>Learn at your pace.</strong>
+          <p>Your personal AI tutor is ready whenever you are.</p>
+        </div>
+      </aside>
+      <main className="main">
+        <header className="topbar">
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            <span>
+              Parivestra <b>/</b> Learning space
+            </span>
+            {getStatusBadge()}
+          </div>
+          <div className="topbar-actions">
+            <button className="theme-quick-toggle" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`} title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}>
+              {theme === "dark" ? <Sun size={17}/> : <Moon size={17}/>} <span>{theme === "dark" ? "Light" : "Dark"} mode</span>
+            </button>
+            <div className="user-chip"><span className="avatar">✦</span> My learning space</div>
+          </div>
+        </header>
+        <section className="content">
+          <Outlet />
+        </section>
+      </main>
+    </div>
+  );
+}
