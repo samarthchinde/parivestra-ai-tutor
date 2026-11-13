@@ -2,7 +2,7 @@
 import json
 import logging
 from sqlalchemy.orm import Session
-from backend.models import Course, CourseModule, CourseLesson
+from backend.models import Course, CourseModule, CourseLesson, VideoStory, Video
 
 logger = logging.getLogger("backend.seed_courses")
 
@@ -10,11 +10,17 @@ logger = logging.getLogger("backend.seed_courses")
 def seed_default_courses(db: Session):
     """Seed foundational Class 3 and Class 4 courses if not present."""
     count = db.query(Course).count()
-    if count > 0:
-        return
+    if count == 0:
+        logger.info("Seeding Class 3 and Class 4 sample courses...")
+        _seed_courses(db)
 
-    logger.info("Seeding Class 3 and Class 4 sample courses...")
+    # Seed sample animated stories if none exist
+    story_count = db.query(VideoStory).count()
+    if story_count == 0:
+        _seed_stories(db)
 
+
+def _seed_courses(db: Session):
     sample_courses = [
         {
             "id": "c3_maths_numbers",
@@ -382,3 +388,177 @@ def seed_default_courses(db: Session):
 
     db.commit()
     logger.info("Successfully seeded 4 foundational courses with modules and lessons.")
+
+
+def _seed_stories(db: Session):
+    sample_stories = [
+            {
+                "id": "story_water_cycle",
+                "topic": "Water Cycle",
+                "grade": "Class 3",
+                "subject": "EVS",
+                "scenes_json": json.dumps([
+                    {
+                        "scene_number": 1,
+                        "title": "A Sunny Day on the Lake",
+                        "illustration": "sun",
+                        "text": "Meet Piku, a happy little water drop swimming in the warm blue lake.",
+                        "speech_text": "Meet Piku, a happy little water drop swimming in the warm blue lake.",
+                        "interactive_prompt": "Can you see the bright sun warming up the water?",
+                        "options": ["Yes, the sun is warm!", "It is snowing"]
+                    },
+                    {
+                        "scene_number": 2,
+                        "title": "Floating Up High",
+                        "illustration": "cloud",
+                        "text": "The warm sun turns Piku into invisible water vapour. Up and up he floats!",
+                        "speech_text": "The warm sun turns Piku into invisible water vapour. Up and up he floats! This is called evaporation.",
+                        "interactive_prompt": "What happens when water heats up?",
+                        "options": ["It turns to vapour and rises", "It freezes into solid ice"]
+                    },
+                    {
+                        "scene_number": 3,
+                        "title": "Making a Fluffy Cloud",
+                        "illustration": "cloud",
+                        "text": "High in the cool sky, Piku meets millions of tiny water droplets. Together, they form a fluffy white cloud!",
+                        "speech_text": "High in the cool sky, Piku meets millions of tiny water droplets. Together, they form a fluffy white cloud! This is condensation.",
+                        "interactive_prompt": "What do millions of water drops make together?",
+                        "options": ["A soft cloud", "A big rock"]
+                    },
+                    {
+                        "scene_number": 4,
+                        "title": "Raindrop Parade",
+                        "illustration": "water",
+                        "text": "The cloud gets heavy and dark. Whoosh! Piku tumbles down as a dancing raindrop!",
+                        "speech_text": "The cloud gets heavy and dark. Whoosh! Piku tumbles down as a dancing raindrop! This is precipitation.",
+                        "interactive_prompt": "Rain falling from clouds is called:",
+                        "options": ["Precipitation", "Baking"]
+                    },
+                    {
+                        "scene_number": 5,
+                        "title": "Back to the River",
+                        "illustration": "nature",
+                        "text": "Piku splashes onto a green leaf, trickles into a singing brook, and journeys back home to the lake!",
+                        "speech_text": "Piku splashes onto a green leaf, trickles into a singing brook, and journeys back home to the lake! The water cycle never stops.",
+                        "interactive_prompt": "Where does the water cycle go next?",
+                        "options": ["It starts all over again!", "It stops forever"]
+                    }
+                ]),
+                "status": "approved",
+                "needs_review": False
+            },
+            {
+                "id": "story_fractions_pizza",
+                "topic": "Fractions",
+                "grade": "Class 3",
+                "subject": "Maths",
+                "scenes_json": json.dumps([
+                    {
+                        "scene_number": 1,
+                        "title": "The Fresh Whole Pizza",
+                        "illustration": "pizza",
+                        "text": "Chef Pari baked a delicious round pizza fresh from the oven! This is 1 whole pizza.",
+                        "speech_text": "Chef Pari baked a delicious round pizza fresh from the oven! This is one whole pizza.",
+                        "interactive_prompt": "How many pizzas are on the table?",
+                        "options": ["1 whole pizza", "5 pizzas"]
+                    },
+                    {
+                        "scene_number": 2,
+                        "title": "Cutting in Halves",
+                        "illustration": "fraction",
+                        "text": "Pari cuts the pizza right down the middle into 2 equal parts. Each slice is 1/2 (one half)!",
+                        "speech_text": "Pari cuts the pizza right down the middle into two equal parts. Each slice is one half!",
+                        "interactive_prompt": "What do we call one slice when divided into 2 equal parts?",
+                        "options": ["1/2 (one half)", "1/10 (one tenth)"]
+                    },
+                    {
+                        "scene_number": 3,
+                        "title": "Four Friends Arrive",
+                        "illustration": "fraction",
+                        "text": "Two more hungry friends ring the doorbell. Pari cuts the pizza once more into 4 equal slices!",
+                        "speech_text": "Two more hungry friends ring the doorbell. Pari cuts the pizza once more into four equal slices! Each slice is one fourth or one quarter.",
+                        "interactive_prompt": "One slice out of 4 equal slices is written as:",
+                        "options": ["1/4", "4/1"]
+                    },
+                    {
+                        "scene_number": 4,
+                        "title": "Sharing is Caring",
+                        "illustration": "owl",
+                        "text": "If Pari eats 1 slice and a friend eats 1 slice, they have eaten 2 out of 4 slices (2/4), which is equal to 1/2 of the pizza!",
+                        "speech_text": "If Pari eats one slice and a friend eats one slice, they have eaten two out of four slices, which is equal to half the pizza!",
+                        "interactive_prompt": "Is 2/4 the same as 1/2?",
+                        "options": ["Yes, they are equal!", "No, completely different"]
+                    },
+                    {
+                        "scene_number": 5,
+                        "title": "Fraction Champions!",
+                        "illustration": "trophy",
+                        "text": "Every slice was shared fairly and everyone is happy and full. You are a true Fraction Champion!",
+                        "speech_text": "Every slice was shared fairly and everyone is happy and full. You are a true Fraction Champion!",
+                        "interactive_prompt": "What do fractions show?",
+                        "options": ["Equal parts of a whole", "A secret phone number"]
+                    }
+                ]),
+                "status": "approved",
+                "needs_review": False
+            },
+            {
+                "id": "story_super_nouns",
+                "topic": "Nouns",
+                "grade": "Class 4",
+                "subject": "English",
+                "scenes_json": json.dumps([
+                    {
+                        "scene_number": 1,
+                        "title": "The Magic Word Box",
+                        "illustration": "book",
+                        "text": "Every person, place, animal, and thing has a name. We call these naming words NOUNS!",
+                        "speech_text": "Every person, place, animal, and thing has a name. We call these naming words nouns!",
+                        "interactive_prompt": "What is another name for a noun?",
+                        "options": ["A naming word", "A hopping word"]
+                    },
+                    {
+                        "scene_number": 2,
+                        "title": "People and Animals",
+                        "illustration": "fox",
+                        "text": "Teacher, doctor, baby, elephant, and kitten are all nouns naming people and animals.",
+                        "speech_text": "Teacher, doctor, baby, elephant, and kitten are all nouns naming people and animals.",
+                        "interactive_prompt": "Which of these is a noun naming an animal?",
+                        "options": ["Elephant", "Quickly"]
+                    },
+                    {
+                        "scene_number": 3,
+                        "title": "Places to Visit",
+                        "illustration": "nature",
+                        "text": "School, playground, park, and library are nouns that name special places we visit.",
+                        "speech_text": "School, playground, park, and library are nouns that name special places we visit.",
+                        "interactive_prompt": "Which of these is a noun naming a place?",
+                        "options": ["Playground", "Singing"]
+                    },
+                    {
+                        "scene_number": 4,
+                        "title": "Things We Use",
+                        "illustration": "pencil",
+                        "text": "Pencil, book, chair, and toy are nouns that name things we hold and use every day.",
+                        "speech_text": "Pencil, book, chair, and toy are nouns that name things we hold and use every day.",
+                        "interactive_prompt": "Which of these is a noun naming a thing?",
+                        "options": ["Pencil", "Running"]
+                    },
+                    {
+                        "scene_number": 5,
+                        "title": "Super Detective Badge",
+                        "illustration": "star",
+                        "text": "Look around your room. Count 3 nouns you can see right now! You are a certified Noun Detective!",
+                        "speech_text": "Look around your room. Count three nouns you can see right now! You are a certified Noun Detective!",
+                        "interactive_prompt": "Are you ready to spot nouns everywhere you go?",
+                        "options": ["Yes, I am a Noun Detective!", "Maybe later"]
+                    }
+                ]),
+                "status": "approved",
+                "needs_review": False
+            }
+        ]
+    for s_data in sample_stories:
+        db.add(VideoStory(**s_data))
+    db.commit()
+    logger.info("Successfully seeded 3 interactive animated video stories.")

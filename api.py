@@ -134,7 +134,7 @@ def verify_admin(
     x_admin_key: Optional[str] = Header(None, alias="X-Admin-Key"),
 ):
     expected_key = getattr(config, "ADMIN_KEY", "parivestra_admin_secret")
-    if not x_admin_key or x_admin_key.strip() != expected_key.strip():
+    if not x_admin_key or not isinstance(x_admin_key, str) or x_admin_key.strip() != expected_key.strip():
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Unauthorized: Valid X-Admin-Key header required.",
@@ -587,7 +587,7 @@ def get_courses(
     query = db.query(Course)
     # If not admin, students only see approved/published courses
     expected_key = getattr(config, "ADMIN_KEY", "parivestra_admin_secret")
-    is_admin = x_admin_key and x_admin_key.strip() == expected_key.strip()
+    is_admin = isinstance(x_admin_key, str) and x_admin_key.strip() == expected_key.strip()
     if not is_admin:
         query = query.filter(Course.status.in_(["approved", "published"]))
 

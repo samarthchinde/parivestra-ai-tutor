@@ -55,8 +55,8 @@ THANKS_WORDS = {
 }
 
 DISTRESS_PATTERNS = [
-    r"\b(i am|i'm|feeling)\s+(sad|scared|afraid|lonely|hurt|crying|upset)\b",
-    r"\b(nobody likes me|hate myself|bully|bullied|unsafe|danger)\b",
+    r"\b(i am|i'm|feeling|feel)\s+(sad|scared|afraid|lonely|hurt|crying|upset)\b",
+    r"\b(nobody likes me|hate myself|hurt myself|bully|bullied|bullies|unsafe|danger)\b",
     r"\b(someone hurt me|bad touch|scared of)\b",
 ]
 
@@ -146,12 +146,12 @@ def verify_and_simplify_reading_level(text: str) -> str:
     for s in sentences:
         words = s.split()
         if len(words) > 14:
-            # Cut at first comma or conjunction
+            # Cut at first comma or conjunction if it produces a concise clause
             comma_split = re.split(r"[,;]|\band\b", s)
-            if comma_split and len(comma_split[0].split()) >= 3:
+            if comma_split and 3 <= len(comma_split[0].split()) <= 12:
                 simplified.append(comma_split[0].strip() + ".")
             else:
-                simplified.append(" ".join(words[:11]) + ".")
+                simplified.append(" ".join(words[:11]) + "...")
         else:
             simplified.append(s)
 

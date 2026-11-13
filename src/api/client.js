@@ -231,6 +231,24 @@ export async function getAdminQueue() {
   return await res.json();
 }
 
+export async function uploadVideo(formData, adminKey = "") {
+  const key = adminKey || localStorage.getItem("parivestra_admin_key") || "";
+  const headers = {};
+  if (key) {
+    headers["X-Admin-Key"] = key;
+  }
+  const res = await fetch(`${API_BASE_URL}/api/videos/upload`, {
+    method: "POST",
+    headers,
+    body: formData,
+  });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.detail || `Upload failed: HTTP ${res.status}`);
+  }
+  return await res.json();
+}
+
 export async function approveContent(item_type, item_id) {
   const res = await fetch(`${API_BASE_URL}/api/admin/approve`, {
     method: "POST",
