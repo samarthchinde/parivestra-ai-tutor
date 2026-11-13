@@ -1,132 +1,165 @@
-import { useEffect, useState } from "react";
-import { PageHeader } from "../components/UI";
+import React, { useEffect, useState } from "react";
+import confetti from "canvas-confetti";
+import { PageHeader, Card, PrimaryButton, StarRating, Mascot, XPChip } from "../components/UI";
 import { questionBank } from "../assessment/questionBank";
 import { saveProgress, getProgress } from "../assessment/progressStorage";
 import { generatePracticeQuestions, submitPracticeAnswer } from "../api/client";
-import "../assessment/assessment.css";
+import { playSuccess, playNudge, playClick } from "../utils/sound";
+import {
+  CheckCircle2,
+  HelpCircle,
+  RotateCcw,
+  Sparkles,
+  ArrowRight,
+  BookOpen,
+  Award,
+} from "lucide-react";
 
 export default function Practice() {
-  const [page, setPage] = useState("dashboard"); // dashboard, quiz, feedback, result, progress
-  const [subject, setSubject] = useState("Python");
+  const [page, setPage] = useState("dashboard"); // 'dashboard', 'quiz', 'feedback', 'result'
+  const [subject, setSubject] = useState("Maths");
   const [difficulty, setDifficulty] = useState("Beginner");
-  const [questions, setQuestions] = useState([]);
-  const [current, setCurrent] = useState(0);
-  const [answers, setAnswers] = useState([]);
-  const [selected, setSelected] = useState("");
-  const [history, setHistory] = useState([]);
-  const [saving, setSaving] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [result, setResult] = useState(null);
-  const [isApiMode, setIsApiMode] = useState(true);
-  const [questionStartTime, setQuestionStartTime] = useState(Date.now());
-  const [lastFeedback, setLastFeedback] = useState(null);
-
-  const subjects = [
-    "Python",
-    "Artificial Intelligence",
-    "Machine Learning",
-    "Computer Networks",
-    "Java",
-    "All",
-  ];
-
-  async function loadHistory() {
-    try {
-      const records = await getProgress();
-      setHistory(records.reverse());
-    } catch (err) {
-      console.error("Could not load progress:", err);
-    }
-  }
-
-  useEffect(() => {
-    loadHistory();
-  }, []);
-
-  const totalAttempts = history.length;
-  const averageScore = totalAttempts
-    ? Math.round(
-        history.reduce((sum, item) => sum + item.percentage, 0) /
-        totalAttempts
-      )
-    : 0;
-
-  const totalCorrect = history.reduce(
-    (sum, item) => sum + (item.correctAnswers || 0),
-    0
+  const [grade, setGrade] = useState(
+    localStorage.getItem("parivestra_grade") || "Class 3"
   );
 
-  async function startQuiz() {
-    setError("");
-    setLoading(true);
+  const [questions, setQuestions] = useState([]);
+  const [current, setCurrent] = useState(0);
+  const [selected, setSelected] = useState("");
+  const [answers, setAnswers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [isApiMode, setIsApiMode] = useState(true);
+  const [lastFeedback, setLastFeedback] = useState(null);
+  const [earnedXpTotal, setEarnedXpTotal] = useState(0);
 
-    let fetchedQuestions = [];
+  const subjects = ["Maths", "English", "EVS", "Python"];
+
+  // Kid-friendly fallback question bank for Class 3-4
+  const kidFallbackBank = [
+    {
+      id: "math_q1",
+      topic: "Numbers",
+      subject: "Maths",
+      difficulty: "Beginner",
+      question: "In the number 345, which digit is in the tens place?",
+      options: ["4", "3", "5", "0"],
+      answer: "4",
+      explanation: "In 345, 5 is ones, 4 is tens (meaning 40), and 3 is hundreds.",
+    },
+    {
+      id: "math_q2",
+      topic: "Addition",
+      subject: "Maths",
+      difficulty: "Beginner",
+      question: "What is 15 + 12?",
+      options: ["27", "25", "30", "17"],
+      answer: "27",
+      explanation: "Add ones: 5 + 2 = 7. Add tens: 1 + 1 = 2. Total is 27!",
+    },
+    {
+      id: "math_q3",
+      topic: "Multiplication",
+      subject: "Maths",
+      difficulty: "Beginner",
+      question: "What is 4 × 5?",
+      options: ["20", "25", "15", "9"],
+      answer: "20",
+      explanation: "4 groups of 5 equals 20 (5 + 5 + 5 + 5 = 20).",
+    },
+    {
+      id: "eng_q1",
+      topic: "Nouns",
+      subject: "English",
+      difficulty: "Beginner",
+      question: "Which word is a naming word (Noun)?",
+      options: ["Elephant", "Quickly", "Sleep", "Brightly"],
+      answer: "Elephant",
+      explanation: "Elephant is an animal, so it is a naming word (Noun).",
+    },
+    {
+      id: "eng_q2",
+      topic: "Verbs",
+      subject: "English",
+      difficulty: "Beginner",
+      question: "Which of these is an action word (Verb)?",
+      options: ["Jump", "Happy", "Table", "Green"],
+      answer: "Jump",
+      explanation: "Jump tells an action you can do, so it is a verb!",
+    },
+    {
+      id: "evs_q1",
+      topic: "Plants",
+      subject: "EVS",
+      difficulty: "Beginner",
+      question: "Which part of the plant drinks water from the soil?",
+      options: ["Roots", "Leaves", "Flowers", "Bark"],
+      answer: "Roots",
+      explanation: "Roots grow deep in the soil to drink water and hold the plant firm.",
+    },
+    {
+      id: "evs_q2",
+      topic: "Animals",
+      subject: "EVS",
+      difficulty: "Beginner",
+      question: "Which animal is a herbivore that eats green plants?",
+      options: ["Cow", "Tiger", "Lion", "Eagle"],
+      answer: "Cow",
+      explanation: "Cows eat only grass and plants, making them gentle herbivores.",
+    },
+  ];
+
+  const startRound = async () => {
+    setLoading(true);
+    let roundQuestions = [];
     let usingApi = true;
 
     try {
       const apiRes = await generatePracticeQuestions({
-        subject: subject === "All" ? "Python" : subject,
+        subject,
         difficulty,
         count: 5,
+        grade,
       });
 
       if (apiRes && apiRes.questions && apiRes.questions.length > 0) {
-        fetchedQuestions = apiRes.questions;
+        roundQuestions = apiRes.questions;
       } else {
-        throw new Error("No questions returned from API");
+        throw new Error("No questions returned");
       }
-    } catch (apiErr) {
-      console.warn("Backend practice generation unreachable, using local fallback:", apiErr);
+    } catch (e) {
       usingApi = false;
-      const filtered = questionBank.filter(
-        (q) =>
-          (subject === "All" || q.topic.toLowerCase() === subject.toLowerCase()) &&
-          q.difficulty.toLowerCase() === difficulty.toLowerCase()
+      const matched = kidFallbackBank.filter(
+        (q) => q.subject.toLowerCase() === subject.toLowerCase()
       );
-      fetchedQuestions = filtered.length > 0 ? filtered : questionBank.slice(0, 5);
+      roundQuestions = matched.length >= 3 ? matched.slice(0, 5) : kidFallbackBank.slice(0, 5);
     } finally {
       setLoading(false);
     }
 
-    if (!fetchedQuestions.length) {
-      setError("No questions available for this selection.");
-      return;
-    }
-
     setIsApiMode(usingApi);
-    setQuestions(fetchedQuestions);
+    setQuestions(roundQuestions);
     setCurrent(0);
     setAnswers([]);
     setSelected("");
-    setResult(null);
     setLastFeedback(null);
-    setQuestionStartTime(Date.now());
+    setEarnedXpTotal(0);
     setPage("quiz");
-  }
+  };
 
-  async function submitCurrentAnswer() {
-    if (!selected) {
-      setError("Please select an answer first.");
-      return;
-    }
+  const submitAnswer = async () => {
+    if (!selected) return;
 
     const currentQ = questions[current];
-    const timeTaken = (Date.now() - questionStartTime) / 1000;
-    setSaving(true);
-    setError("");
-
     let isCorrect = false;
     let correctAnswer = currentQ.answer || "";
-    let explanation = "";
-    let misconception = null;
+    let explanation = currentQ.explanation || "";
 
     if (isApiMode && currentQ.id) {
       try {
         const subRes = await submitPracticeAnswer({
           question_id: currentQ.id,
           selected,
-          time_taken: timeTaken,
+          time_taken: 10,
           hints_used: 0,
           subject: currentQ.subject || subject,
           topic: currentQ.topic || subject,
@@ -135,388 +168,321 @@ export default function Practice() {
           options: currentQ.options,
           correct_answer: currentQ.answer,
         });
-
         isCorrect = subRes.correct;
         correctAnswer = subRes.correct_answer || currentQ.answer;
-        explanation = subRes.explanation;
-        misconception = subRes.misconception;
-      } catch (err) {
-        console.warn("API submit failed, falling back to local grading:", err);
-        isCorrect = selected.trim().toLowerCase() === (currentQ.answer || "").trim().toLowerCase();
-        explanation = isCorrect
-          ? "Correct! Well done."
-          : `Incorrect. The correct answer was: ${currentQ.answer}`;
+        explanation = subRes.explanation || explanation;
+      } catch (e) {
+        isCorrect = selected.trim().toLowerCase() === correctAnswer.trim().toLowerCase();
       }
     } else {
-      isCorrect = selected.trim().toLowerCase() === (currentQ.answer || "").trim().toLowerCase();
-      explanation = isCorrect
-        ? "Correct! Well done."
-        : `Incorrect. The correct answer was: ${currentQ.answer}`;
+      isCorrect = selected.trim().toLowerCase() === correctAnswer.trim().toLowerCase();
     }
 
-    setSaving(false);
+    if (isCorrect) {
+      playSuccess();
+      setEarnedXpTotal((prev) => prev + 15);
+    } else {
+      playNudge();
+      setEarnedXpTotal((prev) => prev + 5);
+    }
 
-    const answerRecord = {
-      question: currentQ.question,
+    const feedbackObj = {
+      isCorrect,
       selected,
       correctAnswer,
-      isCorrect,
-      topic: currentQ.topic || subject,
       explanation,
-      misconception,
+      questionText: currentQ.question,
     };
 
-    const updatedAnswers = [...answers, answerRecord];
-    setAnswers(updatedAnswers);
-    setLastFeedback(answerRecord);
+    setLastFeedback(feedbackObj);
+    setAnswers((prev) => [...prev, feedbackObj]);
     setPage("feedback");
-  }
+  };
 
-  async function nextOrFinish() {
-    setSelected("");
-    setError("");
-    setLastFeedback(null);
-    setQuestionStartTime(Date.now());
-
+  const nextQuestion = async () => {
     if (current + 1 < questions.length) {
-      setCurrent(current + 1);
+      setCurrent((prev) => prev + 1);
+      setSelected("");
+      setLastFeedback(null);
       setPage("quiz");
     } else {
-      await finishQuiz(answers);
+      // Completed round!
+      const correctCount = answers.filter((a) => a.isCorrect).length;
+      const pct = Math.round((correctCount / questions.length) * 100);
+
+      // Save to IndexedDB
+      try {
+        await saveProgress({
+          subject,
+          difficulty,
+          totalQuestions: questions.length,
+          correctAnswers: correctCount,
+          percentage: pct,
+        });
+      } catch (e) {
+        console.warn("IndexedDB save fallback:", e);
+      }
+
+      if (pct >= 60) {
+        try {
+          confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
+        } catch (e) {}
+      }
+
+      setPage("result");
     }
+  };
+
+  // 1. DASHBOARD VIEW
+  if (page === "dashboard") {
+    return (
+      <div style={{ maxWidth: 880, margin: "0 auto" }}>
+        <PageHeader
+          eyebrow="FUN PRACTICE ROUNDS"
+          title="Daily Practice & Quizzes 🎯"
+          description="Test your skills in friendly 5-question rounds with Pari cheering you on!"
+        />
+
+        <Card style={{ padding: 32, textAlign: "center" }}>
+          <Mascot mood="happy" size={130} />
+          <h2 style={{ fontSize: 28, margin: "14px 0 6px", color: "var(--text-main)" }}>
+            Ready for a 5-Question Challenge?
+          </h2>
+          <p style={{ color: "var(--text-muted)", fontSize: 17, maxWidth: 500, margin: "0 auto 28px" }}>
+            Choose your favorite subject. Every question gives you XP points and celebratory stars!
+          </p>
+
+          <div style={{ display: "flex", justifyContent: "center", gap: 12, flexWrap: "wrap", marginBottom: 28 }}>
+            {subjects.map((sub) => {
+              const isSelected = subject === sub;
+              return (
+                <button
+                  key={sub}
+                  onClick={() => { playClick(); setSubject(sub); }}
+                  style={{
+                    background: isSelected ? "var(--color-primary)" : "#F1F5F9",
+                    color: isSelected ? "#FFFFFF" : "var(--text-main)",
+                    border: "none",
+                    borderRadius: "var(--radius-full)",
+                    padding: "12px 24px",
+                    fontSize: 16,
+                    fontWeight: 800,
+                    cursor: "pointer",
+                    transform: isSelected ? "scale(1.06)" : "scale(1)",
+                    transition: "all 0.2s ease",
+                    boxShadow: isSelected ? "var(--shadow-sm)" : "none",
+                  }}
+                >
+                  {sub === "Maths" ? "🔢 " : sub === "English" ? "📖 " : sub === "EVS" ? "🌱 " : "💻 "}
+                  {sub}
+                </button>
+              );
+            })}
+          </div>
+
+          <PrimaryButton size="lg" disabled={loading} onClick={startRound} style={{ minWidth: 240 }}>
+            {loading ? "Preparing Adventure..." : "Start Practice Round 🚀"}
+          </PrimaryButton>
+        </Card>
+      </div>
+    );
   }
 
-  async function finishQuiz(finalAnswers) {
-    const correct = finalAnswers.filter((a) => a.isCorrect).length;
-    const incorrect = finalAnswers.length - correct;
-    const percentage = Math.round((correct / finalAnswers.length) * 100);
+  // 2. QUIZ QUESTION VIEW
+  if (page === "quiz") {
+    const currentQ = questions[current];
+    return (
+      <div style={{ maxWidth: 760, margin: "0 auto" }}>
+        {/* Progress Dots Header */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
+          <span style={{ fontSize: 16, fontWeight: 800, color: "var(--text-muted)" }}>
+            Question {current + 1} of {questions.length}
+          </span>
 
-    const newResult = {
-      subject,
-      difficulty,
-      totalQuestions: finalAnswers.length,
-      correctAnswers: correct,
-      incorrectAnswers: incorrect,
-      percentage,
-      answers: finalAnswers,
-    };
-
-    setResult(newResult);
-    setPage("result");
-    setSaving(true);
-
-    try {
-      await saveProgress(newResult);
-      await loadHistory();
-    } catch (err) {
-      console.error("Could not save progress to IndexedDB:", err);
-    } finally {
-      setSaving(false);
-    }
-  }
-
-  function getRecommendation() {
-    if (!history.length) {
-      return "Complete your first assessment to receive revision recommendations.";
-    }
-
-    const latest = history[0];
-    const mistakes = (latest.answers || [])
-      .filter((a) => !a.isCorrect)
-      .map((a) => a.topic);
-
-    if (!mistakes.length) {
-      return "Great work! Revise once more and try the next difficulty level.";
-    }
-
-    return `Focus on revising: ${[...new Set(mistakes)].join(", ")}.`;
-  }
-
-  function goDashboard() {
-    setPage("dashboard");
-    setError("");
-    setLastFeedback(null);
-  }
-
-  return (
-    <div className="m7-dashboard">
-      <PageHeader
-        title="Assessment & Practice"
-        description="Test your knowledge with AI-generated or syllabus MCQs, track mastery, and identify misconceptions."
-      />
-
-      {error && <div className="m7-error">{error}</div>}
-
-      {page === "dashboard" && (
-        <>
-          <section className="m7-welcome">
-            <h2>Welcome to your learning space!</h2>
-            <p>
-              Assess your knowledge, track your progress, and identify topics that need more practice.
-            </p>
-          </section>
-
-          <section className="m7-stats">
-            <div className="m7-stat-card">
-              <h3>Total Assessments</h3>
-              <strong>{totalAttempts}</strong>
-            </div>
-
-            <div className="m7-stat-card">
-              <h3>Average Score</h3>
-              <strong>{averageScore}%</strong>
-            </div>
-
-            <div className="m7-stat-card">
-              <h3>Correct Answers</h3>
-              <strong>{totalCorrect}</strong>
-            </div>
-          </section>
-
-          <div className="m7-content-grid">
-            <section className="m7-panel">
-              <h2>Start an Assessment</h2>
-              <p>Choose your subject and difficulty level.</p>
-
-              <label>Choose Subject</label>
-              <select value={subject} onChange={(e) => setSubject(e.target.value)}>
-                {subjects.map((item) => (
-                  <option key={item} value={item}>
-                    {item}
-                  </option>
-                ))}
-              </select>
-
-              <label>Choose Difficulty</label>
-              <select value={difficulty} onChange={(e) => setDifficulty(e.target.value)}>
-                <option>Beginner</option>
-                <option>Intermediate</option>
-                <option>Advanced</option>
-              </select>
-
-              <button className="m7-primary" onClick={startQuiz} disabled={loading}>
-                {loading ? "Generating Questions..." : "Start Assessment"}
-              </button>
-            </section>
-
-            <section className="m7-panel">
-              <h2>Revision Recommendation</h2>
-              <div className="m7-recommendation">{getRecommendation()}</div>
-
-              <h3 style={{ marginTop: 25 }}>Recent Activity</h3>
-              {history.length > 0 ? (
-                <p>Latest score: {history[history.length - 1].percentage}%</p>
-              ) : (
-                <p>Your assessment activity will appear here.</p>
-              )}
-            </section>
+          <div style={{ display: "flex", gap: 8 }}>
+            {questions.map((_, idx) => (
+              <div
+                key={idx}
+                style={{
+                  width: 14,
+                  height: 14,
+                  borderRadius: "50%",
+                  background:
+                    idx === current
+                      ? "var(--color-primary)"
+                      : idx < current
+                      ? "var(--color-mint)"
+                      : "#E2E8F0",
+                  transform: idx === current ? "scale(1.3)" : "scale(1)",
+                  transition: "all 0.2s ease",
+                }}
+              />
+            ))}
           </div>
-        </>
-      )}
+        </div>
 
-      {/* QUIZ VIEW */}
-      {page === "quiz" && questions.length > 0 && (
-        <section className="m7-panel m7-quiz">
-          <div className="m7-quiz-header">
-            <h2>{subject} Assessment {isApiMode && <span style={{ fontSize: 12, color: "#16a34a", fontWeight: 600 }}>• AI Active</span>}</h2>
-            <span>
-              Question {current + 1} of {questions.length}
-            </span>
-          </div>
-
-          <div className="m7-progress-track">
-            <div
-              className="m7-progress-fill"
-              style={{
-                width: `${((current + 1) / questions.length) * 100}%`,
-              }}
-            />
-          </div>
-
-          <p>Difficulty: {difficulty} · Topic: {questions[current].topic || subject}</p>
-
-          <h2 className="m7-question">{questions[current].question}</h2>
-
-          {questions[current].options.map((option, index) => (
-            <button
-              key={index}
-              className={`m7-option ${selected === option ? "selected" : ""}`}
-              onClick={() => setSelected(option)}
-            >
-              {option}
-            </button>
-          ))}
-
-          <button
-            className="m7-primary"
-            onClick={submitCurrentAnswer}
-            disabled={!selected || saving}
-          >
-            {saving ? "Submitting..." : "Submit Answer"}
-          </button>
-        </section>
-      )}
-
-      {/* FEEDBACK VIEW (Shown after each answer) */}
-      {page === "feedback" && lastFeedback && (
-        <section className="m7-panel m7-quiz">
-          <div className="m7-quiz-header">
-            <h2>Question {current + 1} Feedback</h2>
-            <span
-              style={{
-                padding: "4px 10px",
-                borderRadius: 8,
-                fontWeight: 700,
-                background: lastFeedback.isCorrect ? "#dcfce7" : "#fee2e2",
-                color: lastFeedback.isCorrect ? "#15803d" : "#b91c1c",
-              }}
-            >
-              {lastFeedback.isCorrect ? "Correct!" : "Incorrect"}
-            </span>
-          </div>
-
-          <h3 style={{ margin: "14px 0 8px" }}>{lastFeedback.question}</h3>
-
-          <div style={{ margin: "14px 0", fontSize: 14 }}>
-            <p>
-              <strong>Your Choice:</strong>{" "}
-              <span style={{ color: lastFeedback.isCorrect ? "#15803d" : "#b91c1c" }}>
-                {lastFeedback.selected}
-              </span>
-            </p>
-            {!lastFeedback.isCorrect && (
-              <p>
-                <strong>Correct Answer:</strong>{" "}
-                <span style={{ color: "#15803d", fontWeight: 600 }}>
-                  {lastFeedback.correctAnswer}
-                </span>
-              </p>
-            )}
-          </div>
-
-          {/* Explanation Box */}
-          <div
+        {/* Question Card */}
+        <Card style={{ padding: 32, marginBottom: 20 }}>
+          <span
             style={{
-              padding: "14px 18px",
-              background: "#f8fafc",
-              borderLeft: `4px solid ${lastFeedback.isCorrect ? "#22c55e" : "#ef4444"}`,
-              borderRadius: 8,
-              fontSize: 14,
-              lineHeight: 1.6,
-              marginBottom: 16,
+              fontSize: 12,
+              fontWeight: 800,
+              textTransform: "uppercase",
+              letterSpacing: 1,
+              color: "var(--color-primary)",
+              display: "block",
+              marginBottom: 10,
             }}
           >
-            <strong>Explanation:</strong>
-            <p style={{ margin: "6px 0 0" }}>{lastFeedback.explanation}</p>
+            {currentQ.topic || subject} Quest
+          </span>
+
+          <h2 style={{ fontSize: 24, lineHeight: 1.4, margin: "0 0 24px", color: "var(--text-main)" }}>
+            {currentQ.question}
+          </h2>
+
+          {/* Huge Touch Answer Buttons */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            {currentQ.options?.map((opt, optIdx) => {
+              const isSelected = selected === opt;
+              return (
+                <button
+                  key={optIdx}
+                  onClick={() => {
+                    playClick();
+                    setSelected(opt);
+                  }}
+                  style={{
+                    background: isSelected ? "var(--color-primary-bg)" : "#FFFFFF",
+                    border: isSelected ? "3px solid var(--color-primary)" : "2px solid #E2E8F0",
+                    borderRadius: "var(--radius-md)",
+                    padding: "16px 22px",
+                    fontSize: 18,
+                    fontWeight: 700,
+                    textAlign: "left",
+                    color: "var(--text-main)",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 14,
+                    transition: "all 0.15s ease",
+                    boxShadow: isSelected ? "var(--shadow-sm)" : "none",
+                  }}
+                >
+                  <span
+                    style={{
+                      width: 32,
+                      height: 32,
+                      borderRadius: "50%",
+                      background: isSelected ? "var(--color-primary)" : "#F1F5F9",
+                      color: isSelected ? "#FFFFFF" : "var(--text-muted)",
+                      display: "grid",
+                      placeItems: "center",
+                      fontSize: 14,
+                      fontWeight: 800,
+                      flexShrink: 0,
+                    }}
+                  >
+                    {String.fromCharCode(65 + optIdx)}
+                  </span>
+                  <span>{opt}</span>
+                </button>
+              );
+            })}
           </div>
+        </Card>
 
-          {/* Misconception Alert if detected */}
-          {lastFeedback.misconception && (
-            <div
-              style={{
-                padding: "12px 16px",
-                background: "#fef3c7",
-                border: "1px solid #fde68a",
-                borderRadius: 8,
-                fontSize: 13,
-                color: "#92400e",
-                marginBottom: 18,
-              }}
-            >
-              <strong>Conceptual Insight:</strong>
-              <p style={{ margin: "4px 0 0" }}>
-                <em>Correction:</em> {lastFeedback.misconception.correction}
-              </p>
-            </div>
-          )}
+        {/* Action Button */}
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <PrimaryButton size="lg" disabled={!selected} onClick={submitAnswer}>
+            Check Answer ✓
+          </PrimaryButton>
+        </div>
+      </div>
+    );
+  }
 
-          <button className="m7-primary" onClick={nextOrFinish}>
-            {current + 1 === questions.length ? "Finish Assessment" : "Next Question →"}
-          </button>
-        </section>
-      )}
+  // 3. IMMEDIATE FEEDBACK VIEW
+  if (page === "feedback") {
+    const isCorrect = lastFeedback?.isCorrect;
+    return (
+      <div style={{ maxWidth: 720, margin: "20px auto", textAlign: "center" }}>
+        <Card
+          style={{
+            padding: 36,
+            border: isCorrect ? "3px solid #86EFAC" : "3px solid #FDE68A",
+            background: isCorrect ? "#F0FDF4" : "#FFFBEB",
+          }}
+        >
+          <Mascot mood={isCorrect ? "cheering" : "happy"} size={130} />
 
-      {/* RESULT VIEW */}
-      {page === "result" && result && (
-        <section className="m7-panel m7-result">
-          <h2>Assessment Completed!</h2>
-          <p>Your assessment summary</p>
-
-          <div className="m7-stats">
-            <div className="m7-stat-card">
-              <h3>Score</h3>
-              <strong>{result.percentage}%</strong>
-            </div>
-
-            <div className="m7-stat-card">
-              <h3>Correct</h3>
-              <strong>{result.correctAnswers}</strong>
-            </div>
-
-            <div className="m7-stat-card">
-              <h3>Incorrect</h3>
-              <strong>{result.incorrectAnswers}</strong>
-            </div>
-          </div>
-
-          <h3>Revision Suggestions</h3>
-          <div className="m7-recommendation">
-            {result.answers.some((a) => !a.isCorrect)
-              ? `Revise these topics: ${[
-                  ...new Set(
-                    result.answers.filter((a) => !a.isCorrect).map((a) => a.topic)
-                  ),
-                ].join(", ")}.`
-              : "Excellent performance! Keep practising."}
-          </div>
-
-          {saving && <p>Saving your progress...</p>}
-
-          <button className="m7-primary" onClick={goDashboard}>
-            Back to Dashboard
-          </button>
-
-          <button
-            className="m7-secondary"
-            onClick={() => {
-              loadHistory();
-              setPage("progress");
+          <h2
+            style={{
+              fontSize: 30,
+              margin: "16px 0 8px",
+              color: isCorrect ? "#15803D" : "#B45309",
             }}
           >
-            View My Progress
-          </button>
-        </section>
-      )}
+            {isCorrect ? "Super Star! That's Correct! 🌟" : "Good Try! You're Learning Fast! 💡"}
+          </h2>
 
-      {/* LOCAL PROGRESS VIEW */}
-      {page === "progress" && (
-        <section className="m7-panel">
-          <h2>Assessment History</h2>
+          <p style={{ fontSize: 18, color: "var(--text-main)", margin: "0 auto 20px", maxWidth: 520, lineHeight: 1.6 }}>
+            {lastFeedback?.explanation ||
+              (isCorrect
+                ? "Wonderful job! You got it completely right!"
+                : `The correct answer is: ${lastFeedback?.correctAnswer}`)}
+          </p>
 
-          {history.length === 0 ? (
-            <p>No assessment records yet.</p>
-          ) : (
-            history.map((item, index) => (
-              <div className="m7-history-item" key={item.id || index}>
-                <div>
-                  <strong>{item.subject}</strong>
-                  <p>
-                    {item.difficulty} · {item.totalQuestions} questions
-                  </p>
-                  <p>
-                    Correct: {item.correctAnswers} / {item.totalQuestions}
-                  </p>
-                </div>
-                <strong>{item.percentage}%</strong>
-              </div>
-            ))
-          )}
+          <XPChip xp={isCorrect ? 15 : 5} style={{ marginBottom: 24 }} />
 
-          <button className="m7-primary" onClick={goDashboard}>
-            Back to Dashboard
-          </button>
-        </section>
-      )}
-    </div>
-  );
+          <div>
+            <PrimaryButton size="lg" icon={ArrowRight} onClick={nextQuestion}>
+              {current + 1 < questions.length ? "Next Question →" : "See My Stars! 🏆"}
+            </PrimaryButton>
+          </div>
+        </Card>
+      </div>
+    );
+  }
+
+  // 4. ROUND SUMMARY VIEW
+  if (page === "result") {
+    const correctCount = answers.filter((a) => a.isCorrect).length;
+    const stars = correctCount >= 4 ? 3 : correctCount >= 2 ? 2 : 1;
+
+    return (
+      <div style={{ maxWidth: 680, margin: "20px auto", textAlign: "center" }}>
+        <Card style={{ padding: 42 }}>
+          <Mascot mood="cheering" size={140} />
+
+          <h2 style={{ fontSize: 32, margin: "14px 0 4px", color: "var(--text-main)" }}>
+            Adventure Round Completed!
+          </h2>
+          <p style={{ color: "var(--text-muted)", fontSize: 17, marginBottom: 20 }}>
+            You scored {correctCount} out of {questions.length} questions correctly!
+          </p>
+
+          <div style={{ marginBottom: 24 }}>
+            <StarRating stars={stars} max={3} size={48} />
+          </div>
+
+          <div style={{ display: "flex", justifyContent: "center", gap: 16, marginBottom: 32 }}>
+            <XPChip xp={earnedXpTotal} />
+          </div>
+
+          <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
+            <PrimaryButton size="lg" icon={RotateCcw} onClick={startRound}>
+              Play Another Round 🔄
+            </PrimaryButton>
+
+            <PrimaryButton size="lg" variant="secondary" onClick={() => setPage("dashboard")}>
+              Back to Home
+            </PrimaryButton>
+          </div>
+        </Card>
+      </div>
+    );
+  }
+
+  return null;
 }

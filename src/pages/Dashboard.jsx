@@ -1,125 +1,350 @@
-import { useEffect, useState } from "react";
-import { BookOpen, Bot, Target, Award, Sparkles } from "lucide-react";
-import { Link } from "react-router-dom";
-import { Card, PageHeader, ProgressBar } from "../components/UI";
-import { getProgressSummary } from "../api/client";
-import { getProgress } from "../assessment/progressStorage";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { PageHeader, Card, PrimaryButton, ProgressRing, XPChip, SubjectTile, Mascot } from "../components/UI";
+import { getProgressSummary, getUserProfile, getCourses } from "../api/client";
+import { getAvatar } from "../data/avatars";
+import { playClick } from "../utils/sound";
+import {
+  Sparkles,
+  BookOpen,
+  Bot,
+  Award,
+  Flame,
+  ArrowRight,
+  Calculator,
+  Languages,
+  TreeDeciduous,
+  Gamepad2,
+  PlayCircle,
+} from "lucide-react";
 
 export default function Dashboard() {
-  const [progressData, setProgressData] = useState({
-    attemptsCount: 0,
-    averageScore: 0,
-    recommended: "Python Basics",
-    masteryPercentage: 0,
+  const navigate = useNavigate();
+  const [profile, setProfile] = useState({
+    display_name: localStorage.getItem("parivestra_display_name") || "Explorer",
+    avatar: localStorage.getItem("parivestra_avatar") || "owl",
+    grade: localStorage.getItem("parivestra_grade") || "Class 3",
+    xp: 0,
+    streak: 1,
   });
 
-  useEffect(() => {
-    async function loadDashData() {
-      try {
-        const apiData = await getProgressSummary();
-        if (apiData && apiData.mastery_per_topic) {
-          const qualified = apiData.mastery_per_topic.filter((m) => m.sufficient_data);
-          const avg = qualified.length
-            ? Math.round(qualified.reduce((sum, m) => sum + m.score, 0) / qualified.length)
-            : 0;
+  const [stats, setStats] = useState({
+    recommended: "Place Value & Numbers",
+    masteryScore: 40,
+    assessmentsDone: 0,
+    dailyGoal: 3,
+    dailyCompleted: 1,
+  });
 
-          setProgressData({
-            attemptsCount: apiData.recent_attempts?.length || 0,
-            averageScore: avg,
-            recommended: apiData.recommended_next_topic || "Python Functions & Lists",
-            masteryPercentage: Math.min(100, Math.round((qualified.length / 5) * 100)),
-          });
-          return;
-        }
-      } catch (err) {
-        // Fallback to IndexedDB
+  const [courses, setCourses] = useState([]);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const p = await getUserProfile();
+        if (p) setProfile(p);
+      } catch (e) {
+        console.warn(e);
       }
 
       try {
-        const localRecords = await getProgress();
-        if (localRecords && localRecords.length) {
-          const avg = Math.round(
-            localRecords.reduce((s, r) => s + (r.percentage || 0), 0) / localRecords.length
-          );
-          setProgressData({
-            attemptsCount: localRecords.length,
-            averageScore: avg,
-            recommended: "Continue Python Practice",
-            masteryPercentage: Math.min(100, localRecords.length * 15),
-          });
+        const c = await getCourses();
+        if (c && c.courses) setCourses(c.courses.slice(0, 3));
+      } catch (e) {
+        console.warn(e);
+      }
+
+      try {
+        const prog = await getProgressSummary();
+        if (prog) {
+          setStats((prev) => ({
+            ...prev,
+            recommended: prog.recommended_next_topic || "Fun with Numbers",
+            masteryScore: Math.min(100, Math.max(20, (prog.recent_attempts?.length || 1) * 15)),
+            assessmentsDone: prog.recent_attempts?.length || 0,
+            dailyCompleted: Math.min(3, prog.recent_attempts?.length || 1),
+          }));
         }
-      } catch (localErr) {
-        console.warn("Could not read local dashboard stats:", localErr);
+      } catch (e) {
+        // Fallback
       }
     }
-
-    loadDashData();
+    loadData();
   }, []);
 
-  return (
-    <>
-      <PageHeader
-        title="Welcome to your learning space"
-        description="A personalised place to learn, practise and grow."
-      />
+  const avatar = getAvatar(profile.avatar);
+  const goalPercentage = Math.round((stats.dailyCompleted / stats.dailyGoal) * 100);
 
-      <div className="hero">
-        <div>
-          <span className="eyebrow light">YOUR LEARNING JOURNEY</span>
-          <h2>
-            Learn something new.
-            <br />
-            Every single day.
+  return (
+    <div style={{ maxWidth: 1040, margin: "0 auto" }}>
+      {/* Playful Welcome Header */}
+      <div
+        className="hero"
+        style={{
+          background: "linear-gradient(135deg, #2B2D5B 0%, #3D4175 100%)",
+          borderRadius: "var(--radius-lg)",
+          padding: "36px 38px",
+          color: "#FFFFFF",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: 32,
+          boxShadow: "var(--shadow-md)",
+          position: "relative",
+        }}
+      >
+        <div style={{ zIndex: 2, maxWidth: 540 }}>
+          <span className="eyebrow light">TODAY'S LEARNING ADVENTURE 🌟</span>
+          <h2 style={{ fontSize: 34, margin: "10px 0 12px", color: "#FFFFFF" }}>
+            Welcome back, {profile.display_name}!
           </h2>
-          <p>
-            {progressData.recommended
-              ? `Next recommendation: ${progressData.recommended}`
-              : "Your AI tutor helps make difficult topics easier to understand."}
+          <p style={{ color: "#E2E8F0", fontSize: 17, margin: "0 0 22px", lineHeight: 1.6 }}>
+            Pari is ready with today's special quest:{" "}
+            <strong style={{ color: "var(--color-yellow)" }}>{stats.recommended}</strong>.
+            Let's explore together and earn stars!
           </p>
-          <Link className="primary-button" to="/tutor">
-            Meet your AI tutor →
+
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
+            <PrimaryButton
+              size="lg"
+              icon={Bot}
+              onClick={() => navigate("/tutor")}
+              style={{ background: "var(--color-english)", color: "#FFFFFF" }}
+            >
+              Ask Pari a Question
+            </PrimaryButton>
+
+            <PrimaryButton
+              size="lg"
+              variant="outline"
+              icon={BookOpen}
+              onClick={() => navigate("/courses")}
+              style={{ color: "#FFFFFF", borderColor: "rgba(255,255,255,0.4)" }}
+            >
+              Start Course →
+            </PrimaryButton>
+          </div>
+        </div>
+
+        <div style={{ zIndex: 2, display: "grid", placeItems: "center", flexShrink: 0 }}>
+          <Mascot mood="cheering" size={150} />
+        </div>
+      </div>
+
+      {/* Daily Progress & Goal Ring Grid */}
+      <div className="grid two" style={{ marginBottom: 28 }}>
+        {/* Daily Goal Card */}
+        <Card title="Today's Learning Goal" subtitle="Complete 3 quick lessons or quizzes today">
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 8px" }}>
+            <div>
+              <div style={{ fontSize: 28, fontWeight: 800, color: "var(--text-main)" }}>
+                {stats.dailyCompleted} of {stats.dailyGoal} Completed
+              </div>
+              <p style={{ margin: "4px 0 0", color: "var(--text-muted)", fontSize: 14 }}>
+                {stats.dailyCompleted >= stats.dailyGoal
+                  ? "🎉 Amazing! You reached today's goal!"
+                  : "Keep going! Just a little more to win today's trophy!"}
+              </p>
+            </div>
+            <ProgressRing radius={42} stroke={8} progress={goalPercentage} color="var(--color-mint)" />
+          </div>
+        </Card>
+
+        {/* Streak & XP Booster Card */}
+        <Card title="Explorer Achievements" subtitle="Win stars and level up your buddy">
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-around", padding: "10px 0" }}>
+            <div style={{ textAlign: "center" }}>
+              <div
+                style={{
+                  width: 54,
+                  height: 54,
+                  borderRadius: "50%",
+                  background: "#FFF0ED",
+                  display: "grid",
+                  placeItems: "center",
+                  margin: "0 auto 8px",
+                }}
+              >
+                <Flame size={28} color="#EA580C" fill="#F97316" />
+              </div>
+              <strong style={{ fontSize: 20, color: "var(--text-main)" }}>{profile.streak || 1} Days</strong>
+              <div style={{ fontSize: 12, color: "var(--text-muted)", fontWeight: 700 }}>Learning Streak</div>
+            </div>
+
+            <div style={{ height: 50, width: 2, background: "#F1F5F9" }} />
+
+            <div style={{ textAlign: "center" }}>
+              <div
+                style={{
+                  width: 54,
+                  height: 54,
+                  borderRadius: "50%",
+                  background: "#FFF8E1",
+                  display: "grid",
+                  placeItems: "center",
+                  margin: "0 auto 8px",
+                }}
+              >
+                <Sparkles size={28} color="#F59E0B" fill="#FFC93C" />
+              </div>
+              <strong style={{ fontSize: 20, color: "var(--text-main)" }}>{profile.xp || 0} XP</strong>
+              <div style={{ fontSize: 12, color: "var(--text-muted)", fontWeight: 700 }}>Adventure Points</div>
+            </div>
+
+            <div style={{ height: 50, width: 2, background: "#F1F5F9" }} />
+
+            <div style={{ textAlign: "center" }}>
+              <div
+                style={{
+                  width: 54,
+                  height: 54,
+                  borderRadius: "50%",
+                  background: "#EAF2FE",
+                  display: "grid",
+                  placeItems: "center",
+                  margin: "0 auto 8px",
+                }}
+              >
+                <Award size={28} color="#2563EB" />
+              </div>
+              <strong style={{ fontSize: 20, color: "var(--text-main)" }}>{stats.assessmentsDone}</strong>
+              <div style={{ fontSize: 12, color: "var(--text-muted)", fontWeight: 700 }}>Badges Earned</div>
+            </div>
+          </div>
+        </Card>
+      </div>
+
+      {/* Main Learning Subject Shelves */}
+      <div style={{ marginBottom: 36 }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+          <div>
+            <h2 style={{ margin: 0, fontSize: 24, color: "var(--text-main)" }}>Explore Subjects</h2>
+            <p style={{ margin: "2px 0 0", color: "var(--text-muted)", fontSize: 14 }}>
+              Tailored for {profile.grade} learners
+            </p>
+          </div>
+          <Link
+            to="/courses"
+            style={{ fontWeight: 800, fontSize: 14, color: "var(--color-primary)", textDecoration: "none" }}
+          >
+            View All Courses →
           </Link>
         </div>
-        <div className="hero-symbol">
-          <Bot size={76} />
+
+        <div className="grid three">
+          <SubjectTile
+            subject="Maths"
+            title="Maths Adventures"
+            description="Numbers, Place Value, Fun Addition, and Multiplication Puzzles."
+            icon={Calculator}
+            color="var(--color-maths)"
+            bg="var(--color-maths-bg)"
+            progress={65}
+            onClick={() => navigate("/courses?subject=Maths")}
+          />
+
+          <SubjectTile
+            subject="English"
+            title="English Magic"
+            description="Naming Words (Nouns), Action Words (Verbs), and Fun Stories."
+            icon={Languages}
+            color="var(--color-english)"
+            bg="var(--color-english-bg)"
+            progress={50}
+            onClick={() => navigate("/courses?subject=English")}
+          />
+
+          <SubjectTile
+            subject="EVS"
+            title="EVS & Nature"
+            description="Green Plants, Wild Animals & Habitats, and the Water Cycle."
+            icon={TreeDeciduous}
+            color="var(--color-evs)"
+            bg="var(--color-evs-bg)"
+            progress={40}
+            onClick={() => navigate("/courses?subject=EVS")}
+          />
         </div>
       </div>
 
-      <div className="grid three">
-        <Card title="Continue learning">
-          <BookOpen />
-          <p>Next focus: {progressData.recommended}</p>
-          <Link to="/practice">Practise this topic →</Link>
-        </Card>
-
-        <Card title="Ask your tutor">
-          <Bot />
-          <p>Get concept breakdowns and hints tailored to you.</p>
-          <Link to="/tutor">Start a conversation →</Link>
-        </Card>
-
-        <Card title="Track your goals">
-          <Target />
-          <p>
-            {progressData.attemptsCount > 0
-              ? `${progressData.attemptsCount} assessment(s) completed (${progressData.averageScore}% avg).`
-              : "Keep an eye on your learning growth."}
-          </p>
-          <Link to="/progress">View progress →</Link>
-        </Card>
-      </div>
-
-      <Card title="Curriculum Mastery Progress">
-        <div className="goal-row">
-          <strong>
-            {progressData.attemptsCount > 0
-              ? `${progressData.attemptsCount} assessments completed`
-              : "0 / 5 assessments completed"}
-          </strong>
-          <span>{progressData.masteryPercentage}%</span>
+      {/* Quick Action Tiles (Games & AI Videos) */}
+      <div className="grid two" style={{ marginBottom: 36 }}>
+        <div
+          className="clickable-card"
+          onClick={() => { playClick(); navigate("/games"); }}
+          style={{
+            background: "linear-gradient(135deg, #F4EFFF 0%, #E9DEFF 100%)",
+            border: "2px solid #D5C5FB",
+            borderRadius: "var(--radius-lg)",
+            padding: 24,
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            gap: 18,
+          }}
+        >
+          <div
+            style={{
+              width: 58,
+              height: 58,
+              borderRadius: "var(--radius-md)",
+              background: "var(--color-games)",
+              color: "#FFF",
+              display: "grid",
+              placeItems: "center",
+              flexShrink: 0,
+            }}
+          >
+            <Gamepad2 size={32} />
+          </div>
+          <div>
+            <h3 style={{ margin: "0 0 4px", fontSize: 20, color: "var(--text-main)" }}>
+              Number Ninja & Word Games 🎮
+            </h3>
+            <p style={{ margin: 0, fontSize: 14, color: "var(--text-muted)" }}>
+              Fun, relaxed rounds with 3 hearts and streak stars.
+            </p>
+          </div>
         </div>
-        <ProgressBar value={progressData.masteryPercentage || 10} />
-      </Card>
-    </>
+
+        <div
+          className="clickable-card"
+          onClick={() => { playClick(); navigate("/videos"); }}
+          style={{
+            background: "linear-gradient(135deg, #FFF9E6 0%, #FFF0C2 100%)",
+            border: "2px solid #FFE8A3",
+            borderRadius: "var(--radius-lg)",
+            padding: 24,
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            gap: 18,
+          }}
+        >
+          <div
+            style={{
+              width: 58,
+              height: 58,
+              borderRadius: "var(--radius-md)",
+              background: "#F59E0B",
+              color: "#FFF",
+              display: "grid",
+              placeItems: "center",
+              flexShrink: 0,
+            }}
+          >
+            <PlayCircle size={32} />
+          </div>
+          <div>
+            <h3 style={{ margin: "0 0 4px", fontSize: 20, color: "var(--text-main)" }}>
+              AI Animated Video Stories 🎬
+            </h3>
+            <p style={{ margin: 0, fontSize: 14, color: "var(--text-muted)" }}>
+              Watch animated SVG explanations with narration and voice!
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

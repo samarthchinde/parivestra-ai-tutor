@@ -1,15 +1,25 @@
 import {
-  LayoutDashboard, Bot, Route, BookOpen, ClipboardCheck,
-  ChartNoAxesCombined, Library, Settings
+  Sparkles,
+  BookOpen,
+  Bot,
+  ClipboardCheck,
+  Gamepad2,
+  Video,
+  Compass,
+  Library,
+  Award,
+  ShieldCheck,
 } from "lucide-react";
 
 export const navigation = [
-  { label: "Dashboard", path: "/", icon: LayoutDashboard },
-  { label: "AI Tutor", path: "/tutor", icon: Bot },
-  { label: "Learning Path", path: "/learning-path", icon: Route },
-  { label: "Subjects", path: "/subjects", icon: BookOpen },
-  { label: "Practice", path: "/practice", icon: ClipboardCheck },
-  { label: "Progress", path: "/progress", icon: ChartNoAxesCombined },
-  { label: "Resources", path: "/resources", icon: Library },
-  { label: "Settings", path: "/settings", icon: Settings }
+  { label: "Home", path: "/", icon: Sparkles, mobileTab: true },
+  { label: "Courses", path: "/courses", icon: BookOpen, mobileTab: true },
+  { label: "AI Tutor", path: "/tutor", icon: Bot, mobileTab: true },
+  { label: "Practice", path: "/practice", icon: ClipboardCheck, mobileTab: true },
+  { label: "Games", path: "/games", icon: Gamepad2, mobileTab: true },
+  { label: "AI Videos", path: "/videos", icon: Video, mobileTab: false },
+  { label: "Learning Path", path: "/learning-path", icon: Compass, mobileTab: false },
+  { label: "Library", path: "/library", icon: Library, mobileTab: false },
+  { label: "Progress", path: "/progress", icon: Award, mobileTab: false },
+  { label: "Grown-ups", path: "/grown-ups", icon: ShieldCheck, mobileTab: false },
 ];

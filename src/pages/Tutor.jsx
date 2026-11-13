@@ -1,72 +1,117 @@
-import { useState, useRef, useEffect } from "react";
-import { Bot, Send, Sparkles, HelpCircle, RotateCcw, BookOpen, AlertCircle } from "lucide-react";
-import { PageHeader, Card, PrimaryButton } from "../components/UI";
+import React, { useState, useEffect, useRef } from "react";
+import { PageHeader, Card, PrimaryButton, Badge, Mascot } from "../components/UI";
 import { streamTutorChat, getSubjects } from "../api/client";
+import { getAvatar } from "../data/avatars";
+import { playClick, playSuccess, playNudge } from "../utils/sound";
+import {
+  Send,
+  Volume2,
+  VolumeX,
+  Lightbulb,
+  Sparkles,
+  BookOpen,
+  RotateCcw,
+  HelpCircle,
+  CheckCircle2,
+} from "lucide-react";
 
 export default function Tutor() {
-  const [sessionId, setSessionId] = useState(() => `session_${Date.now()}`);
+  const [sessionId, setSessionId] = useState(`session_${Date.now()}`);
+  const [subject, setSubject] = useState("Maths");
+  const [topic, setTopic] = useState("");
+  const [grade, setGrade] = useState(
+    localStorage.getItem("parivestra_grade") || "Class 3"
+  );
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [speakingId, setSpeakingId] = useState(null);
+  const [activeHintLevel, setActiveHintLevel] = useState(0);
+
+  const [subjectsList, setSubjectsList] = useState([
+    { id: "maths", name: "Maths", topics: ["Numbers", "Addition", "Multiplication", "Fractions", "Shapes"] },
+    { id: "english", name: "English", topics: ["Nouns", "Verbs", "Adjectives", "Sentences", "Punctuation"] },
+    { id: "evs", name: "EVS", topics: ["Plants", "Animals", "Water", "Human Body", "Weather"] },
+  ]);
+
   const [messages, setMessages] = useState([
     {
       id: "welcome",
       role: "assistant",
       content:
-        "Hello! I am your Parivestra AI Tutor. Ask me any concept question about Python, AI, Machine Learning, Networks, or Java. I can provide complete explanations or step-by-step hints!",
+        "Hello! I am Pari, your learning buddy. Ask me any question about Maths, English, or EVS, and we will explore it together! 🌟",
       citations: [],
       hintLevel: 0,
+      source: "assistant",
     },
   ]);
-  const [input, setInput] = useState("");
-  const [subject, setSubject] = useState("Python");
-  const [topic, setTopic] = useState("");
-  const [availableSubjects, setAvailableSubjects] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [activeHintLevel, setActiveHintLevel] = useState(0);
 
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
-    async function loadSubs() {
+    async function loadSubjects() {
       try {
         const data = await getSubjects();
         if (data && data.subjects) {
-          setAvailableSubjects(data.subjects);
+          setSubjectsList(data.subjects);
         }
       } catch (e) {
-        console.warn("Could not load subjects from API:", e);
+        // Fallback
       }
     }
-    loadSubs();
+    loadSubjects();
   }, []);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
-  const activeSubjectObj = availableSubjects.find(s => s.name === subject) || {
-    topics: ["Introduction", "Variables", "Data Types", "Lists", "Functions", "Control Flow"],
-  };
-
   const startNewChat = () => {
+    window.speechSynthesis?.cancel();
+    setSpeakingId(null);
     setSessionId(`session_${Date.now()}`);
     setMessages([
       {
         id: "welcome",
         role: "assistant",
-        content: `Starting a fresh chat session on ${subject}. How can I assist you today?`,
+        content: `Hi there! We are exploring ${subject}. Ask me anything! 🌟`,
         citations: [],
         hintLevel: 0,
+        source: "assistant",
       },
     ]);
     setActiveHintLevel(0);
-    setError("");
+    setInput("");
   };
 
-  const handleSend = async (forcedHintLevel = null) => {
-    const textToSend = input.trim();
+  const handleSpeech = (text, msgId) => {
+    if (!window.speechSynthesis) return;
+
+    if (speakingId === msgId) {
+      window.speechSynthesis.cancel();
+      setSpeakingId(null);
+      return;
+    }
+
+    window.speechSynthesis.cancel();
+    const cleanText = text.replace(/[*#_~]/g, "");
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    utterance.rate = 0.88; // Slightly slower, comfortable child pace
+    utterance.pitch = 1.1; // Gentle, friendly pitch
+
+    utterance.onend = () => setSpeakingId(null);
+    utterance.onerror = () => setSpeakingId(null);
+
+    setSpeakingId(msgId);
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const handleSend = async (forcedPrompt = null, forcedHintLevel = null) => {
+    const textToSend = forcedPrompt !== null ? forcedPrompt : input.trim();
     if (!textToSend && forcedHintLevel === null) return;
 
-    setError("");
+    window.speechSynthesis?.cancel();
+    setSpeakingId(null);
+
     const effectiveHintLevel = forcedHintLevel !== null ? forcedHintLevel : 0;
     setActiveHintLevel(effectiveHintLevel);
 
@@ -83,7 +128,7 @@ export default function Tutor() {
       setInput("");
     }
 
-    // Placeholder for streaming assistant reply
+    // Streaming placeholder
     newMessages.push({
       id: assistantMsgId,
       role: "assistant",
@@ -91,25 +136,28 @@ export default function Tutor() {
       citations: [],
       hintLevel: effectiveHintLevel,
       streaming: true,
+      source: "model",
     });
 
     setMessages(newMessages);
     setLoading(true);
 
-    const lastUserPrompt = textToSend || messages.filter(m => m.role === "user").slice(-1)[0]?.content || "Explain this concept";
+    const promptText =
+      textToSend ||
+      messages.filter((m) => m.role === "user").slice(-1)[0]?.content ||
+      "Explain this concept";
 
     await streamTutorChat({
       sessionId,
-      message: lastUserPrompt,
+      message: promptText,
       subject,
       topic: topic || undefined,
+      grade,
       hintLevel: effectiveHintLevel,
       onToken: (token) => {
         setMessages((prev) =>
           prev.map((msg) =>
-            msg.id === assistantMsgId
-              ? { ...msg, content: msg.content + token }
-              : msg
+            msg.id === assistantMsgId ? { ...msg, content: msg.content + token } : msg
           )
         );
       },
@@ -128,9 +176,9 @@ export default function Tutor() {
           )
         );
         setLoading(false);
+        playSuccess();
       },
       onError: (err) => {
-        setError(`Tutor communication error: ${err.message}`);
         setLoading(false);
         setMessages((prev) =>
           prev.map((msg) =>
@@ -138,8 +186,7 @@ export default function Tutor() {
               ? {
                   ...msg,
                   content:
-                    msg.content ||
-                    "Could not connect to the local AI backend. Please verify that the local LLM server is running.",
+                    "Pari is resting right now. Ask your teacher or grown-up to start Pari so we can chat! 🎒",
                   source: "offline",
                   streaming: false,
                 }
@@ -150,26 +197,32 @@ export default function Tutor() {
     });
   };
 
-  const requestNextHint = (currentLevel) => {
-    const nextLevel = Math.min(3, currentLevel + 1);
-    handleSend(nextLevel);
-  };
+  const quickChips = [
+    { label: "Explain it simply 🎈", prompt: "Can you explain this simply for my class?" },
+    { label: "Give me an example 🌟", prompt: "Can you give me a fun real-life example?" },
+    { label: "Quiz me on this! 🎯", prompt: "Can you quiz me with a quick question on this?" },
+    { label: "What are nouns? 📖", prompt: "What is a noun in English?", subject: "English" },
+    { label: "What is 4 × 5? 🔢", prompt: "What is 4 times 5 in Maths?", subject: "Maths" },
+  ];
+
+  const activeSubjectObj = subjectsList.find((s) => s.name.toLowerCase() === subject.toLowerCase()) || subjectsList[0];
+  const userAvatar = getAvatar(localStorage.getItem("parivestra_avatar") || "owl");
 
   return (
-    <div style={{ maxWidth: 960, margin: "0 auto" }}>
+    <div style={{ maxWidth: 940, margin: "0 auto" }}>
       <PageHeader
-        eyebrow="PARIVESTRA AI TUTOR"
-        title="Interactive Concept Tutor"
-        description="Ask questions, receive grounded explanations with source citations, or unlock progressive hints."
+        eyebrow="PARIVESTRA ADVENTURES"
+        title="Chat with Pari 🦉"
+        description="Ask any question, receive friendly grounded answers, or tap the lightbulbs for step-by-step hints!"
       />
 
-      {/* Control Bar: Subject/Topic Selection + New Chat */}
-      <Card>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 14, alignItems: "center", justifyContent: "space-between" }}>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 12, alignItems: "center" }}>
+      {/* Control Bar: Subject Selector + New Conversation */}
+      <Card style={{ marginBottom: 18, padding: "14px 20px" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 14 }}>
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 12 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <BookOpen size={16} color="#d94d25" />
-              <label style={{ fontSize: 13, fontWeight: 700 }}>Subject:</label>
+              <BookOpen size={18} color="var(--color-primary)" />
+              <label style={{ fontSize: 14, fontWeight: 800 }}>Subject:</label>
               <select
                 value={subject}
                 onChange={(e) => {
@@ -177,37 +230,38 @@ export default function Tutor() {
                   setTopic("");
                 }}
                 style={{
-                  padding: "6px 12px",
-                  borderRadius: 8,
-                  border: "1px solid #d1d5db",
-                  background: "#fff",
-                  fontSize: 13,
-                  fontWeight: 600,
+                  padding: "6px 14px",
+                  borderRadius: "var(--radius-sm)",
+                  border: "2px solid #CBD5E1",
+                  fontSize: 14,
+                  fontWeight: 700,
+                  background: "#FFF",
                 }}
               >
-                <option value="Python">Python</option>
-                <option value="Artificial Intelligence">Artificial Intelligence</option>
-                <option value="Machine Learning">Machine Learning</option>
-                <option value="Computer Networks">Computer Networks</option>
-                <option value="Java">Java</option>
+                {subjectsList.map((s) => (
+                  <option key={s.id} value={s.name}>
+                    {s.name}
+                  </option>
+                ))}
               </select>
             </div>
 
             <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <label style={{ fontSize: 13, fontWeight: 700 }}>Topic:</label>
+              <label style={{ fontSize: 14, fontWeight: 800 }}>Topic:</label>
               <select
                 value={topic}
                 onChange={(e) => setTopic(e.target.value)}
                 style={{
-                  padding: "6px 12px",
-                  borderRadius: 8,
-                  border: "1px solid #d1d5db",
-                  background: "#fff",
-                  fontSize: 13,
+                  padding: "6px 14px",
+                  borderRadius: "var(--radius-sm)",
+                  border: "2px solid #CBD5E1",
+                  fontSize: 14,
+                  fontWeight: 700,
+                  background: "#FFF",
                 }}
               >
                 <option value="">All Topics</option>
-                {activeSubjectObj.topics?.map((t) => (
+                {activeSubjectObj?.topics?.map((t) => (
                   <option key={t} value={t}>
                     {t}
                   </option>
@@ -217,59 +271,41 @@ export default function Tutor() {
           </div>
 
           <button
-            onClick={startNewChat}
+            onClick={() => { playClick(); startNewChat(); }}
             style={{
               display: "flex",
               alignItems: "center",
               gap: 6,
-              background: "#f3f4f6",
-              border: "1px solid #e5e7eb",
-              borderRadius: 8,
-              padding: "7px 12px",
-              fontSize: 12,
-              fontWeight: 600,
+              background: "#F8FAFC",
+              border: "2px solid #E2E8F0",
+              borderRadius: "var(--radius-sm)",
+              padding: "7px 14px",
+              fontSize: 13,
+              fontWeight: 800,
               cursor: "pointer",
             }}
           >
-            <RotateCcw size={14} /> New Conversation
+            <RotateCcw size={14} /> New Adventure
           </button>
         </div>
       </Card>
 
-      {error && (
-        <div
-          style={{
-            background: "#fee2e2",
-            border: "1px solid #f87171",
-            color: "#b91c1c",
-            padding: "10px 14px",
-            borderRadius: 8,
-            marginBottom: 16,
-            fontSize: 13,
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-          }}
-        >
-          <AlertCircle size={16} />
-          <span>{error}</span>
-        </div>
-      )}
-
       {/* Chat Messages Container */}
       <div
+        className="chat-container"
         style={{
-          background: "#fff",
-          border: "1px solid #edf0f3",
-          borderRadius: 14,
+          background: "#FFFFFF",
+          border: "2px solid #F0ECE4",
+          borderRadius: "var(--radius-lg)",
           padding: 24,
-          minHeight: 420,
+          minHeight: 460,
           maxHeight: 560,
           overflowY: "auto",
           display: "flex",
           flexDirection: "column",
-          gap: 18,
-          marginBottom: 18,
+          gap: 20,
+          marginBottom: 16,
+          boxShadow: "var(--shadow-sm)",
         }}
       >
         {messages.map((m) => {
@@ -280,132 +316,108 @@ export default function Tutor() {
               style={{
                 display: "flex",
                 flexDirection: isUser ? "row-reverse" : "row",
-                gap: 12,
+                gap: 14,
                 alignItems: "flex-start",
               }}
             >
-              {!isUser && (
-                <div
-                  style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: "50%",
-                    background: "#14263b",
-                    color: "#f16a3c",
-                    display: "grid",
-                    placeItems: "center",
-                    flexShrink: 0,
-                  }}
-                >
-                  <Bot size={20} />
+              {/* Avatar on Left / Right */}
+              {!isUser ? (
+                <div style={{ flexShrink: 0 }}>
+                  <Mascot mood={m.streaming ? "thinking" : "happy"} size={48} />
+                </div>
+              ) : (
+                <div style={{ width: 44, height: 44, borderRadius: "50%", overflow: "hidden", flexShrink: 0 }}>
+                  {userAvatar.render(44)}
                 </div>
               )}
 
-              <div style={{ maxWidth: "80%" }}>
-                {!isUser && m.source && (
-                  <div style={{ marginBottom: 4 }}>
-                    <span
-                      style={{
-                        fontSize: 10,
-                        fontWeight: 700,
-                        textTransform: "uppercase",
-                        letterSpacing: "0.5px",
-                        padding: "2px 6px",
-                        borderRadius: 4,
-                        background: m.source === "model" ? "#dcfce7" : "#fef3c7",
-                        color: m.source === "model" ? "#15803d" : "#b45309",
-                      }}
-                    >
-                      {m.source === "model" ? "AI Model" : m.source === "assistant" ? "AI Tutor" : "Offline Fallback"}
-                    </span>
-                  </div>
-                )}
-                <div
-                  style={{
-                    background: isUser ? "#e95b30" : "#f8fafc",
-                    color: isUser ? "#fff" : "#1e293b",
-                    border: isUser ? "none" : "1px solid #e2e8f0",
-                    borderRadius: 14,
-                    padding: "12px 18px",
-                    fontSize: 14,
-                    lineHeight: 1.6,
-                    whiteSpace: "pre-wrap",
-                  }}
-                >
-                  {m.content}
-                  {m.streaming && (
-                    <span style={{ display: "inline-block", marginLeft: 4, animation: "pulse 1s infinite" }}>
-                      ●
-                    </span>
-                  )}
-                </div>
-
-                {/* Hint Ladder Badge & Next Hint Button */}
-                {!isUser && m.hintLevel > 0 && (
-                  <div style={{ marginTop: 6, display: "flex", alignItems: "center", gap: 8 }}>
+              <div style={{ maxWidth: "78%" }}>
+                {/* Source Badge */}
+                {!isUser && (
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
                     <span
                       style={{
                         fontSize: 11,
-                        background: "#fef3c7",
-                        color: "#92400e",
+                        fontWeight: 800,
                         padding: "2px 8px",
-                        borderRadius: 6,
-                        fontWeight: 700,
+                        borderRadius: "var(--radius-full)",
+                        background: m.source === "offline" ? "#FEF3C7" : "#EAF2FE",
+                        color: m.source === "offline" ? "#B45309" : "var(--color-primary)",
                       }}
                     >
-                      Hint Level {m.hintLevel} of 3
+                      {m.source === "offline" ? "Offline Fallback" : "Pari Tutor"}
                     </span>
-                    {m.hintLevel < 3 && !loading && (
+
+                    {/* Speech "Read it to me" Button */}
+                    {m.content && !m.streaming && (
                       <button
-                        onClick={() => requestNextHint(m.hintLevel)}
+                        onClick={() => handleSpeech(m.content, m.id)}
                         style={{
-                          fontSize: 11,
-                          color: "#d94d25",
-                          background: "none",
+                          background: speakingId === m.id ? "var(--color-primary)" : "#F1F5F9",
+                          color: speakingId === m.id ? "#FFF" : "var(--text-main)",
                           border: "none",
-                          cursor: "pointer",
+                          borderRadius: "var(--radius-full)",
+                          padding: "3px 10px",
+                          fontSize: 12,
                           fontWeight: 700,
-                          textDecoration: "underline",
+                          cursor: "pointer",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: 4,
                         }}
+                        title="Listen to Pari read this message aloud"
                       >
-                        Show next hint →
+                        {speakingId === m.id ? <VolumeX size={13} /> : <Volume2 size={13} />}
+                        <span>{speakingId === m.id ? "Stop" : "Read it to me 🔊"}</span>
                       </button>
                     )}
                   </div>
                 )}
 
-                {/* Source Citations */}
+                {/* Message Bubble */}
+                <div
+                  style={{
+                    background: isUser ? "var(--color-primary)" : "#F8FAFC",
+                    color: isUser ? "#FFFFFF" : "var(--text-main)",
+                    border: isUser ? "none" : "2px solid #E2E8F0",
+                    borderRadius: "var(--radius-md)",
+                    padding: "14px 20px",
+                    fontSize: 17,
+                    lineHeight: 1.6,
+                    whiteSpace: "pre-wrap",
+                    boxShadow: "var(--shadow-sm)",
+                  }}
+                >
+                  {m.content}
+                  {m.streaming && (
+                    <span style={{ display: "inline-block", marginLeft: 6, animation: "pulse 1s infinite" }}>
+                      ●●●
+                    </span>
+                  )}
+                </div>
+
+                {/* Citations as friendly "From: lesson name" tags */}
                 {!isUser && m.citations && m.citations.length > 0 && (
-                  <div
-                    style={{
-                      marginTop: 8,
-                      padding: "8px 12px",
-                      background: "#f1f5f9",
-                      borderRadius: 8,
-                      fontSize: 12,
-                      borderLeft: "3px solid #e95b30",
-                    }}
-                  >
-                    <strong style={{ display: "block", color: "#475569", marginBottom: 4 }}>
-                      Verified Knowledge Sources:
-                    </strong>
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                      {m.citations.map((c) => (
-                        <span
-                          key={c.id}
-                          style={{
-                            background: "#fff",
-                            border: "1px solid #cbd5e1",
-                            padding: "2px 8px",
-                            borderRadius: 6,
-                            fontSize: 11,
-                            color: "#334155",
-                          }}
-                        >
-                          [{c.id}] {c.title}
-                        </span>
-                      ))}
-                    </div>
+                  <div style={{ marginTop: 8, display: "flex", flexWrap: "wrap", gap: 6, alignItems: "center" }}>
+                    <span style={{ fontSize: 12, fontWeight: 800, color: "var(--text-muted)" }}>
+                      From lessons:
+                    </span>
+                    {m.citations.map((c) => (
+                      <span
+                        key={c.id}
+                        style={{
+                          fontSize: 12,
+                          fontWeight: 700,
+                          background: "#FFF4E5",
+                          border: "1px solid #FFE0B2",
+                          color: "#B45309",
+                          padding: "2px 8px",
+                          borderRadius: "var(--radius-sm)",
+                        }}
+                      >
+                        📖 {c.title}
+                      </span>
+                    ))}
                   </div>
                 )}
               </div>
@@ -415,108 +427,117 @@ export default function Tutor() {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input Bar */}
+      {/* 3 Lightbulb Hint Ladder Buttons */}
       <div
         style={{
-          background: "#fff",
-          border: "1px solid #edf0f3",
-          borderRadius: 14,
-          padding: 14,
           display: "flex",
-          flexDirection: "column",
+          alignItems: "center",
           gap: 10,
+          background: "#FFF8E1",
+          border: "2px solid #FFE082",
+          borderRadius: "var(--radius-md)",
+          padding: "10px 16px",
+          marginBottom: 14,
         }}
       >
-        <div style={{ display: "flex", gap: 10 }}>
-          <textarea
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                handleSend(0);
-              }
+        <span style={{ fontSize: 13, fontWeight: 800, color: "#92400E", display: "flex", alignItems: "center", gap: 6 }}>
+          <Lightbulb size={18} color="#F59E0B" />
+          Need a hint?
+        </span>
+
+        {[
+          { level: 1, label: "💡 Nudge" },
+          { level: 2, label: "💡 Clue" },
+          { level: 3, label: "💡 Worked Step" },
+        ].map((h) => (
+          <button
+            key={h.level}
+            onClick={() => {
+              playNudge();
+              handleSend(null, h.level);
             }}
-            placeholder={`Ask a question about ${subject} (e.g. "Explain lists in Python", "How does range work?")...`}
-            rows={2}
+            disabled={loading}
             style={{
-              flex: 1,
-              resize: "none",
-              border: "1px solid #d1d5db",
-              borderRadius: 8,
-              padding: "10px 14px",
-              fontFamily: "inherit",
-              fontSize: 14,
-              outline: "none",
+              background: activeHintLevel === h.level ? "#F59E0B" : "#FFFFFF",
+              color: activeHintLevel === h.level ? "#FFFFFF" : "#78350F",
+              border: "1px solid #FCD34D",
+              borderRadius: "var(--radius-full)",
+              padding: "5px 12px",
+              fontSize: 13,
+              fontWeight: 800,
+              cursor: loading ? "not-allowed" : "pointer",
+              transition: "all 0.15s ease",
             }}
-          />
-
-          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-            <PrimaryButton
-              onClick={() => handleSend(0)}
-              disabled={loading || !input.trim()}
-              style={{
-                height: "100%",
-                padding: "0 18px",
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
-              }}
-            >
-              <Send size={15} />
-              Ask
-            </PrimaryButton>
-          </div>
-        </div>
-
-        {/* Quick Actions: Ask for a Hint */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <div style={{ display: "flex", gap: 8 }}>
-            <button
-              onClick={() => handleSend(1)}
-              disabled={loading}
-              style={{
-                fontSize: 12,
-                color: "#e95b30",
-                background: "#fff5ef",
-                border: "1px solid #fed7aa",
-                borderRadius: 6,
-                padding: "4px 10px",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: 5,
-                fontWeight: 600,
-              }}
-            >
-              <HelpCircle size={13} />
-              Give me a hint (Level 1)
-            </button>
-            <button
-              onClick={() => handleSend(2)}
-              disabled={loading}
-              style={{
-                fontSize: 12,
-                color: "#6b7280",
-                background: "#f9fafb",
-                border: "1px solid #e5e7eb",
-                borderRadius: 6,
-                padding: "4px 10px",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: 5,
-              }}
-            >
-              <Sparkles size={13} />
-              Bigger clue (Level 2)
-            </button>
-          </div>
-          <span style={{ fontSize: 11, color: "#9ca3af" }}>
-            Press Enter to send, Shift + Enter for new line
-          </span>
-        </div>
+          >
+            {h.label}
+          </button>
+        ))}
       </div>
+
+      {/* Quick Question Chips */}
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 14 }}>
+        {quickChips.map((chip, idx) => (
+          <button
+            key={idx}
+            onClick={() => {
+              playClick();
+              if (chip.subject) setSubject(chip.subject);
+              handleSend(chip.prompt);
+            }}
+            disabled={loading}
+            style={{
+              background: "#F1F5F9",
+              border: "1px solid #CBD5E1",
+              borderRadius: "var(--radius-full)",
+              padding: "6px 14px",
+              fontSize: 13,
+              fontWeight: 700,
+              color: "var(--text-main)",
+              cursor: loading ? "not-allowed" : "pointer",
+            }}
+          >
+            {chip.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Big Touch-Friendly Input Area */}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSend();
+        }}
+        style={{ display: "flex", gap: 12, alignItems: "center" }}
+      >
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder={`Ask Pari anything about ${subject}...`}
+          disabled={loading}
+          style={{
+            flex: 1,
+            padding: "16px 22px",
+            fontSize: 17,
+            borderRadius: "var(--radius-lg)",
+            border: "3px solid #CBD5E1",
+            outline: "none",
+            color: "var(--text-main)",
+            background: "#FFFFFF",
+            boxShadow: "var(--shadow-sm)",
+          }}
+        />
+
+        <PrimaryButton
+          size="lg"
+          type="submit"
+          disabled={loading || !input.trim()}
+          icon={Send}
+          style={{ padding: "16px 26px" }}
+        >
+          {loading ? "Thinking..." : "Send"}
+        </PrimaryButton>
+      </form>
     </div>
   );
 }

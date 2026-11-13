@@ -15,6 +15,7 @@ LLM_MAX_TOKENS: int = int(os.getenv("LLM_MAX_TOKENS", "1024"))
 LLM_PROVIDER: str = os.getenv("LLM_PROVIDER", "openai").lower()
 
 DATABASE_URL: str = os.getenv("DATABASE_URL", f"sqlite:///{ROOT_DIR / 'parivestra.db'}")
+ADMIN_KEY: str = os.getenv("ADMIN_KEY", "parivestra_admin_secret")
 
 CORS_ORIGINS: list[str] = [
     origin.strip()

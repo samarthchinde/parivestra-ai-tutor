@@ -1,4 +1,4 @@
-"""RAG Retrieval module using BM25 with extensible Retriever interface."""
+"""RAG Retrieval module using BM25 with extensible Retriever interface and Class 3-4 grade support."""
 from abc import ABC, abstractmethod
 import json
 import os
@@ -29,6 +29,7 @@ class BaseRetriever(ABC):
         top_k: int = 3,
         subject: Optional[str] = None,
         topic: Optional[str] = None,
+        grade: Optional[str] = None,
     ) -> List[Tuple[Chunk, float]]:
         """Retrieve top-k relevant chunks for a given query, optionally filtered."""
         pass
@@ -40,13 +41,13 @@ def tokenize(text: str) -> List[str]:
 
 
 def load_chunks_from_kb(kb_dir: Optional[Path] = None) -> List[Chunk]:
-    """Load chunks from knowledge_base directory (topics.json, .md, .txt)."""
+    """Load chunks from knowledge_base directory recursively (topics.json, .md, .txt)."""
     if kb_dir is None:
         kb_dir = Path(__file__).resolve().parent.parent.parent / "knowledge_base"
 
     chunks: List[Chunk] = []
 
-    # 1. Load topics.json
+    # 1. Load topics.json (if present)
     topics_file = kb_dir / "topics.json"
     if topics_file.exists():
         try:
@@ -70,14 +71,14 @@ def load_chunks_from_kb(kb_dir: Optional[Path] = None) -> List[Chunk]:
                         subject=name,
                         topic=name,
                         content=content.strip(),
-                        metadata={"keywords": keywords, "source": "topics.json"},
+                        metadata={"keywords": keywords, "source": "topics.json", "grade": "General"},
                     )
                 )
         except Exception as e:
             print(f"Error loading topics.json: {e}")
 
-    # 2. Load markdown files
-    for md_file in kb_dir.glob("*.md"):
+    # 2. Load markdown files recursively (including grade3_4/)
+    for md_file in kb_dir.rglob("*.md"):
         try:
             with open(md_file, "r", encoding="utf-8") as f:
                 text = f.read()
@@ -89,21 +90,27 @@ def load_chunks_from_kb(kb_dir: Optional[Path] = None) -> List[Chunk]:
                 if not sec or sec.startswith("# "):
                     continue
 
-                # Parse chunk header if present
+                # Parse chunk headers
                 chunk_id_match = re.search(r"## Chunk:\s*([^\n]+)", sec)
                 title_match = re.search(r"Title:\s*([^\n]+)", sec)
                 subject_match = re.search(r"Subject:\s*([^\n]+)", sec)
                 topic_match = re.search(r"Topic:\s*([^\n]+)", sec)
+                grade_match = re.search(r"Grade:\s*([^\n]+)", sec)
+                keywords_match = re.search(r"Keywords:\s*([^\n]+)", sec)
 
                 chunk_id = chunk_id_match.group(1).strip() if chunk_id_match else f"{md_file.stem}_{idx}"
                 title = title_match.group(1).strip() if title_match else f"{md_file.stem} Section {idx}"
-                subject = subject_match.group(1).strip() if subject_match else "Python"
+                subject = subject_match.group(1).strip() if subject_match else "General"
                 topic = topic_match.group(1).strip() if topic_match else title
+                grade = grade_match.group(1).strip() if grade_match else "General"
+                keywords = [k.strip() for k in keywords_match.group(1).split(",")] if keywords_match else []
 
-                # Strip metadata lines from content for clean text
+                # Clean lines
                 clean_lines = []
                 for line in sec.split("\n"):
-                    if any(line.startswith(prefix) for prefix in ["## Chunk:", "Title:", "Subject:", "Topic:"]):
+                    if any(line.startswith(prefix) for prefix in [
+                        "## Chunk:", "Title:", "Subject:", "Topic:", "Grade:", "Keywords:"
+                    ]):
                         continue
                     clean_lines.append(line)
                 content = "\n".join(clean_lines).strip()
@@ -115,14 +122,14 @@ def load_chunks_from_kb(kb_dir: Optional[Path] = None) -> List[Chunk]:
                         subject=subject,
                         topic=topic,
                         content=content,
-                        metadata={"source": md_file.name},
+                        metadata={"source": md_file.name, "grade": grade, "keywords": keywords},
                     )
                 )
         except Exception as e:
             print(f"Error reading {md_file.name}: {e}")
 
     # 3. Load txt files
-    for txt_file in kb_dir.glob("*.txt"):
+    for txt_file in kb_dir.rglob("*.txt"):
         try:
             with open(txt_file, "r", encoding="utf-8") as f:
                 content = f.read().strip()
@@ -134,7 +141,7 @@ def load_chunks_from_kb(kb_dir: Optional[Path] = None) -> List[Chunk]:
                         subject="General",
                         topic=txt_file.stem,
                         content=content,
-                        metadata={"source": txt_file.name},
+                        metadata={"source": txt_file.name, "grade": "General"},
                     )
                 )
         except Exception as e:
@@ -144,12 +151,12 @@ def load_chunks_from_kb(kb_dir: Optional[Path] = None) -> List[Chunk]:
 
 
 class BM25Retriever(BaseRetriever):
-    """BM25-based document retriever implementing BaseRetriever."""
+    """BM25-based document retriever implementing BaseRetriever with grade weighting."""
 
     def __init__(self, chunks: Optional[List[Chunk]] = None):
         self.chunks: List[Chunk] = chunks if chunks is not None else load_chunks_from_kb()
         self.corpus_tokens: List[List[str]] = [
-            tokenize(f"{c.title} {c.subject} {c.topic} {c.content}")
+            tokenize(f"{c.title} {c.subject} {c.topic} {' '.join(c.metadata.get('keywords', []))} {c.content}")
             for c in self.chunks
         ]
         if self.corpus_tokens:
@@ -163,9 +170,10 @@ class BM25Retriever(BaseRetriever):
         top_k: int = 3,
         subject: Optional[str] = None,
         topic: Optional[str] = None,
+        grade: Optional[str] = None,
         min_score: float = 0.0,
     ) -> List[Tuple[Chunk, float]]:
-        """Retrieve top scoring chunks for the query with optional filtering."""
+        """Retrieve top scoring chunks for the query with optional filtering and grade preference."""
         if not self.chunks or not self.bm25:
             return []
 
@@ -176,16 +184,23 @@ class BM25Retriever(BaseRetriever):
         scores = self.bm25.get_scores(query_tokens)
         scored_pairs = list(zip(self.chunks, scores))
 
-        # Filter by subject or topic if provided
         filtered = []
         for chunk, score in scored_pairs:
+            # Subject filter
             if subject and subject.lower() != "all" and chunk.subject.lower() != subject.lower():
                 continue
+            # Topic filter
             if topic and topic.lower() != "all" and topic.lower() not in chunk.topic.lower():
                 continue
-            filtered.append((chunk, float(score)))
 
-        # Sort descending by BM25 score
+            adj_score = float(score)
+            # Grade boost if matching student grade
+            if grade and chunk.metadata.get("grade") and chunk.metadata.get("grade").lower() == grade.lower():
+                adj_score *= 1.3
+
+            filtered.append((chunk, adj_score))
+
+        # Sort descending by score
         filtered.sort(key=lambda x: x[1], reverse=True)
         return filtered[:top_k]
 

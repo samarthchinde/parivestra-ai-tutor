@@ -1,12 +1,41 @@
-import { useEffect, useState } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { navigation } from "../data/navigation";
-import { checkHealth } from "../api/client";
+import { checkHealth, getUserProfile } from "../api/client";
+import { getAvatar } from "../data/avatars";
+import Mascot from "./Mascot";
+import OnboardingModal from "./OnboardingModal";
+import { XPChip } from "./UI";
+import { isSoundEnabled, toggleSound, playClick } from "../utils/sound";
+import { Volume2, VolumeX, Flame } from "lucide-react";
 
 export default function AppLayout() {
   const [health, setHealth] = useState({ status: "checking" });
+  const [userProfile, setUserProfile] = useState({
+    display_name: localStorage.getItem("parivestra_display_name") || "Young Explorer",
+    avatar: localStorage.getItem("parivestra_avatar") || "owl",
+    grade: localStorage.getItem("parivestra_grade") || "Class 3",
+    xp: 0,
+    streak: 1,
+  });
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [soundOn, setSoundOn] = useState(isSoundEnabled());
+  const location = useLocation();
 
   useEffect(() => {
+    // Check first-run onboarding
+    const onboarded = localStorage.getItem("parivestra_onboarded");
+    if (!onboarded) {
+      setShowOnboarding(true);
+    }
+
+    // Load user profile from backend
+    async function fetchProfile() {
+      const p = await getUserProfile();
+      if (p) setUserProfile(p);
+    }
+    fetchProfile();
+
     let mounted = true;
     async function probe() {
       const h = await checkHealth();
@@ -20,75 +49,91 @@ export default function AppLayout() {
     };
   }, []);
 
-  const getStatusBadge = () => {
-    if (health.status === "checking") {
-      return (
-        <span style={{ fontSize: 11, display: "flex", alignItems: "center", gap: 6, color: "#888" }}>
-          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ccc" }} />
-          Connecting...
-        </span>
-      );
-    }
-    if (health.status === "ok") {
-      const llmHealthy = health.llm && health.llm.status === "healthy";
-      const tooltipText = llmHealthy
-        ? `LLM Active\nModel: ${health.llm?.model || "gemma-4"}\nURL: ${health.llm?.base_url}\nLatency: ${health.llm?.latency_ms} ms`
-        : `LLM Offline\nURL: ${health.llm?.base_url || "http://127.0.0.1:8000/v1"}\nReason: ${health.llm?.error || health.llm?.error_type || "Connection refused"}\nAction: Run 'powershell scripts/start-llm.ps1' to start the local model`;
+  const handleSoundToggle = () => {
+    const next = toggleSound();
+    setSoundOn(next);
+  };
 
+  const getPariStatusBadge = () => {
+    if (health.status === "checking") {
       return (
         <span
           style={{
-            fontSize: 11,
-            display: "flex",
+            fontSize: 13,
+            display: "inline-flex",
             alignItems: "center",
             gap: 6,
-            color: llmHealthy ? "#16a34a" : "#d97706",
-            background: llmHealthy ? "#dcfce7" : "#fef3c7",
-            padding: "4px 8px",
-            borderRadius: 12,
-            fontWeight: 600,
-            cursor: "help",
+            color: "#64748B",
+            background: "#F1F5F9",
+            padding: "4px 10px",
+            borderRadius: "var(--radius-full)",
+            fontWeight: 700,
           }}
-          title={tooltipText}
         >
-          <span
-            style={{
-              width: 8,
-              height: 8,
-              borderRadius: "50%",
-              background: llmHealthy ? "#16a34a" : "#d97706",
-            }}
-          />
-          {llmHealthy ? "LLM & Backend Active" : "Backend Ready (LLM Offline)"}
+          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#94A3B8" }} />
+          Waking up...
         </span>
       );
     }
+    const llmHealthy = health.status === "ok" && health.llm && health.llm.status === "healthy";
+
     return (
       <span
         style={{
-          fontSize: 11,
-          display: "flex",
+          fontSize: 13,
+          display: "inline-flex",
           alignItems: "center",
           gap: 6,
-          color: "#dc2626",
-          background: "#fee2e2",
-          padding: "4px 8px",
-          borderRadius: 12,
-          fontWeight: 600,
+          color: llmHealthy ? "#15803D" : "#B45309",
+          background: llmHealthy ? "#DCFCE7" : "#FEF3C7",
+          padding: "5px 12px",
+          borderRadius: "var(--radius-full)",
+          fontWeight: 800,
+          cursor: "help",
         }}
-        title="Backend unreachable; using browser offline fallback"
+        title={
+          llmHealthy
+            ? `Pari is awake and ready to chat!\nModel: ${health.llm?.model}\nLatency: ${health.llm?.latency_ms} ms`
+            : `Pari is taking a quick nap.\nOffline fallback lessons and practice quizzes are fully available!\n(Grown-ups can start Pari with scripts/start-llm.ps1)`
+        }
       >
-        <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#dc2626" }} />
-        Offline Mode
+        <span
+          style={{
+            width: 8,
+            height: 8,
+            borderRadius: "50%",
+            background: llmHealthy ? "#22C55E" : "#F59E0B",
+          }}
+        />
+        {llmHealthy ? "Pari is awake! 🌟" : "Pari is resting 😴"}
       </span>
     );
   };
 
+  const avatarObj = getAvatar(userProfile.avatar);
+
   return (
     <div className="app-shell">
+      {/* Onboarding Dialog */}
+      <OnboardingModal
+        isOpen={showOnboarding}
+        onComplete={(newProf) => {
+          setUserProfile((prev) => ({ ...prev, ...newProf }));
+          setShowOnboarding(false);
+        }}
+      />
+
+      {/* Desktop & Tablet Sidebar */}
       <aside className="sidebar">
-        <img className="brand-logo" src="/parivestra-logo.jpeg" alt="Parivestra logo" />
-        <p className="nav-caption">PERSONAL LEARNING SPACE</p>
+        <div className="brand-header">
+          <img className="brand-logo-img" src="/parivestra-logo.jpeg" alt="Parivestra logo" />
+          <div>
+            <h1 className="brand-title">Parivestra</h1>
+            <p className="brand-subtitle">Kids Learning 🌟</p>
+          </div>
+        </div>
+
+        <p className="nav-caption">ADVENTURE MAP</p>
         <nav>
           {navigation.map(({ label, path, icon: Icon }) => (
             <NavLink
@@ -96,33 +141,136 @@ export default function AppLayout() {
               to={path}
               end={path === "/"}
               className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
+              onClick={() => playClick()}
             >
-              <Icon size={18} />
+              <Icon size={20} />
               <span>{label}</span>
             </NavLink>
           ))}
         </nav>
-        <div className="sidebar-note">
-          <strong>Learn at your pace.</strong>
-          <p>Your personal AI tutor is ready whenever you are.</p>
+
+        <div className="sidebar-mascot-card">
+          <Mascot mood="happy" size={76} />
+          <strong style={{ fontSize: 14, color: "var(--text-main)" }}>Learning with Pari</strong>
+          <span style={{ fontSize: 12, color: "var(--text-muted)" }}>
+            Explore, ask questions & win stars!
+          </span>
         </div>
       </aside>
-      <main className="main">
+
+      {/* Main Content Shell */}
+      <div className="main">
+        {/* Top Header Bar */}
         <header className="topbar">
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-            <span>
-              Parivestra <b>/</b> Learning space
-            </span>
-            {getStatusBadge()}
+            {getPariStatusBadge()}
+            <button
+              onClick={handleSoundToggle}
+              style={{
+                background: soundOn ? "#EAF2FE" : "#F1F5F9",
+                border: "none",
+                borderRadius: "var(--radius-full)",
+                padding: "6px 12px",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+                fontSize: 12,
+                fontWeight: 700,
+                color: soundOn ? "var(--color-primary)" : "#64748B",
+                cursor: "pointer",
+              }}
+              title={soundOn ? "Sound Effects ON (tap to mute)" : "Sound Effects OFF (tap to enable)"}
+            >
+              {soundOn ? <Volume2 size={16} /> : <VolumeX size={16} />}
+              <span style={{ display: "inline-block" }}>{soundOn ? "Sound On" : "Muted"}</span>
+            </button>
           </div>
-          <div className="user-chip">
-            <span className="avatar">A</span> Alex Morgan
+
+          {/* Child Identity Chips */}
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <XPChip xp={userProfile.xp || 0} />
+
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 4,
+                background: "#FFF0ED",
+                border: "2px solid #FFCDC5",
+                color: "#C2410C",
+                padding: "5px 10px",
+                borderRadius: "var(--radius-full)",
+                fontWeight: 800,
+                fontSize: "var(--font-size-sm)",
+              }}
+              title="Daily Learning Streak"
+            >
+              <Flame size={16} color="#EA580C" fill="#F97316" />
+              <span>{userProfile.streak || 1}d</span>
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                background: "var(--bg-canvas)",
+                padding: "4px 10px 4px 6px",
+                borderRadius: "var(--radius-full)",
+                border: "2px solid #F0ECE4",
+              }}
+            >
+              <div style={{ width: 34, height: 34, borderRadius: "50%", overflow: "hidden" }}>
+                {avatarObj.render(34)}
+              </div>
+              <div style={{ textAlign: "left", lineHeight: 1.2 }}>
+                <span
+                  style={{
+                    display: "block",
+                    fontWeight: 800,
+                    fontSize: 13,
+                    color: "var(--text-main)",
+                  }}
+                >
+                  {userProfile.display_name}
+                </span>
+                <span
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 700,
+                    color: "var(--color-primary)",
+                  }}
+                >
+                  {userProfile.grade}
+                </span>
+              </div>
+            </div>
           </div>
         </header>
-        <section className="content">
+
+        {/* Content Outlet */}
+        <main className="content">
           <Outlet />
-        </section>
-      </main>
+        </main>
+
+        {/* Phone Bottom Tab Bar (5 key items) */}
+        <nav className="mobile-bottom-nav">
+          {navigation
+            .filter((item) => item.mobileTab)
+            .map(({ label, path, icon: Icon }) => (
+              <NavLink
+                key={path}
+                to={path}
+                end={path === "/"}
+                className={({ isActive }) => `mobile-nav-item ${isActive ? "active" : ""}`}
+                onClick={() => playClick()}
+              >
+                <Icon size={20} />
+                <span>{label}</span>
+              </NavLink>
+            ))}
+        </nav>
+      </div>
     </div>
   );
 }

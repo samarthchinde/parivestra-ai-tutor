@@ -1,13 +1,10 @@
 /**
  * Parivestra AI Tutor API Client
- * Manages API communication, SSE streaming, user persistence, and fallback detection.
+ * Manages API communication, SSE streaming, user persistence, courses, videos and grown-ups auth.
  */
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8001";
 
-/**
- * Retrieve or generate persistent user ID for session tracking.
- */
 export function getUserId() {
   let uid = localStorage.getItem("parivestra_user_id");
   if (!uid) {
@@ -17,22 +14,23 @@ export function getUserId() {
   return uid;
 }
 
-/**
- * Standard headers with user identity.
- */
-function getHeaders(contentType = "application/json") {
+export function getAdminKey() {
+  return localStorage.getItem("parivestra_admin_key") || "parivestra_admin_secret";
+}
+
+function getHeaders(contentType = "application/json", includeAdmin = false) {
   const headers = {
     "X-User-Id": getUserId(),
   };
   if (contentType) {
     headers["Content-Type"] = contentType;
   }
+  if (includeAdmin) {
+    headers["X-Admin-Key"] = getAdminKey();
+  }
   return headers;
 }
 
-/**
- * Health check endpoint.
- */
 export async function checkHealth() {
   try {
     const res = await fetch(`${API_BASE_URL}/api/health`, {
@@ -46,9 +44,67 @@ export async function checkHealth() {
   }
 }
 
-/**
- * Fetch available subjects and topics.
- */
+export async function getUserProfile() {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/user/profile`, {
+      method: "GET",
+      headers: getHeaders(),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  } catch (err) {
+    return {
+      display_name: localStorage.getItem("parivestra_display_name") || "Explorer",
+      avatar: localStorage.getItem("parivestra_avatar") || "owl",
+      grade: localStorage.getItem("parivestra_grade") || "Class 3",
+      xp: 0,
+      streak: 1,
+    };
+  }
+}
+
+export async function updateUserProfile(payload) {
+  const res = await fetch(`${API_BASE_URL}/api/user/profile`, {
+    method: "POST",
+    headers: getHeaders(),
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function resetUserProfile() {
+  const res = await fetch(`${API_BASE_URL}/api/user/reset`, {
+    method: "POST",
+    headers: getHeaders(),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function verifyGrownUpsPin({ pin, answer }) {
+  const res = await fetch(`${API_BASE_URL}/api/auth/grown-ups/verify`, {
+    method: "POST",
+    headers: getHeaders(),
+    body: JSON.stringify({ pin, answer }),
+  });
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(data.error || `HTTP ${res.status}`);
+  }
+  return await res.json();
+}
+
+export async function setGrownUpsPin(pin) {
+  const res = await fetch(`${API_BASE_URL}/api/auth/grown-ups/set-pin`, {
+    method: "POST",
+    headers: getHeaders(),
+    body: JSON.stringify({ pin }),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
 export async function getSubjects() {
   const res = await fetch(`${API_BASE_URL}/api/subjects`, {
     method: "GET",
@@ -58,9 +114,6 @@ export async function getSubjects() {
   return await res.json();
 }
 
-/**
- * Fetch student progress summary.
- */
 export async function getProgressSummary() {
   const res = await fetch(`${API_BASE_URL}/api/progress`, {
     method: "GET",
@@ -70,22 +123,16 @@ export async function getProgressSummary() {
   return await res.json();
 }
 
-/**
- * Request question generation from practice agent.
- */
-export async function generatePracticeQuestions({ subject, topic, difficulty, count = 5 }) {
+export async function generatePracticeQuestions({ subject, topic, difficulty, count = 5, grade }) {
   const res = await fetch(`${API_BASE_URL}/api/practice/generate`, {
     method: "POST",
     headers: getHeaders(),
-    body: JSON.stringify({ subject, topic, difficulty, count }),
+    body: JSON.stringify({ subject, topic, difficulty, count, grade }),
   });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return await res.json();
 }
 
-/**
- * Submit answer to practice agent for grading and mastery update.
- */
 export async function submitPracticeAnswer(payload) {
   const res = await fetch(`${API_BASE_URL}/api/practice/submit`, {
     method: "POST",
@@ -96,14 +143,110 @@ export async function submitPracticeAnswer(payload) {
   return await res.json();
 }
 
-/**
- * Stream tutor conversation using Server-Sent Events.
- */
+export async function getCourses(grade) {
+  const url = grade ? `${API_BASE_URL}/api/courses?grade=${encodeURIComponent(grade)}` : `${API_BASE_URL}/api/courses`;
+  const res = await fetch(url, {
+    method: "GET",
+    headers: getHeaders("application/json", true),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function getCourseDetail(courseId) {
+  const res = await fetch(`${API_BASE_URL}/api/courses/${courseId}`, {
+    method: "GET",
+    headers: getHeaders(),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function getLessonContent(courseId, lessonId) {
+  const res = await fetch(`${API_BASE_URL}/api/courses/${courseId}/lessons/${lessonId}`, {
+    method: "GET",
+    headers: getHeaders(),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function completeLesson(courseId, lessonId, score = 100) {
+  const res = await fetch(`${API_BASE_URL}/api/courses/${courseId}/lessons/${lessonId}/complete`, {
+    method: "POST",
+    headers: getHeaders(),
+    body: JSON.stringify({ score }),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function getVideos(grade, subject) {
+  let url = `${API_BASE_URL}/api/videos?`;
+  if (grade) url += `grade=${encodeURIComponent(grade)}&`;
+  if (subject) url += `subject=${encodeURIComponent(subject)}&`;
+  const res = await fetch(url, {
+    method: "GET",
+    headers: getHeaders(),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function getStoryDetail(storyId) {
+  const res = await fetch(`${API_BASE_URL}/api/videos/story/${storyId}`, {
+    method: "GET",
+    headers: getHeaders(),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function generateStory({ topic, grade, subject }) {
+  const res = await fetch(`${API_BASE_URL}/api/videos/story/generate`, {
+    method: "POST",
+    headers: getHeaders("application/json", true),
+    body: JSON.stringify({ topic, grade, subject }),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function generateCourseDraft({ subject, grade, topic }) {
+  const res = await fetch(`${API_BASE_URL}/api/courses/generate-draft`, {
+    method: "POST",
+    headers: getHeaders("application/json", true),
+    body: JSON.stringify({ subject, grade, topic }),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function getAdminQueue() {
+  const res = await fetch(`${API_BASE_URL}/api/admin/queue`, {
+    method: "GET",
+    headers: getHeaders("application/json", true),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function approveContent(item_type, item_id) {
+  const res = await fetch(`${API_BASE_URL}/api/admin/approve`, {
+    method: "POST",
+    headers: getHeaders("application/json", true),
+    body: JSON.stringify({ item_type, item_id }),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
 export async function streamTutorChat({
   sessionId,
   message,
-  subject = "Python",
+  subject = "Maths",
   topic = null,
+  grade = "Class 3",
   hintLevel = 0,
   onToken,
   onDone,
@@ -118,6 +261,7 @@ export async function streamTutorChat({
         message,
         subject,
         topic,
+        grade,
         hint_level: hintLevel,
       }),
     });
@@ -136,7 +280,7 @@ export async function streamTutorChat({
 
       buffer += decoder.decode(value, { stream: true });
       const lines = buffer.split("\n\n");
-      buffer = lines.pop(); // keep last incomplete chunk
+      buffer = lines.pop();
 
       for (const block of lines) {
         const line = block.trim();
@@ -159,4 +303,3 @@ export async function streamTutorChat({
     if (onError) onError(err);
   }
 }
-
