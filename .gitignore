@@ -20,6 +20,7 @@ dist/
 # Local database and logs
 *.db
 *.log
+logs/
 
 # Model files (too large for Git)
 *.gguf

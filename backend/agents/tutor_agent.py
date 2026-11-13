@@ -1,4 +1,5 @@
 """Tutor Agent: Answers from retrieved source chunks with hint ladder support and citations."""
+import re
 from typing import Any, Dict, Generator, List, Optional, Union
 from pydantic import BaseModel, Field
 
@@ -25,6 +26,7 @@ class TutorOutput(BaseModel):
     citations: List[Citation]
     hint_level: int
     covered: bool = True
+    source: str = "model"
 
 
 SYSTEM_PROMPT = (
@@ -35,6 +37,67 @@ SYSTEM_PROMPT = (
     "3. Never invent facts, hallucinate features, or speculate beyond the sources.\n"
     "4. Follow the specific hint ladder instruction provided in the prompt."
 )
+
+GREETING_WORDS = {
+    "hi", "hello", "hey", "hola", "greetings", "good morning", "good afternoon",
+    "good evening", "howdy", "sup", "yo"
+}
+THANKS_WORDS = {
+    "thanks", "thank you", "thx", "appreciate it", "many thanks", "thank you so much",
+    "thank you very much"
+}
+
+
+def check_greeting_or_thanks(message: str) -> Optional[str]:
+    """Check if message is small talk (greeting or gratitude) without retrieving course chunks."""
+    raw = message.strip().lower()
+    cleaned = re.sub(r"[^\w\s]", "", raw).strip()
+    words = cleaned.split()
+    if not words:
+        return None
+    if cleaned in GREETING_WORDS or (len(words) <= 2 and words[0] in GREETING_WORDS):
+        return "greeting"
+    if cleaned in THANKS_WORDS or any(cleaned.startswith(w) for w in THANKS_WORDS):
+        return "thanks"
+    return None
+
+
+def extract_clean_explanation(content: str) -> str:
+    """Extract clean 2-3 sentence explanation from course chunk, stripping raw metadata headers."""
+    if not content:
+        return ""
+    lines = content.splitlines()
+    expl_lines = []
+    capturing = False
+    for line in lines:
+        stripped = line.strip()
+        if stripped.lower().startswith("explanation:"):
+            capturing = True
+            expl_lines.append(stripped[len("explanation:"):].strip())
+        elif stripped.lower().startswith(("example:", "hint:", "keywords:", "subject/topic:")):
+            capturing = False
+        elif capturing and stripped:
+            expl_lines.append(stripped)
+
+    if expl_lines:
+        text = " ".join(expl_lines).strip()
+    else:
+        # Fallback: remove lines starting with metadata keywords
+        filtered = [
+            l.strip() for l in lines
+            if not l.strip().lower().startswith(("keywords:", "subject/topic:", "hint:", "example:"))
+        ]
+        text = " ".join([l for l in filtered if l]).strip()
+
+    # Split into sentences and take at most 3
+    sentences = [s.strip() for s in re.split(r"(?<=[.!?])\s+", text) if s.strip()]
+    if sentences:
+        selected = sentences[:3]
+        result = " ".join(selected)
+        if not result.endswith((".", "!", "?")):
+            result += "."
+        return result
+    return text
 
 
 class TutorAgent:
@@ -54,7 +117,6 @@ class TutorAgent:
                 "HINT LEVEL 1 (Nudge): Provide a gentle 1-2 sentence nudge or thought-provoking question "
                 "to point the student in the right direction. DO NOT give away the complete answer or solution."
             )
-        elif hint_level == 2:
             return (
                 "HINT LEVEL 2 (Clue): Give a bigger clue. Mention the key concept, syntax keyword, or rule "
                 "from the source excerpts, but let the student complete the thought."
@@ -111,6 +173,26 @@ class TutorAgent:
         """Synchronous explanation generation."""
         if isinstance(input_data, dict):
             input_data = TutorInput(**input_data)
+
+        # Handle greetings and thanks without retrieval or model calls
+        chat_type = check_greeting_or_thanks(input_data.message)
+        if chat_type == "greeting":
+            return TutorOutput(
+                response="Hello! I am your Parivestra AI Tutor. Ask me any concept question about Python, AI, Machine Learning, Networks, or Java, and I'll guide you step by step!",
+                citations=[],
+                hint_level=input_data.hint_level,
+                covered=True,
+                source="assistant",
+            )
+        elif chat_type == "thanks":
+            return TutorOutput(
+                response="You're very welcome! Keep asking questions or head over to the Practice tab to test your understanding.",
+                citations=[],
+                hint_level=input_data.hint_level,
+                covered=True,
+                source="assistant",
+            )
+
         messages, citations = self._prepare_context(input_data)
 
         if not messages:
@@ -119,6 +201,7 @@ class TutorAgent:
                 citations=[],
                 hint_level=input_data.hint_level,
                 covered=False,
+                source="model",
             )
 
         try:
@@ -128,24 +211,38 @@ class TutorAgent:
                 citations=citations,
                 hint_level=input_data.hint_level,
                 covered=True,
+                source="model",
             )
-        except Exception as e:
-            # Fallback if LLM is offline or errors
-            first_chunk = citations[0] if citations else None
-            fallback_text = (
-                f"Note: Local LLM service is currently offline. Here is the relevant material from the course:\n\n"
+        except Exception:
+            # Clean fallback when LLM is offline
+            retrieved = self.retriever.retrieve(
+                query=input_data.message,
+                top_k=1,
+                subject=input_data.subject,
+                topic=input_data.topic,
             )
-            retrieved = self.retriever.retrieve(input_data.message, top_k=1)
             if retrieved:
-                fallback_text += retrieved[0][0].content
+                best_chunk, _ = retrieved[0]
+                clean_exp = extract_clean_explanation(best_chunk.content)
+                fallback_text = (
+                    f"Offline mode: the AI model is not connected. Here is what our course material says about {best_chunk.title}:\n\n"
+                    f"{clean_exp}\n\n"
+                    f"Ask your instructor to start the AI model or run scripts/start-llm.ps1."
+                )
+                fallback_citations = [Citation(id=best_chunk.id, title=best_chunk.title)]
             else:
-                fallback_text = "I could not find information about this in the course material."
+                fallback_text = (
+                    "Offline mode: the AI model is not connected, and no matching course material was found. "
+                    "Ask your instructor to start the AI model or run scripts/start-llm.ps1."
+                )
+                fallback_citations = []
 
             return TutorOutput(
                 response=fallback_text,
-                citations=citations,
+                citations=fallback_citations,
                 hint_level=input_data.hint_level,
-                covered=bool(citations),
+                covered=bool(fallback_citations),
+                source="offline",
             )
 
     def explain_stream(
@@ -153,11 +250,32 @@ class TutorAgent:
     ) -> Generator[Dict[str, Any], None, None]:
         if isinstance(input_data, dict):
             input_data = TutorInput(**input_data)
-        """
-        Streaming explanation generator yielding SSE-compatible event dictionaries:
-        - {"type": "token", "token": "..."}
-        - {"type": "done", "citations": [...], "hint_level": ...}
-        """
+
+        # Handle greetings and thanks directly
+        chat_type = check_greeting_or_thanks(input_data.message)
+        if chat_type == "greeting":
+            msg = "Hello! I am your Parivestra AI Tutor. Ask me any concept question about Python, AI, Machine Learning, Networks, or Java, and I'll guide you step by step!"
+            yield {"type": "token", "token": msg}
+            yield {
+                "type": "done",
+                "citations": [],
+                "hint_level": input_data.hint_level,
+                "covered": True,
+                "source": "assistant",
+            }
+            return
+        elif chat_type == "thanks":
+            msg = "You're very welcome! Keep asking questions or head over to the Practice tab to test your understanding."
+            yield {"type": "token", "token": msg}
+            yield {
+                "type": "done",
+                "citations": [],
+                "hint_level": input_data.hint_level,
+                "covered": True,
+                "source": "assistant",
+            }
+            return
+
         messages, citations = self._prepare_context(input_data)
 
         if not messages:
@@ -168,6 +286,7 @@ class TutorAgent:
                 "citations": [],
                 "hint_level": input_data.hint_level,
                 "covered": False,
+                "source": "model",
             }
             return
 
@@ -181,20 +300,37 @@ class TutorAgent:
                 "citations": [c.model_dump() for c in citations],
                 "hint_level": input_data.hint_level,
                 "covered": True,
+                "source": "model",
             }
-        except Exception as e:
-            # Fallback stream if LLM server is unreachable
-            fallback = "Note: Local LLM is currently unreachable. "
-            retrieved = self.retriever.retrieve(input_data.message, top_k=1)
+        except Exception:
+            # Clean fallback if LLM is offline
+            retrieved = self.retriever.retrieve(
+                query=input_data.message,
+                top_k=1,
+                subject=input_data.subject,
+                topic=input_data.topic,
+            )
             if retrieved:
-                fallback += f"From course material [{retrieved[0][0].title}]:\n{retrieved[0][0].content}"
+                best_chunk, _ = retrieved[0]
+                clean_exp = extract_clean_explanation(best_chunk.content)
+                fallback = (
+                    f"Offline mode: the AI model is not connected. Here is what our course material says about {best_chunk.title}:\n\n"
+                    f"{clean_exp}\n\n"
+                    f"Ask your instructor to start the AI model or run scripts/start-llm.ps1."
+                )
+                fallback_citations = [Citation(id=best_chunk.id, title=best_chunk.title).model_dump()]
             else:
-                fallback += "I could not find information about this in the course material."
+                fallback = (
+                    "Offline mode: the AI model is not connected, and no matching course material was found. "
+                    "Ask your instructor to start the AI model or run scripts/start-llm.ps1."
+                )
+                fallback_citations = []
 
             yield {"type": "token", "token": fallback}
             yield {
                 "type": "done",
-                "citations": [c.model_dump() for c in citations],
+                "citations": fallback_citations,
                 "hint_level": input_data.hint_level,
-                "covered": bool(citations),
+                "covered": bool(fallback_citations),
+                "source": "offline",
             }

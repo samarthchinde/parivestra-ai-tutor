@@ -121,6 +121,7 @@ export default function Tutor() {
                   ...msg,
                   citations: meta.citations || [],
                   hintLevel: meta.hint_level ?? effectiveHintLevel,
+                  source: meta.source || "model",
                   streaming: false,
                 }
               : msg
@@ -138,7 +139,8 @@ export default function Tutor() {
                   ...msg,
                   content:
                     msg.content ||
-                    "Could not connect to the local AI backend. Please verify that the local LLM server or Ollama is running.",
+                    "Could not connect to the local AI backend. Please verify that the local LLM server is running.",
+                  source: "offline",
                   streaming: false,
                 }
               : msg
@@ -300,6 +302,24 @@ export default function Tutor() {
               )}
 
               <div style={{ maxWidth: "80%" }}>
+                {!isUser && m.source && (
+                  <div style={{ marginBottom: 4 }}>
+                    <span
+                      style={{
+                        fontSize: 10,
+                        fontWeight: 700,
+                        textTransform: "uppercase",
+                        letterSpacing: "0.5px",
+                        padding: "2px 6px",
+                        borderRadius: 4,
+                        background: m.source === "model" ? "#dcfce7" : "#fef3c7",
+                        color: m.source === "model" ? "#15803d" : "#b45309",
+                      }}
+                    >
+                      {m.source === "model" ? "AI Model" : m.source === "assistant" ? "AI Tutor" : "Offline Fallback"}
+                    </span>
+                  </div>
+                )}
                 <div
                   style={{
                     background: isUser ? "#e95b30" : "#f8fafc",

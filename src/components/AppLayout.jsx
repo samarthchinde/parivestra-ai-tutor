@@ -13,7 +13,7 @@ export default function AppLayout() {
       if (mounted) setHealth(h);
     }
     probe();
-    const interval = setInterval(probe, 30000);
+    const interval = setInterval(probe, 10000);
     return () => {
       mounted = false;
       clearInterval(interval);
@@ -31,6 +31,10 @@ export default function AppLayout() {
     }
     if (health.status === "ok") {
       const llmHealthy = health.llm && health.llm.status === "healthy";
+      const tooltipText = llmHealthy
+        ? `LLM Active\nModel: ${health.llm?.model || "gemma-4"}\nURL: ${health.llm?.base_url}\nLatency: ${health.llm?.latency_ms} ms`
+        : `LLM Offline\nURL: ${health.llm?.base_url || "http://127.0.0.1:8000/v1"}\nReason: ${health.llm?.error || health.llm?.error_type || "Connection refused"}\nAction: Run 'powershell scripts/start-llm.ps1' to start the local model`;
+
       return (
         <span
           style={{
@@ -43,8 +47,9 @@ export default function AppLayout() {
             padding: "4px 8px",
             borderRadius: 12,
             fontWeight: 600,
+            cursor: "help",
           }}
-          title={llmHealthy ? `Connected to ${health.llm?.model}` : "Backend online; LLM offline"}
+          title={tooltipText}
         >
           <span
             style={{
