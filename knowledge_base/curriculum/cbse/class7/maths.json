@@ -1,0 +1,66 @@
+{
+  "board": "CBSE",
+  "grade": "Class 7",
+  "subject": "Maths",
+  "units": [
+    {
+      "id": "c7_maths_u1",
+      "title": "Number Operations & Equations",
+      "chapters": [
+        {
+          "id": "c7_maths_ch01",
+          "chapter_number": 1,
+          "title": "Integers Operations & Properties",
+          "learning_objectives": [
+            "Multiplication and division of integers",
+            "Distributive property"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "integers",
+            "distributive property",
+            "signs"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c7_maths_ch02",
+          "chapter_number": 2,
+          "title": "Fractions and Decimals",
+          "learning_objectives": [
+            "Multiplication and division of fractions and decimals",
+            "Reciprocals and place value"
+          ],
+          "prerequisites": [
+            "c7_maths_ch01"
+          ],
+          "keywords": [
+            "decimals",
+            "fractions",
+            "reciprocal"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c7_maths_ch03",
+          "chapter_number": 3,
+          "title": "Simple Linear Equations",
+          "learning_objectives": [
+            "Form linear equations in one variable",
+            "Solve equations by balancing and transposition"
+          ],
+          "prerequisites": [
+            "c7_maths_ch02"
+          ],
+          "keywords": [
+            "variables",
+            "constants",
+            "equations",
+            "transposition"
+          ],
+          "needs_review": true
+        }
+      ]
+    }
+  ]
+}

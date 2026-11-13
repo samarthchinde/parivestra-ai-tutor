@@ -1,0 +1,109 @@
+{
+  "board": "CBSE",
+  "grade": "Class 3",
+  "subject": "Maths",
+  "units": [
+    {
+      "id": "c3_maths_u1",
+      "title": "Number Sense & Computation",
+      "chapters": [
+        {
+          "id": "c3_maths_ch01",
+          "chapter_number": 1,
+          "title": "Where to Look From",
+          "learning_objectives": [
+            "Identify top, side and front views of everyday objects",
+            "Understand symmetry and patterns"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "views",
+            "shapes",
+            "symmetry",
+            "grid"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c3_maths_ch02",
+          "chapter_number": 2,
+          "title": "Fun with Numbers",
+          "learning_objectives": [
+            "Read and write 3-digit numbers up to 999",
+            "Understand place value (hundreds, tens, ones)"
+          ],
+          "prerequisites": [
+            "c3_maths_ch01"
+          ],
+          "keywords": [
+            "place value",
+            "hundreds",
+            "expanded form"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c3_maths_ch03",
+          "chapter_number": 3,
+          "title": "Give and Take",
+          "learning_objectives": [
+            "Mental addition and subtraction of 2-digit and 3-digit numbers",
+            "Solve real-world word problems"
+          ],
+          "prerequisites": [
+            "c3_maths_ch02"
+          ],
+          "keywords": [
+            "addition",
+            "subtraction",
+            "carrying",
+            "borrowing"
+          ],
+          "needs_review": true
+        }
+      ]
+    },
+    {
+      "id": "c3_maths_u2",
+      "title": "Measurement & Shapes",
+      "chapters": [
+        {
+          "id": "c3_maths_ch04",
+          "chapter_number": 4,
+          "title": "Long and Short",
+          "learning_objectives": [
+            "Measure lengths using non-standard and standard units (cm, m)",
+            "Estimate distances"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "length",
+            "centimetres",
+            "metres",
+            "ruler"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c3_maths_ch05",
+          "chapter_number": 5,
+          "title": "Shapes and Designs",
+          "learning_objectives": [
+            "Identify 2D shapes (triangle, rectangle, circle)",
+            "Count edges and corners"
+          ],
+          "prerequisites": [
+            "c3_maths_ch04"
+          ],
+          "keywords": [
+            "edges",
+            "corners",
+            "tangram",
+            "tiling"
+          ],
+          "needs_review": true
+        }
+      ]
+    }
+  ]
+}

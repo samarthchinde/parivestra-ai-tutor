@@ -1,0 +1,256 @@
+{
+  "board": "CBSE",
+  "grade": "Class 10",
+  "subject": "Science",
+  "units": [
+    {
+      "id": "c10_sci_u1",
+      "title": "Chemical Substances: Nature and Behaviour",
+      "sub_discipline": "Chemistry",
+      "chapters": [
+        {
+          "id": "c10_chem_ch01",
+          "chapter_number": 1,
+          "title": "Chemical Reactions and Equations",
+          "learning_objectives": [
+            "Balancing chemical equations by hit-and-trial",
+            "Combination, decomposition, displacement, double displacement, redox"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "chemical reaction",
+            "balancing",
+            "redox",
+            "oxidation",
+            "corrosion"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c10_chem_ch02",
+          "chapter_number": 2,
+          "title": "Acids, Bases and Salts",
+          "learning_objectives": [
+            "pH scale and importance in everyday life",
+            "Manufacturing and properties of Bleaching Powder, Baking Soda, Plaster of Paris"
+          ],
+          "prerequisites": [
+            "c10_chem_ch01"
+          ],
+          "keywords": [
+            "pH scale",
+            "neutralization",
+            "baking soda",
+            "plaster of paris"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c10_chem_ch03",
+          "chapter_number": 3,
+          "title": "Metals and Non-metals",
+          "learning_objectives": [
+            "Reactivity series and ionic compound formation/properties",
+            "Corrosion and its prevention"
+          ],
+          "prerequisites": [
+            "c10_chem_ch01"
+          ],
+          "keywords": [
+            "reactivity series",
+            "ionic bond",
+            "calcination",
+            "roasting"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c10_chem_ch04",
+          "chapter_number": 4,
+          "title": "Carbon and its Compounds",
+          "learning_objectives": [
+            "Covalent bonding, catenation, and tetravalency of carbon",
+            "Homologous series, functional groups, ethanol and ethanoic acid properties"
+          ],
+          "prerequisites": [
+            "c10_chem_ch01"
+          ],
+          "keywords": [
+            "covalent bond",
+            "homologous series",
+            "ethanol",
+            "saponification"
+          ],
+          "needs_review": true
+        }
+      ]
+    },
+    {
+      "id": "c10_sci_u2",
+      "title": "World of Living: Biology",
+      "sub_discipline": "Biology",
+      "chapters": [
+        {
+          "id": "c10_bio_ch01",
+          "chapter_number": 5,
+          "title": "Life Processes",
+          "learning_objectives": [
+            "Human nutrition, respiration (aerobic vs anaerobic)",
+            "Transportation in humans and plants, excretion in kidneys/nephrons"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "respiration",
+            "circulation",
+            "nephron",
+            "dialysis",
+            "xylem"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c10_bio_ch02",
+          "chapter_number": 6,
+          "title": "Control and Coordination",
+          "learning_objectives": [
+            "Human nervous system and reflex arcs",
+            "Plant hormones (Auxin, Gibberellin) and endocrine glands in humans"
+          ],
+          "prerequisites": [
+            "c10_bio_ch01"
+          ],
+          "keywords": [
+            "neuron",
+            "reflex arc",
+            "brain",
+            "auxin",
+            "insulin"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c10_bio_ch03",
+          "chapter_number": 7,
+          "title": "How do Organisms Reproduce?",
+          "learning_objectives": [
+            "Asexual reproduction modes (binary fission, budding, spore formation)",
+            "Sexual reproduction in flowering plants and human reproductive system"
+          ],
+          "prerequisites": [
+            "c10_bio_ch01"
+          ],
+          "keywords": [
+            "pollination",
+            "fertilization",
+            "gametes",
+            "contraception"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c10_bio_ch04",
+          "chapter_number": 8,
+          "title": "Heredity and Evolution",
+          "learning_objectives": [
+            "Mendel's monohybrid and dihybrid crosses",
+            "Sex determination in human beings"
+          ],
+          "prerequisites": [
+            "c10_bio_ch03"
+          ],
+          "keywords": [
+            "mendel",
+            "genotype",
+            "phenotype",
+            "sex determination",
+            "dominant"
+          ],
+          "needs_review": true
+        }
+      ]
+    },
+    {
+      "id": "c10_sci_u3",
+      "title": "Natural Phenomena & Effects of Current: Physics",
+      "sub_discipline": "Physics",
+      "chapters": [
+        {
+          "id": "c10_phys_ch01",
+          "chapter_number": 9,
+          "title": "Light: Reflection and Refraction",
+          "learning_objectives": [
+            "Mirror formula, magnification, and ray diagrams for spherical mirrors",
+            "Snell's law, refractive index, and lens formula"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "reflection",
+            "refraction",
+            "mirror formula",
+            "lens formula",
+            "power of lens"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c10_phys_ch02",
+          "chapter_number": 10,
+          "title": "The Human Eye and the Colorful World",
+          "learning_objectives": [
+            "Structure of the eye and defects of vision (Myopia, Hypermetropia)",
+            "Atmospheric refraction, dispersion through a prism, Tyndall effect"
+          ],
+          "prerequisites": [
+            "c10_phys_ch01"
+          ],
+          "keywords": [
+            "myopia",
+            "hypermetropia",
+            "dispersion",
+            "rainbow",
+            "scattering"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c10_phys_ch03",
+          "chapter_number": 11,
+          "title": "Electricity",
+          "learning_objectives": [
+            "Ohm's law (V=IR), factors affecting resistance (resistivity)",
+            "Series and parallel resistor combinations, Joule's law of heating, electric power"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "current",
+            "voltage",
+            "ohm's law",
+            "resistance",
+            "joule's heating",
+            "power"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c10_phys_ch04",
+          "chapter_number": 12,
+          "title": "Magnetic Effects of Electric Current",
+          "learning_objectives": [
+            "Magnetic field patterns around straight wire, circular loop, and solenoid",
+            "Fleming's Left-Hand Rule, electric motor, electromagnetic induction"
+          ],
+          "prerequisites": [
+            "c10_phys_ch03"
+          ],
+          "keywords": [
+            "magnetic field",
+            "solenoid",
+            "fleming's left hand rule",
+            "electric motor"
+          ],
+          "needs_review": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,148 @@
+{
+  "board": "CBSE",
+  "grade": "Class 10",
+  "subject": "Maths",
+  "units": [
+    {
+      "id": "c10_maths_u1",
+      "title": "Algebra & Quadratic Equations",
+      "chapters": [
+        {
+          "id": "c10_maths_ch01",
+          "chapter_number": 1,
+          "title": "Real Numbers (Fundamental Theorem of Arithmetic)",
+          "learning_objectives": [
+            "Prove irrationality of sqrt(2), sqrt(3), sqrt(5)",
+            "HCF and LCM via prime factorization"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "fundamental theorem",
+            "irrationality proof",
+            "coprimes"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c10_maths_ch02",
+          "chapter_number": 2,
+          "title": "Polynomials (Zeroes & Coefficients)",
+          "learning_objectives": [
+            "Relationship between zeroes and coefficients of quadratic polynomials",
+            "Geometric meaning of zeroes"
+          ],
+          "prerequisites": [
+            "c10_maths_ch01"
+          ],
+          "keywords": [
+            "quadratic",
+            "zeroes",
+            "alpha beta",
+            "coefficients"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c10_maths_ch03",
+          "chapter_number": 3,
+          "title": "Pair of Linear Equations in Two Variables",
+          "learning_objectives": [
+            "Graphical method and consistency conditions",
+            "Substitution and elimination methods"
+          ],
+          "prerequisites": [
+            "c10_maths_ch02"
+          ],
+          "keywords": [
+            "linear equations",
+            "elimination",
+            "substitution",
+            "consistency"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c10_maths_ch04",
+          "chapter_number": 4,
+          "title": "Quadratic Equations",
+          "learning_objectives": [
+            "Roots of quadratic equations by factorization and quadratic formula",
+            "Nature of roots via discriminant"
+          ],
+          "prerequisites": [
+            "c10_maths_ch02"
+          ],
+          "keywords": [
+            "quadratic formula",
+            "discriminant",
+            "real roots"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c10_maths_ch05",
+          "chapter_number": 5,
+          "title": "Arithmetic Progressions (AP)",
+          "learning_objectives": [
+            "nth term of an AP formula: a_n = a + (n-1)d",
+            "Sum of first n terms formula: S_n = n/2[2a + (n-1)d]"
+          ],
+          "prerequisites": [
+            "c10_maths_ch01"
+          ],
+          "keywords": [
+            "arithmetic progression",
+            "common difference",
+            "nth term",
+            "sum"
+          ],
+          "needs_review": true
+        }
+      ]
+    },
+    {
+      "id": "c10_maths_u2",
+      "title": "Trigonometry & Geometry",
+      "chapters": [
+        {
+          "id": "c10_maths_ch06",
+          "chapter_number": 6,
+          "title": "Introduction to Trigonometry",
+          "learning_objectives": [
+            "Trigonometric ratios of acute angles (sin, cos, tan, cosec, sec, cot)",
+            "Values at 0, 30, 45, 60, 90 degrees and sin^2+cos^2=1 identity"
+          ],
+          "prerequisites": [
+            "c10_maths_ch01"
+          ],
+          "keywords": [
+            "trigonometry",
+            "sin",
+            "cos",
+            "tan",
+            "identities"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c10_maths_ch07",
+          "chapter_number": 7,
+          "title": "Some Applications of Trigonometry",
+          "learning_objectives": [
+            "Angle of elevation and angle of depression",
+            "Heights and distances word problems"
+          ],
+          "prerequisites": [
+            "c10_maths_ch06"
+          ],
+          "keywords": [
+            "angle of elevation",
+            "depression",
+            "heights and distances"
+          ],
+          "needs_review": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "board": "CBSE",
+  "grade": "Class 7",
+  "subject": "Social Science",
+  "units": [
+    {
+      "id": "c7_soc_u1",
+      "title": "Environment, Kings & Democracy",
+      "chapters": [
+        {
+          "id": "c7_soc_ch01",
+          "chapter_number": 1,
+          "title": "Our Environment (Biosphere & Ecosystem)",
+          "learning_objectives": [
+            "Biotic and abiotic components",
+            "Lithosphere, hydrosphere, atmosphere, biosphere"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "environment",
+            "biosphere",
+            "ecosystem"
+          ],
+          "needs_review": true
+        }
+      ]
+    }
+  ]
+}

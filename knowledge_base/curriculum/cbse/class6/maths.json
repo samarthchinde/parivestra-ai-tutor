@@ -1,0 +1,85 @@
+{
+  "board": "CBSE",
+  "grade": "Class 6",
+  "subject": "Maths",
+  "units": [
+    {
+      "id": "c6_maths_u1",
+      "title": "Number Systems & Algebra",
+      "chapters": [
+        {
+          "id": "c6_maths_ch01",
+          "chapter_number": 1,
+          "title": "Knowing Our Numbers",
+          "learning_objectives": [
+            "Indian and International numeration systems",
+            "Roman numerals and estimation"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "place value",
+            "international system",
+            "roman numerals"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c6_maths_ch02",
+          "chapter_number": 2,
+          "title": "Whole Numbers",
+          "learning_objectives": [
+            "Number line properties",
+            "Additive and multiplicative identities"
+          ],
+          "prerequisites": [
+            "c6_maths_ch01"
+          ],
+          "keywords": [
+            "natural numbers",
+            "whole numbers",
+            "closure"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c6_maths_ch03",
+          "chapter_number": 3,
+          "title": "Playing with Numbers (Factors & Multiples)",
+          "learning_objectives": [
+            "Find Prime and Composite numbers",
+            "Compute HCF and LCM using prime factorization"
+          ],
+          "prerequisites": [
+            "c6_maths_ch02"
+          ],
+          "keywords": [
+            "factors",
+            "multiples",
+            "HCF",
+            "LCM",
+            "prime"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c6_maths_ch04",
+          "chapter_number": 4,
+          "title": "Integers",
+          "learning_objectives": [
+            "Represent positive and negative numbers on the number line",
+            "Add and subtract integers"
+          ],
+          "prerequisites": [
+            "c6_maths_ch02"
+          ],
+          "keywords": [
+            "integers",
+            "negative numbers",
+            "number line"
+          ],
+          "needs_review": true
+        }
+      ]
+    }
+  ]
+}

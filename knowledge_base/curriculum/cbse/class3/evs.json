@@ -1,0 +1,64 @@
+{
+  "board": "CBSE",
+  "grade": "Class 3",
+  "subject": "EVS",
+  "units": [
+    {
+      "id": "c3_evs_u1",
+      "title": "Plants & Animals Around Us",
+      "chapters": [
+        {
+          "id": "c3_evs_ch01",
+          "chapter_number": 1,
+          "title": "Poonam's Day Out",
+          "learning_objectives": [
+            "Observe and categorize animals by movement and habitat",
+            "Recognize animal sounds"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "animals",
+            "birds",
+            "insects",
+            "habitat"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c3_evs_ch02",
+          "chapter_number": 2,
+          "title": "The Plant Fairy",
+          "learning_objectives": [
+            "Identify parts of a plant (roots, stem, leaves, flowers)",
+            "Differentiate trees, shrubs, and herbs"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "leaves",
+            "roots",
+            "chlorophyll",
+            "bark"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c3_evs_ch03",
+          "chapter_number": 3,
+          "title": "Water O' Water!",
+          "learning_objectives": [
+            "Identify sources of freshwater",
+            "Understand the basics of rain and conservation"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "water cycle",
+            "rain",
+            "river",
+            "conservation"
+          ],
+          "needs_review": true
+        }
+      ]
+    }
+  ]
+}

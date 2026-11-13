@@ -1,0 +1,29 @@
+{
+  "board": "CBSE",
+  "grade": "Class 10",
+  "subject": "English",
+  "units": [
+    {
+      "id": "c10_eng_u1",
+      "title": "Advanced Grammar & Formal Writing",
+      "chapters": [
+        {
+          "id": "c10_eng_ch01",
+          "chapter_number": 1,
+          "title": "Error Correction & Editing",
+          "learning_objectives": [
+            "Spot grammatical errors in verb forms, prepositions, articles",
+            "Editing and omission techniques for board exams"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "editing",
+            "omission",
+            "error detection"
+          ],
+          "needs_review": true
+        }
+      ]
+    }
+  ]
+}

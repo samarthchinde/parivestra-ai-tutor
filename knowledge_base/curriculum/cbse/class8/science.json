@@ -1,0 +1,65 @@
+{
+  "board": "CBSE",
+  "grade": "Class 8",
+  "subject": "Science",
+  "units": [
+    {
+      "id": "c8_sci_u1",
+      "title": "Microorganisms, Materials & Forces",
+      "chapters": [
+        {
+          "id": "c8_sci_ch01",
+          "chapter_number": 1,
+          "title": "Crop Production and Management",
+          "learning_objectives": [
+            "Agricultural practices: tilling, sowing, manure, irrigation, harvesting",
+            "Kharif and Rabi crops"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "agriculture",
+            "irrigation",
+            "crops",
+            "fertilizers"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c8_sci_ch02",
+          "chapter_number": 2,
+          "title": "Microorganisms: Friend and Foe",
+          "learning_objectives": [
+            "Bacteria, fungi, protozoa, algae, viruses",
+            "Antibiotics, vaccines, food preservation"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "microbes",
+            "bacteria",
+            "fermentation",
+            "vaccines"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c8_sci_ch03",
+          "chapter_number": 3,
+          "title": "Force and Pressure",
+          "learning_objectives": [
+            "Contact and non-contact forces",
+            "Atmospheric pressure and liquid pressure"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "force",
+            "gravity",
+            "friction",
+            "pressure",
+            "pascals"
+          ],
+          "needs_review": true
+        }
+      ]
+    }
+  ]
+}

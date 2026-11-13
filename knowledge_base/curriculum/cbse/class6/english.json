@@ -1,0 +1,30 @@
+{
+  "board": "CBSE",
+  "grade": "Class 6",
+  "subject": "English",
+  "units": [
+    {
+      "id": "c6_eng_u1",
+      "title": "Grammar & Sentence Structures",
+      "chapters": [
+        {
+          "id": "c6_eng_ch01",
+          "chapter_number": 1,
+          "title": "Types of Sentences & Clauses",
+          "learning_objectives": [
+            "Assertive, interrogative, imperative, exclamatory sentences",
+            "Subject-verb agreement"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "syntax",
+            "predicate",
+            "subject",
+            "clause"
+          ],
+          "needs_review": true
+        }
+      ]
+    }
+  ]
+}

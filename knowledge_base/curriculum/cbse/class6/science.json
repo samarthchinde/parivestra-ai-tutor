@@ -1,0 +1,67 @@
+{
+  "board": "CBSE",
+  "grade": "Class 6",
+  "subject": "Science",
+  "units": [
+    {
+      "id": "c6_sci_u1",
+      "title": "Food, Materials & Living World",
+      "chapters": [
+        {
+          "id": "c6_sci_ch01",
+          "chapter_number": 1,
+          "title": "Components of Food",
+          "learning_objectives": [
+            "Identify carbohydrates, proteins, fats, vitamins, and minerals",
+            "Recognize deficiency diseases"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "nutrients",
+            "proteins",
+            "vitamins",
+            "scurvy",
+            "rickets"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c6_sci_ch02",
+          "chapter_number": 2,
+          "title": "Sorting Materials into Groups",
+          "learning_objectives": [
+            "Classify objects by lustre, hardness, solubility, and transparency",
+            "Density and buoyancy"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "transparent",
+            "translucent",
+            "opaque",
+            "solubility"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c6_sci_ch03",
+          "chapter_number": 3,
+          "title": "Separation of Substances",
+          "learning_objectives": [
+            "Methods: handpicking, winnowing, sieving, sedimentation, filtration",
+            "Evaporation and condensation"
+          ],
+          "prerequisites": [
+            "c6_sci_ch02"
+          ],
+          "keywords": [
+            "filtration",
+            "decantation",
+            "solution",
+            "solute"
+          ],
+          "needs_review": true
+        }
+      ]
+    }
+  ]
+}

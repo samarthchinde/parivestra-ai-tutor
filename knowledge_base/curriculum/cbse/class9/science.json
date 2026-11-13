@@ -1,0 +1,177 @@
+{
+  "board": "CBSE",
+  "grade": "Class 9",
+  "subject": "Science",
+  "units": [
+    {
+      "id": "c9_sci_u1",
+      "title": "Chemistry: Matter & Atoms",
+      "sub_discipline": "Chemistry",
+      "chapters": [
+        {
+          "id": "c9_chem_ch01",
+          "chapter_number": 1,
+          "title": "Matter in Our Surroundings",
+          "learning_objectives": [
+            "Kinetic theory of matter and states of matter",
+            "Evaporation, latent heat, and factors affecting rate"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "matter",
+            "diffusion",
+            "latent heat",
+            "evaporation",
+            "sublimation"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c9_chem_ch02",
+          "chapter_number": 2,
+          "title": "Is Matter Around Us Pure?",
+          "learning_objectives": [
+            "Elements, compounds, mixtures, solutions, colloids, and suspensions",
+            "Physical vs chemical changes"
+          ],
+          "prerequisites": [
+            "c9_chem_ch01"
+          ],
+          "keywords": [
+            "colloid",
+            "suspension",
+            "tyndall effect",
+            "solubility"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c9_chem_ch03",
+          "chapter_number": 3,
+          "title": "Atoms and Molecules",
+          "learning_objectives": [
+            "Laws of chemical combination (Mass & Proportions)",
+            "Atomic mass, molecular mass, and chemical formula writing"
+          ],
+          "prerequisites": [
+            "c9_chem_ch02"
+          ],
+          "keywords": [
+            "atomic mass",
+            "molecules",
+            "valency",
+            "chemical formula"
+          ],
+          "needs_review": true
+        }
+      ]
+    },
+    {
+      "id": "c9_sci_u2",
+      "title": "Physics: Motion, Force & Gravitation",
+      "sub_discipline": "Physics",
+      "chapters": [
+        {
+          "id": "c9_phys_ch01",
+          "chapter_number": 4,
+          "title": "Motion (Kinematics)",
+          "learning_objectives": [
+            "Distance, displacement, velocity, acceleration",
+            "Three equations of motion and graphical analysis"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "motion",
+            "displacement",
+            "acceleration",
+            "velocity-time graph"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c9_phys_ch02",
+          "chapter_number": 5,
+          "title": "Force and Newton's Laws of Motion",
+          "learning_objectives": [
+            "Inertia, momentum, Newton's 3 laws",
+            "Conservation of momentum derivations"
+          ],
+          "prerequisites": [
+            "c9_phys_ch01"
+          ],
+          "keywords": [
+            "newton's laws",
+            "inertia",
+            "momentum",
+            "f=ma"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c9_phys_ch03",
+          "chapter_number": 6,
+          "title": "Gravitation",
+          "learning_objectives": [
+            "Universal Law of Gravitation (G vs g)",
+            "Mass vs weight and Archimedes' principle"
+          ],
+          "prerequisites": [
+            "c9_phys_ch02"
+          ],
+          "keywords": [
+            "gravitation",
+            "free fall",
+            "weight",
+            "buoyancy"
+          ],
+          "needs_review": true
+        }
+      ]
+    },
+    {
+      "id": "c9_sci_u3",
+      "title": "Biology: Cell & Tissues",
+      "sub_discipline": "Biology",
+      "chapters": [
+        {
+          "id": "c9_bio_ch01",
+          "chapter_number": 7,
+          "title": "The Fundamental Unit of Life (Cell)",
+          "learning_objectives": [
+            "Prokaryotic vs eukaryotic cells",
+            "Organelles: Mitochondria, Endoplasmic Reticulum, Golgi, Nucleus"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "cell",
+            "mitochondria",
+            "osmosis",
+            "nucleus",
+            "plasma membrane"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c9_bio_ch02",
+          "chapter_number": 8,
+          "title": "Tissues",
+          "learning_objectives": [
+            "Plant tissues (meristematic & permanent)",
+            "Animal tissues (epithelial, connective, muscular, nervous)"
+          ],
+          "prerequisites": [
+            "c9_bio_ch01"
+          ],
+          "keywords": [
+            "xylem",
+            "phloem",
+            "meristem",
+            "neuron",
+            "connective tissue"
+          ],
+          "needs_review": true
+        }
+      ]
+    }
+  ]
+}

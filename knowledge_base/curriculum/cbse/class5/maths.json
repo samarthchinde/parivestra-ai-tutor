@@ -1,0 +1,67 @@
+{
+  "board": "CBSE",
+  "grade": "Class 5",
+  "subject": "Maths",
+  "units": [
+    {
+      "id": "c5_maths_u1",
+      "title": "Number Systems & Geometry",
+      "chapters": [
+        {
+          "id": "c5_maths_ch01",
+          "chapter_number": 1,
+          "title": "The Fish Tale",
+          "learning_objectives": [
+            "Understand numbers up to Lakhs and Crores",
+            "Speed, distance, time word problems"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "lakh",
+            "crore",
+            "large numbers",
+            "speed"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c5_maths_ch02",
+          "chapter_number": 2,
+          "title": "Shapes and Angles",
+          "learning_objectives": [
+            "Recognize right, acute, and obtuse angles",
+            "Measure angles with a protractor"
+          ],
+          "prerequisites": [
+            "c5_maths_ch01"
+          ],
+          "keywords": [
+            "angles",
+            "right angle",
+            "protractor",
+            "degrees"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c5_maths_ch03",
+          "chapter_number": 3,
+          "title": "How Many Squares? (Area & Perimeter)",
+          "learning_objectives": [
+            "Calculate perimeter of polygons",
+            "Calculate area of squares and rectangles on a grid"
+          ],
+          "prerequisites": [
+            "c5_maths_ch02"
+          ],
+          "keywords": [
+            "area",
+            "perimeter",
+            "square units"
+          ],
+          "needs_review": true
+        }
+      ]
+    }
+  ]
+}

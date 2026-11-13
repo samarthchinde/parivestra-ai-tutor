@@ -1,0 +1,47 @@
+{
+  "board": "CBSE",
+  "grade": "Class 4",
+  "subject": "English",
+  "units": [
+    {
+      "id": "c4_eng_u1",
+      "title": "Sentence Building & Descriptive Writing",
+      "chapters": [
+        {
+          "id": "c4_eng_ch01",
+          "chapter_number": 1,
+          "title": "Describing Words (Adjectives)",
+          "learning_objectives": [
+            "Identify adjectives describing size, colour, number, quality",
+            "Form comparative adjectives"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "adjectives",
+            "description",
+            "comparison"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c4_eng_ch02",
+          "chapter_number": 2,
+          "title": "Pronouns & Connecting Words",
+          "learning_objectives": [
+            "Use personal pronouns (he, she, it, they)",
+            "Connect sentences using 'and', 'but', 'because'"
+          ],
+          "prerequisites": [
+            "c4_eng_ch01"
+          ],
+          "keywords": [
+            "pronouns",
+            "conjunctions",
+            "cohesion"
+          ],
+          "needs_review": true
+        }
+      ]
+    }
+  ]
+}

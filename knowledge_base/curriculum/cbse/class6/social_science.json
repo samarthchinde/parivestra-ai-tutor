@@ -1,0 +1,46 @@
+{
+  "board": "CBSE",
+  "grade": "Class 6",
+  "subject": "Social Science",
+  "units": [
+    {
+      "id": "c6_soc_u1",
+      "title": "Our Past, Earth & Society",
+      "chapters": [
+        {
+          "id": "c6_soc_ch01",
+          "chapter_number": 1,
+          "title": "What, Where, How and When? (Early Humans)",
+          "learning_objectives": [
+            "Archaeological sources and manuscripts",
+            "Hunter-gatherers along river valleys"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "archaeology",
+            "manuscripts",
+            "inscriptions"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c6_soc_ch02",
+          "chapter_number": 2,
+          "title": "The Earth in the Solar System",
+          "learning_objectives": [
+            "Planets, celestial bodies, constellations",
+            "Earth as a unique planet"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "solar system",
+            "planets",
+            "orbit",
+            "satellite"
+          ],
+          "needs_review": true
+        }
+      ]
+    }
+  ]
+}

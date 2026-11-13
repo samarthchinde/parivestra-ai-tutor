@@ -1,0 +1,50 @@
+{
+  "board": "CBSE",
+  "grade": "Class 3",
+  "subject": "English",
+  "units": [
+    {
+      "id": "c3_eng_u1",
+      "title": "Foundational Grammar & Vocabulary",
+      "chapters": [
+        {
+          "id": "c3_eng_ch01",
+          "chapter_number": 1,
+          "title": "Naming Words (Nouns)",
+          "learning_objectives": [
+            "Identify common and proper nouns",
+            "Distinguish singular and plural nouns"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "nouns",
+            "people",
+            "places",
+            "things",
+            "plurals"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c3_eng_ch02",
+          "chapter_number": 2,
+          "title": "Action Words (Verbs)",
+          "learning_objectives": [
+            "Recognize doing words in sentences",
+            "Use simple present tense"
+          ],
+          "prerequisites": [
+            "c3_eng_ch01"
+          ],
+          "keywords": [
+            "verbs",
+            "action",
+            "doing words",
+            "tense"
+          ],
+          "needs_review": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "board": "CBSE",
+  "grade": "Class 9",
+  "subject": "Maths",
+  "units": [
+    {
+      "id": "c9_maths_u1",
+      "title": "Number Systems & Polynomials",
+      "chapters": [
+        {
+          "id": "c9_maths_ch01",
+          "chapter_number": 1,
+          "title": "Number Systems (Real Numbers)",
+          "learning_objectives": [
+            "Irrational numbers on the real line",
+            "Rationalizing denominators and laws of exponents"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "real numbers",
+            "irrational",
+            "rationalization",
+            "exponents"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c9_maths_ch02",
+          "chapter_number": 2,
+          "title": "Polynomials",
+          "learning_objectives": [
+            "Remainder theorem and Factor theorem",
+            "Algebraic identities and cubic factorization"
+          ],
+          "prerequisites": [
+            "c9_maths_ch01"
+          ],
+          "keywords": [
+            "polynomials",
+            "factor theorem",
+            "zeroes",
+            "identities"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c9_maths_ch03",
+          "chapter_number": 3,
+          "title": "Coordinate Geometry",
+          "learning_objectives": [
+            "Cartesian plane, coordinates, quadrants",
+            "Plotting points on the axes"
+          ],
+          "prerequisites": [
+            "c9_maths_ch01"
+          ],
+          "keywords": [
+            "cartesian plane",
+            "abscissa",
+            "ordinate",
+            "quadrants"
+          ],
+          "needs_review": true
+        }
+      ]
+    },
+    {
+      "id": "c9_maths_u2",
+      "title": "Geometry & Mensuration",
+      "chapters": [
+        {
+          "id": "c9_maths_ch04",
+          "chapter_number": 4,
+          "title": "Lines and Angles",
+          "learning_objectives": [
+            "Axioms and theorems for parallel lines with a transversal",
+            "Angle sum property of a triangle"
+          ],
+          "prerequisites": [
+            "c9_maths_ch03"
+          ],
+          "keywords": [
+            "parallel lines",
+            "transversal",
+            "alternate interior angles"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c9_maths_ch05",
+          "chapter_number": 5,
+          "title": "Triangles (Congruence Theorems)",
+          "learning_objectives": [
+            "Criteria for congruence: SAS, ASA, AAS, SSS, RHS",
+            "Properties of isosceles triangles"
+          ],
+          "prerequisites": [
+            "c9_maths_ch04"
+          ],
+          "keywords": [
+            "congruence",
+            "SAS",
+            "SSS",
+            "RHS",
+            "isosceles"
+          ],
+          "needs_review": true
+        }
+      ]
+    }
+  ]
+}

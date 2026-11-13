@@ -1,0 +1,65 @@
+{
+  "board": "CBSE",
+  "grade": "Class 7",
+  "subject": "Science",
+  "units": [
+    {
+      "id": "c7_sci_u1",
+      "title": "Life Processes & Energy",
+      "chapters": [
+        {
+          "id": "c7_sci_ch01",
+          "chapter_number": 1,
+          "title": "Nutrition in Plants",
+          "learning_objectives": [
+            "Autotrophic vs heterotrophic nutrition",
+            "Photosynthesis mechanism and stomata"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "photosynthesis",
+            "stomata",
+            "chlorophyll",
+            "saprotrophs"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c7_sci_ch02",
+          "chapter_number": 2,
+          "title": "Heat and Temperature",
+          "learning_objectives": [
+            "Conduction, convection, and radiation",
+            "Clinical vs laboratory thermometers"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "heat",
+            "temperature",
+            "conduction",
+            "convection",
+            "radiation"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c7_sci_ch03",
+          "chapter_number": 3,
+          "title": "Acids, Bases and Salts",
+          "learning_objectives": [
+            "Litmus, turmeric, and phenolphthalein indicators",
+            "Neutralization reactions in daily life"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "acids",
+            "bases",
+            "indicators",
+            "neutralization"
+          ],
+          "needs_review": true
+        }
+      ]
+    }
+  ]
+}

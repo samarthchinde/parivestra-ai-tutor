@@ -1,0 +1,29 @@
+{
+  "board": "CBSE",
+  "grade": "Class 8",
+  "subject": "English",
+  "units": [
+    {
+      "id": "c8_eng_u1",
+      "title": "Clauses, Reported Speech & Writing",
+      "chapters": [
+        {
+          "id": "c8_eng_ch01",
+          "chapter_number": 1,
+          "title": "Direct and Indirect Speech",
+          "learning_objectives": [
+            "Rules for changing tense, pronouns, and adverbs in reporting",
+            "Reporting questions and commands"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "reported speech",
+            "indirect speech",
+            "reporting verb"
+          ],
+          "needs_review": true
+        }
+      ]
+    }
+  ]
+}

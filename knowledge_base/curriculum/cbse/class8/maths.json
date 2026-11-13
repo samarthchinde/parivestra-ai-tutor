@@ -1,0 +1,83 @@
+{
+  "board": "CBSE",
+  "grade": "Class 8",
+  "subject": "Maths",
+  "units": [
+    {
+      "id": "c8_maths_u1",
+      "title": "Rational Numbers, Algebra & Mensuration",
+      "chapters": [
+        {
+          "id": "c8_maths_ch01",
+          "chapter_number": 1,
+          "title": "Rational Numbers",
+          "learning_objectives": [
+            "Closure, commutativity, and associativity of rational numbers",
+            "Representation on the number line"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "rational numbers",
+            "closure",
+            "associative"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c8_maths_ch02",
+          "chapter_number": 2,
+          "title": "Linear Equations in One Variable",
+          "learning_objectives": [
+            "Solve linear equations with variables on both sides",
+            "Word problems on ages, perimeters, coins"
+          ],
+          "prerequisites": [
+            "c8_maths_ch01"
+          ],
+          "keywords": [
+            "linear equations",
+            "variables",
+            "balancing"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c8_maths_ch03",
+          "chapter_number": 3,
+          "title": "Squares and Square Roots",
+          "learning_objectives": [
+            "Prime factorization and division method for square roots",
+            "Pythagorean triplets"
+          ],
+          "prerequisites": [
+            "c8_maths_ch01"
+          ],
+          "keywords": [
+            "square roots",
+            "perfect squares",
+            "pythagorean triplets"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c8_maths_ch04",
+          "chapter_number": 4,
+          "title": "Algebraic Expressions & Identities",
+          "learning_objectives": [
+            "Polynomial addition, subtraction, multiplication",
+            "Standard identities (a+b)^2, (a-b)^2, (a^2-b^2)"
+          ],
+          "prerequisites": [
+            "c8_maths_ch02"
+          ],
+          "keywords": [
+            "polynomials",
+            "identities",
+            "factorization"
+          ],
+          "needs_review": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "board": "CBSE",
+  "grade": "Class 7",
+  "subject": "English",
+  "units": [
+    {
+      "id": "c7_eng_u1",
+      "title": "Advanced Grammar & Voice",
+      "chapters": [
+        {
+          "id": "c7_eng_ch01",
+          "chapter_number": 1,
+          "title": "Active and Passive Voice",
+          "learning_objectives": [
+            "Transform active to passive voice across tenses",
+            "Identify agent and object"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "voice",
+            "active",
+            "passive",
+            "past participle"
+          ],
+          "needs_review": true
+        }
+      ]
+    }
+  ]
+}

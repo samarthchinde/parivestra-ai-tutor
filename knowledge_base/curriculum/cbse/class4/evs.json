@@ -1,0 +1,64 @@
+{
+  "board": "CBSE",
+  "grade": "Class 4",
+  "subject": "EVS",
+  "units": [
+    {
+      "id": "c4_evs_u1",
+      "title": "Living Environment & Adaptations",
+      "chapters": [
+        {
+          "id": "c4_evs_ch01",
+          "chapter_number": 1,
+          "title": "Going to School",
+          "learning_objectives": [
+            "Explore transportation modes across diverse terrains in India",
+            "Understand bridge structures"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "transport",
+            "terrain",
+            "bridges"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c4_evs_ch02",
+          "chapter_number": 2,
+          "title": "Ear to Ear",
+          "learning_objectives": [
+            "Classify animals with visible ears vs hidden ears",
+            "Understand viviparous vs oviparous animals"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "ears",
+            "mammals",
+            "eggs",
+            "fur"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c4_evs_ch03",
+          "chapter_number": 3,
+          "title": "A Day with Nandu",
+          "learning_objectives": [
+            "Understand herd behaviour and social structure of elephants",
+            "Ecosystem protection"
+          ],
+          "prerequisites": [
+            "c4_evs_ch02"
+          ],
+          "keywords": [
+            "elephants",
+            "herds",
+            "ecosystem"
+          ],
+          "needs_review": true
+        }
+      ]
+    }
+  ]
+}

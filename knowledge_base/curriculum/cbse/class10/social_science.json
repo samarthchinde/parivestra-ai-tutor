@@ -1,0 +1,64 @@
+{
+  "board": "CBSE",
+  "grade": "Class 10",
+  "subject": "Social Science",
+  "units": [
+    {
+      "id": "c10_soc_u1",
+      "title": "History, Political Science & Economics",
+      "chapters": [
+        {
+          "id": "c10_soc_ch01",
+          "chapter_number": 1,
+          "title": "The Rise of Nationalism in Europe",
+          "learning_objectives": [
+            "French Revolution and idea of the nation",
+            "Unification of Germany and Italy"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "nationalism",
+            "liberalism",
+            "garibaldi",
+            "bismarck"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c10_soc_ch02",
+          "chapter_number": 2,
+          "title": "Power Sharing (Political Science)",
+          "learning_objectives": [
+            "Case studies of Belgium and Sri Lanka",
+            "Forms of power sharing in modern democracies"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "power sharing",
+            "belgium",
+            "sri lanka",
+            "majoritarianism"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c10_soc_ch03",
+          "chapter_number": 3,
+          "title": "Development (Economics)",
+          "learning_objectives": [
+            "Income and other goals, national development",
+            "Human Development Index (HDI) vs per capita income"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "development",
+            "per capita income",
+            "HDI",
+            "sustainability"
+          ],
+          "needs_review": true
+        }
+      ]
+    }
+  ]
+}

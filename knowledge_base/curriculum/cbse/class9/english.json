@@ -1,0 +1,29 @@
+{
+  "board": "CBSE",
+  "grade": "Class 9",
+  "subject": "English",
+  "units": [
+    {
+      "id": "c9_eng_u1",
+      "title": "Grammar, Modals & Formal Writing",
+      "chapters": [
+        {
+          "id": "c9_eng_ch01",
+          "chapter_number": 1,
+          "title": "Modals, Determiners & Concord",
+          "learning_objectives": [
+            "Use modal auxiliaries (must, should, ought, could)",
+            "Subject-verb concord rules"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "modals",
+            "determiners",
+            "concord"
+          ],
+          "needs_review": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "board": "CBSE",
+  "grade": "Class 8",
+  "subject": "Social Science",
+  "units": [
+    {
+      "id": "c8_soc_u1",
+      "title": "Modern History & Indian Constitution",
+      "chapters": [
+        {
+          "id": "c8_soc_ch01",
+          "chapter_number": 1,
+          "title": "The Indian Constitution & Secularism",
+          "learning_objectives": [
+            "Fundamental Rights and Directive Principles",
+            "Key features: Federalism, Parliamentary system, Separation of powers"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "constitution",
+            "fundamental rights",
+            "secularism",
+            "democracy"
+          ],
+          "needs_review": true
+        }
+      ]
+    }
+  ]
+}

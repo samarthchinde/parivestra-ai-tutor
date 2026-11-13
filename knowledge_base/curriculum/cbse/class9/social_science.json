@@ -1,0 +1,47 @@
+{
+  "board": "CBSE",
+  "grade": "Class 9",
+  "subject": "Social Science",
+  "units": [
+    {
+      "id": "c9_soc_u1",
+      "title": "Democracy, History & Economics",
+      "chapters": [
+        {
+          "id": "c9_soc_ch01",
+          "chapter_number": 1,
+          "title": "What is Democracy? Why Democracy?",
+          "learning_objectives": [
+            "Key features of democratic governance",
+            "Arguments for and against democracy"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "democracy",
+            "elections",
+            "constitution",
+            "rule of law"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c9_soc_ch02",
+          "chapter_number": 2,
+          "title": "India: Size and Location (Geography)",
+          "learning_objectives": [
+            "Latitudinal and longitudinal extent of India",
+            "Standard Meridian and neighbouring countries"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "latitude",
+            "longitude",
+            "standard meridian",
+            "indian ocean"
+          ],
+          "needs_review": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "board": "CBSE",
+  "grade": "Class 5",
+  "subject": "English",
+  "units": [
+    {
+      "id": "c5_eng_u1",
+      "title": "Grammar, Tenses & Comprehension",
+      "chapters": [
+        {
+          "id": "c5_eng_ch01",
+          "chapter_number": 1,
+          "title": "Tenses: Past, Present, and Future",
+          "learning_objectives": [
+            "Use simple and continuous tenses accurately",
+            "Identify irregular past tense verbs"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "tenses",
+            "past tense",
+            "future tense",
+            "continuous"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c5_eng_ch02",
+          "chapter_number": 2,
+          "title": "Prepositions and Adverbs",
+          "learning_objectives": [
+            "Identify adverbs of manner, place, and time",
+            "Use position prepositions correctly"
+          ],
+          "prerequisites": [
+            "c5_eng_ch01"
+          ],
+          "keywords": [
+            "adverbs",
+            "prepositions",
+            "manner",
+            "time"
+          ],
+          "needs_review": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "board": "CBSE",
+  "grade": "Class 4",
+  "subject": "Maths",
+  "units": [
+    {
+      "id": "c4_maths_u1",
+      "title": "Large Numbers & Operations",
+      "chapters": [
+        {
+          "id": "c4_maths_ch01",
+          "chapter_number": 1,
+          "title": "Building with Bricks",
+          "learning_objectives": [
+            "Recognize 3D architectural brick patterns",
+            "Read and write numbers up to 10,000"
+          ],
+          "prerequisites": [],
+          "keywords": [
+            "patterns",
+            "3D shapes",
+            "thousands"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c4_maths_ch02",
+          "chapter_number": 2,
+          "title": "Long and Short Distances",
+          "learning_objectives": [
+            "Convert metres to kilometres and centimetres",
+            "Calculate perimeter basics"
+          ],
+          "prerequisites": [
+            "c4_maths_ch01"
+          ],
+          "keywords": [
+            "kilometre",
+            "metre",
+            "conversion"
+          ],
+          "needs_review": true
+        },
+        {
+          "id": "c4_maths_ch03",
+          "chapter_number": 3,
+          "title": "A Trip to Bhopal",
+          "learning_objectives": [
+            "Apply multiplication and division to travel and distance problems",
+            "Time estimation"
+          ],
+          "prerequisites": [
+            "c4_maths_ch02"
+          ],
+          "keywords": [
+            "multiplication",
+            "division",
+            "estimation"
+          ],
+          "needs_review": true
+        }
+      ]
+    },
+    {
+      "id": "c4_maths_u2",
+      "title": "Fractions and Parts",
+      "chapters": [
+        {
+          "id": "c4_maths_ch04",
+          "chapter_number": 4,
+          "title": "Halves and Quarters",
+          "learning_objectives": [
+            "Understand fractional parts (1/2, 1/4, 3/4) of a whole and collection",
+            "Equivalent fractions introduction"
+          ],
+          "prerequisites": [
+            "c4_maths_ch01"
+          ],
+          "keywords": [
+            "fraction",
+            "half",
+            "quarter",
+            "numerator",
+            "denominator"
+          ],
+          "needs_review": true
+        }
+      ]
+    }
+  ]
+}
