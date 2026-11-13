@@ -1,6 +1,51 @@
-# Parivestra AI Tutor (V1)
+# Parivestra AI Tutor — Class 3 & Class 4 Learning Adventure
 
-**Parivestra AI Tutor** is an intelligent AI tutoring and adaptive practice platform for students (Parivestra *Course Factory & Education Agents* track). It pairs a responsive React 18 + Vite frontend with a modular FastAPI backend that queries a **Local LLM** (Gemma 4 served via Unsloth / llama.cpp / vLLM) with deterministic agent pipelines, BM25 retrieval-augmented generation (RAG), progressive hint ladders, misconception detection, and weighted topic mastery tracking.
+**Parivestra AI Tutor** is a premium, child-friendly AI learning companion and practice platform crafted specially for children in **Class 3 and Class 4 (ages 8 to 10)**. It pairs a warm, playful React 18 + Vite frontend with a modular FastAPI backend powered by a **Local LLM** (Gemma 4 served via llama-server / Unsloth), deterministic educational agents, BM25 retrieval across foundational school subjects (Maths, English, and EVS), an original owl mascot **Pari**, modular interactive **Courses**, animated **AI Video Stories**, a playful **Game Arena**, a discovery **Reading Library**, and a protected **Grown-ups & Teachers Portal**.
+
+---
+
+## What's New in the Class 3 & 4 Upgrade
+
+1. **Original Mascot "Pari" (The Friendly Owl Guide)**:
+   - Interactive SVG mascot with 5 distinct moods: `happy`, `thinking`, `cheering`, `sleepy`, and `oops`.
+   - Pari guides students through quests, celebrates streaks, offers hints, and reacts gently to mistakes.
+
+2. **Child Profile & 12 Animal Avatars**:
+   - First-run onboarding flow (`OnboardingModal.jsx`) where children pick an animal avatar (`owl`, `fox`, `panda`, `lion`, `koala`, `bunny`, `cat`, etc.) and a friendly nickname.
+   - Child privacy guaranteed: no real names, no photos, and no external trackers.
+
+3. **Modular Interactive Courses**:
+   - Class 3 & 4 curricula across **Maths**, **English**, and **Environmental Studies (EVS)**.
+   - Each course features modular quests:
+     - **Story Lessons**: Slide-by-slide illustrated readers with offline browser `SpeechSynthesis` ("Read it to me" audio).
+     - **Practice Quests**: 1 question per screen with big touch buttons, instant cheering feedback, and star rewards.
+     - **Hands-On Activities**: Real-world offline missions with step-by-step checklists and celebration buttons.
+   - Course syllabus roadmap, module accordions, completed checkmarks, and XP progression.
+
+4. **AI Videos & Animated SVG Story Player**:
+   - Cinema-style video explore grid with subject filters and grade toggles.
+   - **Interactive Story Player**: Animated SVG scene player (sun, clouds, water cycle, fraction pizza, nouns, plants) with synchronized speech narration, speed controls (0.8x, 1x), interactive prompts, and mini-quizzes.
+   - **Local Video Streaming**: HTTP 206 Range request support (`/api/videos/{id}/stream`) for seekable classroom video lessons.
+
+5. **Pari's Playful Game Arena (`/games`)**:
+   - **Number Ninja**: Mental math times tables, place value addition, and fraction halves with combo streaks and 3 hearts.
+   - **Spelling & Grammar Spark**: Noun hunting, rhyming word detection, and sentence fixing.
+   - **Pari's Bug Hunt**: Child-friendly block logic, daily routine sequencing, and repeat loops.
+
+6. **Discovery Reading Library (`/library`)**:
+   - Illustrated storybooks, science discovery cards, and flashcards with built-in read-aloud modal narration.
+
+7. **Protected Grown-ups & Teachers Portal (`/grown-ups`)**:
+   - **Adult Gatekeeper**: Multi-digit math challenge or 4-digit PIN prevents accidental child access.
+   - **Content Approval Workflow**: AI-generated courses and stories remain `draft` ("Needs teacher review") until approved by a teacher using the Admin Key (`ADMIN_KEY`).
+   - **AI Course & Story Drafter**: Teachers can generate new 3-module syllabus outlines for Class 3 or 4.
+   - **Child Safety Incident Log**: Sensitive keywords (distress, bullying, inappropriate content) trigger gentle adult referral and are logged with timestamps *without ever storing raw child text*.
+   - **Accessibility Controls**: One-click toggles for Dyslexia-friendly font (`Lexend`) and Calm Mode (reduced animations).
+
+8. **Design System & Zero Runtime CDNs**:
+   - Self-hosted fonts (`@fontsource/baloo-2`, `@fontsource/nunito`, `@fontsource/lexend`) bundled locally.
+   - 100% offline Web Audio synthesized chimes (`playSuccess`, `playNudge`, `playClick`).
+   - Confetti bursts via `canvas-confetti`.
 
 ---
 
@@ -9,42 +54,43 @@
 ```text
 +-----------------------------------------------------------------------------------+
 |                            REACT 18 + VITE FRONTEND                               |
-|   (Dashboard, Interactive Tutor Chat, Adaptive Practice, Progress Analytics)      |
+|   (Today's Adventure, Courses, AI Tutor Chat, Practice, Games, Videos, Library)  |
 +-----------------------------------------------------------------------------------+
          |                                                       ^
-         | HTTP / SSE Streams (X-User-Id)                        | Local Fallback
+         | HTTP / SSE Streams (X-User-Id, X-Admin-Key)           | Local Fallback
          v                                                       | (IndexedDB + 62 MCQs)
 +-----------------------------------------------------------------------------------+
 |                               FASTAPI BACKEND (/api)                              |
 |   - CORS Middleware: http://localhost:5173                                        |
-|   - Structured Pydantic validation & Global Error Handler                         |
-|   - Endpoints: /health, /tutor/chat, /practice/generate, /practice/submit, etc.   |
+|   - Child Safety Filter & Reading-Level Verification (< 12 words per sentence)    |
+|   - Teacher Admin Approval Gatekeeper (X-Admin-Key)                               |
+|   - Endpoints: /courses, /videos, /tutor/chat, /practice, /admin/approve, etc.     |
 +-----------------------------------------------------------------------------------+
          |                           |                            |
          v                           v                            v
 +------------------+       +-------------------+       +--------------------+
 |  AGENT PIPELINE  |       |   RAG RETRIEVAL   |       |   SQLITE DATABASE  |
 | - RouterAgent    |       | - BM25Okapi       |       | (SQLAlchemy)       |
-| - TutorAgent     | <---> | - knowledge_base/ |       | - users, sessions  |
-| - PracticeAgent  |       |   topics.json     |       | - messages         |
-| - GraderAgent    |       |   *.md, *.txt     |       | - attempts         |
-| - Misconception  |       | - Chunk Metadata  |       | - topic mastery    |
-| - ProgressAgent  |       | - scripts/ingest  |       | - llm_logs         |
+| - TutorAgent     | <---> | - grade3_4/       |       | - users, courses   |
+| - PracticeAgent  |       |   maths, english, |       | - modules, lessons |
+| - GraderAgent    |       |   evs.md          |       | - video_stories    |
+| - Misconception  |       | - Grade Filtering |       | - videos, safety   |
+| - ProgressAgent  |       | - Chunk Metadata  |       | - attempts, xp     |
 +------------------+       +-------------------+       +--------------------+
          |
          v
 +-----------------------------------------------------------------------------------+
 |                        UNIFIED LLM GATEWAY (llm/gateway.py)                       |
-|   - OpenAI-compatible endpoint (Default: http://localhost:8000/v1 for Gemma 4)   |
-|   - Optional Ollama fallback (LLM_PROVIDER=ollama)                               |
+|   - OpenAI-compatible endpoint (Default: http://127.0.0.1:8000/v1 for Gemma 4)    |
+|   - Thinking/reasoning block stripping and auto-model detection                  |
 |   - Streaming SSE tokens, 1x Retry, Fast Connect Timeouts, Call Latency Logging  |
 +-----------------------------------------------------------------------------------+
                                      |
                                      v
                  +---------------------------------------+
                  |    LOCAL LLM SERVER (Host Machine)    |
-                 |     Unsloth / llama.cpp / Ollama      |
-                 |     Gemma 4 / Qwen / Mistral          |
+                 |     llama-server.exe / llama.cpp      |
+                 |     gemma-4-E2B-it-GGUF               |
                  +---------------------------------------+
 ```
 
@@ -175,7 +221,7 @@ Results and failure taxonomies (`retrieval`, `model`, `hallucination`, `latency`
 ```powershell
 pytest tests -v
 ```
-All 23 agent, gateway, RAG, and API tests pass in under 5 seconds.
+All 37 agent, gateway, RAG, kids platform, and safety tests pass in under 5 seconds.
 
 ### 5. Running via Docker Compose
 To run both backend and frontend inside containers (while connecting to your local Unsloth LLM running on the host):
@@ -188,26 +234,40 @@ docker compose up --build
 
 ## API Reference
 
-All new API routes use the `/api` prefix and validate payloads with Pydantic:
+All API routes validate payloads with Pydantic:
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
 | `GET` | `/api/health` | Backend status and LLM gateway reachability |
-| `GET` | `/api/subjects` | List available subjects and topics |
-| `POST` | `/api/tutor/chat` | Stream tutor responses via Server-Sent Events (SSE) with source citations and hint levels |
-| `POST` | `/api/practice/generate` | Generate validated MCQs (`{subject, topic, difficulty, count}`) with fallback |
-| `POST` | `/api/practice/submit` | Grade MCQ in code, record attempt, match misconceptions, and update topic mastery |
-| `GET` | `/api/progress` | Get topic mastery, weakest topics, recent attempts, and next recommended study topic |
-| `POST` | `/ask` | Backward-compatible legacy endpoint returning `{success, topic, type, response, citations}` |
+| `GET` | `/api/user/profile` | Student profile (avatar, nickname, grade, XP, streak) |
+| `POST` | `/api/user/profile` | Update student profile and nickname |
+| `GET` | `/api/courses` | List approved courses (or draft courses with `X-Admin-Key`) |
+| `GET` | `/api/courses/{id}` | Course syllabus, modules, and lesson progress |
+| `GET` | `/api/courses/{id}/lessons/{lesson_id}` | Fetch lesson slides, practice questions, or activities |
+| `POST` | `/api/courses/{id}/lessons/{lesson_id}/complete` | Mark quest complete and award student XP |
+| `POST` | `/api/courses/generate-draft` | (Teacher Admin) Draft 3-module course syllabus via LLM |
+| `GET` | `/api/videos` | List approved animated stories and uploaded video lessons |
+| `GET` | `/api/videos/story/{id}` | Fetch 5-6 animated SVG scenes with synchronized narration text |
+| `POST` | `/api/videos/story/generate` | (Teacher Admin) Generate animated story scenes with reading check |
+| `GET` | `/api/videos/{id}/stream` | Stream local video files with HTTP 206 Range seeking |
+| `POST` | `/api/videos/upload` | (Teacher Admin) Upload MP4 or WebM video file (Max 200MB) |
+| `GET` | `/api/admin/pending` | (Teacher Admin) Review draft courses, stories, and videos |
+| `POST` | `/api/admin/approve` | (Teacher Admin) Publish/approve draft content |
+| `POST` | `/api/tutor/chat` | Stream child-safe tutor responses via SSE with hint ladder |
+| `POST` | `/api/practice/generate` | Generate validated MCQs (`{subject, topic, difficulty, count}`) |
+| `POST` | `/api/practice/submit` | Grade MCQ in code, record attempt, match misconceptions, and award XP |
+| `GET` | `/api/progress` | Topic mastery, recent attempts, and next recommended study topic |
+| `POST` | `/ask` | Backward-compatible legacy endpoint returning `{success, topic, type, response}` |
 
-### Client Identification (`X-User-Id`)
-The frontend automatically generates and persists a unique client identifier (`user_<random>`) in browser `localStorage`. It passes this in the `X-User-Id` HTTP header, allowing multi-user chat sessions, separate attempt histories, and individual mastery tracking in SQLite.
+### Client Identification (`X-User-Id` & `X-Admin-Key`)
+The frontend automatically generates and persists a unique client identifier (`user_<random>`) in browser `localStorage`. It passes this in the `X-User-Id` HTTP header. Grown-ups and teachers authenticate to administrative endpoints via the `X-Admin-Key` header (`ADMIN_KEY=parivestra_admin_secret`).
 
 ---
 
 ## Verification & Test Results
 
-- **Unit & Integration Tests**: 23/23 tests passing (`tests/`).
+- **Unit & Integration Tests**: 37/37 tests passing (`tests/`).
 - **Benchmark Evaluation**: 20/20 questions evaluated, 90% citation correctness, 0% hallucination rate (`eval/run_eval.py`).
 - **Frontend Build**: Vite production build bundles with zero errors (`npm run build`).
+- **Child Privacy**: Zero external CDN calls, self-hosted typography, sensitive flags logged without child text.
 - **Resilience**: Full backward-compatibility and offline fallback verified across all routes.
