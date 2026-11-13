@@ -31,6 +31,7 @@ from backend.data.question_bank import load_bundled_questions
 from backend.data.seed_courses import seed_default_courses
 from backend.database import SessionLocal, get_db, init_db
 from backend.llm.gateway import LLMGateway
+from backend.rag.retriever import get_default_retriever
 from backend.models import (
     Attempt,
     Course,
@@ -79,6 +80,7 @@ app.add_middleware(
 
 # Global instances
 gateway = LLMGateway()
+retriever = get_default_retriever()
 router_agent = RouterAgent(gateway=gateway)
 tutor_agent = TutorAgent(gateway=gateway)
 practice_agent = PracticeAgent(gateway=gateway)
@@ -853,6 +855,104 @@ def generate_course_draft(
 
     db.commit()
     return {"status": "draft_created", "course_id": course.id, "needs_review": True}
+
+
+@app.post("/api/courses/{course_id}/modules/{module_id}/generate")
+def generate_course_module_draft_endpoint(
+    course_id: str,
+    module_id: str,
+    is_admin: bool = Depends(verify_admin),
+    db: Session = Depends(get_db),
+):
+    """Uses LLM to generate grounded lessons for a specific module/chapter."""
+    from backend.courses.generator import generate_module_draft
+    result = generate_module_draft(
+        course_id=course_id,
+        module_id=module_id,
+        db=db,
+        gateway=gateway,
+        retriever=retriever,
+    )
+    return result
+
+
+@app.get("/api/courses/coverage")
+def get_courses_coverage(
+    grade: Optional[str] = None,
+    subject: Optional[str] = None,
+    db: Session = Depends(get_db),
+):
+    """Reports course and chapter coverage: total chapters, outline vs draft vs approved vs published,
+    and chapters needing source material per grade & subject."""
+    query = db.query(Course)
+    if grade and grade.lower() != "all":
+        query = query.filter(Course.grade == grade)
+    if subject and subject.lower() != "all":
+        query = query.filter(Course.subject.ilike(subject))
+    courses = query.all()
+
+    total_courses = len(courses)
+    total_chapters = 0
+    status_counts = {"outline": 0, "draft": 0, "approved": 0, "published": 0}
+    by_grade = {}
+    by_subject = {}
+    needing_sources = []
+
+    for c in courses:
+        g = c.grade
+        s = c.subject
+        if g not in by_grade:
+            by_grade[g] = {"total_courses": 0, "total_chapters": 0, "outline": 0, "draft": 0, "approved": 0, "published": 0}
+        if s not in by_subject:
+            by_subject[s] = {"total_courses": 0, "total_chapters": 0, "outline": 0, "draft": 0, "approved": 0, "published": 0}
+
+        by_grade[g]["total_courses"] += 1
+        by_subject[s]["total_courses"] += 1
+
+        for m in c.modules:
+            total_chapters += 1
+            by_grade[g]["total_chapters"] += 1
+            by_subject[s]["total_chapters"] += 1
+
+            mod_status = c.status
+            if not m.lessons or all(l.type == "outline" for l in m.lessons):
+                mod_status = "outline"
+            elif any(l.status == "draft" for l in m.lessons) or c.status == "draft":
+                mod_status = "draft"
+            elif c.status in ("approved", "published"):
+                mod_status = c.status
+
+            if mod_status in status_counts:
+                status_counts[mod_status] += 1
+                by_grade[g][mod_status] = by_grade[g].get(mod_status, 0) + 1
+                by_subject[s][mod_status] = by_subject[s].get(mod_status, 0) + 1
+
+            # Check if retriever has sources for this chapter
+            sources = retriever.retrieve(query=m.title, top_k=1, subject=c.subject, grade=c.grade)
+            if not sources:
+                needing_sources.append({
+                    "course_id": c.id,
+                    "course_title": c.title,
+                    "module_id": m.id,
+                    "module_title": m.title,
+                    "grade": c.grade,
+                    "subject": c.subject,
+                })
+
+    ready = status_counts["approved"] + status_counts["published"]
+    coverage_pct = round((ready / total_chapters * 100), 1) if total_chapters > 0 else 0.0
+
+    return {
+        "total_courses": total_courses,
+        "total_chapters": total_chapters,
+        "status_counts": status_counts,
+        "coverage_percentage": coverage_pct,
+        "by_grade": by_grade,
+        "by_subject": by_subject,
+        "needing_sources_count": len(needing_sources),
+        "needing_sources": needing_sources,
+    }
+
 
 
 # ---------------------------------------------------------

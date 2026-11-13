@@ -1,0 +1,13 @@
+{
+  "last_updated": "2026-11-13T09:24:08.128613",
+  "completed": {},
+  "needs_sources": {},
+  "failed": {
+    "c3_m1_mod1": {
+      "course_id": "c3_maths_numbers",
+      "title": "Module 1: Meet the 3-Digit Numbers",
+      "error": "Failed after 3 attempts: LLM request to 'gemma-4' at 'http://127.0.0.1:8000/v1' failed after 2 attempts: Connection error.",
+      "timestamp": "2026-11-13T09:24:08.127933"
+    }
+  }
+}

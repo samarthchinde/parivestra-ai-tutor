@@ -8,16 +8,9 @@ logger = logging.getLogger("backend.seed_courses")
 
 
 def seed_default_courses(db: Session):
-    """Seed foundational Class 3 and Class 4 courses if not present."""
-    count = db.query(Course).count()
-    if count == 0:
-        logger.info("Seeding Class 3 and Class 4 sample courses...")
-        _seed_courses(db)
-
-    # Seed sample animated stories if none exist
-    story_count = db.query(VideoStory).count()
-    if story_count == 0:
-        _seed_stories(db)
+    """Seed foundational Class 3 to 10 courses and sample stories idempotently."""
+    _seed_courses(db)
+    _seed_stories(db)
 
 
 def _seed_courses(db: Session):
@@ -346,48 +339,370 @@ def _seed_courses(db: Session):
                     ]
                 }
             ]
+        },
+        # ----------------------------------------------------
+        # MIDDLE BAND (Classes 6-8)
+        # ----------------------------------------------------
+        {
+            "id": "c6_sci_food",
+            "title": "Components of Food & Nutrients",
+            "subject": "Science",
+            "grade": "Class 6",
+            "description": "Discover carbohydrates, proteins, vitamins, and deficiency diseases in our daily diet.",
+            "cover_key": "science",
+            "status": "draft",
+            "needs_review": True,
+            "modules": [
+                {
+                    "id": "c6_sci_food_m1",
+                    "title": "Module 1: Essential Nutrients & Balanced Diet",
+                    "position": 1,
+                    "lessons": [
+                        {
+                            "id": "c6_sci_food_l1",
+                            "title": "Energy, Growth, and Protection",
+                            "type": "story",
+                            "topic": "Nutrients",
+                            "position": 1,
+                            "xp": 25,
+                            "content_json": json.dumps({
+                                "slides": [
+                                    {
+                                        "title": "Carbohydrates & Fats: Energy Providers",
+                                        "text": "Carbohydrates (like starch in rice and potatoes) provide quick energy, while fats provide stored reserve energy.",
+                                        "illustration": "sun"
+                                    },
+                                    {
+                                        "title": "Proteins: The Body Builders",
+                                        "text": "Proteins are needed for the growth and repair of cells. Pulses, milk, eggs, and beans are rich protein sources.",
+                                        "illustration": "plant"
+                                    },
+                                    {
+                                        "title": "Vitamins & Minerals: Protective Nutrients",
+                                        "text": "Vitamins protect our body from diseases. Vitamin C keeps gums healthy, while Vitamin D helps bones absorb calcium.",
+                                        "illustration": "shapes"
+                                    },
+                                    {
+                                        "title": "Deficiency Diseases",
+                                        "text": "Lack of Vitamin C causes Scurvy (bleeding gums), while lack of Vitamin D or calcium causes soft bones (Rickets).",
+                                        "illustration": "nature"
+                                    }
+                                ]
+                            })
+                        },
+                        {
+                            "id": "c6_sci_food_l2",
+                            "title": "Nutrient Detective Practice",
+                            "type": "practice",
+                            "topic": "Nutrients",
+                            "position": 2,
+                            "xp": 30,
+                            "content_json": json.dumps({
+                                "questions": [
+                                    {
+                                        "question": "Which nutrient turns blue-black when tested with dilute iodine solution?",
+                                        "options": ["Starch (Carbohydrate)", "Protein", "Fat", "Vitamin C"],
+                                        "answer": "Starch (Carbohydrate)"
+                                    },
+                                    {
+                                        "question": "Which deficiency disease is caused by the lack of Vitamin C?",
+                                        "options": ["Scurvy (bleeding gums)", "Rickets", "Beriberi", "Goitre"],
+                                        "answer": "Scurvy (bleeding gums)"
+                                    },
+                                    {
+                                        "question": "Why are proteins called body-building foods?",
+                                        "options": ["They are essential for growth and repairing damaged cells", "They only provide instant heat", "They cannot be digested", "They replace water in blood"],
+                                        "answer": "They are essential for growth and repairing damaged cells"
+                                    }
+                                ]
+                            })
+                        },
+                        {
+                            "id": "c6_sci_food_l3",
+                            "title": "Balanced Diet Plate Design",
+                            "type": "activity",
+                            "topic": "Nutrients",
+                            "position": 3,
+                            "xp": 20,
+                            "content_json": json.dumps({
+                                "instructions": "Draw a circular dinner plate divided into 4 sections: 1/2 for vegetables and fruits, 1/4 for whole grains (rice/roti), and 1/4 for protein (lentils/dal or paneer).",
+                                "goal": "Check whether your actual lunch today matched a balanced nutritional ratio!"
+                            })
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "c7_maths_equations",
+            "title": "Simple Linear Equations & Balancing",
+            "subject": "Maths",
+            "grade": "Class 7",
+            "description": "Master unknowns, balancing scales, and algebraic transposition rules.",
+            "cover_key": "maths",
+            "status": "draft",
+            "needs_review": True,
+            "modules": [
+                {
+                    "id": "c7_maths_eq_m1",
+                    "title": "Module 1: Variables, Constants & Balancing Equations",
+                    "position": 1,
+                    "lessons": [
+                        {
+                            "id": "c7_maths_eq_l1",
+                            "title": "The Equation Weighing Scale",
+                            "type": "story",
+                            "topic": "Simple Equations",
+                            "position": 1,
+                            "xp": 25,
+                            "content_json": json.dumps({
+                                "slides": [
+                                    {
+                                        "title": "What is an Equation?",
+                                        "text": "An equation is a condition on a variable stating that two algebraic expressions are perfectly equal, separated by an '=' sign.",
+                                        "illustration": "numbers"
+                                    },
+                                    {
+                                        "title": "The Golden Rule of Balancing",
+                                        "text": "Whatever you add, subtract, multiply, or divide on the left-hand side, you MUST do exactly to the right-hand side to keep the scale balanced.",
+                                        "illustration": "shapes"
+                                    },
+                                    {
+                                        "title": "Transposition Method",
+                                        "text": "Moving a term to the other side flips its operation: '+' becomes '-', and '×' becomes '÷'. For 2x + 4 = 14, 2x = 10, so x = 5!",
+                                        "illustration": "pizza"
+                                    }
+                                ]
+                            })
+                        },
+                        {
+                            "id": "c7_maths_eq_l2",
+                            "title": "Equation Mastery Quiz",
+                            "type": "practice",
+                            "topic": "Simple Equations",
+                            "position": 2,
+                            "xp": 30,
+                            "content_json": json.dumps({
+                                "questions": [
+                                    {
+                                        "question": "If 3x + 6 = 21, what is the value of x?",
+                                        "options": ["5", "7", "3", "15"],
+                                        "answer": "5"
+                                    },
+                                    {
+                                        "question": "When transposing '+7' from LHS to RHS, it becomes:",
+                                        "options": ["-7", "+7", "×7", "÷7"],
+                                        "answer": "-7"
+                                    },
+                                    {
+                                        "question": "Solve for y: y/4 = 8",
+                                        "options": ["32", "2", "12", "4"],
+                                        "answer": "32"
+                                    }
+                                ]
+                            })
+                        }
+                    ]
+                }
+            ]
+        },
+        # ----------------------------------------------------
+        # SENIOR BAND (Classes 9-10 - CBSE Track)
+        # ----------------------------------------------------
+        {
+            "id": "c9_sci_motion",
+            "title": "Motion & Kinematics Equations",
+            "subject": "Science",
+            "grade": "Class 9",
+            "description": "Velocity, uniform acceleration, and deriving the three fundamental equations of motion.",
+            "cover_key": "science",
+            "status": "draft",
+            "needs_review": True,
+            "modules": [
+                {
+                    "id": "c9_sci_motion_m1",
+                    "title": "Module 1: Kinematics & Deriving Equations of Motion",
+                    "position": 1,
+                    "lessons": [
+                        {
+                            "id": "c9_sci_motion_l1",
+                            "title": "Velocity, Acceleration & Derivations",
+                            "type": "story",
+                            "topic": "Motion",
+                            "position": 1,
+                            "xp": 30,
+                            "content_json": json.dumps({
+                                "slides": [
+                                    {
+                                        "title": "Distance vs Displacement",
+                                        "text": "Distance is the total path length (scalar), whereas displacement is the shortest straight-line distance between initial and final points (vector).",
+                                        "illustration": "shapes"
+                                    },
+                                    {
+                                        "title": "Acceleration: Rate of Velocity Change",
+                                        "text": "Acceleration a = (v - u) / t, where u is initial velocity and v is final velocity over time t. SI unit is m/s².",
+                                        "illustration": "numbers"
+                                    },
+                                    {
+                                        "title": "The Three Equations of Uniformly Accelerated Motion",
+                                        "text": "1) v = u + at\n2) s = ut + 0.5at²\n3) v² = u² + 2as. These equations describe motion along a straight line under constant acceleration.",
+                                        "illustration": "sun"
+                                    }
+                                ]
+                            })
+                        },
+                        {
+                            "id": "c9_sci_motion_l2",
+                            "title": "Kinematics Numerical Problem Solving",
+                            "type": "practice",
+                            "topic": "Motion",
+                            "position": 2,
+                            "xp": 35,
+                            "content_json": json.dumps({
+                                "questions": [
+                                    {
+                                        "question": "A train starting from rest accelerates uniformly to 20 m/s in 10 seconds. What is its acceleration?",
+                                        "options": ["2 m/s²", "200 m/s²", "0.5 m/s²", "10 m/s²"],
+                                        "answer": "2 m/s²"
+                                    },
+                                    {
+                                        "question": "What does the slope of a velocity-time (v-t) graph represent?",
+                                        "options": ["Acceleration", "Total Distance", "Displacement", "Speed"],
+                                        "answer": "Acceleration"
+                                    },
+                                    {
+                                        "question": "A vehicle starts from rest (u=0) with an acceleration of 4 m/s². What distance does it cover in 5 seconds?",
+                                        "options": ["50 m", "20 m", "100 m", "25 m"],
+                                        "answer": "50 m"
+                                    }
+                                ]
+                            })
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "c10_sci_chem_rxn",
+            "title": "Chemical Reactions & Chemical Equations",
+            "subject": "Science",
+            "grade": "Class 10",
+            "description": "Conservation of mass, balancing chemical equations by hit-and-trial, and redox reactions.",
+            "cover_key": "science",
+            "status": "draft",
+            "needs_review": True,
+            "modules": [
+                {
+                    "id": "c10_sci_chem_m1",
+                    "title": "Module 1: Balancing & Types of Chemical Reactions",
+                    "position": 1,
+                    "lessons": [
+                        {
+                            "id": "c10_sci_chem_l1",
+                            "title": "The Law of Conservation of Mass & Balancing",
+                            "type": "story",
+                            "topic": "Chemical Reactions",
+                            "position": 1,
+                            "xp": 30,
+                            "content_json": json.dumps({
+                                "slides": [
+                                    {
+                                        "title": "Why Balance Chemical Equations?",
+                                        "text": "By the Law of Conservation of Mass, matter can neither be created nor destroyed. The total number of atoms of each element must remain equal on both sides.",
+                                        "illustration": "numbers"
+                                    },
+                                    {
+                                        "title": "Hit-and-Trial Balancing Example",
+                                        "text": "For iron and steam: Fe + H₂O → Fe₃O₄ + H₂. Balancing oxygen gives 4 H₂O, then hydrogen gives 4 H₂, and iron gives 3 Fe. Final: 3Fe + 4H₂O → Fe₃O₄ + 4H₂.",
+                                        "illustration": "shapes"
+                                    },
+                                    {
+                                        "title": "Redox Reactions: Oxidation and Reduction",
+                                        "text": "Oxidation is the gain of oxygen or loss of hydrogen. Reduction is the loss of oxygen or gain of hydrogen. In CuO + H₂ → Cu + H₂O, CuO is reduced while H₂ is oxidized.",
+                                        "illustration": "sun"
+                                    }
+                                ]
+                            })
+                        },
+                        {
+                            "id": "c10_sci_chem_l2",
+                            "title": "CBSE Board Prep: Reaction Types Quiz",
+                            "type": "practice",
+                            "topic": "Chemical Reactions",
+                            "position": 2,
+                            "xp": 35,
+                            "content_json": json.dumps({
+                                "questions": [
+                                    {
+                                        "question": "What type of reaction occurs when quicklime (CaO) reacts vigorously with water to form slaked lime (Ca(OH)₂) with the release of large heat?",
+                                        "options": ["Combination and Exothermic reaction", "Decomposition reaction", "Displacement reaction", "Endothermic reaction"],
+                                        "answer": "Combination and Exothermic reaction"
+                                    },
+                                    {
+                                        "question": "In the reaction: CuO + H₂ → Cu + H₂O, which substance acts as the oxidizing agent?",
+                                        "options": ["CuO (Copper Oxide)", "H₂ (Hydrogen)", "Cu (Copper)", "H₂O (Water)"],
+                                        "answer": "CuO (Copper Oxide)"
+                                    },
+                                    {
+                                        "question": "To balance the equation: __ Al + __ O₂ → __ Al₂O₃, what are the stoichiometric coefficients?",
+                                        "options": ["4, 3, 2", "2, 3, 1", "4, 2, 2", "1, 1, 1"],
+                                        "answer": "4, 3, 2"
+                                    }
+                                ]
+                            })
+                        }
+                    ]
+                }
+            ]
         }
     ]
 
     for c_data in sample_courses:
-        course = Course(
-            id=c_data["id"],
-            title=c_data["title"],
-            subject=c_data["subject"],
-            grade=c_data["grade"],
-            description=c_data["description"],
-            cover_key=c_data["cover_key"],
-            status=c_data["status"],
-            needs_review=c_data["needs_review"],
-        )
-        db.add(course)
-        db.flush()
-
-        for m_data in c_data.get("modules", []):
-            module = CourseModule(
-                id=m_data["id"],
-                course_id=course.id,
-                title=m_data["title"],
-                position=m_data["position"],
+        course = db.query(Course).filter(Course.id == c_data["id"]).first()
+        if not course:
+            course = Course(
+                id=c_data["id"],
+                title=c_data["title"],
+                subject=c_data["subject"],
+                grade=c_data["grade"],
+                description=c_data["description"],
+                cover_key=c_data["cover_key"],
+                status=c_data["status"],
+                needs_review=c_data["needs_review"],
             )
-            db.add(module)
+            db.add(course)
             db.flush()
 
-            for l_data in m_data.get("lessons", []):
-                lesson = CourseLesson(
-                    id=l_data["id"],
-                    module_id=module.id,
-                    title=l_data["title"],
-                    type=l_data["type"],
-                    topic=l_data["topic"],
-                    position=l_data["position"],
-                    xp=l_data["xp"],
-                    content_json=l_data.get("content_json"),
+        for m_data in c_data.get("modules", []):
+            module = db.query(CourseModule).filter(CourseModule.id == m_data["id"]).first()
+            if not module:
+                module = CourseModule(
+                    id=m_data["id"],
+                    course_id=course.id,
+                    title=m_data["title"],
+                    position=m_data["position"],
                 )
-                db.add(lesson)
+                db.add(module)
+                db.flush()
+
+            for l_data in m_data.get("lessons", []):
+                lesson = db.query(CourseLesson).filter(CourseLesson.id == l_data["id"]).first()
+                if not lesson:
+                    lesson = CourseLesson(
+                        id=l_data["id"],
+                        module_id=module.id,
+                        title=l_data["title"],
+                        type=l_data["type"],
+                        topic=l_data["topic"],
+                        position=l_data["position"],
+                        xp=l_data["xp"],
+                        content_json=l_data.get("content_json"),
+                        status="approved" if course.status == "approved" else "draft",
+                    )
+                    db.add(lesson)
 
     db.commit()
-    logger.info("Successfully seeded 4 foundational courses with modules and lessons.")
+    logger.info("Successfully seeded authored sample courses across Junior, Middle, and Senior bands.")
 
 
 def _seed_stories(db: Session):
@@ -559,6 +874,8 @@ def _seed_stories(db: Session):
             }
         ]
     for s_data in sample_stories:
-        db.add(VideoStory(**s_data))
+        existing = db.query(VideoStory).filter(VideoStory.id == s_data["id"]).first()
+        if not existing:
+            db.add(VideoStory(**s_data))
     db.commit()
     logger.info("Successfully seeded 3 interactive animated video stories.")

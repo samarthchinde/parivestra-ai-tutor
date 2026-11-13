@@ -4,7 +4,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 # Load .env file from project root
-ROOT_DIR = Path(__file__).resolve().parent.parent
+ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 load_dotenv(ROOT_DIR / ".env")
 
 LLM_BASE_URL: str = os.getenv("LLM_BASE_URL", "http://localhost:8000/v1")
@@ -22,4 +22,3 @@ CORS_ORIGINS: list[str] = [
     for origin in os.getenv("CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(",")
     if origin.strip()
 ]
-
