@@ -3,6 +3,7 @@ import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { navigation } from "../data/navigation";
 import { checkHealth, getUserProfile } from "../api/client";
 import { getAvatar } from "../data/avatars";
+import { getBandForGrade, getBandConfig } from "../config/bands";
 import Mascot from "./Mascot";
 import OnboardingModal from "./OnboardingModal";
 import { XPChip } from "./UI";
@@ -112,8 +113,11 @@ export default function AppLayout() {
 
   const avatarObj = getAvatar(userProfile.avatar);
 
+  const band = getBandForGrade(userProfile.grade);
+  const bandConfig = getBandConfig(userProfile.grade);
+
   return (
-    <div className="app-shell">
+    <div className="app-shell" data-band={band}>
       {/* Onboarding Dialog */}
       <OnboardingModal
         isOpen={showOnboarding}
@@ -129,11 +133,15 @@ export default function AppLayout() {
           <img className="brand-logo-img" src="/parivestra-logo.jpeg" alt="Parivestra logo" />
           <div>
             <h1 className="brand-title">Parivestra</h1>
-            <p className="brand-subtitle">Kids Learning 🌟</p>
+            <p className="brand-subtitle">
+              {band === "senior" ? "Senior Academy 🎓" : band === "middle" ? "Middle School 📚" : "Junior Learning 🌟"}
+            </p>
           </div>
         </div>
 
-        <p className="nav-caption">ADVENTURE MAP</p>
+        <p className="nav-caption">
+          {band === "senior" ? "STUDY CURRICULUM" : band === "middle" ? "LEARNING PORTAL" : "ADVENTURE MAP"}
+        </p>
         <nav>
           {navigation.map(({ label, path, icon: Icon }) => (
             <NavLink
@@ -149,13 +157,33 @@ export default function AppLayout() {
           ))}
         </nav>
 
-        <div className="sidebar-mascot-card">
-          <Mascot mood="happy" size={76} />
-          <strong style={{ fontSize: 14, color: "var(--text-main)" }}>Learning with Pari</strong>
-          <span style={{ fontSize: 12, color: "var(--text-muted)" }}>
-            Explore, ask questions & win stars!
-          </span>
-        </div>
+        {band !== "senior" ? (
+          <div className="sidebar-mascot-card">
+            <Mascot mood="happy" size={band === "middle" ? 56 : 76} />
+            <strong style={{ fontSize: 14, color: "var(--text-main)" }}>Learning with Pari</strong>
+            <span style={{ fontSize: 12, color: "var(--text-muted)" }}>
+              {bandConfig.tagline}
+            </span>
+          </div>
+        ) : (
+          <div
+            style={{
+              padding: "14px 16px",
+              background: "var(--bg-card-tint)",
+              borderRadius: "var(--radius-md)",
+              border: "1px solid var(--border)",
+              marginTop: "auto",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+              <span style={{ fontSize: 16 }}>🦉</span>
+              <strong style={{ fontSize: 13, color: "var(--text-main)" }}>CBSE Board Prep</strong>
+            </div>
+            <p style={{ fontSize: 11, color: "var(--text-muted)", margin: 0, lineHeight: 1.4 }}>
+              Formula sheets, textbook citations, and exam-style practice.
+            </p>
+          </div>
+        )}
       </aside>
 
       {/* Main Content Shell */}

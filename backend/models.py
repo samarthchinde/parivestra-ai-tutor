@@ -118,10 +118,12 @@ class Course(Base):
     id = Column(String(64), primary_key=True, index=True)
     title = Column(String(200), nullable=False)
     subject = Column(String(100), nullable=False)
-    grade = Column(String(50), nullable=False)  # Class 3, Class 4
+    grade = Column(String(50), nullable=False)  # Class 3 to Class 10
+    board = Column(String(50), default="CBSE")
+    unit_id = Column(String(100), nullable=True)
     description = Column(Text, nullable=True)
     cover_key = Column(String(100), default="maths")
-    status = Column(String(50), default="draft")  # draft, approved, published
+    status = Column(String(50), default="outline")  # outline, draft, approved, published
     needs_review = Column(Boolean, default=True)
     created_at = Column(DateTime, default=utc_now)
 
@@ -134,6 +136,9 @@ class CourseModule(Base):
     id = Column(String(64), primary_key=True, index=True)
     course_id = Column(String(64), ForeignKey("courses.id"), nullable=False, index=True)
     title = Column(String(200), nullable=False)
+    chapter_number = Column(Integer, default=1)
+    learning_objectives_json = Column(Text, default="[]")
+    prerequisites_json = Column(Text, default="[]")
     position = Column(Integer, default=0)
 
     course = relationship("Course", back_populates="modules")
@@ -147,6 +152,8 @@ class CourseLesson(Base):
     module_id = Column(String(64), ForeignKey("course_modules.id"), nullable=False, index=True)
     title = Column(String(200), nullable=False)
     type = Column(String(50), default="story")  # story, video, practice, activity, game
+    status = Column(String(50), default="outline")  # outline, draft, approved, published
+    source_citations_json = Column(Text, default="[]")
     content_json = Column(Text, nullable=True)  # JSON payload for story slides / questions / activity instructions
     video_id = Column(String(64), nullable=True)
     topic = Column(String(100), nullable=True)

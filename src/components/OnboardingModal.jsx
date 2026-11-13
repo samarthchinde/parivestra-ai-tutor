@@ -238,48 +238,113 @@ export default function OnboardingModal({ isOpen, onComplete }) {
         {/* STEP 3: CLASS SELECTION */}
         {step === 3 && (
           <div>
-            <Mascot mood="thinking" size={90} />
-            <h2 style={{ fontSize: 26, margin: "10px 0 6px", color: "var(--text-main)" }}>
+            <Mascot mood="thinking" size={80} />
+            <h2 style={{ fontSize: 24, margin: "10px 0 4px", color: "var(--text-main)" }}>
               Which class are you in?
             </h2>
-            <p style={{ color: "var(--text-muted)", fontSize: 16, marginBottom: 24 }}>
-              Pari will personalize lessons, quizzes and stories for your level!
+            <p style={{ color: "var(--text-muted)", fontSize: 15, marginBottom: 18 }}>
+              We personalize study notes, practice questions, and topics for your curriculum!
             </p>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 28 }}>
-              {["Class 3", "Class 4"].map((gr) => {
-                const isSelected = selectedGrade === gr;
-                return (
-                  <button
-                    key={gr}
-                    onClick={() => {
-                      playClick();
-                      setSelectedGrade(gr);
-                    }}
-                    style={{
-                      background: isSelected ? "var(--color-primary-bg)" : "#F8FAFC",
-                      border: isSelected ? "3px solid var(--color-primary)" : "2px solid #E2E8F0",
-                      borderRadius: "var(--radius-lg)",
-                      padding: "24px 16px",
-                      cursor: "pointer",
-                      textAlign: "center",
-                      transform: isSelected ? "scale(1.03)" : "scale(1)",
-                      transition: "all 0.2s ease",
-                      boxShadow: isSelected ? "var(--shadow-md)" : "none",
-                    }}
-                  >
-                    <span style={{ fontSize: 28, display: "block", marginBottom: 6 }}>
-                      {gr === "Class 3" ? "🌱" : "🚀"}
-                    </span>
-                    <h3 style={{ margin: "0 0 4px", fontSize: 22, color: "var(--text-main)" }}>
-                      {gr}
-                    </h3>
-                    <span style={{ fontSize: 13, color: "var(--text-muted)", fontWeight: 700 }}>
-                      {gr === "Class 3" ? "Ages 8 - 9" : "Ages 9 - 10"}
-                    </span>
-                  </button>
-                );
-              })}
+            <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 24, maxHeight: 300, overflowY: "auto", padding: "4px" }}>
+              {/* Junior Band */}
+              <div style={{ textAlign: "left" }}>
+                <span style={{ fontSize: 12, fontWeight: 800, color: "var(--color-primary)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                  Junior Explorers (Classes 3 – 5 • Ages 8–11)
+                </span>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8, marginTop: 6 }}>
+                  {["Class 3", "Class 4", "Class 5"].map((gr) => {
+                    const isSelected = selectedGrade === gr;
+                    return (
+                      <button
+                        key={gr}
+                        onClick={() => {
+                          playClick();
+                          setSelectedGrade(gr);
+                        }}
+                        style={{
+                          background: isSelected ? "var(--color-primary-bg)" : "#F8FAFC",
+                          border: isSelected ? "2.5px solid var(--color-primary)" : "1.5px solid #E2E8F0",
+                          borderRadius: "var(--radius-md)",
+                          padding: "10px 6px",
+                          cursor: "pointer",
+                          textAlign: "center",
+                          transition: "all 0.18s ease",
+                        }}
+                      >
+                        <strong style={{ display: "block", fontSize: 15, color: "var(--text-main)" }}>{gr}</strong>
+                        <span style={{ fontSize: 11, color: "var(--text-muted)" }}>Maths, Eng, EVS</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Middle Band */}
+              <div style={{ textAlign: "left" }}>
+                <span style={{ fontSize: 12, fontWeight: 800, color: "var(--color-grape)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                  Middle School (Classes 6 – 8 • Ages 11–14)
+                </span>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8, marginTop: 6 }}>
+                  {["Class 6", "Class 7", "Class 8"].map((gr) => {
+                    const isSelected = selectedGrade === gr;
+                    return (
+                      <button
+                        key={gr}
+                        onClick={() => {
+                          playClick();
+                          setSelectedGrade(gr);
+                        }}
+                        style={{
+                          background: isSelected ? "var(--color-games-bg)" : "#F8FAFC",
+                          border: isSelected ? "2.5px solid var(--color-grape)" : "1.5px solid #E2E8F0",
+                          borderRadius: "var(--radius-md)",
+                          padding: "10px 6px",
+                          cursor: "pointer",
+                          textAlign: "center",
+                          transition: "all 0.18s ease",
+                        }}
+                      >
+                        <strong style={{ display: "block", fontSize: 15, color: "var(--text-main)" }}>{gr}</strong>
+                        <span style={{ fontSize: 11, color: "var(--text-muted)" }}>Sci, Social, Maths</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Senior Band */}
+              <div style={{ textAlign: "left" }}>
+                <span style={{ fontSize: 12, fontWeight: 800, color: "#1D4ED8", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                  Senior Academy (Classes 9 – 10 • Ages 14–16)
+                </span>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 8, marginTop: 6 }}>
+                  {["Class 9", "Class 10"].map((gr) => {
+                    const isSelected = selectedGrade === gr;
+                    return (
+                      <button
+                        key={gr}
+                        onClick={() => {
+                          playClick();
+                          setSelectedGrade(gr);
+                        }}
+                        style={{
+                          background: isSelected ? "#DBEAFE" : "#F8FAFC",
+                          border: isSelected ? "2.5px solid #2563EB" : "1.5px solid #E2E8F0",
+                          borderRadius: "var(--radius-md)",
+                          padding: "12px 10px",
+                          cursor: "pointer",
+                          textAlign: "center",
+                          transition: "all 0.18s ease",
+                        }}
+                      >
+                        <strong style={{ display: "block", fontSize: 16, color: "var(--text-main)" }}>{gr}</strong>
+                        <span style={{ fontSize: 11, color: "var(--text-muted)" }}>CBSE Board Prep</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
 
             <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
@@ -302,3 +367,4 @@ export default function OnboardingModal({ isOpen, onComplete }) {
     </div>
   );
 }
+

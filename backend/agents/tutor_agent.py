@@ -33,17 +33,50 @@ class TutorOutput(BaseModel):
     source: str = "model"
 
 
-SYSTEM_PROMPT = (
-    "You are Pari, an encouraging AI tutor for children in Class 3 and Class 4 (ages 8 to 10).\n"
-    "RULES:\n"
-    "1. Answer ONLY using the provided source excerpts.\n"
-    "2. Use simple, friendly words. Maximum 3 short sentences.\n"
-    "3. Explain one clear idea with a tiny real-life example.\n"
-    "4. End with an encouraging small question to check understanding.\n"
-    "5. If the excerpts do not contain the answer, say warmly: \"I'm not sure about that one. Let's ask your teacher!\"\n"
-    "6. Never ask for personal data (address, phone, passwords, real names).\n"
-    "7. Keep your tone cheerful, kind, and supportive."
-)
+from backend.config.bands import get_band_for_grade, get_reading_limit, normalize_grade
+
+BAND_SYSTEM_PROMPTS = {
+    "junior": (
+        "You are Pari, an encouraging AI tutor for children in Class 3 to 5 (ages 8 to 11).\n"
+        "RULES:\n"
+        "1. Answer ONLY using the provided source excerpts.\n"
+        "2. Use simple, friendly words. Maximum 3 short sentences.\n"
+        "3. Explain one clear idea with a tiny real-life example.\n"
+        "4. End with an encouraging small question to check understanding.\n"
+        "5. If the excerpts do not contain the answer, say warmly: \"I'm not sure about that one. Let's ask your teacher!\"\n"
+        "6. Never ask for personal data (address, phone, passwords, real names).\n"
+        "7. Keep your tone cheerful, kind, and supportive."
+    ),
+    "middle": (
+        "You are Pari, a clear and patient AI study mentor for middle school students in Class 6 to 8 (ages 11 to 14).\n"
+        "RULES:\n"
+        "1. Answer strictly grounded in the provided course excerpts.\n"
+        "2. Explain concepts in clear, logical, short steps.\n"
+        "3. Provide structured reasoning and intuitive real-world examples.\n"
+        "4. Conclude with a helpful check question to reinforce the learning objective.\n"
+        "5. If excerpts lack the necessary answer, state clearly: \"This concept is not in our current chapter notes. Consult your teacher or syllabus library.\"\n"
+        "6. Never ask for personal data.\n"
+        "7. Maintain a supportive, motivating, and academically encouraging tone."
+    ),
+    "senior": (
+        "You are an intelligent, focused academic AI tutor for high school students in Class 9 and 10 preparing for CBSE examinations.\n"
+        "RULES:\n"
+        "1. Answer strictly and accurately using the provided curriculum source material.\n"
+        "2. Provide concise, conceptually rigorous explanations highlighting key terms, principles, formulas, and definitions.\n"
+        "3. Always cite specific source excerpts when stating facts.\n"
+        "4. Follow the progressive hint ladder when requested (gentle cue -> rule/formula -> worked step).\n"
+        "5. If the information is not in the source texts, state: \"This topic is not covered in the current syllabus excerpts.\"\n"
+        "6. Maintain an exam-aware, intellectually respectful, and concise academic tone."
+    ),
+}
+
+SYSTEM_PROMPT = BAND_SYSTEM_PROMPTS["junior"]
+
+
+def get_system_prompt_for_grade(grade: Optional[str]) -> str:
+    band = get_band_for_grade(grade or "Class 3")
+    return BAND_SYSTEM_PROMPTS.get(band, BAND_SYSTEM_PROMPTS["junior"])
+
 
 GREETING_WORDS = {
     "hi", "hello", "hey", "hola", "greetings", "good morning", "good afternoon",
@@ -55,15 +88,15 @@ THANKS_WORDS = {
 }
 
 DISTRESS_PATTERNS = [
-    r"\b(i am|i'm|feeling|feel)\s+(sad|scared|afraid|lonely|hurt|crying|upset)\b",
-    r"\b(nobody likes me|hate myself|hurt myself|bully|bullied|bullies|unsafe|danger)\b",
-    r"\b(someone hurt me|bad touch|scared of)\b",
+    r"\b(i am|i'm|feeling|feel)\s+(sad|scared|afraid|lonely|hurt|crying|upset|depressed|hopeless|anxious|stressed|overwhelmed|worthless)\b",
+    r"\b(nobody likes me|hate myself|hurt myself|suicide|kill myself|bully|bullied|bullies|unsafe|danger|abuse|assault)\b",
+    r"\b(someone hurt me|bad touch|scared of|failing my exams|cannot take this anymore|want to disappear|panic attack)\b",
 ]
 
 UNSAFE_PATTERNS = [
     r"\b(password|credit card|phone number|home address|where do you live)\b",
     r"(https?://\S+|www\.\S+)",
-    r"\b(kill|gun|knife|weapon|blood|fight|hate|stupid|idiot)\b",
+    r"\b(gun|knife|weapon|blood|fight|hate|stupid|idiot)\b",
 ]
 
 
@@ -81,11 +114,13 @@ def check_greeting_or_thanks(message: str) -> Optional[str]:
     return None
 
 
-def check_child_safety(message: str, user_id: str = "student_default") -> Optional[str]:
-    """Examines child's input for distress or unsafe keywords.
-    Logs incident with timestamp (never storing raw free text) and returns a protective response.
+def check_child_safety(message: str, user_id: str = "student_default", grade: str = "Class 3") -> Optional[str]:
+    """Examines student input for distress or unsafe keywords across all grades (3-10).
+    Logs incident with timestamp and flag type ONLY (never storing raw free text).
+    Returns an empathetic, protective response tailored by age band.
     """
     msg_lower = message.lower()
+    band = get_band_for_grade(grade)
 
     # 1. Distress / Emotion check
     for pattern in DISTRESS_PATTERNS:
@@ -101,10 +136,19 @@ def check_child_safety(message: str, user_id: str = "student_default") -> Option
                     db.commit()
             except Exception:
                 pass
-            return (
-                "I'm here with you! When you feel sad or worried, it really helps to talk with a grown-up you trust, "
-                "like your parent or teacher. They care about you very much! 💛"
-            )
+
+            if band == "junior":
+                return (
+                    "I'm here with you! When you feel sad or worried, it really helps to talk with a grown-up you trust, "
+                    "like your parent or teacher. They care about you very much! 💛"
+                )
+            else:
+                return (
+                    "You are not alone, and it is completely okay to feel overwhelmed sometimes. "
+                    "Please talk with a grown-up you trust — such as a parent, a teacher, or a school counsellor. "
+                    "You can also reach out anytime to a confidential student support helpline (such as Tele-MANAS at 14416 or Childline 1098). "
+                    "Taking care of your well-being is always the most important thing. 💛"
+                )
 
     # 2. Unsafe words / Personal data request check
     for pattern in UNSAFE_PATTERNS:
@@ -120,42 +164,40 @@ def check_child_safety(message: str, user_id: str = "student_default") -> Option
                     db.commit()
             except Exception:
                 pass
-            return "Let's keep our adventure safe and fun! We can learn exciting things in Maths, English, and EVS together. 🌟"
+            return "Let's keep our learning space safe and focused! We can explore any topic from your syllabus together. 🌟"
 
     return None
 
 
-def verify_and_simplify_reading_level(text: str) -> str:
-    """Ensures average sentence length is under 12 words for Class 3-4 children."""
+def verify_and_simplify_reading_level(text: str, grade: str = "Class 3") -> str:
+    """Ensures average sentence length adheres to band limit (12 for Junior, 16 for Middle, 20 for Senior)."""
     if not text:
         return ""
-    # Strip any links or unsafe artifacts
     cleaned = re.sub(r"https?://\S+", "", text).strip()
     sentences = [s.strip() for s in re.split(r"(?<=[.!?])\s+", cleaned) if s.strip()]
     if not sentences:
         return cleaned
 
+    limit = get_reading_limit(grade)
     total_words = sum(len(s.split()) for s in sentences)
     avg_len = total_words / max(1, len(sentences))
 
-    if avg_len <= 12:
-        return " ".join(sentences[:3])
+    if avg_len <= limit:
+        return " ".join(sentences[:4])
 
-    # If sentences are too long, simplify by taking the cleanest first 2 short clauses
     simplified = []
     for s in sentences:
         words = s.split()
-        if len(words) > 14:
-            # Cut at first comma or conjunction if it produces a concise clause
+        if len(words) > limit + 2:
             comma_split = re.split(r"[,;]|\band\b", s)
-            if comma_split and 3 <= len(comma_split[0].split()) <= 12:
+            if comma_split and 3 <= len(comma_split[0].split()) <= limit:
                 simplified.append(comma_split[0].strip() + ".")
             else:
-                simplified.append(" ".join(words[:11]) + "...")
+                simplified.append(" ".join(words[:limit - 1]) + "...")
         else:
             simplified.append(s)
 
-    result = " ".join(simplified[:3])
+    result = " ".join(simplified[:4])
     return result
 
 
@@ -255,7 +297,8 @@ class TutorAgent:
             f"STUDENT QUESTION:\n{input_data.message}"
         )
 
-        messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+        sys_prompt = get_system_prompt_for_grade(input_data.grade)
+        messages = [{"role": "system", "content": sys_prompt}]
         for msg in input_data.history[-6:]:
             messages.append({"role": msg.get("role", "user"), "content": msg.get("content", "")})
         messages.append({"role": "user", "content": user_content})
@@ -267,8 +310,12 @@ class TutorAgent:
         if isinstance(input_data, dict):
             input_data = TutorInput(**input_data)
 
-        # 1. Child Safety Check
-        safety_reply = check_child_safety(input_data.message, user_id=input_data.session_id)
+        # 1. Safety Check (all grades 3-10)
+        safety_reply = check_child_safety(
+            input_data.message,
+            user_id=input_data.session_id,
+            grade=input_data.grade or "Class 3",
+        )
         if safety_reply:
             return TutorOutput(
                 response=safety_reply,
@@ -281,8 +328,15 @@ class TutorAgent:
         # 2. Greetings and Small Talk
         chat_type = check_greeting_or_thanks(input_data.message)
         if chat_type == "greeting":
+            band = get_band_for_grade(input_data.grade or "Class 3")
+            if band == "senior":
+                greet = "Hello! I am your Parivestra AI Tutor. How can I help you with your studies or exam preparation today?"
+            elif band == "middle":
+                greet = "Hi there! I am Pari, your study mentor. Which concept or problem would you like to explore today?"
+            else:
+                greet = "Hello! I am Pari, your Parivestra AI Tutor learning buddy. Ask me any question about Maths, English, or EVS, and we will explore it together! 🌟"
             return TutorOutput(
-                response="Hello! I am Pari, your Parivestra AI Tutor learning buddy. Ask me any question about Maths, English, or EVS, and we will explore it together! 🌟",
+                response=greet,
                 citations=[],
                 hint_level=input_data.hint_level,
                 covered=True,
@@ -301,8 +355,10 @@ class TutorAgent:
         messages, citations = self._prepare_context(input_data)
 
         if not messages:
+            band = get_band_for_grade(input_data.grade or "Class 3")
+            msg = "This topic is not covered in our current course notes. Please check with your teacher or the Library." if band != "junior" else "I'm not sure about that one. Let's ask your teacher! 🎒"
             return TutorOutput(
-                response="I'm not sure about that one. Let's ask your teacher! 🎒",
+                response=msg,
                 citations=[],
                 hint_level=input_data.hint_level,
                 covered=False,
@@ -311,8 +367,8 @@ class TutorAgent:
 
         # 4. LLM Call with Reading-Level Verification
         try:
-            raw_text = self.gateway.chat(messages, stream=False, max_tokens=180)
-            clean_text = verify_and_simplify_reading_level(raw_text.strip())
+            raw_text = self.gateway.chat(messages, stream=False, max_tokens=220)
+            clean_text = verify_and_simplify_reading_level(raw_text.strip(), grade=input_data.grade or "Class 3")
             return TutorOutput(
                 response=clean_text,
                 citations=citations,
@@ -357,7 +413,11 @@ class TutorAgent:
             input_data = TutorInput(**input_data)
 
         # Safety Check
-        safety_reply = check_child_safety(input_data.message, user_id=input_data.session_id)
+        safety_reply = check_child_safety(
+            input_data.message,
+            user_id=input_data.session_id,
+            grade=input_data.grade or "Class 3",
+        )
         if safety_reply:
             yield {"type": "token", "token": safety_reply}
             yield {
@@ -372,7 +432,13 @@ class TutorAgent:
         # Greeting Check
         chat_type = check_greeting_or_thanks(input_data.message)
         if chat_type == "greeting":
-            msg = "Hello! I am Pari, your Parivestra AI Tutor learning buddy. Ask me any question about Maths, English, or EVS, and we will explore it together! 🌟"
+            band = get_band_for_grade(input_data.grade or "Class 3")
+            if band == "senior":
+                msg = "Hello! I am your Parivestra AI Tutor. How can I help you with your studies or exam preparation today?"
+            elif band == "middle":
+                msg = "Hi there! I am Pari, your study mentor. Which concept or problem would you like to explore today?"
+            else:
+                msg = "Hello! I am Pari, your Parivestra AI Tutor learning buddy. Ask me any question about Maths, English, or EVS, and we will explore it together! 🌟"
             yield {"type": "token", "token": msg}
             yield {
                 "type": "done",

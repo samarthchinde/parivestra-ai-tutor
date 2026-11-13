@@ -98,3 +98,77 @@ body.calm-mode * {
     transition-duration: 0.001ms !important;
   }
 }
+
+/* =========================================================
+   AGE BAND THEME OVERRIDES
+   ========================================================= */
+
+/* Junior Band (Classes 3 to 5): Warm, bubbly, delightful */
+[data-band="junior"] {
+  --bg-canvas: #FFF9F0;
+  --bg-surface: #FFFFFF;
+  --text-main: #2B2D5B;
+  --text-muted: #64698C;
+  --font-heading: 'Baloo 2', cursive, system-ui, sans-serif;
+  --font-body: 'Nunito', system-ui, sans-serif;
+  --font-size-base: 18px;
+  --radius-sm: 14px;
+  --radius-md: 20px;
+  --radius-lg: 28px;
+}
+
+/* Middle Band (Classes 6 to 8): Calmer, conceptual, structured */
+[data-band="middle"] {
+  --bg-canvas: #F8FAFC;
+  --bg-surface: #FFFFFF;
+  --bg-card-tint: #F1F5F9;
+  --text-main: #1E293B;
+  --text-muted: #475569;
+  --color-primary: #3B82F6;
+  --color-primary-hover: #2563EB;
+  --color-primary-bg: #EFF6FF;
+  --font-heading: 'Lexend', system-ui, sans-serif;
+  --font-body: 'Nunito', system-ui, sans-serif;
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-base: 16px;
+  --font-size-lg: 19px;
+  --font-size-xl: 22px;
+  --font-size-2xl: 26px;
+  --font-size-3xl: 32px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 4px 16px rgba(15, 23, 42, 0.08);
+}
+
+/* Senior Band (Classes 9 to 10): Focused, exam-ready, modern minimal */
+[data-band="senior"] {
+  --bg-canvas: #F1F5F9;
+  --bg-surface: #FFFFFF;
+  --bg-card-tint: #E2E8F0;
+  --text-main: #0F172A;
+  --text-muted: #334155;
+  --color-primary: #2563EB;
+  --color-primary-hover: #1D4ED8;
+  --color-primary-bg: #DBEAFE;
+  --font-heading: 'Lexend', system-ui, sans-serif;
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-size-xs: 12px;
+  --font-size-sm: 13.5px;
+  --font-size-base: 15px;
+  --font-size-lg: 18px;
+  --font-size-xl: 21px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 28px;
+  --radius-sm: 8px;
+  --radius-md: 11px;
+  --radius-lg: 14px;
+  --shadow-sm: 0 1px 4px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 3px 12px rgba(15, 23, 42, 0.09);
+  --shadow-button: none;
+  --shadow-button-primary: none;
+}
+
+
