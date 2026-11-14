@@ -126,3 +126,4 @@ Upgrade the existing Parivestra AI Tutor application into a delightful, child-sa
 - `backend/agents/grader_agent.py`, `misconception_agent.py`, `router_agent.py`, `progress_agent.py` (preserve core agent interfaces)
 - `src/assessment/progressStorage.js` (preserve backward-compatible IndexedDB schema)
 - `tests/test_api.py`, `test_gateway.py`, `test_grader.py`, `test_llm_connection_and_offline.py`, `test_practice_validation.py`, `test_progress.py`, `test_retriever.py`, `test_router.py` (ensure existing regression tests stay untouched and pass)
+

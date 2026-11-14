@@ -35,3 +35,4 @@ Grade: Class 4
 Keywords: body, sense organs, eyes, ears, nose, tongue, skin, hygiene, exercise
 Content:
 Our body is an amazing machine with 5 special sense organs. Eyes help us see colorful sights, ears help us hear sounds and music, our nose smells flowers and food, our tongue tastes sweet, sour and salty flavors, and skin helps us feel soft or hot things. To keep our bodies strong, we need nutritious food like vegetables and milk, daily active play, drinking plenty of clean water, and 8 to 9 hours of peaceful sleep each night.
+

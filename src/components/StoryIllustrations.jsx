@@ -177,3 +177,4 @@ export default function StoryIllustration({ name, size = 180, animated = true })
       );
   }
 }
+

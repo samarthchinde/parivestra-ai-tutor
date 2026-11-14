@@ -191,3 +191,4 @@ export default function Mascot({ mood = "happy", size = 120, className = "", sty
     </div>
   );
 }
+

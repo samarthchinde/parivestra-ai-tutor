@@ -162,6 +162,7 @@ class TutorChatRequest(BaseModel):
     topic: Optional[str] = None
     grade: Optional[str] = "Class 3"
     hint_level: Optional[int] = Field(default=0, ge=0, le=4)
+    revision_mode: Optional[bool] = False
 
 
 class PracticeGenerateRequest(BaseModel):
@@ -445,6 +446,7 @@ def tutor_chat(
         grade=req.grade or user.grade or "Class 3",
         hint_level=req.hint_level or 0,
         history=history_dicts,
+        revision_mode=bool(req.revision_mode),
     )
 
     def sse_event_stream():
@@ -952,6 +954,91 @@ def get_courses_coverage(
         "needing_sources_count": len(needing_sources),
         "needing_sources": needing_sources,
     }
+
+
+# ---------------------------------------------------------
+# Dynamic Curriculum & Learning Path Endpoints
+# ---------------------------------------------------------
+@app.get("/api/curriculum/{board}/{grade}/{subject}")
+def get_curriculum_endpoint(
+    board: str,
+    grade: str,
+    subject: str,
+    db: Session = Depends(get_db),
+):
+    """Retrieves standard curriculum units and topological learning path order."""
+    from backend.curriculum.loader import load_curriculum, get_chapters_for_learning_path
+    data = load_curriculum(board=board, grade=grade, subject=subject)
+    if not data:
+        raise HTTPException(status_code=404, detail=f"Curriculum not found for {board} {grade} {subject}")
+
+    path = get_chapters_for_learning_path(board=board, grade=grade, subject=subject)
+    return {
+        "board": data.get("board", board),
+        "grade": data.get("grade", grade),
+        "subject": data.get("subject", subject),
+        "units": data.get("units", []),
+        "learning_path": path,
+    }
+
+
+@app.post("/api/library/upload")
+async def upload_library_resource(
+    file: UploadFile = File(...),
+    grade: str = Form(...),
+    subject: str = Form(...),
+    chapter: Optional[str] = Form(None),
+    is_admin: bool = Depends(verify_admin),
+    db: Session = Depends(get_db),
+):
+    """Uploads teacher textbook notes or lesson resources to Library and updates retriever index."""
+    from backend.rag.retriever import Chunk
+    filename = secure_filename(file.filename) if "secure_filename" in globals() else file.filename.replace(" ", "_")
+    content_bytes = await file.read()
+    try:
+        content_text = content_bytes.decode("utf-8")
+    except Exception:
+        content_text = content_bytes.decode("latin-1", errors="ignore")
+
+    save_dir = Path("knowledge_base") / "library" / grade.lower().replace(" ", "_") / subject.lower()
+    save_dir.mkdir(parents=True, exist_ok=True)
+    file_path = save_dir / filename
+    with open(file_path, "w", encoding="utf-8") as f:
+        f.write(content_text)
+
+    # Ingest directly into active retriever
+    chunk_id = f"lib_{grade.lower()}_{subject.lower()}_{file_path.stem}"
+    new_chunk = Chunk(
+        id=chunk_id,
+        title=file_path.stem.replace("_", " ").title(),
+        subject=subject,
+        topic=chapter or file_path.stem.replace("_", " ").title(),
+        content=content_text,
+        metadata={
+            "source": filename,
+            "grade": grade,
+            "chapter": chapter or "general",
+            "type": "teacher_upload",
+        },
+    )
+    retriever.chunks.append(new_chunk)
+    # Re-tokenize bm25
+    from backend.rag.retriever import tokenize
+    from rank_bm25 import BM25Okapi
+    retriever.corpus_tokens.append(
+        tokenize(f"{new_chunk.title} {new_chunk.subject} {new_chunk.topic} {new_chunk.content}")
+    )
+    retriever.bm25 = BM25Okapi(retriever.corpus_tokens)
+
+    return {
+        "status": "uploaded",
+        "filename": filename,
+        "grade": grade,
+        "subject": subject,
+        "chapter": chapter,
+        "chunk_id": chunk_id,
+    }
+
 
 
 

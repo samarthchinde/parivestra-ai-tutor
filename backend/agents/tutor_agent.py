@@ -23,6 +23,7 @@ class TutorInput(BaseModel):
     grade: Optional[str] = "Class 3"
     hint_level: int = Field(default=0, ge=0, le=4)
     history: List[Dict[str, str]] = Field(default_factory=list)
+    revision_mode: bool = False
 
 
 class TutorOutput(BaseModel):
@@ -276,6 +277,7 @@ class TutorAgent:
             subject=input_data.subject,
             topic=input_data.topic,
             grade=input_data.grade,
+            revision_mode=input_data.revision_mode,
         )
 
         if not retrieved:
@@ -384,6 +386,7 @@ class TutorAgent:
                 subject=input_data.subject,
                 topic=input_data.topic,
                 grade=input_data.grade,
+                revision_mode=input_data.revision_mode,
             )
             if retrieved:
                 best_chunk, _ = retrieved[0]
@@ -493,6 +496,7 @@ class TutorAgent:
                 subject=input_data.subject,
                 topic=input_data.topic,
                 grade=input_data.grade,
+                revision_mode=input_data.revision_mode,
             )
             if retrieved:
                 best_chunk, _ = retrieved[0]

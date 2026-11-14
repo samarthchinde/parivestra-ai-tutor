@@ -193,3 +193,4 @@ def get_chapters_for_learning_path(board: str, grade: str, subject: str = "Maths
                 ordered.append(chap)
 
     return ordered
+

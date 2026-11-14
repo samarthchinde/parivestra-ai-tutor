@@ -16,7 +16,10 @@ import {
   TreeDeciduous,
   Gamepad2,
   PlayCircle,
+  FlaskConical,
+  Globe,
 } from "lucide-react";
+import { getSubjectsForGrade, getBandForGrade } from "../config/bands";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -231,39 +234,60 @@ export default function Dashboard() {
           </Link>
         </div>
 
-        <div className="grid three">
-          <SubjectTile
-            subject="Maths"
-            title="Maths Adventures"
-            description="Numbers, Place Value, Fun Addition, and Multiplication Puzzles."
-            icon={Calculator}
-            color="var(--color-maths)"
-            bg="var(--color-maths-bg)"
-            progress={65}
-            onClick={() => navigate("/courses?subject=Maths")}
-          />
+        <div className="grid three" style={{ gap: 18 }}>
+          {getSubjectsForGrade(profile.grade).map((subj) => {
+            let icon = BookOpen;
+            let color = "var(--color-primary)";
+            let bg = "#F1F5F9";
+            let title = `${subj} Quests`;
+            let desc = `Master ${subj} concepts and problem solving.`;
 
-          <SubjectTile
-            subject="English"
-            title="English Magic"
-            description="Naming Words (Nouns), Action Words (Verbs), and Fun Stories."
-            icon={Languages}
-            color="var(--color-english)"
-            bg="var(--color-english-bg)"
-            progress={50}
-            onClick={() => navigate("/courses?subject=English")}
-          />
+            if (subj.toLowerCase() === "maths") {
+              icon = Calculator;
+              color = "var(--color-maths)";
+              bg = "var(--color-maths-bg)";
+              title = "Maths Mastery";
+              desc = "Numbers, Algebra, Geometry & Word Problems.";
+            } else if (subj.toLowerCase() === "english") {
+              icon = Languages;
+              color = "var(--color-english)";
+              bg = "var(--color-english-bg)";
+              title = "English & Literature";
+              desc = "Grammar rules, vocabulary & creative reading.";
+            } else if (subj.toLowerCase() === "evs") {
+              icon = TreeDeciduous;
+              color = "var(--color-evs)";
+              bg = "var(--color-evs-bg)";
+              title = "EVS & Nature";
+              desc = "Living world, habitats, and earth sciences.";
+            } else if (subj.toLowerCase() === "science") {
+              icon = FlaskConical;
+              color = "#0D9488";
+              bg = "#CCFBF1";
+              title = "Science Lab";
+              desc = "Physics, Chemistry, and Biology inquiry.";
+            } else if (subj.toLowerCase() === "social science") {
+              icon = Globe;
+              color = "#D97706";
+              bg = "#FEF3C7";
+              title = "Social Science";
+              desc = "History, Geography, Civics & Society.";
+            }
 
-          <SubjectTile
-            subject="EVS"
-            title="EVS & Nature"
-            description="Green Plants, Wild Animals & Habitats, and the Water Cycle."
-            icon={TreeDeciduous}
-            color="var(--color-evs)"
-            bg="var(--color-evs-bg)"
-            progress={40}
-            onClick={() => navigate("/courses?subject=EVS")}
-          />
+            return (
+              <SubjectTile
+                key={subj}
+                subject={subj}
+                title={title}
+                description={desc}
+                icon={icon}
+                color={color}
+                bg={bg}
+                progress={55}
+                onClick={() => navigate(`/courses?subject=${encodeURIComponent(subj)}`)}
+              />
+            );
+          })}
         </div>
       </div>
 

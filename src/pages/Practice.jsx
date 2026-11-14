@@ -5,6 +5,7 @@ import { questionBank } from "../assessment/questionBank";
 import { saveProgress, getProgress } from "../assessment/progressStorage";
 import { generatePracticeQuestions, submitPracticeAnswer } from "../api/client";
 import { playSuccess, playNudge, playClick } from "../utils/sound";
+import { getSubjectsForGrade, getBandForGrade } from "../config/bands";
 import {
   CheckCircle2,
   HelpCircle,
@@ -32,7 +33,8 @@ export default function Practice() {
   const [lastFeedback, setLastFeedback] = useState(null);
   const [earnedXpTotal, setEarnedXpTotal] = useState(0);
 
-  const subjects = ["Maths", "English", "EVS", "Python"];
+  const subjects = getSubjectsForGrade(grade);
+  const currentBand = getBandForGrade(grade);
 
   // Kid-friendly fallback question bank for Class 3-4
   const kidFallbackBank = [

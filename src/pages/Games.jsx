@@ -9,6 +9,7 @@ import {
 } from "../components/UI";
 import { playSuccess, playNudge } from "../utils/sound";
 import confetti from "canvas-confetti";
+import { getBandForGrade } from "../config/bands";
 import {
   Sparkles,
   Heart,
@@ -24,8 +25,10 @@ import {
 } from "lucide-react";
 
 export default function Games() {
-  const [activeGame, setActiveGame] = useState("menu"); // "menu" | "ninja" | "word" | "bughunt"
+  const [activeGame, setActiveGame] = useState("menu"); // "menu" | "ninja" | "word" | "bughunt" | "sprint"
   const [toastMsg, setToastMsg] = useState("");
+  const [grade] = useState(localStorage.getItem("parivestra_grade") || "Class 3");
+  const band = getBandForGrade(grade);
 
   // Game state
   const [score, setScore] = useState(0);
@@ -35,8 +38,8 @@ export default function Games() {
   const [currentRound, setCurrentRound] = useState(0);
   const [gameFeedback, setGameFeedback] = useState(null); // { text, type: "good" | "bad" }
 
-  // Game 1: Number Ninja questions generator for Class 3-4
-  const ninjaQuestions = [
+  // Game 1: Number Ninja questions — scaled by band
+  const ninjaQuestionsJunior = [
     { q: "7 × 8 = ?", options: ["54", "56", "64", "48"], a: "56", hint: "Think: 7 × 7 = 49, add 7 more!" },
     { q: "What is 150 + 250?", options: ["350", "400", "450", "500"], a: "400", hint: "15 tens + 25 tens = 40 tens!" },
     { q: "Half of 60 is:", options: ["20", "25", "30", "35"], a: "30", hint: "Divide 60 into two equal halves." },
@@ -46,6 +49,26 @@ export default function Games() {
     { q: "Which fraction is bigger: 1/2 or 1/4?", options: ["1/2", "1/4", "They are equal", "Neither"], a: "1/2", hint: "Half a pizza is bigger than a quarter!" },
     { q: "40 ÷ 5 = ?", options: ["6", "7", "8", "9"], a: "8", hint: "5 × 8 = 40!" },
   ];
+
+  const ninjaQuestionsMiddle = [
+    { q: "What is 15% of 200?", options: ["20", "30", "35", "40"], a: "30", hint: "15% means 15/100 × 200." },
+    { q: "Solve: 3x = 24", options: ["6", "7", "8", "9"], a: "8", hint: "Divide both sides by 3." },
+    { q: "Area of a triangle with base 12 and height 8?", options: ["48", "96", "36", "60"], a: "48", hint: "A = ½ × base × height." },
+    { q: "What is (-5) × (-3)?", options: ["15", "-15", "8", "-8"], a: "15", hint: "Negative times negative is positive." },
+    { q: "Simplify: 18/24", options: ["2/3", "3/4", "4/6", "6/8"], a: "3/4", hint: "Divide both by 6." },
+    { q: "Find the HCF of 12 and 18:", options: ["6", "3", "4", "9"], a: "6", hint: "List factors of each." },
+  ];
+
+  const ninjaQuestionsSenior = [
+    { q: "Solve: x² − 5x + 6 = 0, find x", options: ["2 and 3", "1 and 6", "-2 and -3", "3 and 6"], a: "2 and 3", hint: "Factorise: (x-2)(x-3)=0." },
+    { q: "What is sin 30°?", options: ["1/2", "√3/2", "1", "0"], a: "1/2", hint: "Standard trigonometric value." },
+    { q: "If a triangle has sides 3, 4, 5, it is:", options: ["Right-angled", "Equilateral", "Isosceles", "Obtuse"], a: "Right-angled", hint: "Check: 3²+4² = 5²." },
+    { q: "pH of pure water at 25°C?", options: ["7", "0", "14", "1"], a: "7", hint: "Neutral solution." },
+    { q: "Chemical formula of baking soda?", options: ["NaHCO₃", "Na₂CO₃", "NaCl", "NaOH"], a: "NaHCO₃", hint: "Sodium hydrogen carbonate." },
+    { q: "The SI unit of electric current is:", options: ["Ampere", "Volt", "Watt", "Ohm"], a: "Ampere", hint: "Named after André-Marie Ampère." },
+  ];
+
+  const ninjaQuestions = band === "senior" ? ninjaQuestionsSenior : band === "middle" ? ninjaQuestionsMiddle : ninjaQuestionsJunior;
 
   // Game 2: Word Builder / Grammar Spark questions
   const wordQuestions = [
@@ -89,6 +112,16 @@ export default function Games() {
     },
   ];
 
+  // Quiz Sprint for Senior Band: timed rapid board-style questions
+  const sprintQuestions = [
+    { q: "Find the discriminant of 2x² + 3x − 5 = 0", options: ["49", "9", "25", "16"], a: "49", hint: "D = b² − 4ac = 9 + 40 = 49." },
+    { q: "Which element has atomic number 11?", options: ["Sodium", "Neon", "Magnesium", "Lithium"], a: "Sodium", hint: "Na, a reactive alkali metal." },
+    { q: "The Revolt of 1857 started from:", options: ["Meerut", "Delhi", "Lucknow", "Kanpur"], a: "Meerut", hint: "Mangal Pandey's sepoy mutiny." },
+    { q: "What is the value of log₁₀(1000)?", options: ["3", "2", "4", "10"], a: "3", hint: "10³ = 1000." },
+    { q: "The longest river in India is:", options: ["Ganga", "Godavari", "Krishna", "Narmada"], a: "Ganga", hint: "It flows over 2500 km." },
+    { q: "What is the powerhouse of the cell?", options: ["Mitochondria", "Nucleus", "Ribosome", "Golgi body"], a: "Mitochondria", hint: "Produces ATP energy." },
+  ];
+
   const startGame = (gameKey) => {
     setActiveGame(gameKey);
     setScore(0);
@@ -103,6 +136,7 @@ export default function Games() {
     if (activeGame === "ninja") return ninjaQuestions;
     if (activeGame === "word") return wordQuestions;
     if (activeGame === "bughunt") return bugQuestions;
+    if (activeGame === "sprint") return sprintQuestions;
     return [];
   };
 
@@ -327,6 +361,51 @@ export default function Games() {
               </PrimaryButton>
             </div>
           </div>
+
+          {/* Game 4: Quiz Sprint — Senior Band */}
+          {band === "senior" && (
+            <div
+              className="clickable-card"
+              onClick={() => startGame("sprint")}
+              style={{
+                background: "white",
+                border: "2px solid var(--border)",
+                borderRadius: "var(--radius-lg)",
+                padding: 0,
+                cursor: "pointer",
+                overflow: "hidden",
+                boxShadow: "var(--shadow-sm)",
+                transition: "all 0.2s ease",
+              }}
+            >
+              <div style={{ padding: "26px 26px 24px", display: "flex", flexDirection: "column", height: "100%" }}>
+                <div
+                  style={{
+                    width: 70,
+                    height: 70,
+                    borderRadius: "50%",
+                    background: "#EF4444",
+                    display: "grid",
+                    placeItems: "center",
+                    fontSize: 34,
+                    marginBottom: 14,
+                  }}
+                >
+                  ⚡
+                </div>
+                <Badge variant="warning">Rapid Fire • Board Prep</Badge>
+                <h3 style={{ fontFamily: "var(--font-heading)", fontSize: "1.4rem", margin: "10px 0 6px 0", color: "var(--text)" }}>
+                  Quiz Sprint
+                </h3>
+                <p style={{ color: "var(--text-muted)", fontSize: "0.95rem", lineHeight: 1.5, margin: "0 0 20px 0", flex: 1 }}>
+                  Timed CBSE-style rapid-fire questions across Science, Maths, and Social Science. Exam prep made fun!
+                </p>
+                <PrimaryButton style={{ width: "100%", padding: "12px", background: "#EF4444", borderColor: "#EF4444" }}>
+                  Start Sprint! ⚡
+                </PrimaryButton>
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         /* ACTIVE GAMEPLAY STAGE */
@@ -571,3 +650,4 @@ export default function Games() {
     </div>
   );
 }
+

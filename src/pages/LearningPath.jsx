@@ -1,291 +1,245 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { PageHeader, Badge, PrimaryButton, Mascot } from "../components/UI";
-import { Sparkles, Star, Lock, CheckCircle2, Compass, ArrowRight } from "lucide-react";
+import { PageHeader, Badge, PrimaryButton, Mascot, EmptyState } from "../components/UI";
+import { Sparkles, Star, Lock, CheckCircle2, ArrowRight, FlaskConical, Calculator, Globe, Languages, TreeDeciduous, BookOpen } from "lucide-react";
+import { getCurriculum } from "../api/client";
+import { getSubjectsForGrade, getBandForGrade } from "../config/bands";
 
 export default function LearningPath() {
   const navigate = useNavigate();
+  const [grade, setGrade] = useState(localStorage.getItem("parivestra_grade") || "Class 3");
+  const [subject, setSubject] = useState("Maths");
+  const [chapters, setChapters] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const questNodes = [
-    {
-      id: "c3_maths_numbers",
-      level: 1,
-      title: "Number Safari Island",
-      subject: "Maths",
-      badgeVariant: "blue",
-      description: "Hundreds, tens, and place value exploration with Pari!",
-      status: "completed", // "completed" | "current" | "locked"
-      stars: 3,
-      targetRoute: "/courses/c3_maths_numbers",
-      icon: "🔢",
-    },
-    {
-      id: "c3_eng_grammar",
-      level: 2,
-      title: "Word Forest Kingdom",
-      subject: "English",
-      badgeVariant: "coral",
-      description: "Spot naming nouns, action verbs, and sparkling sentences!",
-      status: "current",
-      stars: 1,
-      targetRoute: "/courses/c3_eng_grammar",
-      icon: "🌳",
-    },
-    {
-      id: "story_water_cycle",
-      level: 3,
-      title: "Water Cycle Valley",
-      subject: "EVS",
-      badgeVariant: "mint",
-      description: "Journey with Piku the water drop from river to cloud!",
-      status: "unlocked",
-      stars: 0,
-      targetRoute: "/videos/story/story_water_cycle",
-      icon: "💧",
-    },
-    {
-      id: "story_fractions_pizza",
-      level: 4,
-      title: "Fraction Bakery",
-      subject: "Maths",
-      badgeVariant: "blue",
-      description: "Slice pizzas into halves and quarters with Chef Pari!",
-      status: "unlocked",
-      stars: 0,
-      targetRoute: "/videos/story/story_fractions_pizza",
-      icon: "🍕",
-    },
-    {
-      id: "c4_evs_plants",
-      level: 5,
-      title: "Living World Peak",
-      subject: "EVS",
-      badgeVariant: "mint",
-      description: "How roots drink water and green leaves cook food in sunlight!",
-      status: "locked",
-      stars: 0,
-      targetRoute: "/courses/c4_evs_plants",
-      icon: "🌱",
-    },
-    {
-      id: "castle",
-      level: 6,
-      title: "Grand Scholar Castle",
-      subject: "Capstone",
-      badgeVariant: "purple",
-      description: "The ultimate adventure combining all your superpowers!",
-      status: "locked",
-      stars: 0,
-      targetRoute: "/courses",
-      icon: "🏰",
-    },
-  ];
+  const band = getBandForGrade(grade);
+  const subjects = getSubjectsForGrade(grade);
+  const subjectEmojis = { Maths: "🔢", English: "📖", EVS: "🌱", Science: "🔬", "Social Science": "🌍" };
+
+  useEffect(() => {
+    async function load() {
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await getCurriculum("CBSE", grade, subject);
+        setChapters(data.learning_path || []);
+      } catch (e) {
+        console.warn("Could not fetch curriculum:", e);
+        setError("Could not load curriculum. Using default path.");
+        setChapters([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
+  }, [grade, subject]);
+
+  const getSubjectColor = (s) => {
+    switch (s.toLowerCase()) {
+      case "maths": return "var(--color-maths)";
+      case "english": return "var(--color-english)";
+      case "evs": return "var(--color-evs)";
+      case "science": return "#0D9488";
+      case "social science": return "#D97706";
+      default: return "var(--color-primary)";
+    }
+  };
+
+  const subjectColor = getSubjectColor(subject);
 
   return (
     <div style={{ maxWidth: 880, margin: "0 auto", paddingBottom: 60 }}>
       <PageHeader
-        title="Your Adventure Roadmap 🗺️"
-        description="Follow the quest trail, unlock mystical learning islands, and collect golden stars!"
+        eyebrow={`${band.toUpperCase()} BAND • CBSE ${grade}`}
+        title={`${subject} Learning Roadmap ${subjectEmojis[subject] || "📚"}`}
+        description="Follow the topological chapter path: unlock each milestone by completing prerequisites."
       />
 
-      {/* Top Milestone Banner */}
-      <div
-        style={{
-          background: "linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%)",
-          border: "2px solid #FCD34D",
-          borderRadius: "var(--radius-xl)",
-          padding: "24px 28px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: 36,
-          boxShadow: "var(--shadow-sm)",
-          gap: 20,
-        }}
-      >
-        <div>
-          <span style={{ fontSize: "0.85rem", fontWeight: 800, color: "#92400E", textTransform: "uppercase" }}>
-            Current Chapter: Island 2
-          </span>
-          <h2
+      {/* Grade & Subject Selectors */}
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 14, marginBottom: 28, alignItems: "center" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, background: "#FFF", padding: "6px 14px", borderRadius: "var(--radius-full)", border: "2px solid #E2E8F0" }}>
+          <span style={{ fontSize: 13, fontWeight: 700, color: "var(--text-muted)" }}>Class:</span>
+          <select
+            value={grade}
+            onChange={(e) => {
+              setGrade(e.target.value);
+              localStorage.setItem("parivestra_grade", e.target.value);
+              if (!getSubjectsForGrade(e.target.value).includes(subject)) {
+                setSubject("Maths");
+              }
+            }}
             style={{
-              fontFamily: "var(--font-heading)",
-              fontSize: "1.6rem",
-              color: "#78350F",
-              margin: "4px 0 8px 0",
+              background: "var(--color-mint)", color: "#134E4A",
+              border: "none", borderRadius: "var(--radius-full)",
+              padding: "4px 10px", fontSize: 13, fontWeight: 800,
+              cursor: "pointer", outline: "none",
             }}
           >
-            Word Forest Kingdom 🌳
-          </h2>
-          <p style={{ color: "#92400E", margin: 0, fontSize: "1rem" }}>
-            Complete the grammar quest to earn your 2nd Star Cadet badge!
-          </p>
+            {["Class 3","Class 4","Class 5","Class 6","Class 7","Class 8","Class 9","Class 10"].map((g) => (
+              <option key={g} value={g}>{g}</option>
+            ))}
+          </select>
         </div>
-        <Mascot mood="cheering" size={85} />
-      </div>
 
-      {/* Stepping Stones Adventure Path */}
-      <div style={{ position: "relative", padding: "10px 0" }}>
-        {/* Trail Line */}
-        <div
-          style={{
-            position: "absolute",
-            top: 40,
-            bottom: 40,
-            left: "50%",
-            width: 8,
-            background: "linear-gradient(180deg, #A7F3D0 0%, #CBD5E1 100%)",
-            transform: "translateX(-50%)",
-            borderRadius: 4,
-            zIndex: 0,
-          }}
-        />
-
-        <div style={{ display: "flex", flexDirection: "column", gap: 32, position: "relative", zIndex: 1 }}>
-          {questNodes.map((node, idx) => {
-            const isLeft = idx % 2 === 0;
-            const isCurrent = node.status === "current";
-            const isCompleted = node.status === "completed";
-            const isLocked = node.status === "locked";
-
-            let nodeBorder = "2px solid var(--border)";
-            let nodeBg = "white";
-
-            if (isCurrent) {
-              nodeBorder = "3px solid var(--kid-grape)";
-              nodeBg = "#FAF5FF";
-            } else if (isCompleted) {
-              nodeBorder = "2px solid #86EFAC";
-              nodeBg = "#F0FDF4";
-            } else if (isLocked) {
-              nodeBg = "#F8FAFC";
-              nodeBorder = "2px dashed #CBD5E1";
-            }
-
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          {subjects.map((s) => {
+            const isActive = s === subject;
             return (
-              <div
-                key={node.id}
+              <button
+                key={s}
+                onClick={() => setSubject(s)}
                 style={{
-                  display: "flex",
-                  justifyContent: isLeft ? "flex-start" : "flex-end",
-                  width: "100%",
+                  background: isActive ? subjectColor : "#FFFFFF",
+                  color: isActive ? "#FFFFFF" : "var(--text-main)",
+                  border: isActive ? "none" : "2px solid #E2E8F0",
+                  borderRadius: "var(--radius-full)",
+                  padding: "7px 16px", fontSize: 14, fontWeight: 800,
+                  cursor: "pointer", transition: "all 0.15s",
                 }}
               >
-                <div
-                  style={{
-                    width: "88%",
-                    maxWidth: 420,
-                    background: nodeBg,
-                    border: nodeBorder,
-                    borderRadius: "var(--radius-xl)",
-                    padding: "22px 24px",
-                    boxShadow: isCurrent ? "var(--shadow-md)" : "var(--shadow-sm)",
-                    opacity: isLocked ? 0.72 : 1,
-                    position: "relative",
-                    transition: "all 0.2s ease",
-                  }}
-                >
-                  {/* Step Level Badge */}
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      marginBottom: 10,
-                    }}
-                  >
-                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                      <span style={{ fontSize: "1.4rem" }}>{node.icon}</span>
-                      <Badge variant={node.badgeVariant}>{node.subject}</Badge>
-                      <span style={{ fontSize: "0.8rem", fontWeight: 800, color: "var(--text-muted)" }}>
-                        LEVEL {node.level}
-                      </span>
-                    </div>
-
-                    {isCompleted ? (
-                      <CheckCircle2 size={22} color="#16A34A" />
-                    ) : isLocked ? (
-                      <Lock size={18} color="#94A3B8" />
-                    ) : (
-                      <Sparkles size={20} color="var(--kid-grape)" />
-                    )}
-                  </div>
-
-                  <h3
-                    style={{
-                      fontFamily: "var(--font-heading)",
-                      fontSize: "1.3rem",
-                      color: isLocked ? "#64748B" : "var(--text)",
-                      margin: "0 0 6px 0",
-                    }}
-                  >
-                    {node.title}
-                  </h3>
-
-                  <p
-                    style={{
-                      fontSize: "0.92rem",
-                      color: "var(--text-muted)",
-                      margin: "0 0 16px 0",
-                      lineHeight: 1.45,
-                    }}
-                  >
-                    {node.description}
-                  </p>
-
-                  {/* Star rating and Action */}
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      paddingTop: 10,
-                      borderTop: "1px solid var(--border)",
-                    }}
-                  >
-                    <div style={{ display: "flex", gap: 4 }}>
-                      {[1, 2, 3].map((starIdx) => (
-                        <Star
-                          key={starIdx}
-                          size={18}
-                          color="#F59E0B"
-                          fill={starIdx <= node.stars ? "#F59E0B" : "transparent"}
-                        />
-                      ))}
-                    </div>
-
-                    <button
-                      disabled={isLocked}
-                      onClick={() => navigate(node.targetRoute)}
-                      style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: 6,
-                        background: isCurrent
-                          ? "var(--kid-grape)"
-                          : isCompleted
-                          ? "white"
-                          : isLocked
-                          ? "#E2E8F0"
-                          : "var(--kid-maths)",
-                        color: isCompleted ? "var(--text)" : isLocked ? "#94A3B8" : "white",
-                        border: isCompleted ? "1.5px solid var(--border)" : "none",
-                        padding: "8px 16px",
-                        borderRadius: 12,
-                        fontSize: "0.88rem",
-                        fontWeight: 700,
-                        cursor: isLocked ? "not-allowed" : "pointer",
-                      }}
-                    >
-                      {isCompleted ? "Revisit" : isCurrent ? "Continue Quest" : isLocked ? "Locked" : "Start"}
-                      {!isLocked && <ArrowRight size={14} />}
-                    </button>
-                  </div>
-                </div>
-              </div>
+                {subjectEmojis[s] || "📖"} {s}
+              </button>
             );
           })}
         </div>
       </div>
+
+      {/* Content */}
+      {loading ? (
+        <div style={{ textAlign: "center", padding: "40px 0", color: "var(--text-muted)" }}>
+          Loading curriculum path...
+        </div>
+      ) : chapters.length === 0 ? (
+        <EmptyState
+          title={error || "No curriculum path available"}
+          description={`No CBSE curriculum data found for ${grade} ${subject}. Ask your teacher to add it.`}
+          mood="thinking"
+        />
+      ) : (
+        <div style={{ position: "relative", padding: "10px 0" }}>
+          {/* Trail Line */}
+          <div
+            style={{
+              position: "absolute", top: 40, bottom: 40, left: "50%",
+              width: 6, background: `linear-gradient(180deg, ${subjectColor}40 0%, #CBD5E1 100%)`,
+              transform: "translateX(-50%)", borderRadius: 3, zIndex: 0,
+            }}
+          />
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 28, position: "relative", zIndex: 1 }}>
+            {chapters.map((ch, idx) => {
+              const isLeft = idx % 2 === 0;
+              // First chapter is "unlocked"; rest are locked (no progress tracking yet)
+              const status = idx === 0 ? "current" : "locked";
+              const isCurrent = status === "current";
+              const isLocked = status === "locked";
+
+              let nodeBorder = "2px solid var(--border)";
+              let nodeBg = "white";
+
+              if (isCurrent) {
+                nodeBorder = `3px solid ${subjectColor}`;
+                nodeBg = "#FAF5FF";
+              } else if (isLocked) {
+                nodeBg = "#F8FAFC";
+                nodeBorder = "2px dashed #CBD5E1";
+              }
+
+              return (
+                <div
+                  key={ch.id}
+                  style={{
+                    display: "flex",
+                    justifyContent: isLeft ? "flex-start" : "flex-end",
+                    width: "100%",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: "88%", maxWidth: 440,
+                      background: nodeBg, border: nodeBorder,
+                      borderRadius: "var(--radius-xl)",
+                      padding: "20px 22px",
+                      boxShadow: isCurrent ? "var(--shadow-md)" : "var(--shadow-sm)",
+                      opacity: isLocked ? 0.72 : 1,
+                      transition: "all 0.2s ease",
+                    }}
+                  >
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        <span style={{ fontSize: "1.3rem" }}>{subjectEmojis[subject] || "📖"}</span>
+                        <Badge variant={subject.toLowerCase() === "maths" ? "blue" : subject.toLowerCase() === "english" ? "coral" : "mint"}>
+                          Ch {ch.chapter_number || idx + 1}
+                        </Badge>
+                        {ch.unit_title && (
+                          <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)" }}>
+                            {ch.unit_title}
+                          </span>
+                        )}
+                      </div>
+                      {isCurrent ? (
+                        <Sparkles size={18} color={subjectColor} />
+                      ) : (
+                        <Lock size={16} color="#94A3B8" />
+                      )}
+                    </div>
+
+                    <h3 style={{
+                      fontFamily: "var(--font-heading)",
+                      fontSize: "1.2rem",
+                      color: isLocked ? "#64748B" : "var(--text)",
+                      margin: "0 0 6px 0",
+                    }}>
+                      {ch.title}
+                    </h3>
+
+                    {ch.learning_objectives && ch.learning_objectives.length > 0 && (
+                      <p style={{ fontSize: "0.88rem", color: "var(--text-muted)", margin: "0 0 12px 0", lineHeight: 1.45 }}>
+                        {ch.learning_objectives.slice(0, 2).join(" • ")}
+                      </p>
+                    )}
+
+                    {ch.prerequisites && ch.prerequisites.length > 0 && (
+                      <div style={{ fontSize: "0.8rem", color: "#B45309", marginBottom: 10 }}>
+                        Requires: {ch.prerequisites.join(", ")}
+                      </div>
+                    )}
+
+                    <div style={{
+                      display: "flex", justifyContent: "space-between", alignItems: "center",
+                      paddingTop: 10, borderTop: "1px solid var(--border)",
+                    }}>
+                      <div style={{ display: "flex", gap: 4 }}>
+                        {[1, 2, 3].map((s) => (
+                          <Star key={s} size={16} color="#F59E0B" fill={isCurrent && s <= 1 ? "#F59E0B" : "transparent"} />
+                        ))}
+                      </div>
+
+                      <button
+                        disabled={isLocked}
+                        onClick={() => navigate("/courses")}
+                        style={{
+                          display: "inline-flex", alignItems: "center", gap: 5,
+                          background: isCurrent ? subjectColor : isLocked ? "#E2E8F0" : "var(--color-primary)",
+                          color: isLocked ? "#94A3B8" : "white",
+                          border: "none",
+                          padding: "7px 14px", borderRadius: 10,
+                          fontSize: "0.85rem", fontWeight: 700,
+                          cursor: isLocked ? "not-allowed" : "pointer",
+                        }}
+                      >
+                        {isCurrent ? "Begin Chapter" : "Locked"}
+                        {!isLocked && <ArrowRight size={13} />}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

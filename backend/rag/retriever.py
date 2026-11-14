@@ -7,6 +7,7 @@ import re
 from typing import Any, Dict, List, Optional, Tuple
 from pydantic import BaseModel
 from rank_bm25 import BM25Okapi
+from backend.config.bands import get_previous_grade
 
 
 class Chunk(BaseModel):
@@ -30,6 +31,7 @@ class BaseRetriever(ABC):
         subject: Optional[str] = None,
         topic: Optional[str] = None,
         grade: Optional[str] = None,
+        revision_mode: bool = False,
     ) -> List[Tuple[Chunk, float]]:
         """Retrieve top-k relevant chunks for a given query, optionally filtered."""
         pass
@@ -147,6 +149,49 @@ def load_chunks_from_kb(kb_dir: Optional[Path] = None) -> List[Chunk]:
         except Exception as e:
             print(f"Error reading {txt_file.name}: {e}")
 
+    # 4. Load CBSE curriculum standards as grounded chunks
+    curr_dir = kb_dir / "curriculum"
+    if curr_dir.exists():
+        for cfile in curr_dir.rglob("*.json"):
+            try:
+                with open(cfile, "r", encoding="utf-8") as f:
+                    cdata = json.load(f)
+                c_grade = cdata.get("grade", "General")
+                c_subject = cdata.get("subject", "General")
+                for unit in cdata.get("units", []):
+                    for ch in unit.get("chapters", []):
+                        ch_id = ch.get("id", f"{cfile.stem}_{ch.get('chapter_number', 1)}")
+                        ch_title = ch.get("title", "Chapter")
+                        objs = ch.get("learning_objectives", [])
+                        kws = ch.get("keywords", [])
+                        content = (
+                            f"Subject: {c_subject}\n"
+                            f"Grade: {c_grade}\n"
+                            f"Chapter: {ch_title}\n"
+                            f"Learning Objectives: {'; '.join(objs)}\n"
+                            f"Keywords: {', '.join(kws)}\n"
+                            f"Key concepts: {ch_title} in CBSE {c_grade} {c_subject} curriculum covering {', '.join(objs)}."
+                        )
+                        chunks.append(
+                            Chunk(
+                                id=f"curr_{ch_id}",
+                                title=ch_title,
+                                subject=c_subject,
+                                topic=ch_title,
+                                content=content,
+                                metadata={
+                                    "source": cfile.name,
+                                    "grade": c_grade,
+                                    "chapter": ch_id,
+                                    "keywords": kws,
+                                    "objectives": objs,
+                                    "type": "curriculum_standard",
+                                },
+                            )
+                        )
+            except Exception as e:
+                print(f"Error reading curriculum {cfile.name}: {e}")
+
     return chunks
 
 
@@ -171,9 +216,10 @@ class BM25Retriever(BaseRetriever):
         subject: Optional[str] = None,
         topic: Optional[str] = None,
         grade: Optional[str] = None,
+        revision_mode: bool = False,
         min_score: float = 0.0,
     ) -> List[Tuple[Chunk, float]]:
-        """Retrieve top scoring chunks for the query with optional filtering and grade preference."""
+        """Retrieve top scoring chunks for the query with optional filtering, grade preference, and revision mode."""
         if not self.chunks or not self.bm25:
             return []
 
@@ -184,6 +230,9 @@ class BM25Retriever(BaseRetriever):
         scores = self.bm25.get_scores(query_tokens)
         scored_pairs = list(zip(self.chunks, scores))
 
+        # Determine target and previous grade for revision mode
+        prev_grade = get_previous_grade(grade) if grade else None
+
         filtered = []
         for chunk, score in scored_pairs:
             # Subject filter
@@ -193,12 +242,33 @@ class BM25Retriever(BaseRetriever):
             if topic and topic.lower() != "all" and topic.lower() not in chunk.topic.lower():
                 continue
 
+            chunk_grade = chunk.metadata.get("grade", "General")
             adj_score = float(score)
-            # Grade boost if matching student grade
-            if grade and chunk.metadata.get("grade") and chunk.metadata.get("grade").lower() == grade.lower():
-                adj_score *= 1.3
 
-            filtered.append((chunk, adj_score))
+            if grade:
+                c_grade_lower = chunk_grade.lower()
+                target_grade_lower = grade.lower()
+                prev_grade_lower = prev_grade.lower() if prev_grade else None
+
+                if revision_mode:
+                    # In revision mode, prioritize current grade and previous grade
+                    if c_grade_lower == target_grade_lower:
+                        adj_score *= 1.3
+                    elif prev_grade_lower and c_grade_lower == prev_grade_lower:
+                        adj_score *= 1.2
+                    elif c_grade_lower != "general":
+                        # Other non-adjacent grades get deprioritized
+                        adj_score *= 0.6
+                else:
+                    # Standard mode: boost target grade
+                    if c_grade_lower == target_grade_lower:
+                        adj_score *= 1.4
+                    elif c_grade_lower != "general":
+                        # De-boost other grade chunks
+                        adj_score *= 0.7
+
+            if adj_score >= min_score:
+                filtered.append((chunk, adj_score))
 
         # Sort descending by score
         filtered.sort(key=lambda x: x[1], reverse=True)

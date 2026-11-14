@@ -146,3 +146,4 @@ Three age bands configured centrally in `src/config/bands.js` and `backend/confi
 - `backend/llm/gateway.py` (working unified gateway).
 - `scripts/start-llm.ps1` (llama-server startup).
 - Existing 37 unit tests in `tests/` (must all continue passing without regression).
+

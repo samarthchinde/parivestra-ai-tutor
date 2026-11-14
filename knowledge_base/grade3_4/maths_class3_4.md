@@ -44,3 +44,4 @@ Grade: Class 3
 Keywords: square, rectangle, triangle, circle, sides, corners, edges
 Content:
 Shapes are all around us! A square has 4 equal straight sides and 4 corners. A rectangle has 4 sides where opposite sides are equal. A triangle has 3 sides and 3 corners. A circle is round and curved with no straight sides and no corners. In 3D shapes, a cube looks like a dice with 6 flat square faces, and a sphere is shaped like a playing ball.
+

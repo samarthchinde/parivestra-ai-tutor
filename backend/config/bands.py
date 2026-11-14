@@ -91,3 +91,4 @@ def get_previous_grade(grade: str) -> str | None:
     except ValueError:
         pass
     return None
+

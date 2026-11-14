@@ -227,3 +227,4 @@ def generate_module_draft(
         "course_id": course_id,
         "module_id": module_id,
     }
+

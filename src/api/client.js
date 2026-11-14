@@ -321,3 +321,49 @@ export async function streamTutorChat({
     if (onError) onError(err);
   }
 }
+
+export async function getCurriculum(board = "CBSE", grade = "Class 3", subject = "Maths") {
+  const res = await fetch(
+    `${API_BASE_URL}/api/curriculum/${encodeURIComponent(board)}/${encodeURIComponent(grade)}/${encodeURIComponent(subject)}`,
+    { headers: getHeaders() }
+  );
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function getCoursesCoverage(grade, subject) {
+  let url = `${API_BASE_URL}/api/courses/coverage`;
+  const params = new URLSearchParams();
+  if (grade) params.append("grade", grade);
+  if (subject) params.append("subject", subject);
+  if (params.toString()) url += `?${params.toString()}`;
+
+  const res = await fetch(url, { headers: getHeaders() });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function generateCourseModuleDraft(courseId, moduleId) {
+  const res = await fetch(`${API_BASE_URL}/api/courses/${courseId}/modules/${moduleId}/generate`, {
+    method: "POST",
+    headers: getHeaders("application/json", true),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function uploadLibraryResource(formData) {
+  const headers = getHeaders("", true);
+  delete headers["Content-Type"];
+  const res = await fetch(`${API_BASE_URL}/api/library/upload`, {
+    method: "POST",
+    headers,
+    body: formData,
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Upload failed: HTTP ${res.status}`);
+  }
+  return await res.json();
+}
+

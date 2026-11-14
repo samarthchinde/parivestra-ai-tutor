@@ -35,3 +35,4 @@ Grade: Class 4
 Keywords: sentence, punctuation, capital letter, full stop, question mark, exclamation mark
 Content:
 A sentence is a group of words that makes complete sense together. A sentence always begins with a capital letter. If it tells a fact, it ends with a full stop (period). If it asks something, it ends with a question mark (?). If it shows strong excitement or surprise, it ends with an exclamation mark (!). For example: "Where is the red ball?" ends with a question mark.
+

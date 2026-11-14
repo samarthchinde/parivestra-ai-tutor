@@ -98,3 +98,4 @@ class StoryPlayerProvider(VideoProvider):
             subject=subject,
             scenes=scenes,
         )
+

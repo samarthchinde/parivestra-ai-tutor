@@ -1,13 +1,17 @@
 import { useState } from "react";
 import { PageHeader, Card, PrimaryButton, Badge, Mascot, Modal } from "../components/UI";
 import StoryIllustration from "../components/StoryIllustrations";
-import { BookOpen, Search, Sparkles, Volume2, VolumeX, Download, Eye, FileText } from "lucide-react";
+import { BookOpen, Search, Sparkles, Volume2, VolumeX, Download, Eye, FileText, Upload } from "lucide-react";
+import { getSubjectsForGrade, getBandForGrade, ALL_GRADES } from "../config/bands";
 
 export default function Library() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSubject, setSelectedSubject] = useState("All");
+  const [selectedGrade, setSelectedGrade] = useState("All");
   const [activeItem, setActiveItem] = useState(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const grade = localStorage.getItem("parivestra_grade") || "Class 3";
+  const subjects = ["All", ...getSubjectsForGrade(grade)];
 
   const libraryItems = [
     {
@@ -122,7 +126,7 @@ export default function Library() {
     <div style={{ maxWidth: 980, margin: "0 auto", paddingBottom: 60 }}>
       <PageHeader
         title="Pari's Reading & Discovery Library 📚"
-        description="Bite-sized storybooks, visual guides, and science discovery cards for Class 3 & 4!"
+        description={`Bite-sized storybooks, visual guides, and discovery cards across all grades!`}
       />
 
       {/* Filter & Search Bar */}
@@ -166,8 +170,8 @@ export default function Library() {
         </div>
 
         {/* Subject Filter Pills */}
-        <div style={{ display: "flex", background: "white", padding: 4, borderRadius: 14, border: "1.5px solid var(--border)" }}>
-          {["All", "Maths", "English", "EVS"].map((sub) => (
+        <div style={{ display: "flex", background: "white", padding: 4, borderRadius: 14, border: "1.5px solid var(--border)", gap: 4, flexWrap: "wrap" }}>
+          {subjects.map((sub) => (
             <button
               key={sub}
               onClick={() => setSelectedSubject(sub)}
@@ -355,3 +359,4 @@ export default function Library() {
     </div>
   );
 }
+
