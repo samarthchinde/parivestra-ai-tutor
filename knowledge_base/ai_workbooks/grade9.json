@@ -1,0 +1,773 @@
+{
+  "grade": 9,
+  "edition_title": "AI Analysts",
+  "tagline": "Analyse · Model · Question",
+  "colors": {
+    "primary": "#DC2626",
+    "secondary": "#0284C7",
+    "bg": "#FEF2F2",
+    "robot": "#DC2626"
+  },
+  "band": "senior",
+  "welcome": {
+    "title": "Welcome, Explorer!",
+    "pari_tip": "There are no wrong ideas in this workbook. Try your best, ask questions, and have fun learning about AI!",
+    "page": 2
+  },
+  "syllabus": [
+    {
+      "unit": 1,
+      "topic": "AI Domains in Action",
+      "big_idea": "Societal Impact",
+      "objective": "I can map real AI use cases to domains and data types.",
+      "page": 4
+    },
+    {
+      "unit": 2,
+      "topic": "Data Literacy",
+      "big_idea": "Representation & Reasoning",
+      "objective": "I can classify data and identify data quality problems.",
+      "page": 6
+    },
+    {
+      "unit": 3,
+      "topic": "Statistics and Probability",
+      "big_idea": "Representation & Reasoning",
+      "objective": "I can calculate probability and compare the spread of data.",
+      "page": 8
+    },
+    {
+      "unit": 4,
+      "topic": "Python for Data",
+      "big_idea": "Representation & Reasoning",
+      "objective": "I can use dictionaries and basic pandas operations.",
+      "page": 10
+    },
+    {
+      "unit": 5,
+      "topic": "Neural Networks in Depth",
+      "big_idea": "Learning",
+      "objective": "I can compute a perceptron's output and explain activation.",
+      "page": 12
+    },
+    {
+      "unit": 6,
+      "topic": "Convolution and Image Features",
+      "big_idea": "Perception",
+      "objective": "I can perform a simple convolution and explain CNN features.",
+      "page": 14
+    },
+    {
+      "unit": 7,
+      "topic": "Generative AI and Prompting",
+      "big_idea": "Natural Interaction",
+      "objective": "I can write structured prompts and use generative AI",
+      "page": 16
+    },
+    {
+      "unit": 8,
+      "topic": "AI Ethics and Law",
+      "big_idea": "Societal Impact",
+      "objective": "I can explain consent, copyright and deepfake risks.",
+      "page": 18
+    }
+  ],
+  "units": [
+    {
+      "id": "g9_u1",
+      "number": 1,
+      "title": "AI Domains in Action",
+      "big_idea": "Societal Impact",
+      "page": 4,
+      "learn_paragraphs": [
+        "AI is used across sectors: healthcare (scan analysis), agriculture (pest detection),\nfinance (fraud detection), education (adaptive learning) and governance (service\ndelivery).\nEach use belongs to a domain: Data Science, Computer Vision or NLP, and many\ncombine two or more.\nChoosing the right domain depends on the type of data: numbers, images or\nlanguage."
+      ],
+      "new_words": [
+        {
+          "term": "Activation function",
+          "definition": "decides a neuron's output"
+        },
+        {
+          "term": "Bias",
+          "definition": "a value added to shift the output"
+        },
+        {
+          "term": "Confidence",
+          "definition": "how sure a model is about its answer"
+        }
+      ],
+      "did_you_know": "India's UPI handles billions of payments every month, and banks use AI to spot suspicious transactions.",
+      "think_and_talk": "Which sector in India could benefit most from AI? Justify your answer.",
+      "self_check": "I can map real AI use cases to domains and data types.",
+      "activities": [
+        {
+          "id": "g9_u1_a1",
+          "number": 1,
+          "title": "Map the use case",
+          "instruction": "Name the domain and data type for each use case.",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "Use case",
+              "Domain",
+              "Data type",
+              "Detecting crop pests from photos",
+              "Flagging unusual card payments",
+              "Voice assistant in Marathi",
+              "Reading handwritten forms"
+            ],
+            "prompt": "Name the domain and data type for each use case."
+          }
+        },
+        {
+          "id": "g9_u1_a2",
+          "number": 2,
+          "title": "Pick a sector",
+          "instruction": "Choose a sector in your city. Describe one AI use case, its data and one risk.",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [],
+            "prompt": "Choose a sector in your city. Describe one AI use case, its data and one risk."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g9_u2",
+      "number": 2,
+      "title": "Data Literacy",
+      "big_idea": "Representation & Reasoning",
+      "page": 6,
+      "learn_paragraphs": [
+        "Structured data fits in rows and columns (marks, prices). Unstructured data does\nnot (images, audio, free text).\nData quality has dimensions: accuracy, completeness, consistency and timeliness.\nData cleaning fixes missing values, duplicates and wrong formats before training."
+      ],
+      "new_words": [
+        {
+          "term": "Consent",
+          "definition": "clear permission to use data"
+        },
+        {
+          "term": "Convolution",
+          "definition": "sliding a filter and summing products"
+        },
+        {
+          "term": "Copyright",
+          "definition": "legal rights over creative work"
+        }
+      ],
+      "did_you_know": "Data scientists often say they spend most of their time cleaning and preparing data.",
+      "think_and_talk": "How could dirty data cause harm in a hospital AI?",
+      "self_check": "I can classify data and identify data quality problems.",
+      "activities": [
+        {
+          "id": "g9_u2_a1",
+          "number": 1,
+          "title": "Structured or unstructured?",
+          "instruction": "Tick the right type.",
+          "type": "tick_table",
+          "component": "TickTableActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Structured",
+              "Unstructured",
+              "Attendance register",
+              "WhatsApp voice notes",
+              "Railway timetable",
+              "Product reviews",
+              "CCTV video"
+            ],
+            "prompt": "Tick the right type."
+          }
+        },
+        {
+          "id": "g9_u2_a2",
+          "number": 2,
+          "title": "Find the data problems",
+          "instruction": "Name the quality problem in each row.",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "Name",
+              "Age",
+              "City",
+              "Problem",
+              "Riya",
+              "14",
+              "Pune",
+              "Riya",
+              "14",
+              "Pune",
+              "Aman",
+              "-3",
+              "Nagpur",
+              "Sara",
+              "mumbai"
+            ],
+            "prompt": "Name the quality problem in each row."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g9_u3",
+      "number": 3,
+      "title": "Statistics and Probability",
+      "big_idea": "Representation & Reasoning",
+      "page": 8,
+      "learn_paragraphs": [
+        "Probability measures how likely something is: P = favourable outcomes ÷ total\noutcomes, between 0 and 1.\nStandard deviation shows how spread out data is. Low = values close together; high\n= spread out.\nAI models often output probabilities, like “87% chance this is a cat”."
+      ],
+      "new_words": [
+        {
+          "term": "Data cleaning",
+          "definition": "fixing errors in data"
+        },
+        {
+          "term": "DataFrame",
+          "definition": "a table in pandas"
+        },
+        {
+          "term": "Deepfake",
+          "definition": "AI-made fake media of a real person"
+        }
+      ],
+      "did_you_know": "A weather forecast of 70% chance of rain means rain is expected on about 7 of 10 similar days.",
+      "think_and_talk": "An AI says “60% chance this X-ray shows disease”. What should a doctor do?",
+      "self_check": "I can calculate probability and compare the spread of data.",
+      "activities": [
+        {
+          "id": "g9_u3_a1",
+          "number": 1,
+          "title": "Probability",
+          "instruction": "A bag has 3 red, 5 blue and 2 green balls.",
+          "type": "math_stats",
+          "component": "MathStatsActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "P(red) =",
+              "P(blue) =",
+              "P(not green) =",
+              "P(yellow) ="
+            ],
+            "prompt": "A bag has 3 red, 5 blue and 2 green balls."
+          }
+        },
+        {
+          "id": "g9_u3_a2",
+          "number": 2,
+          "title": "Compare spread",
+          "instruction": "Class A marks: 70, 71, 69, 70, 70. Class B marks: 40, 100, 55, 95, 60.",
+          "type": "math_stats",
+          "component": "MathStatsActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Mean of A =",
+              "Mean of B =",
+              "Which class has a higher standard deviation?",
+              "What does that tell you about Class B?"
+            ],
+            "prompt": "Class A marks: 70, 71, 69, 70, 70. Class B marks: 40, 100, 55, 95, 60."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g9_u4",
+      "number": 4,
+      "title": "Python for Data",
+      "big_idea": "Representation & Reasoning",
+      "page": 10,
+      "learn_paragraphs": [
+        "Dictionaries store key–value pairs: {\"name\": \"Asha\", \"marks\": 88} .\nThe pandas library loads tables as a DataFrame and makes analysis easy.\nCommon steps: read_csv() to load, head() to preview, mean() to summarise, and\nfilters to select rows."
+      ],
+      "new_words": [
+        {
+          "term": "Dictionary",
+          "definition": "key–value pairs in Python"
+        },
+        {
+          "term": "Feature map",
+          "definition": "the output after convolution"
+        },
+        {
+          "term": "Fraud detection",
+          "definition": "finding unusual, suspicious transactions"
+        }
+      ],
+      "did_you_know": "pandas is free and open source, and is used by data scientists worldwide.",
+      "think_and_talk": "Why do data scientists use libraries instead of writing everything from scratch?",
+      "self_check": "I can use dictionaries and basic pandas operations.",
+      "activities": [
+        {
+          "id": "g9_u4_a1",
+          "number": 1,
+          "title": "Read the pandas code",
+          "instruction": "Assume students.csv has columns name, marks, city.",
+          "type": "math_stats",
+          "component": "MathStatsActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "import pandas as pd",
+              "df = pd.read_csv(\"students.csv\")",
+              "print(df.head())",
+              "print(df[\"marks\"].mean())",
+              "top = df[df[\"marks\"] > 90]",
+              "print(len(top))",
+              "What does line 3 show?",
+              "What does line 4 calculate?",
+              "What does len(top) tell you?"
+            ],
+            "prompt": "Assume students.csv has columns name, marks, city."
+          }
+        },
+        {
+          "id": "g9_u4_a2",
+          "number": 2,
+          "title": "Dictionary practice",
+          "instruction": "Predict the output.",
+          "type": "python_playground",
+          "component": "PythonPlaygroundActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "s = {\"name\": \"Kabir\", \"marks\": 81}",
+              "s[\"marks\"] = s[\"marks\"] + 5",
+              "print(s[\"name\"], s[\"marks\"])",
+              "Output:"
+            ],
+            "prompt": "Predict the output."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g9_u5",
+      "number": 5,
+      "title": "Neural Networks in Depth",
+      "big_idea": "Learning",
+      "page": 12,
+      "learn_paragraphs": [
+        "A perceptron computes a weighted sum plus a bias, then applies an activation\nfunction.\nz = w1·x1 + w2·x2 + b. A step activation outputs 1 if z ≥ 0, else 0. Modern networks\nuse functions like ReLU = max(0, z).\nTraining uses the error to adjust weights a little at a time, repeated over many\nexamples."
+      ],
+      "new_words": [
+        {
+          "term": "Hallucination",
+          "definition": "a confident but false AI answer"
+        },
+        {
+          "term": "Kernel",
+          "definition": "a small grid of numbers used as a filter"
+        },
+        {
+          "term": "Library",
+          "definition": "ready-made code you can import"
+        }
+      ],
+      "did_you_know": "The perceptron was invented by Frank Rosenblatt in 1958.",
+      "think_and_talk": "How is an artificial neuron similar to, and different from, a brain neuron?",
+      "self_check": "I can compute a perceptron's output and explain activation.",
+      "activities": [
+        {
+          "id": "g9_u5_a1",
+          "number": 1,
+          "title": "Compute the perceptron",
+          "instruction": "w1 = 0.5, w2 = −1, b = 0.5. Step activation: 1 if z ≥ 0 else 0.",
+          "type": "math_stats",
+          "component": "MathStatsActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "x1 = 2, x2 = 1 → z =",
+              "→ output",
+              "x1 = 0, x2 = 1 → z =",
+              "→ output",
+              "x1 = 1, x2 = 0 → z =",
+              "→ output"
+            ],
+            "prompt": "w1 = 0.5, w2 = −1, b = 0.5. Step activation: 1 if z ≥ 0 else 0."
+          }
+        },
+        {
+          "id": "g9_u5_a2",
+          "number": 2,
+          "title": "ReLU",
+          "instruction": "ReLU(z) = max(0, z)",
+          "type": "python_playground",
+          "component": "PythonPlaygroundActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "ReLU(3) =",
+              "ReLU(−2) =",
+              "ReLU(0) =",
+              "Why might a network need many neurons instead of one?"
+            ],
+            "prompt": "ReLU(z) = max(0, z)"
+          }
+        }
+      ]
+    },
+    {
+      "id": "g9_u6",
+      "number": 6,
+      "title": "Convolution and Image Features",
+      "big_idea": "Perception",
+      "page": 14,
+      "learn_paragraphs": [
+        "A Convolutional Neural Network (CNN) finds features in images using small grids\ncalled filters or kernels.\nThe filter slides over the image. At each spot we multiply matching numbers and add\nthem: this is convolution.\nEarly layers find edges; deeper layers find shapes like eyes or wheels."
+      ],
+      "new_words": [
+        {
+          "term": "LLM",
+          "definition": "a large AI model trained on text"
+        },
+        {
+          "term": "Multimodal",
+          "definition": "AI that combines text, images or audio"
+        },
+        {
+          "term": "Perceptron",
+          "definition": "the simplest artificial neuron"
+        }
+      ],
+      "did_you_know": "Your phone camera's portrait mode uses AI to separate the person from the background.",
+      "think_and_talk": "Why might a CNN trained on daytime roads fail at night?",
+      "self_check": "I can perform a simple convolution and explain CNN features.",
+      "activities": [
+        {
+          "id": "g9_u6_a1",
+          "number": 1,
+          "title": "Do one convolution",
+          "instruction": "Image patch [[1,2],[3,4]] and kernel [[1,0],[0,−1]]. Multiply matching cells and add.",
+          "type": "match_pairs",
+          "component": "MatchPairsActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "(1×1) + (2×0) + (3×0) + (4×−1) =",
+              "Patch [[5,5],[5,5]] with the same kernel =",
+              "What does a result of 0 suggest about that area?"
+            ],
+            "prompt": "Image patch [[1,2],[3,4]] and kernel [[1,0],[0,−1]]. Multiply matching cells and add."
+          }
+        },
+        {
+          "id": "g9_u6_a2",
+          "number": 2,
+          "title": "Features for a task",
+          "instruction": "An AI must detect potholes in road photos. What features should early and deep layers",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "learn?"
+            ],
+            "prompt": "An AI must detect potholes in road photos. What features should early and deep layers"
+          }
+        }
+      ]
+    },
+    {
+      "id": "g9_u7",
+      "number": 7,
+      "title": "Generative AI and Prompting",
+      "big_idea": "Natural Interaction",
+      "page": 16,
+      "learn_paragraphs": [
+        "Generative AI creates new text, images, audio or code. Large Language Models\n(LLMs) predict the next token using patterns from huge text data.\nLLMs can hallucinate: give confident but false answers. Always verify facts.\nGood prompts give a role, task, context, constraints and output format."
+      ],
+      "new_words": [
+        {
+          "term": "Probability",
+          "definition": "how likely an event is, from 0 to 1"
+        },
+        {
+          "term": "Prompt engineering",
+          "definition": "designing prompts for better outputs"
+        },
+        {
+          "term": "Standard deviation",
+          "definition": "a measure of spread"
+        }
+      ],
+      "did_you_know": "LLMs don't look up facts like a search engine unless they are connected to a search tool.",
+      "think_and_talk": "How would you check whether an AI's answer is a hallucination?",
+      "self_check": "I can write structured prompts and use generative AI",
+      "activities": [
+        {
+          "id": "g9_u7_a1",
+          "number": 1,
+          "title": "Engineer the prompt",
+          "instruction": "Rewrite with Role + Task + Context + Constraints + Format.",
+          "type": "prompt_lab",
+          "component": "PromptLabActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "Task",
+              "+",
+              "Details",
+              "+",
+              "Format",
+              "Weak: “Explain photosynthesis.”",
+              "Better:",
+              "Weak: “Make a study plan.”",
+              "Better:"
+            ],
+            "prompt": "Rewrite with Role + Task + Context + Constraints + Format."
+          }
+        },
+        {
+          "id": "g9_u7_a2",
+          "number": 2,
+          "title": "Use or misuse?",
+          "instruction": "Tick the right box.",
+          "type": "tick_table",
+          "component": "TickTableActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Good use",
+              "Misuse",
+              "Asking AI to quiz you before an exam",
+              "Submitting AI-written homework as your own",
+              "Using AI to brainstorm project ideas",
+              "Creating a fake image of a classmate",
+              "Checking AI facts against your textbook"
+            ],
+            "prompt": "Tick the right box."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g9_u8",
+      "number": 8,
+      "title": "AI Ethics and Law",
+      "big_idea": "Societal Impact",
+      "page": 18,
+      "learn_paragraphs": [
+        "India's Digital Personal Data Protection (DPDP) Act, 2023 gives people rights over\ntheir personal data and requires consent for most uses.\nCopyright protects creative work. Using others' work to train or generate content\nraises legal questions.\nDeepfakes can harm reputations and spread misinformation. Responsible AI needs\ntransparency, consent and accountability."
+      ],
+      "new_words": [
+        {
+          "term": "Structured data",
+          "definition": "data organised in rows and columns"
+        },
+        {
+          "term": "Unstructured data",
+          "definition": "data without a fixed format"
+        },
+        {
+          "term": "Use case",
+          "definition": "a real situation where AI is applied"
+        }
+      ],
+      "did_you_know": "The DPDP Rules were notified in November 2025 and roll out in phases.",
+      "think_and_talk": "Should AI-generated images always carry a label? Why?",
+      "self_check": "I can explain consent, copyright and deepfake risks.",
+      "activities": [
+        {
+          "id": "g9_u8_a1",
+          "number": 1,
+          "title": "Legal and ethical check",
+          "instruction": "Tick and give a reason.",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "An app collects your contacts without asking.",
+              "Acceptable",
+              "Problem",
+              "Why?",
+              "A school uses an AI tutor after taking parents' consent.",
+              "Acceptable",
+              "Problem",
+              "Why?",
+              "A student makes a deepfake video of a teacher for fun.",
+              "Acceptable",
+              "Problem",
+              "Why?"
+            ],
+            "prompt": "Tick and give a reason."
+          }
+        },
+        {
+          "id": "g9_u8_a2",
+          "number": 2,
+          "title": "Draft a policy",
+          "instruction": "Write 4 rules for a school AI-use policy.",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [],
+            "prompt": "Write 4 rules for a school AI-use policy."
+          }
+        }
+      ]
+    }
+  ],
+  "final_project": {
+    "title": "Data-to-Insight Report",
+    "page": 20,
+    "instructions": "Complete your guided capstone project and submit for teacher review.",
+    "fields": [
+      "Question you want to answer",
+      "Data you collected (source, size, columns)",
+      "Cleaning steps you did",
+      "Key statistics (mean, median, spread)",
+      "Chart: sketch it here",
+      "Insight and one limitation",
+      "F I N A L P R O J E C T",
+      "Data-to-Insight Report"
+    ]
+  },
+  "glossary": [
+    {
+      "term": "Activation function",
+      "definition": "decides a neuron's output",
+      "mastered": false
+    },
+    {
+      "term": "Bias",
+      "definition": "a value added to shift the output",
+      "mastered": false
+    },
+    {
+      "term": "Confidence",
+      "definition": "how sure a model is about its answer",
+      "mastered": false
+    },
+    {
+      "term": "Consent",
+      "definition": "clear permission to use data",
+      "mastered": false
+    },
+    {
+      "term": "Convolution",
+      "definition": "sliding a filter and summing products",
+      "mastered": false
+    },
+    {
+      "term": "Copyright",
+      "definition": "legal rights over creative work",
+      "mastered": false
+    },
+    {
+      "term": "Data cleaning",
+      "definition": "fixing errors in data",
+      "mastered": false
+    },
+    {
+      "term": "DataFrame",
+      "definition": "a table in pandas",
+      "mastered": false
+    },
+    {
+      "term": "Deepfake",
+      "definition": "AI-made fake media of a real person",
+      "mastered": false
+    },
+    {
+      "term": "Dictionary",
+      "definition": "key–value pairs in Python",
+      "mastered": false
+    },
+    {
+      "term": "Feature map",
+      "definition": "the output after convolution",
+      "mastered": false
+    },
+    {
+      "term": "Fraud detection",
+      "definition": "finding unusual, suspicious transactions",
+      "mastered": false
+    },
+    {
+      "term": "Hallucination",
+      "definition": "a confident but false AI answer",
+      "mastered": false
+    },
+    {
+      "term": "Kernel",
+      "definition": "a small grid of numbers used as a filter",
+      "mastered": false
+    },
+    {
+      "term": "Library",
+      "definition": "ready-made code you can import",
+      "mastered": false
+    },
+    {
+      "term": "LLM",
+      "definition": "a large AI model trained on text",
+      "mastered": false
+    },
+    {
+      "term": "Multimodal",
+      "definition": "AI that combines text, images or audio",
+      "mastered": false
+    },
+    {
+      "term": "Perceptron",
+      "definition": "the simplest artificial neuron",
+      "mastered": false
+    },
+    {
+      "term": "Probability",
+      "definition": "how likely an event is, from 0 to 1",
+      "mastered": false
+    },
+    {
+      "term": "Prompt engineering",
+      "definition": "designing prompts for better outputs",
+      "mastered": false
+    },
+    {
+      "term": "Standard deviation",
+      "definition": "a measure of spread",
+      "mastered": false
+    },
+    {
+      "term": "Structured data",
+      "definition": "data organised in rows and columns",
+      "mastered": false
+    },
+    {
+      "term": "Unstructured data",
+      "definition": "data without a fixed format",
+      "mastered": false
+    },
+    {
+      "term": "Use case",
+      "definition": "a real situation where AI is applied",
+      "mastered": false
+    }
+  ],
+  "certificate": {
+    "title": "Certificate of Completion - AI Analysts",
+    "edition": "AI Analysts",
+    "grade": 9,
+    "page": 22,
+    "text": "This certificate is proudly presented for completing the Parivestra AI & Future Skills Grade 9 Workbook with curiosity, creativity and care.",
+    "fields": [
+      "student_name",
+      "teacher_name",
+      "school_name",
+      "date"
+    ]
+  }
+}

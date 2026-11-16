@@ -192,6 +192,56 @@ def load_chunks_from_kb(kb_dir: Optional[Path] = None) -> List[Chunk]:
             except Exception as e:
                 print(f"Error reading curriculum {cfile.name}: {e}")
 
+    # 5. Load official Parivestra AI Workbooks (Grades 3 to 10)
+    wb_dir = kb_dir / "ai_workbooks"
+    if wb_dir.exists():
+        for wb_file in sorted(wb_dir.glob("grade*.json")):
+            try:
+                with open(wb_file, "r", encoding="utf-8") as f:
+                    wb_data = json.load(f)
+                g_num = wb_data.get("grade")
+                for u in wb_data.get("units", []):
+                    u_num = u.get("number")
+                    u_title = u.get("title")
+                    p_num = u.get("page")
+                    citation = f"Grade {g_num} · Unit {u_num} · {u_title} · p.{p_num}"
+                    learn_text = "\n\n".join(u.get("learn_paragraphs", []))
+                    words_text = ", ".join([f"{w['term']}: {w['definition']}" for w in u.get("new_words", [])])
+                    full_content = (
+                        f"Subject: AI & Future Skills\n"
+                        f"Grade: Grade {g_num}\n"
+                        f"Unit: {u_title}\n"
+                        f"Big Idea: {u.get('big_idea')}\n"
+                        f"Learning Objective: {u.get('self_check')}\n\n"
+                        f"{learn_text}\n\n"
+                        f"Vocabulary: {words_text}\n"
+                        f"Did You Know: {u.get('did_you_know')}\n"
+                        f"Think & Talk: {u.get('think_and_talk')}"
+                    )
+                    keywords = [w["term"] for w in u.get("new_words", [])] + [u.get("big_idea", "")]
+                    chunks.append(
+                        Chunk(
+                            id=f"wb_g{g_num}_u{u_num}",
+                            title=f"Grade {g_num} Unit {u_num}: {u_title}",
+                            subject="AI & Future Skills",
+                            topic=u_title,
+                            content=full_content,
+                            metadata={
+                                "grade": f"Grade {g_num}",
+                                "raw_grade": g_num,
+                                "source": f"Parivestra AI Workbook Grade {g_num}",
+                                "citation": citation,
+                                "unit_number": u_num,
+                                "big_idea": u.get("big_idea"),
+                                "page": p_num,
+                                "keywords": keywords,
+                                "type": "ai_workbook",
+                            },
+                        )
+                    )
+            except Exception as e:
+                print(f"Error loading workbook {wb_file.name}: {e}")
+
     return chunks
 
 
@@ -250,18 +300,25 @@ class BM25Retriever(BaseRetriever):
                 target_grade_lower = grade.lower()
                 prev_grade_lower = prev_grade.lower() if prev_grade else None
 
+                c_num = re.sub(r"[^0-9]", "", c_grade_lower)
+                t_num = re.sub(r"[^0-9]", "", target_grade_lower)
+                p_num = re.sub(r"[^0-9]", "", prev_grade_lower) if prev_grade_lower else ""
+
+                is_target_grade = (c_grade_lower == target_grade_lower) or (c_num and c_num == t_num)
+                is_prev_grade = bool(prev_grade_lower and ((c_grade_lower == prev_grade_lower) or (c_num and c_num == p_num)))
+
                 if revision_mode:
                     # In revision mode, prioritize current grade and previous grade
-                    if c_grade_lower == target_grade_lower:
+                    if is_target_grade:
                         adj_score *= 1.3
-                    elif prev_grade_lower and c_grade_lower == prev_grade_lower:
+                    elif is_prev_grade:
                         adj_score *= 1.2
                     elif c_grade_lower != "general":
                         # Other non-adjacent grades get deprioritized
                         adj_score *= 0.6
                 else:
                     # Standard mode: boost target grade
-                    if c_grade_lower == target_grade_lower:
+                    if is_target_grade:
                         adj_score *= 1.4
                     elif c_grade_lower != "general":
                         # De-boost other grade chunks

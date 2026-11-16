@@ -1,0 +1,784 @@
+{
+  "grade": 10,
+  "edition_title": "AI Leaders",
+  "tagline": "Build · Evaluate · Lead",
+  "colors": {
+    "primary": "#1E293B",
+    "secondary": "#D97706",
+    "bg": "#F8FAFC",
+    "robot": "#1E293B"
+  },
+  "band": "senior",
+  "welcome": {
+    "title": "Welcome, Explorer!",
+    "pari_tip": "There are no wrong ideas in this workbook. Try your best, ask questions, and have fun learning about AI!",
+    "page": 2
+  },
+  "syllabus": [
+    {
+      "unit": 1,
+      "topic": "AI Project Cycle in Depth",
+      "big_idea": "Representation & Reasoning",
+      "objective": "I can plan every stage of an AI project, including deployment.",
+      "page": 4
+    },
+    {
+      "unit": 2,
+      "topic": "Precision, Recall and F1",
+      "big_idea": "Learning",
+      "objective": "I can calculate precision, recall and F1 and choose the right",
+      "page": 6
+    },
+    {
+      "unit": 3,
+      "topic": "The NLP Pipeline",
+      "big_idea": "Natural Interaction",
+      "objective": "I can process text through an NLP pipeline and build a bag of",
+      "page": 8
+    },
+    {
+      "unit": 4,
+      "topic": "Computer Vision Applications",
+      "big_idea": "Perception",
+      "objective": "I can choose between classification, detection and",
+      "page": 10
+    },
+    {
+      "unit": 5,
+      "topic": "The ML Workflow in Python",
+      "big_idea": "Learning",
+      "objective": "I can follow an ML workflow and diagnose overfitting.",
+      "page": 12
+    },
+    {
+      "unit": 6,
+      "topic": "How LLMs Work",
+      "big_idea": "Learning",
+      "objective": "I can explain pre-training, temperature and RAG.",
+      "page": 14
+    },
+    {
+      "unit": 7,
+      "topic": "Responsible AI and Governance",
+      "big_idea": "Societal Impact",
+      "objective": "I can apply responsible AI principles and write a model card.",
+      "page": 16
+    },
+    {
+      "unit": 8,
+      "topic": "AI Careers and Entrepreneurship",
+      "big_idea": "Societal Impact",
+      "objective": "I can describe AI careers and outline an AI startup idea.",
+      "page": 18
+    }
+  ],
+  "units": [
+    {
+      "id": "g10_u1",
+      "number": 1,
+      "title": "AI Project Cycle in Depth",
+      "big_idea": "Representation & Reasoning",
+      "page": 4,
+      "learn_paragraphs": [
+        "Professionals extend the cycle: Problem Scoping → Data Acquisition → Data\nExploration → Modelling → Evaluation → Deployment, then monitoring.\nIn modelling we choose between rule-based approaches (we write the rules) and\nlearning-based approaches (the model learns rules from data).\nDeployment puts the model into real use. Monitoring checks it keeps working as data\nchanges."
+      ],
+      "new_words": [
+        {
+          "term": "Bag of Words",
+          "definition": "word counts used as features"
+        },
+        {
+          "term": "Bounding box",
+          "definition": "a rectangle around a detected object"
+        },
+        {
+          "term": "Data drift",
+          "definition": "when real data changes from training data"
+        }
+      ],
+      "did_you_know": "A model that worked well before a big change, like a new exam pattern, can perform worse afterwards. This is data drift.",
+      "think_and_talk": "Why do models need monitoring after deployment?",
+      "self_check": "I can plan every stage of an AI project, including deployment.",
+      "activities": [
+        {
+          "id": "g10_u1_a1",
+          "number": 1,
+          "title": "Rule-based or learning-based?",
+          "instruction": "Which approach fits better?",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "Rule-",
+              "based",
+              "Learning",
+              "Calculating GST on a bill",
+              "Recognising handwriting",
+              "Locking an account after 3 wrong passwords",
+              "Recommending videos",
+              "Detecting fake reviews"
+            ],
+            "prompt": "Which approach fits better?"
+          }
+        },
+        {
+          "id": "g10_u1_a2",
+          "number": 2,
+          "title": "Plan a full cycle",
+          "instruction": "Plan an AI that predicts school library book demand.",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "Stage",
+              "Your plan",
+              "Problem scoping",
+              "Data acquisition",
+              "Exploration",
+              "Modelling",
+              "Evaluation & deployment"
+            ],
+            "prompt": "Plan an AI that predicts school library book demand."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g10_u2",
+      "number": 2,
+      "title": "Precision, Recall and F1",
+      "big_idea": "Learning",
+      "page": 6,
+      "learn_paragraphs": [
+        "Precision = TP ÷ (TP + FP): of everything predicted positive, how much was right?\nRecall = TP ÷ (TP + FN): of all real positives, how many did we find?\nF1 score = 2 × (Precision × Recall) ÷ (Precision + Recall), a balance of both. Choose\nthe metric based on which error costs more."
+      ],
+      "new_words": [
+        {
+          "term": "Deployment",
+          "definition": "putting a model into real use"
+        },
+        {
+          "term": "Explainability",
+          "definition": "being able to show why a model decided"
+        },
+        {
+          "term": "F1 score",
+          "definition": "the balance of precision and recall"
+        }
+      ],
+      "did_you_know": "For cancer screening, high recall matters most, so that few real cases are missed.",
+      "think_and_talk": "For a spam filter, would you prefer high precision or high recall? Why?",
+      "self_check": "I can calculate precision, recall and F1 and choose the right",
+      "activities": [
+        {
+          "id": "g10_u2_a1",
+          "number": 1,
+          "title": "Confusion matrix",
+          "instruction": "A disease test on 200 people.",
+          "type": "ml_lab",
+          "component": "MLLabActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Predicted: Yes",
+              "Predicted: No",
+              "Actually yes",
+              "TP = 40",
+              "FN = 10",
+              "Actually no",
+              "FP = 20",
+              "TN = 130"
+            ],
+            "prompt": "A disease test on 200 people."
+          }
+        },
+        {
+          "id": "g10_u2_a2",
+          "number": 2,
+          "title": "Calculate the metrics",
+          "instruction": "Use the matrix above. Round to 2 decimals.",
+          "type": "math_stats",
+          "component": "MathStatsActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Accuracy =",
+              "Precision =",
+              "Recall =",
+              "F1 score =",
+              "Which metric should this test improve first? Why?"
+            ],
+            "prompt": "Use the matrix above. Round to 2 decimals."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g10_u3",
+      "number": 3,
+      "title": "The NLP Pipeline",
+      "big_idea": "Natural Interaction",
+      "page": 8,
+      "learn_paragraphs": [
+        "Text is processed in steps: sentence segmentation → tokenisation → removing\nstopwords → normalising (lowercase, stemming or lemmatisation).\nBag of Words counts how often each word appears in a document, turning text into\nnumbers.\nTF-IDF gives more weight to words that are frequent in one document but rare\nacross others."
+      ],
+      "new_words": [
+        {
+          "term": "Fit",
+          "definition": "train a model on data"
+        },
+        {
+          "term": "ML engineer",
+          "definition": "builds and deploys ML models"
+        },
+        {
+          "term": "Model card",
+          "definition": "a document describing a model and its limits"
+        }
+      ],
+      "did_you_know": "Search engines have long used ideas like TF-IDF to rank which documents match a query.",
+      "think_and_talk": "Why could removing stopwords sometimes change the meaning, as in “not good”?",
+      "self_check": "I can process text through an NLP pipeline and build a bag of",
+      "activities": [
+        {
+          "id": "g10_u3_a1",
+          "number": 1,
+          "title": "Run the pipeline",
+          "instruction": "Text: “The students are learning AI. AI is fun!”",
+          "type": "chatbot_builder",
+          "component": "ChatbotBuilderActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "Tokens (lowercase, no punctuation):",
+              "After removing stopwords (the, are, is):",
+              "Stem of “learning”:"
+            ],
+            "prompt": "Text: “The students are learning AI. AI is fun!”"
+          }
+        },
+        {
+          "id": "g10_u3_a2",
+          "number": 2,
+          "title": "Bag of Words",
+          "instruction": "Count each word in the two documents.",
+          "type": "chatbot_builder",
+          "component": "ChatbotBuilderActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Word",
+              "Doc 1: “ai helps ai learns”",
+              "Doc 2: “students learn ai”",
+              "ai",
+              "helps",
+              "learns",
+              "students",
+              "learn"
+            ],
+            "prompt": "Count each word in the two documents."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g10_u4",
+      "number": 4,
+      "title": "Computer Vision Applications",
+      "big_idea": "Perception",
+      "page": 10,
+      "learn_paragraphs": [
+        "CV tasks: image classification (what is in the image?), object detection (what and\nwhere, with bounding boxes) and segmentation (which pixels belong to each object).\nApplications include medical imaging, quality checks in factories, traffic monitoring\nand accessibility tools for people who are blind.\nRisks include surveillance and misidentification, so consent and accuracy testing are\nessential."
+      ],
+      "new_words": [
+        {
+          "term": "Monitoring",
+          "definition": "tracking a model's performance over time"
+        },
+        {
+          "term": "Object detection",
+          "definition": "finding objects and their locations"
+        },
+        {
+          "term": "Overfitting",
+          "definition": "doing well on training data but poorly on new data"
+        }
+      ],
+      "did_you_know": "Some apps can describe surroundings aloud for people who are blind or have low vision.",
+      "think_and_talk": "Should CCTV with face recognition be allowed in schools? Argue both sides.",
+      "self_check": "I can choose between classification, detection and",
+      "activities": [
+        {
+          "id": "g10_u4_a1",
+          "number": 1,
+          "title": "Match the CV task",
+          "instruction": "Draw a line from each need to the right task.",
+          "type": "match_pairs",
+          "component": "MatchPairsActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Is this X-ray normal?",
+              "Count cars at a signal",
+              "Separate the road from the",
+              "sky pixel by pixel",
+              "Segmentation",
+              "Image classification",
+              "Object detection"
+            ],
+            "prompt": "Draw a line from each need to the right task."
+          }
+        },
+        {
+          "id": "g10_u4_a2",
+          "number": 2,
+          "title": "Draw bounding boxes",
+          "instruction": "Sketch a street scene, then draw and label bounding boxes for 4 objects.",
+          "type": "drawing_canvas",
+          "component": "DrawingCanvasActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [],
+            "prompt": "Sketch a street scene, then draw and label bounding boxes for 4 objects."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g10_u5",
+      "number": 5,
+      "title": "The ML Workflow in Python",
+      "big_idea": "Learning",
+      "page": 12,
+      "learn_paragraphs": [
+        "A typical scikit-learn workflow: load data → split into train/test → choose a model →\nfit → predict → evaluate.\nOverfitting means the model memorises training data and fails on new data.\nUnderfitting means it is too simple to learn the pattern.\nCompare training and test scores to diagnose these problems."
+      ],
+      "new_words": [
+        {
+          "term": "Pitch",
+          "definition": "a short talk to convince others of an idea"
+        },
+        {
+          "term": "Precision",
+          "definition": "correctness of positive predictions"
+        },
+        {
+          "term": "Product manager",
+          "definition": "decides what to build and why"
+        }
+      ],
+      "did_you_know": "scikit-learn is a free, open-source Python library used widely in education and industry.",
+      "think_and_talk": "How could limiting a tree's depth reduce overfitting?",
+      "self_check": "I can follow an ML workflow and diagnose overfitting.",
+      "activities": [
+        {
+          "id": "g10_u5_a1",
+          "number": 1,
+          "title": "Read the workflow",
+          "instruction": "Answer the questions about this code.",
+          "type": "math_stats",
+          "component": "MathStatsActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "from sklearn.model_selection import train_test_split",
+              "from sklearn.tree import DecisionTreeClassifier",
+              "from sklearn.metrics import accuracy_score",
+              "X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.2)",
+              "model = DecisionTreeClassifier(max_depth=3)",
+              "model.fit(X_tr, y_tr)",
+              "pred = model.predict(X_te)",
+              "print(accuracy_score(y_te, pred))",
+              "What share of data is used for testing?",
+              "Which line trains the model?",
+              "Why test on X_te and not X_tr?"
+            ],
+            "prompt": "Answer the questions about this code."
+          }
+        },
+        {
+          "id": "g10_u5_a2",
+          "number": 2,
+          "title": "Diagnose the model",
+          "instruction": "Train vs test accuracy. Tick the problem.",
+          "type": "math_stats",
+          "component": "MathStatsActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Overfitting",
+              "Underfitting",
+              "Train 99%, Test 62%",
+              "Train 55%, Test 53%",
+              "Train 100%, Test 70%"
+            ],
+            "prompt": "Train vs test accuracy. Tick the problem."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g10_u6",
+      "number": 6,
+      "title": "How LLMs Work",
+      "big_idea": "Learning",
+      "page": 14,
+      "learn_paragraphs": [
+        "LLMs are built on the transformer architecture. They are pre-trained on large text\nto predict the next token, then fine-tuned to follow instructions.\nTemperature controls randomness: low = focused and repeatable, high = more\ncreative and varied.\nRAG (Retrieval-Augmented Generation) lets an LLM look up trusted documents\nbefore answering, reducing hallucinations."
+      ],
+      "new_words": [
+        {
+          "term": "RAG",
+          "definition": "retrieving documents to ground an answer"
+        },
+        {
+          "term": "Recall",
+          "definition": "how many real positives were found"
+        },
+        {
+          "term": "Risk-based",
+          "definition": "stricter rules for higher-risk uses"
+        }
+      ],
+      "did_you_know": "The transformer architecture was introduced in the 2017 research paper “Attention Is All You Need”.",
+      "think_and_talk": "Why can't an LLM know about events after its training data ends unless it uses tools?",
+      "self_check": "I can explain pre-training, temperature and RAG.",
+      "activities": [
+        {
+          "id": "g10_u6_a1",
+          "number": 1,
+          "title": "Low or high temperature?",
+          "instruction": "Which setting suits the task?",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "Low",
+              "High",
+              "Answering a maths question",
+              "Writing a fantasy story",
+              "Extracting dates from a form",
+              "Brainstorming app names",
+              "Summarising a legal notice"
+            ],
+            "prompt": "Which setting suits the task?"
+          }
+        },
+        {
+          "id": "g10_u6_a2",
+          "number": 2,
+          "title": "Design a RAG assistant",
+          "instruction": "Plan a school-rules chatbot using RAG. Which documents would it retrieve, and how",
+          "type": "chatbot_builder",
+          "component": "ChatbotBuilderActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "would you check answers?"
+            ],
+            "prompt": "Plan a school-rules chatbot using RAG. Which documents would it retrieve, and how"
+          }
+        }
+      ]
+    },
+    {
+      "id": "g10_u7",
+      "number": 7,
+      "title": "Responsible AI and Governance",
+      "big_idea": "Societal Impact",
+      "page": 16,
+      "learn_paragraphs": [
+        "Responsible AI principles: fairness, transparency, explainability, privacy, safety\nand human oversight.\nGovernments are creating rules. The EU AI Act takes a risk-based approach, and\nIndia has issued AI governance guidelines alongside the DPDP Act.\nTeams use tools like model cards to document what a model does, its data and its\nlimits."
+      ],
+      "new_words": [
+        {
+          "term": "Segmentation",
+          "definition": "labelling every pixel by object"
+        },
+        {
+          "term": "Stemming",
+          "definition": "cutting words to a root, like “playing” → “play”"
+        },
+        {
+          "term": "Stopwords",
+          "definition": "common words like “the”, “is”, “a”"
+        }
+      ],
+      "did_you_know": "The EU AI Act sorts AI uses into risk levels, with the strictest rules for high-risk uses.",
+      "think_and_talk": "Who should set rules for AI: governments, companies or users? Discuss.",
+      "self_check": "I can apply responsible AI principles and write a model card.",
+      "activities": [
+        {
+          "id": "g10_u7_a1",
+          "number": 1,
+          "title": "Risk level",
+          "instruction": "How risky is each AI use?",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "Low risk",
+              "High risk",
+              "Spam filter",
+              "AI that screens job applicants",
+              "Music recommendations",
+              "AI that helps decide loans",
+              "Exam proctoring AI"
+            ],
+            "prompt": "How risky is each AI use?"
+          }
+        },
+        {
+          "id": "g10_u7_a2",
+          "number": 2,
+          "title": "Write a model card",
+          "instruction": "Fill a short model card for a homework-help chatbot.",
+          "type": "chatbot_builder",
+          "component": "ChatbotBuilderActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "Section",
+              "Details",
+              "Purpose",
+              "Data used",
+              "Known limits",
+              "Who checks it"
+            ],
+            "prompt": "Fill a short model card for a homework-help chatbot."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g10_u8",
+      "number": 8,
+      "title": "AI Careers and Entrepreneurship",
+      "big_idea": "Societal Impact",
+      "page": 18,
+      "learn_paragraphs": [
+        "AI careers include data analyst, ML engineer, AI product manager, AI ethicist,\nprompt and content designer and domain experts who use AI.\nAI startups start with a real problem, a clear user, access to data and a way to\ncreate value.\nA pitch explains the problem, solution, users, impact and why your team can build it."
+      ],
+      "new_words": [
+        {
+          "term": "Temperature",
+          "definition": "a setting for randomness in outputs"
+        },
+        {
+          "term": "Transformer",
+          "definition": "the neural network design behind LLMs"
+        },
+        {
+          "term": "Underfitting",
+          "definition": "too simple to capture the pattern"
+        }
+      ],
+      "did_you_know": "Many AI jobs need skills beyond coding, like communication, ethics and domain knowledge.",
+      "think_and_talk": "Which AI career fits your strengths? What can you start learning now?",
+      "self_check": "I can describe AI careers and outline an AI startup idea.",
+      "activities": [
+        {
+          "id": "g10_u8_a1",
+          "number": 1,
+          "title": "Match the role",
+          "instruction": "Match each task to the AI career.",
+          "type": "match_pairs",
+          "component": "MatchPairsActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Cleans data and builds",
+              "dashboards",
+              "Deploys a model to an app",
+              "Checks an AI for bias and",
+              "harm",
+              "Decides which AI feature",
+              "to build next",
+              "AI ethicist",
+              "ML engineer",
+              "Product manager",
+              "Data analyst"
+            ],
+            "prompt": "Match each task to the AI career."
+          }
+        },
+        {
+          "id": "g10_u8_a2",
+          "number": 2,
+          "title": "Startup canvas",
+          "instruction": "Sketch an AI startup idea.",
+          "type": "drawing_canvas",
+          "component": "DrawingCanvasActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "Block",
+              "Your idea",
+              "Problem",
+              "User",
+              "Data",
+              "AI solution",
+              "Value / revenue"
+            ],
+            "prompt": "Sketch an AI startup idea."
+          }
+        }
+      ]
+    }
+  ],
+  "final_project": {
+    "title": "Capstone: AI Solution Pitch",
+    "page": 20,
+    "instructions": "Complete your guided capstone project and submit for teacher review.",
+    "fields": [
+      "Problem and users",
+      "Data: source, size, consent",
+      "Model approach and why",
+      "Evaluation metric and target (e.g. recall ≥ 0.9)",
+      "Responsible AI checks",
+      "Prototype sketch or system diagram",
+      "30-second pitch line",
+      "F I N A L P R O J E C T",
+      "Capstone: AI Solution Pitch"
+    ]
+  },
+  "glossary": [
+    {
+      "term": "Bag of Words",
+      "definition": "word counts used as features",
+      "mastered": false
+    },
+    {
+      "term": "Bounding box",
+      "definition": "a rectangle around a detected object",
+      "mastered": false
+    },
+    {
+      "term": "Data drift",
+      "definition": "when real data changes from training data",
+      "mastered": false
+    },
+    {
+      "term": "Deployment",
+      "definition": "putting a model into real use",
+      "mastered": false
+    },
+    {
+      "term": "Explainability",
+      "definition": "being able to show why a model decided",
+      "mastered": false
+    },
+    {
+      "term": "F1 score",
+      "definition": "the balance of precision and recall",
+      "mastered": false
+    },
+    {
+      "term": "Fit",
+      "definition": "train a model on data",
+      "mastered": false
+    },
+    {
+      "term": "ML engineer",
+      "definition": "builds and deploys ML models",
+      "mastered": false
+    },
+    {
+      "term": "Model card",
+      "definition": "a document describing a model and its limits",
+      "mastered": false
+    },
+    {
+      "term": "Monitoring",
+      "definition": "tracking a model's performance over time",
+      "mastered": false
+    },
+    {
+      "term": "Object detection",
+      "definition": "finding objects and their locations",
+      "mastered": false
+    },
+    {
+      "term": "Overfitting",
+      "definition": "doing well on training data but poorly on new data",
+      "mastered": false
+    },
+    {
+      "term": "Pitch",
+      "definition": "a short talk to convince others of an idea",
+      "mastered": false
+    },
+    {
+      "term": "Precision",
+      "definition": "correctness of positive predictions",
+      "mastered": false
+    },
+    {
+      "term": "Product manager",
+      "definition": "decides what to build and why",
+      "mastered": false
+    },
+    {
+      "term": "RAG",
+      "definition": "retrieving documents to ground an answer",
+      "mastered": false
+    },
+    {
+      "term": "Recall",
+      "definition": "how many real positives were found",
+      "mastered": false
+    },
+    {
+      "term": "Risk-based",
+      "definition": "stricter rules for higher-risk uses",
+      "mastered": false
+    },
+    {
+      "term": "Segmentation",
+      "definition": "labelling every pixel by object",
+      "mastered": false
+    },
+    {
+      "term": "Stemming",
+      "definition": "cutting words to a root, like “playing” → “play”",
+      "mastered": false
+    },
+    {
+      "term": "Stopwords",
+      "definition": "common words like “the”, “is”, “a”",
+      "mastered": false
+    },
+    {
+      "term": "Temperature",
+      "definition": "a setting for randomness in outputs",
+      "mastered": false
+    },
+    {
+      "term": "Transformer",
+      "definition": "the neural network design behind LLMs",
+      "mastered": false
+    },
+    {
+      "term": "Underfitting",
+      "definition": "too simple to capture the pattern",
+      "mastered": false
+    }
+  ],
+  "certificate": {
+    "title": "Certificate of Completion - AI Leaders",
+    "edition": "AI Leaders",
+    "grade": 10,
+    "page": 22,
+    "text": "This certificate is proudly presented for completing the Parivestra AI & Future Skills Grade 10 Workbook with curiosity, creativity and care.",
+    "fields": [
+      "student_name",
+      "teacher_name",
+      "school_name",
+      "date"
+    ]
+  }
+}

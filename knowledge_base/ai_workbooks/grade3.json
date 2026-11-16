@@ -1,0 +1,770 @@
+{
+  "grade": 3,
+  "edition_title": "AI Explorers",
+  "tagline": "Notice · Sort · Think",
+  "colors": {
+    "primary": "#F97316",
+    "secondary": "#0D9488",
+    "bg": "#FFF7ED",
+    "robot": "#F97316"
+  },
+  "band": "junior",
+  "welcome": {
+    "title": "Welcome, Explorer!",
+    "pari_tip": "There are no wrong ideas in this workbook. Try your best, ask questions, and have fun learning about AI!",
+    "page": 2
+  },
+  "syllabus": [
+    {
+      "unit": 1,
+      "topic": "Smart or Not?",
+      "big_idea": "Societal Impact",
+      "objective": "I can tell machines that use AI from machines that don't.",
+      "page": 4
+    },
+    {
+      "unit": 2,
+      "topic": "How Machines Sense",
+      "big_idea": "Perception",
+      "objective": "I can name sensors that help machines see, hear and feel.",
+      "page": 6
+    },
+    {
+      "unit": 3,
+      "topic": "Patterns Everywhere",
+      "big_idea": "Learning",
+      "objective": "I can find a pattern and predict what comes next.",
+      "page": 8
+    },
+    {
+      "unit": 4,
+      "topic": "Sorting and Grouping",
+      "big_idea": "Representation & Reasoning",
+      "objective": "I can sort things into groups using their features.",
+      "page": 10
+    },
+    {
+      "unit": 5,
+      "topic": "Step by Step",
+      "big_idea": "Representation & Reasoning",
+      "objective": "I can write steps in the right order.",
+      "page": 12
+    },
+    {
+      "unit": 6,
+      "topic": "Talking to Machines",
+      "big_idea": "Natural Interaction",
+      "objective": "I can give clear instructions to a machine.",
+      "page": 14
+    },
+    {
+      "unit": 7,
+      "topic": "Safe Online",
+      "big_idea": "Societal Impact",
+      "objective": "I can keep my private information safe.",
+      "page": 16
+    },
+    {
+      "unit": 8,
+      "topic": "Kind with Tech",
+      "big_idea": "Societal Impact",
+      "objective": "I can use technology in a kind and balanced way.",
+      "page": 18
+    }
+  ],
+  "units": [
+    {
+      "id": "g3_u1",
+      "number": 1,
+      "title": "Smart or Not?",
+      "big_idea": "Societal Impact",
+      "page": 4,
+      "learn_paragraphs": [
+        "Machines help us every day. A fan, a toaster and a bicycle do the same job\nagain and again.\nSome machines can do more. They can notice things, learn from examples\nand make choices. We call this Artificial Intelligence, or AI.\nAI is not magic and it is not alive. People build AI and teach it."
+      ],
+      "new_words": [
+        {
+          "term": "AI",
+          "definition": "when a machine can notice, learn and decide"
+        },
+        {
+          "term": "Algorithm",
+          "definition": "a list of steps to do a job"
+        },
+        {
+          "term": "Balance",
+          "definition": "a good mix of screen time and other activities"
+        }
+      ],
+      "did_you_know": "The word “robot” was first used in a play written in 1920.",
+      "think_and_talk": "Is a toy car that runs on batteries AI? Why or why not?",
+      "self_check": "I can tell machines that use AI from machines that don't.",
+      "activities": [
+        {
+          "id": "g3_u1_a1",
+          "number": 1,
+          "title": "AI or not AI?",
+          "instruction": "Tick the box if the machine uses AI.",
+          "type": "tick_table",
+          "component": "TickTableActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Bicycle",
+              "Voice assistant",
+              "Ceiling fan",
+              "Face unlock on a phone",
+              "Pencil sharpener",
+              "Map app that finds the fastest",
+              "road",
+              "Torch",
+              "Robot vacuum cleaner"
+            ],
+            "prompt": "Tick the box if the machine uses AI."
+          }
+        },
+        {
+          "id": "g3_u1_a2",
+          "number": 2,
+          "title": "My helper robot",
+          "instruction": "Draw a robot that helps at home. Write the job it does.",
+          "type": "drawing_canvas",
+          "component": "DrawingCanvasActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [],
+            "prompt": "Draw a robot that helps at home. Write the job it does."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g3_u2",
+      "number": 2,
+      "title": "How Machines Sense",
+      "big_idea": "Perception",
+      "page": 6,
+      "learn_paragraphs": [
+        "We use our senses to know the world: we see, hear, smell, taste and touch.\nMachines use sensors. A camera helps a machine see. A microphone helps\nit hear. A touch screen feels your finger.\nSensors collect information. AI uses that information to understand what is\nhappening."
+      ],
+      "new_words": [
+        {
+          "term": "Camera",
+          "definition": "a sensor that takes pictures"
+        },
+        {
+          "term": "Chatbot",
+          "definition": "a computer program that chats with you"
+        },
+        {
+          "term": "Feature",
+          "definition": "something that helps us tell things apart"
+        }
+      ],
+      "did_you_know": "Automatic doors in malls use sensors to know when someone is coming.",
+      "think_and_talk": "Which sense do you think is the hardest for a machine? Why?",
+      "self_check": "I can name sensors that help machines see, hear and feel.",
+      "activities": [
+        {
+          "id": "g3_u2_a1",
+          "number": 1,
+          "title": "Match the sense",
+          "instruction": "Draw a line from each body part to the machine sensor that does the same job.",
+          "type": "match_pairs",
+          "component": "MatchPairsActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Eyes",
+              "Ears",
+              "Fingers (touch)",
+              "Skin feels hot or cold",
+              "Thermometer",
+              "Camera",
+              "Touch screen",
+              "Microphone"
+            ],
+            "prompt": "Draw a line from each body part to the machine sensor that does the same job."
+          }
+        },
+        {
+          "id": "g3_u2_a2",
+          "number": 2,
+          "title": "Fill in the blanks",
+          "instruction": "Use the words in the box.",
+          "type": "fill_blanks",
+          "component": "FillBlanksActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "camera",
+              "microphone",
+              "sensor",
+              "1. A phone hears my voice with a",
+              ".",
+              "2. A",
+              "helps a robot see.",
+              "3. A machine part that collects information is a",
+              "."
+            ],
+            "prompt": "Use the words in the box."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g3_u3",
+      "number": 3,
+      "title": "Patterns Everywhere",
+      "big_idea": "Learning",
+      "page": 8,
+      "learn_paragraphs": [
+        "A pattern is something that repeats. Days of the week, stripes on a zebra\nand a traffic light all have patterns.\nWhen we find a pattern, we can predict what comes next.\nAI is very good at finding patterns in lots and lots of examples."
+      ],
+      "new_words": [
+        {
+          "term": "Group",
+          "definition": "things that belong together"
+        },
+        {
+          "term": "Instruction",
+          "definition": "words that tell someone what to do"
+        },
+        {
+          "term": "Kindness",
+          "definition": "being friendly and caring"
+        }
+      ],
+      "did_you_know": "Weather apps look at patterns in past weather to guess tomorrow's weather.",
+      "think_and_talk": "How does finding a pattern help you guess what comes next?",
+      "self_check": "I can find a pattern and predict what comes next.",
+      "activities": [
+        {
+          "id": "g3_u3_a1",
+          "number": 1,
+          "title": "What comes next?",
+          "instruction": "Draw or write the next two in each pattern.",
+          "type": "pattern_completion",
+          "component": "PatternCompletionActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "1",
+              "3",
+              "5",
+              "7",
+              "9",
+              "A",
+              "B",
+              "C",
+              "A",
+              "B",
+              "C"
+            ],
+            "prompt": "Draw or write the next two in each pattern."
+          }
+        },
+        {
+          "id": "g3_u3_a2",
+          "number": 2,
+          "title": "Pattern hunt",
+          "instruction": "Find a pattern in your classroom or home. Draw it here.",
+          "type": "pattern_completion",
+          "component": "PatternCompletionActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [],
+            "prompt": "Find a pattern in your classroom or home. Draw it here."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g3_u4",
+      "number": 4,
+      "title": "Sorting and Grouping",
+      "big_idea": "Representation & Reasoning",
+      "page": 10,
+      "learn_paragraphs": [
+        "We sort things into groups by colour, shape or size.\nTo sort, we look at features: does it have wings? Does it live in water?\nAI sorts too. It can sort photos of cats and dogs, or good emails and junk\nemails."
+      ],
+      "new_words": [
+        {
+          "term": "Machine",
+          "definition": "a thing that helps us do work"
+        },
+        {
+          "term": "Order",
+          "definition": "which step comes first, next and last"
+        },
+        {
+          "term": "Password",
+          "definition": "a secret word that locks an account"
+        }
+      ],
+      "did_you_know": "Some post offices use machines that read addresses and sort letters automatically.",
+      "think_and_talk": "What features help you tell a cat from a dog?",
+      "self_check": "I can sort things into groups using their features.",
+      "activities": [
+        {
+          "id": "g3_u4_a1",
+          "number": 1,
+          "title": "Living or non-living?",
+          "instruction": "Write each word in the right box.",
+          "type": "sort_boxes",
+          "component": "SortBoxesActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "dog",
+              "chair",
+              "tree",
+              "robot",
+              "fish",
+              "ball",
+              "flower",
+              "computer",
+              "Living",
+              "Non-living"
+            ],
+            "prompt": "Write each word in the right box."
+          }
+        },
+        {
+          "id": "g3_u4_a2",
+          "number": 2,
+          "title": "Fly, swim or both?",
+          "instruction": "Some animals can go in two boxes. That is tricky for AI too!",
+          "type": "sort_boxes",
+          "component": "SortBoxesActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "parrot",
+              "fish",
+              "butterfly",
+              "dolphin",
+              "duck",
+              "crow",
+              "turtle",
+              "swan",
+              "Can fly",
+              "Can swim",
+              "Can do both"
+            ],
+            "prompt": "Some animals can go in two boxes. That is tricky for AI too!"
+          }
+        }
+      ]
+    },
+    {
+      "id": "g3_u5",
+      "number": 5,
+      "title": "Step by Step",
+      "big_idea": "Representation & Reasoning",
+      "page": 12,
+      "learn_paragraphs": [
+        "An algorithm is a list of steps in the right order.\nBrushing your teeth has steps. If you mix up the order, it does not work!\nComputers and robots need clear steps. They do exactly what we tell them."
+      ],
+      "new_words": [
+        {
+          "term": "Pattern",
+          "definition": "something that repeats in the same way"
+        },
+        {
+          "term": "Predict",
+          "definition": "to guess what comes next"
+        },
+        {
+          "term": "Private",
+          "definition": "only for you and your family"
+        }
+      ],
+      "did_you_know": "A recipe is an algorithm for cooking!",
+      "think_and_talk": "What happens if a robot follows the steps in the wrong order?",
+      "self_check": "I can write steps in the right order.",
+      "activities": [
+        {
+          "id": "g3_u5_a1",
+          "number": 1,
+          "title": "Make a sandwich",
+          "instruction": "Number the steps from 1 to 5.",
+          "type": "order_steps",
+          "component": "OrderStepsActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Put the other slice of bread on top.",
+              "Take two slices of bread.",
+              "Add cucumber slices.",
+              "Put the bread on a plate.",
+              "Spread butter on one slice."
+            ],
+            "prompt": "Number the steps from 1 to 5."
+          }
+        },
+        {
+          "id": "g3_u5_a2",
+          "number": 2,
+          "title": "Help Pari reach the star",
+          "instruction": "Write the arrows (→ ↓ ← ↑) Pari must follow. Do not step on the rocks.",
+          "type": "path_grid",
+          "component": "PathGridActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "P",
+              "P = Pari   ★ = star   grey = rocks",
+              "One arrow per box. Example: → → ↓"
+            ],
+            "prompt": "Write the arrows (→ ↓ ← ↑) Pari must follow. Do not step on the rocks."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g3_u6",
+      "number": 6,
+      "title": "Talking to Machines",
+      "big_idea": "Natural Interaction",
+      "page": 14,
+      "learn_paragraphs": [
+        "Voice assistants and chatbots are machines we can talk to.\nThey understand best when our instructions are clear and short, like “Set\na timer for 5 minutes.”\nAlways be polite, and check important answers with a grown-up."
+      ],
+      "new_words": [
+        {
+          "term": "Repeat",
+          "definition": "to do or happen again"
+        },
+        {
+          "term": "Screen time",
+          "definition": "time spent using phones, TV or computers"
+        },
+        {
+          "term": "Sense",
+          "definition": "a way we know the world, like seeing"
+        }
+      ],
+      "did_you_know": "Voice assistants turn your voice into words before they try to understand it.",
+      "think_and_talk": "Why should we say please and thank you, even to a machine?",
+      "self_check": "I can give clear instructions to a machine.",
+      "activities": [
+        {
+          "id": "g3_u6_a1",
+          "number": 1,
+          "title": "Clear or not clear?",
+          "instruction": "Tick the right box for each instruction.",
+          "type": "tick_table",
+          "component": "TickTableActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Clear",
+              "Not clear",
+              "“Play my favourite song.”",
+              "“Do the thing.”",
+              "“Set a timer for 5 minutes.”",
+              "“Tell me something.”",
+              "“What is the capital of India?”",
+              "“Show it.”"
+            ],
+            "prompt": "Tick the right box for each instruction."
+          }
+        },
+        {
+          "id": "g3_u6_a2",
+          "number": 2,
+          "title": "Write a clear instruction",
+          "instruction": "Write a clear instruction for a robot to water a plant.",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [],
+            "prompt": "Write a clear instruction for a robot to water a plant."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g3_u7",
+      "number": 7,
+      "title": "Safe Online",
+      "big_idea": "Societal Impact",
+      "page": 16,
+      "learn_paragraphs": [
+        "Some information is private: your full name, home address, phone number,\nschool name and passwords.\nDo not share private information with strangers, games or apps unless a\ngrown-up says it is okay.\nIf something online makes you feel worried, tell a trusted adult straight\naway."
+      ],
+      "new_words": [
+        {
+          "term": "Sensor",
+          "definition": "a machine part that collects information"
+        },
+        {
+          "term": "Smart speaker",
+          "definition": "a speaker you can talk to"
+        },
+        {
+          "term": "Sort",
+          "definition": "to put things into groups"
+        }
+      ],
+      "did_you_know": "A strong password is long and mixes letters, numbers and symbols.",
+      "think_and_talk": "What would you do if a game asked for your home address?",
+      "self_check": "I can keep my private information safe.",
+      "activities": [
+        {
+          "id": "g3_u7_a1",
+          "number": 1,
+          "title": "Share or keep private?",
+          "instruction": "Write each word in the right box.",
+          "type": "tick_table",
+          "component": "TickTableActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "favourite colour",
+              "home address",
+              "favourite cartoon",
+              "password",
+              "phone number",
+              "favourite fruit",
+              "school name",
+              "favourite game",
+              "Okay to share",
+              "Keep private"
+            ],
+            "prompt": "Write each word in the right box."
+          }
+        },
+        {
+          "id": "g3_u7_a2",
+          "number": 2,
+          "title": "My trusted adults",
+          "instruction": "Write the names of 3 trusted adults you can talk to.",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [],
+            "prompt": "Write the names of 3 trusted adults you can talk to."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g3_u8",
+      "number": 8,
+      "title": "Kind with Tech",
+      "big_idea": "Societal Impact",
+      "page": 18,
+      "learn_paragraphs": [
+        "Technology can help us learn, create and talk to family far away.\nWe should be kind in messages, take breaks from screens and play outside\ntoo. This is called balance.\nAI should be made to help everyone, including people who cannot see or\nhear well."
+      ],
+      "new_words": [
+        {
+          "term": "Step",
+          "definition": "one small action"
+        },
+        {
+          "term": "Trusted adult",
+          "definition": "a grown-up who keeps you safe"
+        },
+        {
+          "term": "Voice assistant",
+          "definition": "a helper you talk to with your voice"
+        }
+      ],
+      "did_you_know": "Resting your eyes by looking at something far away is good during screen time.",
+      "think_and_talk": "How can AI help people who cannot see or hear well?",
+      "self_check": "I can use technology in a kind and balanced way.",
+      "activities": [
+        {
+          "id": "g3_u8_a1",
+          "number": 1,
+          "title": "Helpful or harmful?",
+          "instruction": "Tick the right box.",
+          "type": "tick_table",
+          "component": "TickTableActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Helpful",
+              "Harmful",
+              "Using a learning app to practise maths",
+              "Sending a mean message",
+              "Video calling grandparents",
+              "Playing games all night",
+              "Using a map to get home",
+              "Sharing a friend's photo without asking"
+            ],
+            "prompt": "Tick the right box."
+          }
+        },
+        {
+          "id": "g3_u8_a2",
+          "number": 2,
+          "title": "Poster: Tech helps me…",
+          "instruction": "Make a poster showing a good way to use technology.",
+          "type": "drawing_canvas",
+          "component": "DrawingCanvasActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [],
+            "prompt": "Make a poster showing a good way to use technology."
+          }
+        }
+      ]
+    }
+  ],
+  "final_project": {
+    "title": "My Helper Robot",
+    "page": 20,
+    "instructions": "Complete your guided capstone project and submit for teacher review.",
+    "fields": [
+      "Robot name",
+      "What job will it do?",
+      "Which sensors will it use? (see, hear, touch…)",
+      "Write 3 steps it will follow",
+      "One safety rule for your robot",
+      "Draw your robot",
+      "F I N A L P R O J E C T",
+      "My Helper Robot"
+    ]
+  },
+  "glossary": [
+    {
+      "term": "AI",
+      "definition": "when a machine can notice, learn and decide",
+      "mastered": false
+    },
+    {
+      "term": "Algorithm",
+      "definition": "a list of steps to do a job",
+      "mastered": false
+    },
+    {
+      "term": "Balance",
+      "definition": "a good mix of screen time and other activities",
+      "mastered": false
+    },
+    {
+      "term": "Camera",
+      "definition": "a sensor that takes pictures",
+      "mastered": false
+    },
+    {
+      "term": "Chatbot",
+      "definition": "a computer program that chats with you",
+      "mastered": false
+    },
+    {
+      "term": "Feature",
+      "definition": "something that helps us tell things apart",
+      "mastered": false
+    },
+    {
+      "term": "Group",
+      "definition": "things that belong together",
+      "mastered": false
+    },
+    {
+      "term": "Instruction",
+      "definition": "words that tell someone what to do",
+      "mastered": false
+    },
+    {
+      "term": "Kindness",
+      "definition": "being friendly and caring",
+      "mastered": false
+    },
+    {
+      "term": "Machine",
+      "definition": "a thing that helps us do work",
+      "mastered": false
+    },
+    {
+      "term": "Order",
+      "definition": "which step comes first, next and last",
+      "mastered": false
+    },
+    {
+      "term": "Password",
+      "definition": "a secret word that locks an account",
+      "mastered": false
+    },
+    {
+      "term": "Pattern",
+      "definition": "something that repeats in the same way",
+      "mastered": false
+    },
+    {
+      "term": "Predict",
+      "definition": "to guess what comes next",
+      "mastered": false
+    },
+    {
+      "term": "Private",
+      "definition": "only for you and your family",
+      "mastered": false
+    },
+    {
+      "term": "Repeat",
+      "definition": "to do or happen again",
+      "mastered": false
+    },
+    {
+      "term": "Screen time",
+      "definition": "time spent using phones, TV or computers",
+      "mastered": false
+    },
+    {
+      "term": "Sense",
+      "definition": "a way we know the world, like seeing",
+      "mastered": false
+    },
+    {
+      "term": "Sensor",
+      "definition": "a machine part that collects information",
+      "mastered": false
+    },
+    {
+      "term": "Smart speaker",
+      "definition": "a speaker you can talk to",
+      "mastered": false
+    },
+    {
+      "term": "Sort",
+      "definition": "to put things into groups",
+      "mastered": false
+    },
+    {
+      "term": "Step",
+      "definition": "one small action",
+      "mastered": false
+    },
+    {
+      "term": "Trusted adult",
+      "definition": "a grown-up who keeps you safe",
+      "mastered": false
+    },
+    {
+      "term": "Voice assistant",
+      "definition": "a helper you talk to with your voice",
+      "mastered": false
+    }
+  ],
+  "certificate": {
+    "title": "Certificate of Completion - AI Explorers",
+    "edition": "AI Explorers",
+    "grade": 3,
+    "page": 22,
+    "text": "This certificate is proudly presented for completing the Parivestra AI & Future Skills Grade 3 Workbook with curiosity, creativity and care.",
+    "fields": [
+      "student_name",
+      "teacher_name",
+      "school_name",
+      "date"
+    ]
+  }
+}

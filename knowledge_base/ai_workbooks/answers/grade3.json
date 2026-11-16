@@ -1,0 +1,289 @@
+[
+  {
+    "activity_id": "g3_u1_a1",
+    "type": "tick_table",
+    "auto_checkable": true,
+    "needs_review": true,
+    "solution": {
+      "Voice assistant": true,
+      "Face unlock on a phone": true,
+      "Map app that finds the fastest road": true,
+      "Robot vacuum cleaner": true,
+      "Bicycle": false,
+      "Ceiling fan": false,
+      "Pencil sharpener": false,
+      "Torch": false
+    },
+    "explanation": "Voice assistant, face unlock, smart map apps and robot vacuums use sensors and AI to learn and decide. Fans, bicycles, torches and sharpeners are mechanical/electrical tools without AI."
+  },
+  {
+    "activity_id": "g3_u1_a2",
+    "type": "drawing_canvas",
+    "auto_checkable": false,
+    "needs_review": true,
+    "rubric": [
+      {
+        "criterion": "Concept Application",
+        "max_score": 3,
+        "description": "Student clearly applies the unit concept and AI big idea."
+      },
+      {
+        "criterion": "Clarity & Detail",
+        "max_score": 3,
+        "description": "Explanation or drawing is well-structured, easy to understand, and detailed."
+      },
+      {
+        "criterion": "Safety & Critical Thinking",
+        "max_score": 2,
+        "description": "Considers user safety, fairness, limitations, or personal privacy rules."
+      }
+    ],
+    "sample_solution": "Sample response for 'My helper robot': Meets all 3 rubric dimensions with grounded reasoning."
+  },
+  {
+    "activity_id": "g3_u2_a1",
+    "type": "match_pairs",
+    "auto_checkable": true,
+    "needs_review": true,
+    "solution": {
+      "Eyes": "Camera",
+      "Ears": "Microphone",
+      "Fingers (touch)": "Touch screen",
+      "Skin feels hot or cold": "Thermometer"
+    },
+    "explanation": "Eyes correspond to cameras, ears to microphones, finger touch to touchscreens, and temperature skin feel to thermometers."
+  },
+  {
+    "activity_id": "g3_u2_a2",
+    "type": "fill_blanks",
+    "auto_checkable": true,
+    "needs_review": true,
+    "solution": {
+      "1": "microphone",
+      "2": "camera",
+      "3": "sensor"
+    },
+    "explanation": "1. Phone hears voice with microphone. 2. Robot sees with camera. 3. Sensor collects information."
+  },
+  {
+    "activity_id": "g3_u3_a1",
+    "type": "pattern_completion",
+    "auto_checkable": true,
+    "needs_review": true,
+    "solution": {
+      "1, 3, 5, 7, 9": [
+        "11",
+        "13"
+      ],
+      "A, B, A, B, A": [
+        "B",
+        "A"
+      ],
+      "Circle, Square, Triangle, Circle, Square": [
+        "Triangle",
+        "Circle"
+      ]
+    },
+    "explanation": "Odd numbers increase by 2; alternating letters repeat A, B; shapes repeat Circle, Square, Triangle."
+  },
+  {
+    "activity_id": "g3_u3_a2",
+    "type": "pattern_completion",
+    "auto_checkable": true,
+    "needs_review": true,
+    "solution": {
+      "valid_keys": [
+        "standard_pass"
+      ],
+      "target_criteria": "Find a pattern in your classroom or home. Draw it here."
+    },
+    "explanation": "Teacher solution for 'Pattern hunt'. Please verify against official curriculum key."
+  },
+  {
+    "activity_id": "g3_u4_a1",
+    "type": "sort_boxes",
+    "auto_checkable": true,
+    "needs_review": true,
+    "solution": {
+      "Living": [
+        "Cat",
+        "Tree",
+        "Bird",
+        "Human"
+      ],
+      "Non-living": [
+        "Car",
+        "Robot",
+        "Table",
+        "Phone"
+      ]
+    },
+    "explanation": "Living things grow, breathe, and reproduce. Non-living objects do not."
+  },
+  {
+    "activity_id": "g3_u4_a2",
+    "type": "sort_boxes",
+    "auto_checkable": true,
+    "needs_review": true,
+    "solution": {
+      "valid_keys": [
+        "parrot",
+        "fish",
+        "butterfly",
+        "dolphin"
+      ],
+      "target_criteria": "Some animals can go in two boxes. That is tricky for AI too!"
+    },
+    "explanation": "Teacher solution for 'Fly, swim or both?'. Please verify against official curriculum key."
+  },
+  {
+    "activity_id": "g3_u5_a1",
+    "type": "order_steps",
+    "auto_checkable": true,
+    "needs_review": true,
+    "solution": {
+      "valid_keys": [
+        "Put the other slice of bread on top.",
+        "Take two slices of bread.",
+        "Add cucumber slices.",
+        "Put the bread on a plate."
+      ],
+      "target_criteria": "Number the steps from 1 to 5."
+    },
+    "explanation": "Teacher solution for 'Make a sandwich'. Please verify against official curriculum key."
+  },
+  {
+    "activity_id": "g3_u5_a2",
+    "type": "path_grid",
+    "auto_checkable": true,
+    "needs_review": true,
+    "solution": {
+      "valid_keys": [
+        "P",
+        "P = Pari   ★ = star   grey = rocks",
+        "One arrow per box. Example: → → ↓"
+      ],
+      "target_criteria": "Write the arrows (→ ↓ ← ↑) Pari must follow. Do not step on the rocks."
+    },
+    "explanation": "Teacher solution for 'Help Pari reach the star'. Please verify against official curriculum key."
+  },
+  {
+    "activity_id": "g3_u6_a1",
+    "type": "tick_table",
+    "auto_checkable": true,
+    "needs_review": true,
+    "solution": {
+      "valid_keys": [
+        "Clear",
+        "Not clear",
+        "“Play my favourite song.”",
+        "“Do the thing.”"
+      ],
+      "target_criteria": "Tick the right box for each instruction."
+    },
+    "explanation": "Teacher solution for 'Clear or not clear?'. Please verify against official curriculum key."
+  },
+  {
+    "activity_id": "g3_u6_a2",
+    "type": "reflection_input",
+    "auto_checkable": false,
+    "needs_review": true,
+    "rubric": [
+      {
+        "criterion": "Concept Application",
+        "max_score": 3,
+        "description": "Student clearly applies the unit concept and AI big idea."
+      },
+      {
+        "criterion": "Clarity & Detail",
+        "max_score": 3,
+        "description": "Explanation or drawing is well-structured, easy to understand, and detailed."
+      },
+      {
+        "criterion": "Safety & Critical Thinking",
+        "max_score": 2,
+        "description": "Considers user safety, fairness, limitations, or personal privacy rules."
+      }
+    ],
+    "sample_solution": "Sample response for 'Write a clear instruction': Meets all 3 rubric dimensions with grounded reasoning."
+  },
+  {
+    "activity_id": "g3_u7_a1",
+    "type": "tick_table",
+    "auto_checkable": true,
+    "needs_review": true,
+    "solution": {
+      "My home address": "Keep private",
+      "My password": "Keep private",
+      "My favourite colour": "Safe to share",
+      "My phone number": "Keep private",
+      "My favourite sport": "Safe to share",
+      "My school name": "Keep private"
+    },
+    "explanation": "Personal identifiable information (address, password, phone, school) must be kept private. General preferences like favourite colour or sport are safe to share."
+  },
+  {
+    "activity_id": "g3_u7_a2",
+    "type": "reflection_input",
+    "auto_checkable": false,
+    "needs_review": true,
+    "rubric": [
+      {
+        "criterion": "Concept Application",
+        "max_score": 3,
+        "description": "Student clearly applies the unit concept and AI big idea."
+      },
+      {
+        "criterion": "Clarity & Detail",
+        "max_score": 3,
+        "description": "Explanation or drawing is well-structured, easy to understand, and detailed."
+      },
+      {
+        "criterion": "Safety & Critical Thinking",
+        "max_score": 2,
+        "description": "Considers user safety, fairness, limitations, or personal privacy rules."
+      }
+    ],
+    "sample_solution": "Sample response for 'My trusted adults': Meets all 3 rubric dimensions with grounded reasoning."
+  },
+  {
+    "activity_id": "g3_u8_a1",
+    "type": "tick_table",
+    "auto_checkable": true,
+    "needs_review": true,
+    "solution": {
+      "valid_keys": [
+        "Helpful",
+        "Harmful",
+        "Using a learning app to practise maths",
+        "Sending a mean message"
+      ],
+      "target_criteria": "Tick the right box."
+    },
+    "explanation": "Teacher solution for 'Helpful or harmful?'. Please verify against official curriculum key."
+  },
+  {
+    "activity_id": "g3_u8_a2",
+    "type": "drawing_canvas",
+    "auto_checkable": false,
+    "needs_review": true,
+    "rubric": [
+      {
+        "criterion": "Concept Application",
+        "max_score": 3,
+        "description": "Student clearly applies the unit concept and AI big idea."
+      },
+      {
+        "criterion": "Clarity & Detail",
+        "max_score": 3,
+        "description": "Explanation or drawing is well-structured, easy to understand, and detailed."
+      },
+      {
+        "criterion": "Safety & Critical Thinking",
+        "max_score": 2,
+        "description": "Considers user safety, fairness, limitations, or personal privacy rules."
+      }
+    ],
+    "sample_solution": "Sample response for 'Poster: Tech helps me…': Meets all 3 rubric dimensions with grounded reasoning."
+  }
+]

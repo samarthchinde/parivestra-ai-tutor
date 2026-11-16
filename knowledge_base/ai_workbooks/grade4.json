@@ -1,0 +1,789 @@
+{
+  "grade": 4,
+  "edition_title": "AI Builders",
+  "tagline": "Data · Train · Decide",
+  "colors": {
+    "primary": "#0284C7",
+    "secondary": "#F59E0B",
+    "bg": "#F0F9FF",
+    "robot": "#0284C7"
+  },
+  "band": "junior",
+  "welcome": {
+    "title": "Welcome, Explorer!",
+    "pari_tip": "There are no wrong ideas in this workbook. Try your best, ask questions, and have fun learning about AI!",
+    "page": 2
+  },
+  "syllabus": [
+    {
+      "unit": 1,
+      "topic": "Rules or Learning?",
+      "big_idea": "Learning",
+      "objective": "I can explain the difference between following rules and",
+      "page": 4
+    },
+    {
+      "unit": 2,
+      "topic": "Data is Everywhere",
+      "big_idea": "Representation & Reasoning",
+      "objective": "I can collect data and show it in a table and pictograph.",
+      "page": 6
+    },
+    {
+      "unit": 3,
+      "topic": "Teaching a Machine",
+      "big_idea": "Learning",
+      "objective": "I can label examples and explain training and testing.",
+      "page": 8
+    },
+    {
+      "unit": 4,
+      "topic": "Decision Trees",
+      "big_idea": "Representation & Reasoning",
+      "objective": "I can use and build a decision tree.",
+      "page": 10
+    },
+    {
+      "unit": 5,
+      "topic": "Algorithms and Loops",
+      "big_idea": "Representation & Reasoning",
+      "objective": "I can use loops to make algorithms shorter.",
+      "page": 12
+    },
+    {
+      "unit": 6,
+      "topic": "Chatbots",
+      "big_idea": "Natural Interaction",
+      "objective": "I can write a simple chatbot script.",
+      "page": 14
+    },
+    {
+      "unit": 7,
+      "topic": "When AI Gets It Wrong",
+      "big_idea": "Societal Impact",
+      "objective": "I can spot when AI might be wrong or unfair.",
+      "page": 16
+    },
+    {
+      "unit": 8,
+      "topic": "Digital Citizen",
+      "big_idea": "Societal Impact",
+      "objective": "I can be safe, kind and respectful online.",
+      "page": 18
+    }
+  ],
+  "units": [
+    {
+      "id": "g4_u1",
+      "number": 1,
+      "title": "Rules or Learning?",
+      "big_idea": "Learning",
+      "page": 4,
+      "learn_paragraphs": [
+        "Some machines follow fixed rules: IF the button is pressed, THEN the light\nturns on.\nAI can learn from examples instead of only following rules. A music app\nlearns which songs you like.\nRules are good for simple jobs. Learning helps with jobs that have too many\ncases to write rules for."
+      ],
+      "new_words": [
+        {
+          "term": "Bias",
+          "definition": "when AI favours some things because of its examples"
+        },
+        {
+          "term": "Branch",
+          "definition": "one path in a decision tree"
+        },
+        {
+          "term": "Chatbot",
+          "definition": "a program that chats"
+        }
+      ],
+      "did_you_know": "A computer called Deep Blue beat the world chess champion in a match in 1997.",
+      "think_and_talk": "Why can't we write rules for everything a robot might see?",
+      "self_check": "I can explain the difference between following rules and",
+      "activities": [
+        {
+          "id": "g4_u1_a1",
+          "number": 1,
+          "title": "Rule or learning?",
+          "instruction": "Does the machine follow a fixed rule or learn from examples?",
+          "type": "tick_table",
+          "component": "TickTableActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Rule",
+              "Learns",
+              "A traffic light changes every 60 seconds",
+              "A music app suggests songs you might like",
+              "A calculator adds numbers",
+              "A phone recognises your face",
+              "An alarm rings at 6 am",
+              "An online shop recommends products"
+            ],
+            "prompt": "Does the machine follow a fixed rule or learn from examples?"
+          }
+        },
+        {
+          "id": "g4_u1_a2",
+          "number": 2,
+          "title": "Rules for a smart classroom",
+          "instruction": "Write 3 IF–THEN rules.",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "IF",
+              "THEN",
+              "IF",
+              "THEN",
+              "IF",
+              "THEN"
+            ],
+            "prompt": "Write 3 IF–THEN rules."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g4_u2",
+      "number": 2,
+      "title": "Data is Everywhere",
+      "big_idea": "Representation & Reasoning",
+      "page": 6,
+      "learn_paragraphs": [
+        "Data is information: numbers, words, pictures and sounds.\nAI needs data to learn. The more good data it has, the better it can learn.\nWe can collect data with a survey and count it with tally marks: |||| for\nfive."
+      ],
+      "new_words": [
+        {
+          "term": "Citizen",
+          "definition": "a member of a community"
+        },
+        {
+          "term": "Data",
+          "definition": "facts and information we collect"
+        },
+        {
+          "term": "Decision",
+          "definition": "a choice we make"
+        }
+      ],
+      "did_you_know": "Every photo you take is data made of tiny coloured dots.",
+      "think_and_talk": "What other data could you collect about your class?",
+      "self_check": "I can collect data and show it in a table and pictograph.",
+      "activities": [
+        {
+          "id": "g4_u2_a1",
+          "number": 1,
+          "title": "Fruit survey",
+          "instruction": "Ask 10 classmates their favourite fruit. Use tally marks.",
+          "type": "data_chart",
+          "component": "DataChartActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Fruit",
+              "Tally",
+              "Total",
+              "Mango",
+              "Banana",
+              "Apple",
+              "Grapes",
+              "Other"
+            ],
+            "prompt": "Ask 10 classmates their favourite fruit. Use tally marks."
+          }
+        },
+        {
+          "id": "g4_u2_a2",
+          "number": 2,
+          "title": "Make a pictograph",
+          "instruction": "Draw one circle for each vote.",
+          "type": "data_chart",
+          "component": "DataChartActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Mango",
+              "Banana",
+              "Apple",
+              "Grapes",
+              "Other",
+              "Which fruit is the most popular?"
+            ],
+            "prompt": "Draw one circle for each vote."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g4_u3",
+      "number": 3,
+      "title": "Teaching a Machine",
+      "big_idea": "Learning",
+      "page": 8,
+      "learn_paragraphs": [
+        "To teach AI, we show it many examples with labels, like pictures marked\n“cat” or “dog”. This is called training.\nDifferent examples help: big, small, light and dark cats.\nThen we test the AI with new pictures it has never seen."
+      ],
+      "new_words": [
+        {
+          "term": "Example",
+          "definition": "one sample used to learn"
+        },
+        {
+          "term": "Fair",
+          "definition": "treating everyone equally"
+        },
+        {
+          "term": "Label",
+          "definition": "a name we give to an example"
+        }
+      ],
+      "did_you_know": "Image AIs are often trained on thousands or even millions of pictures.",
+      "think_and_talk": "What might happen if we trained an AI with only 3 pictures?",
+      "self_check": "I can label examples and explain training and testing.",
+      "activities": [
+        {
+          "id": "g4_u3_a1",
+          "number": 1,
+          "title": "Be the trainer",
+          "instruction": "Write A for Apple or N for Not apple.",
+          "type": "ml_lab",
+          "component": "MLLabActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Red apple",
+              "Green apple",
+              "Tomato",
+              "Red ball",
+              "Cherry",
+              "Apple slice",
+              "Yellow apple",
+              "Orange"
+            ],
+            "prompt": "Write A for Apple or N for Not apple."
+          }
+        },
+        {
+          "id": "g4_u3_a2",
+          "number": 2,
+          "title": "Fill in the blanks",
+          "instruction": "Use the words in the box.",
+          "type": "fill_blanks",
+          "component": "FillBlanksActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "training",
+              "labels",
+              "test",
+              "1. Teaching an AI with examples is called",
+              ".",
+              "2. Words like “cat” or “dog” on pictures are",
+              ".",
+              "3. We check the AI with new pictures in a",
+              ".",
+              "Why should we show the AI apples of many colours?"
+            ],
+            "prompt": "Use the words in the box."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g4_u4",
+      "number": 4,
+      "title": "Decision Trees",
+      "big_idea": "Representation & Reasoning",
+      "page": 10,
+      "learn_paragraphs": [
+        "A decision tree asks yes or no questions to reach an answer.\nEach answer takes you down a different branch, like a path in a forest.\nAI can use decision trees to make choices step by step."
+      ],
+      "new_words": [
+        {
+          "term": "Learn",
+          "definition": "to get better by seeing examples"
+        },
+        {
+          "term": "Loop",
+          "definition": "steps that repeat"
+        },
+        {
+          "term": "Mistake",
+          "definition": "something done wrong"
+        }
+      ],
+      "did_you_know": "Decision trees are also used to help with choices in hospitals and banks.",
+      "think_and_talk": "How many questions do you need to guess one of 8 animals?",
+      "self_check": "I can use and build a decision tree.",
+      "activities": [
+        {
+          "id": "g4_u4_a1",
+          "number": 1,
+          "title": "Animal guesser",
+          "instruction": "Fill the empty boxes with an animal name.",
+          "type": "ml_lab",
+          "component": "MLLabActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Yes",
+              "No",
+              "Yes",
+              "No",
+              "Yes",
+              "No",
+              "Does it have feathers?",
+              "Can it talk?",
+              "Does it live in water?",
+              "parrot",
+              "________",
+              "________",
+              "________"
+            ],
+            "prompt": "Fill the empty boxes with an animal name."
+          }
+        },
+        {
+          "id": "g4_u4_a2",
+          "number": 2,
+          "title": "Your own tree",
+          "instruction": "Make a tree to choose what to wear today.",
+          "type": "ml_lab",
+          "component": "MLLabActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Yes",
+              "No",
+              "Yes",
+              "No",
+              "Yes",
+              "No",
+              "Is it raining?",
+              "________?",
+              "________?",
+              "________",
+              "________",
+              "________",
+              "________"
+            ],
+            "prompt": "Make a tree to choose what to wear today."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g4_u5",
+      "number": 5,
+      "title": "Algorithms and Loops",
+      "big_idea": "Representation & Reasoning",
+      "page": 12,
+      "learn_paragraphs": [
+        "A sequence is steps in order. A loop repeats steps.\nInstead of writing “clap” five times, we write: repeat 5 times: clap.\nLoops make algorithms shorter and easier to read."
+      ],
+      "new_words": [
+        {
+          "term": "Permission",
+          "definition": "saying yes before something is done"
+        },
+        {
+          "term": "Question",
+          "definition": "what we ask to find out"
+        },
+        {
+          "term": "Repeat",
+          "definition": "to do again"
+        }
+      ],
+      "did_you_know": "Video games use loops to keep checking which buttons you press.",
+      "think_and_talk": "What shape does “repeat 4 times: draw line, turn right” make?",
+      "self_check": "I can use loops to make algorithms shorter.",
+      "activities": [
+        {
+          "id": "g4_u5_a1",
+          "number": 1,
+          "title": "Make it shorter",
+          "instruction": "Rewrite each algorithm using a loop.",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "step, step, step, step, turn",
+              "Loop: repeat",
+              "times:",
+              "clap, jump, clap, jump, clap, jump",
+              "Loop: repeat",
+              "times:",
+              "draw line, turn, draw line, turn, draw line, turn, draw line, turn",
+              "Loop: repeat",
+              "times:"
+            ],
+            "prompt": "Rewrite each algorithm using a loop."
+          }
+        },
+        {
+          "id": "g4_u5_a2",
+          "number": 2,
+          "title": "Dance algorithm",
+          "instruction": "Write a dance using at least one loop. Then try it!",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [],
+            "prompt": "Write a dance using at least one loop. Then try it!"
+          }
+        }
+      ]
+    },
+    {
+      "id": "g4_u6",
+      "number": 6,
+      "title": "Chatbots",
+      "big_idea": "Natural Interaction",
+      "page": 14,
+      "learn_paragraphs": [
+        "A chatbot is a computer program that chats with people.\nSimple chatbots follow a script: if the user says this, reply with that.\nSmarter chatbots use AI to understand many different ways of saying the\nsame thing."
+      ],
+      "new_words": [
+        {
+          "term": "Reply",
+          "definition": "an answer"
+        },
+        {
+          "term": "Respect",
+          "definition": "treating people and their work well"
+        },
+        {
+          "term": "Rule",
+          "definition": "an exact instruction: IF this, THEN that"
+        }
+      ],
+      "did_you_know": "One of the first chatbots, ELIZA, was made in the 1960s.",
+      "think_and_talk": "Why do chatbots need to understand different ways of asking?",
+      "self_check": "I can write a simple chatbot script.",
+      "activities": [
+        {
+          "id": "g4_u6_a1",
+          "number": 1,
+          "title": "Library Helper Bot",
+          "instruction": "Write what the bot should reply.",
+          "type": "chatbot_builder",
+          "component": "ChatbotBuilderActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "User says",
+              "Bot replies",
+              "Hi!",
+              "Where are the science books?",
+              "What time do you close?",
+              "Can I borrow 2 books?",
+              "Thank you!"
+            ],
+            "prompt": "Write what the bot should reply."
+          }
+        },
+        {
+          "id": "g4_u6_a2",
+          "number": 2,
+          "title": "Same question, new words",
+          "instruction": "Write 3 different ways to ask: “What is the weather today?”",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [],
+            "prompt": "Write 3 different ways to ask: “What is the weather today?”"
+          }
+        }
+      ]
+    },
+    {
+      "id": "g4_u7",
+      "number": 7,
+      "title": "When AI Gets It Wrong",
+      "big_idea": "Societal Impact",
+      "page": 16,
+      "learn_paragraphs": [
+        "AI only knows what it learned from its examples. If it saw only black cats, it\nmay not know an orange cat is a cat.\nWhen examples leave things out, AI can be unfair. This is called bias.\nPeople must check AI for mistakes and give it fair, varied examples."
+      ],
+      "new_words": [
+        {
+          "term": "Script",
+          "definition": "planned questions and replies"
+        },
+        {
+          "term": "Sequence",
+          "definition": "steps in a fixed order"
+        },
+        {
+          "term": "Survey",
+          "definition": "asking people questions to collect data"
+        }
+      ],
+      "did_you_know": "AI can sound very sure and still be wrong, so always double-check.",
+      "think_and_talk": "Who should check if an AI is fair?",
+      "self_check": "I can spot when AI might be wrong or unfair.",
+      "activities": [
+        {
+          "id": "g4_u7_a1",
+          "number": 1,
+          "title": "Will the AI get it right?",
+          "instruction": "Tick Yes or No and say why.",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "An AI learned only from pictures of red apples. Will it know a green apple?",
+              "Yes",
+              "No",
+              "Why?",
+              "A voice assistant learned from many voices: young, old, men and women. Will it",
+              "understand your grandmother?",
+              "Yes",
+              "No",
+              "Why?",
+              "A dog-finder AI learned only from big dogs. Will it find a puppy?",
+              "Yes",
+              "No",
+              "Why?"
+            ],
+            "prompt": "Tick Yes or No and say why."
+          }
+        },
+        {
+          "id": "g4_u7_a2",
+          "number": 2,
+          "title": "Fix the AI",
+          "instruction": "Pick one AI above. Which examples would you add to fix it?",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [],
+            "prompt": "Pick one AI above. Which examples would you add to fix it?"
+          }
+        }
+      ]
+    },
+    {
+      "id": "g4_u8",
+      "number": 8,
+      "title": "Digital Citizen",
+      "big_idea": "Societal Impact",
+      "page": 18,
+      "learn_paragraphs": [
+        "A good digital citizen is safe, kind and honest online.\nUse strong passwords, think before you share, and ask permission before\nusing someone's photo.\nRespect other people's work, and tell a trusted adult if something feels\nwrong."
+      ],
+      "new_words": [
+        {
+          "term": "Tally",
+          "definition": "marks we use to count"
+        },
+        {
+          "term": "Test",
+          "definition": "checking AI with new examples"
+        },
+        {
+          "term": "Training",
+          "definition": "teaching AI with labelled examples"
+        }
+      ],
+      "did_you_know": "Two-step verification adds a second lock to an online account.",
+      "think_and_talk": "Is it okay to copy a friend's drawing and post it online? Why?",
+      "self_check": "I can be safe, kind and respectful online.",
+      "activities": [
+        {
+          "id": "g4_u8_a1",
+          "number": 1,
+          "title": "Strong or weak password?",
+          "instruction": "Tick the right box.",
+          "type": "tick_table",
+          "component": "TickTableActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Strong",
+              "Weak",
+              "12345",
+              "password",
+              "Mango2015",
+              "BlueTiger#Rain7!",
+              "myname",
+              "M!lk&Cookies42"
+            ],
+            "prompt": "Tick the right box."
+          }
+        },
+        {
+          "id": "g4_u8_a2",
+          "number": 2,
+          "title": "My digital promise",
+          "instruction": "Write 3 promises for being a good digital citizen. Sign below.",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [],
+            "prompt": "Write 3 promises for being a good digital citizen. Sign below."
+          }
+        }
+      ]
+    }
+  ],
+  "final_project": {
+    "title": "Build a Classroom Chatbot",
+    "page": 20,
+    "instructions": "Complete your guided capstone project and submit for teacher review.",
+    "fields": [
+      "Chatbot name and job",
+      "Who will use it?",
+      "Script: 4 questions and replies",
+      "User asks",
+      "Chatbot replies",
+      "A decision tree for one tricky question",
+      "Test it with a friend. What would you improve?",
+      "F I N A L P R O J E C T",
+      "Build a Classroom Chatbot"
+    ]
+  },
+  "glossary": [
+    {
+      "term": "Bias",
+      "definition": "when AI favours some things because of its examples",
+      "mastered": false
+    },
+    {
+      "term": "Branch",
+      "definition": "one path in a decision tree",
+      "mastered": false
+    },
+    {
+      "term": "Chatbot",
+      "definition": "a program that chats",
+      "mastered": false
+    },
+    {
+      "term": "Citizen",
+      "definition": "a member of a community",
+      "mastered": false
+    },
+    {
+      "term": "Data",
+      "definition": "facts and information we collect",
+      "mastered": false
+    },
+    {
+      "term": "Decision",
+      "definition": "a choice we make",
+      "mastered": false
+    },
+    {
+      "term": "Example",
+      "definition": "one sample used to learn",
+      "mastered": false
+    },
+    {
+      "term": "Fair",
+      "definition": "treating everyone equally",
+      "mastered": false
+    },
+    {
+      "term": "Label",
+      "definition": "a name we give to an example",
+      "mastered": false
+    },
+    {
+      "term": "Learn",
+      "definition": "to get better by seeing examples",
+      "mastered": false
+    },
+    {
+      "term": "Loop",
+      "definition": "steps that repeat",
+      "mastered": false
+    },
+    {
+      "term": "Mistake",
+      "definition": "something done wrong",
+      "mastered": false
+    },
+    {
+      "term": "Permission",
+      "definition": "saying yes before something is done",
+      "mastered": false
+    },
+    {
+      "term": "Question",
+      "definition": "what we ask to find out",
+      "mastered": false
+    },
+    {
+      "term": "Repeat",
+      "definition": "to do again",
+      "mastered": false
+    },
+    {
+      "term": "Reply",
+      "definition": "an answer",
+      "mastered": false
+    },
+    {
+      "term": "Respect",
+      "definition": "treating people and their work well",
+      "mastered": false
+    },
+    {
+      "term": "Rule",
+      "definition": "an exact instruction: IF this, THEN that",
+      "mastered": false
+    },
+    {
+      "term": "Script",
+      "definition": "planned questions and replies",
+      "mastered": false
+    },
+    {
+      "term": "Sequence",
+      "definition": "steps in a fixed order",
+      "mastered": false
+    },
+    {
+      "term": "Survey",
+      "definition": "asking people questions to collect data",
+      "mastered": false
+    },
+    {
+      "term": "Tally",
+      "definition": "marks we use to count",
+      "mastered": false
+    },
+    {
+      "term": "Test",
+      "definition": "checking AI with new examples",
+      "mastered": false
+    },
+    {
+      "term": "Training",
+      "definition": "teaching AI with labelled examples",
+      "mastered": false
+    }
+  ],
+  "certificate": {
+    "title": "Certificate of Completion - AI Builders",
+    "edition": "AI Builders",
+    "grade": 4,
+    "page": 22,
+    "text": "This certificate is proudly presented for completing the Parivestra AI & Future Skills Grade 4 Workbook with curiosity, creativity and care.",
+    "fields": [
+      "student_name",
+      "teacher_name",
+      "school_name",
+      "date"
+    ]
+  }
+}

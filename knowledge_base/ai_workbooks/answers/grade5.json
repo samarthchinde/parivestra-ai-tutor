@@ -1,0 +1,332 @@
+[
+  {
+    "activity_id": "g5_u1_a1",
+    "type": "match_pairs",
+    "auto_checkable": true,
+    "needs_review": true,
+    "solution": {
+      "valid_keys": [
+        "Health",
+        "Farming",
+        "Transport",
+        "Language"
+      ],
+      "target_criteria": "Draw a line from each field to how AI helps."
+    },
+    "explanation": "Teacher solution for 'Match the field'. Please verify against official curriculum key."
+  },
+  {
+    "activity_id": "g5_u1_a2",
+    "type": "reflection_input",
+    "auto_checkable": false,
+    "needs_review": true,
+    "rubric": [
+      {
+        "criterion": "Concept Application",
+        "max_score": 3,
+        "description": "Student clearly applies the unit concept and AI big idea."
+      },
+      {
+        "criterion": "Clarity & Detail",
+        "max_score": 3,
+        "description": "Explanation or drawing is well-structured, easy to understand, and detailed."
+      },
+      {
+        "criterion": "Safety & Critical Thinking",
+        "max_score": 2,
+        "description": "Considers user safety, fairness, limitations, or personal privacy rules."
+      }
+    ],
+    "sample_solution": "Sample response for 'AI interview': Meets all 3 rubric dimensions with grounded reasoning."
+  },
+  {
+    "activity_id": "g5_u2_a1",
+    "type": "data_chart",
+    "auto_checkable": false,
+    "needs_review": true,
+    "rubric": [
+      {
+        "criterion": "Concept Application",
+        "max_score": 3,
+        "description": "Student clearly applies the unit concept and AI big idea."
+      },
+      {
+        "criterion": "Clarity & Detail",
+        "max_score": 3,
+        "description": "Explanation or drawing is well-structured, easy to understand, and detailed."
+      },
+      {
+        "criterion": "Safety & Critical Thinking",
+        "max_score": 2,
+        "description": "Considers user safety, fairness, limitations, or personal privacy rules."
+      }
+    ],
+    "sample_solution": "Sample response for 'Books read this month': Meets all 3 rubric dimensions with grounded reasoning."
+  },
+  {
+    "activity_id": "g5_u2_a2",
+    "type": "data_chart",
+    "auto_checkable": false,
+    "needs_review": true,
+    "rubric": [
+      {
+        "criterion": "Concept Application",
+        "max_score": 3,
+        "description": "Student clearly applies the unit concept and AI big idea."
+      },
+      {
+        "criterion": "Clarity & Detail",
+        "max_score": 3,
+        "description": "Explanation or drawing is well-structured, easy to understand, and detailed."
+      },
+      {
+        "criterion": "Safety & Critical Thinking",
+        "max_score": 2,
+        "description": "Considers user safety, fairness, limitations, or personal privacy rules."
+      }
+    ],
+    "sample_solution": "Sample response for 'Read your graph': Meets all 3 rubric dimensions with grounded reasoning."
+  },
+  {
+    "activity_id": "g5_u3_a1",
+    "type": "order_steps",
+    "auto_checkable": true,
+    "needs_review": true,
+    "solution": {
+      "valid_keys": [
+        "Test the model with new data",
+        "Collect data",
+        "Improve and train again",
+        "Label the data"
+      ],
+      "target_criteria": "Number the machine learning steps from 1 to 5."
+    },
+    "explanation": "Teacher solution for 'Put the steps in order'. Please verify against official curriculum key."
+  },
+  {
+    "activity_id": "g5_u3_a2",
+    "type": "math_stats",
+    "auto_checkable": true,
+    "needs_review": true,
+    "solution": {
+      "valid_keys": [
+        "8 right out of 10 →",
+        "%",
+        "15 right out of 20 →",
+        "%"
+      ],
+      "target_criteria": "Accuracy = correct ÷ total × 100"
+    },
+    "explanation": "Teacher solution for 'Work out the accuracy'. Please verify against official curriculum key."
+  },
+  {
+    "activity_id": "g5_u4_a1",
+    "type": "pixels_vision",
+    "auto_checkable": true,
+    "needs_review": true,
+    "solution": {
+      "valid_keys": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "target_criteria": "Colour every square marked 1. Leave 0 white. What picture appears?"
+    },
+    "explanation": "Teacher solution for 'Be the computer'. Please verify against official curriculum key."
+  },
+  {
+    "activity_id": "g5_u4_a2",
+    "type": "pixels_vision",
+    "auto_checkable": true,
+    "needs_review": true,
+    "solution": {
+      "valid_keys": [
+        "standard_pass"
+      ],
+      "target_criteria": "Write 3 features that help AI recognise a bicycle."
+    },
+    "explanation": "Teacher solution for 'Find the features'. Please verify against official curriculum key."
+  },
+  {
+    "activity_id": "g5_u5_a1",
+    "type": "reflection_input",
+    "auto_checkable": false,
+    "needs_review": true,
+    "rubric": [
+      {
+        "criterion": "Concept Application",
+        "max_score": 3,
+        "description": "Student clearly applies the unit concept and AI big idea."
+      },
+      {
+        "criterion": "Clarity & Detail",
+        "max_score": 3,
+        "description": "Explanation or drawing is well-structured, easy to understand, and detailed."
+      },
+      {
+        "criterion": "Safety & Critical Thinking",
+        "max_score": 2,
+        "description": "Considers user safety, fairness, limitations, or personal privacy rules."
+      }
+    ],
+    "sample_solution": "Sample response for 'Predict the next word': Meets all 3 rubric dimensions with grounded reasoning."
+  },
+  {
+    "activity_id": "g5_u5_a2",
+    "type": "prompt_lab",
+    "auto_checkable": false,
+    "needs_review": true,
+    "rubric": [
+      {
+        "criterion": "Concept Application",
+        "max_score": 3,
+        "description": "Student clearly applies the unit concept and AI big idea."
+      },
+      {
+        "criterion": "Clarity & Detail",
+        "max_score": 3,
+        "description": "Explanation or drawing is well-structured, easy to understand, and detailed."
+      },
+      {
+        "criterion": "Safety & Critical Thinking",
+        "max_score": 2,
+        "description": "Considers user safety, fairness, limitations, or personal privacy rules."
+      }
+    ],
+    "sample_solution": "Sample response for 'Make it a better prompt': Meets all 3 rubric dimensions with grounded reasoning."
+  },
+  {
+    "activity_id": "g5_u6_a1",
+    "type": "tick_table_reason",
+    "auto_checkable": false,
+    "needs_review": true,
+    "rubric": [
+      {
+        "criterion": "Concept Application",
+        "max_score": 3,
+        "description": "Student clearly applies the unit concept and AI big idea."
+      },
+      {
+        "criterion": "Clarity & Detail",
+        "max_score": 3,
+        "description": "Explanation or drawing is well-structured, easy to understand, and detailed."
+      },
+      {
+        "criterion": "Safety & Critical Thinking",
+        "max_score": 2,
+        "description": "Considers user safety, fairness, limitations, or personal privacy rules."
+      }
+    ],
+    "sample_solution": "Sample response for 'Fair or unfair?': Meets all 3 rubric dimensions with grounded reasoning."
+  },
+  {
+    "activity_id": "g5_u6_a2",
+    "type": "reflection_input",
+    "auto_checkable": false,
+    "needs_review": true,
+    "rubric": [
+      {
+        "criterion": "Concept Application",
+        "max_score": 3,
+        "description": "Student clearly applies the unit concept and AI big idea."
+      },
+      {
+        "criterion": "Clarity & Detail",
+        "max_score": 3,
+        "description": "Explanation or drawing is well-structured, easy to understand, and detailed."
+      },
+      {
+        "criterion": "Safety & Critical Thinking",
+        "max_score": 2,
+        "description": "Considers user safety, fairness, limitations, or personal privacy rules."
+      }
+    ],
+    "sample_solution": "Sample response for 'Our AI rules': Meets all 3 rubric dimensions with grounded reasoning."
+  },
+  {
+    "activity_id": "g5_u7_a1",
+    "type": "prompt_lab",
+    "auto_checkable": false,
+    "needs_review": true,
+    "rubric": [
+      {
+        "criterion": "Concept Application",
+        "max_score": 3,
+        "description": "Student clearly applies the unit concept and AI big idea."
+      },
+      {
+        "criterion": "Clarity & Detail",
+        "max_score": 3,
+        "description": "Explanation or drawing is well-structured, easy to understand, and detailed."
+      },
+      {
+        "criterion": "Safety & Critical Thinking",
+        "max_score": 2,
+        "description": "Considers user safety, fairness, limitations, or personal privacy rules."
+      }
+    ],
+    "sample_solution": "Sample response for 'STOP check': Meets all 3 rubric dimensions with grounded reasoning."
+  },
+  {
+    "activity_id": "g5_u7_a2",
+    "type": "tick_table",
+    "auto_checkable": true,
+    "needs_review": true,
+    "solution": {
+      "If it is on the internet, it must be true.": false,
+      "AI pictures can look real.": true,
+      "Checking 2 trusted sources is a good habit.": true,
+      "It is fine to share a surprising video before checking.": false
+    },
+    "explanation": "Not all online info is true; AI media looks realistic; verifying across 2 trusted sources is essential before sharing."
+  },
+  {
+    "activity_id": "g5_u8_a1",
+    "type": "reflection_input",
+    "auto_checkable": false,
+    "needs_review": true,
+    "rubric": [
+      {
+        "criterion": "Concept Application",
+        "max_score": 3,
+        "description": "Student clearly applies the unit concept and AI big idea."
+      },
+      {
+        "criterion": "Clarity & Detail",
+        "max_score": 3,
+        "description": "Explanation or drawing is well-structured, easy to understand, and detailed."
+      },
+      {
+        "criterion": "Safety & Critical Thinking",
+        "max_score": 2,
+        "description": "Considers user safety, fairness, limitations, or personal privacy rules."
+      }
+    ],
+    "sample_solution": "Sample response for 'Problem finder': Meets all 3 rubric dimensions with grounded reasoning."
+  },
+  {
+    "activity_id": "g5_u8_a2",
+    "type": "reflection_input",
+    "auto_checkable": false,
+    "needs_review": true,
+    "rubric": [
+      {
+        "criterion": "Concept Application",
+        "max_score": 3,
+        "description": "Student clearly applies the unit concept and AI big idea."
+      },
+      {
+        "criterion": "Clarity & Detail",
+        "max_score": 3,
+        "description": "Explanation or drawing is well-structured, easy to understand, and detailed."
+      },
+      {
+        "criterion": "Safety & Critical Thinking",
+        "max_score": 2,
+        "description": "Considers user safety, fairness, limitations, or personal privacy rules."
+      }
+    ],
+    "sample_solution": "Sample response for 'Ideate': Meets all 3 rubric dimensions with grounded reasoning."
+  }
+]

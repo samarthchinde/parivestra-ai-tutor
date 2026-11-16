@@ -1,0 +1,783 @@
+{
+  "grade": 6,
+  "edition_title": "AI Thinkers",
+  "tagline": "Scope · Collect · Explore",
+  "colors": {
+    "primary": "#0E7490",
+    "secondary": "#EA580C",
+    "bg": "#ECFEFF",
+    "robot": "#0E7490"
+  },
+  "band": "middle",
+  "welcome": {
+    "title": "Welcome, Explorer!",
+    "pari_tip": "There are no wrong ideas in this workbook. Try your best, ask questions, and have fun learning about AI!",
+    "page": 2
+  },
+  "syllabus": [
+    {
+      "unit": 1,
+      "topic": "What Makes AI Intelligent?",
+      "big_idea": "Societal Impact",
+      "objective": "I can do well, or not yet?",
+      "page": 4
+    },
+    {
+      "unit": 2,
+      "topic": "The AI Project Cycle",
+      "big_idea": "Representation & Reasoning",
+      "objective": "I can name and order the five stages of the AI Project Cycle.",
+      "page": 6
+    },
+    {
+      "unit": 3,
+      "topic": "Problem Scoping with 4Ws",
+      "big_idea": "Societal Impact",
+      "objective": "I can use the 4Ws to scope a problem and write a problem",
+      "page": 8
+    },
+    {
+      "unit": 4,
+      "topic": "Data Acquisition",
+      "big_idea": "Representation & Reasoning",
+      "objective": "I can name data sources and tell primary from secondary",
+      "page": 10
+    },
+    {
+      "unit": 5,
+      "topic": "Exploring Data with Charts",
+      "big_idea": "Representation & Reasoning",
+      "objective": "I can choose the right chart and use it to explore data.",
+      "page": 12
+    },
+    {
+      "unit": 6,
+      "topic": "Algorithms and Flowcharts",
+      "big_idea": "Representation & Reasoning",
+      "objective": "I can read and draw flowcharts with decisions.",
+      "page": 14
+    },
+    {
+      "unit": 7,
+      "topic": "Pseudocode and Conditions",
+      "big_idea": "Representation & Reasoning",
+      "objective": "I can write and trace pseudocode with conditions.",
+      "page": 16
+    },
+    {
+      "unit": 8,
+      "topic": "AI Ethics: Privacy and Bias",
+      "big_idea": "Societal Impact",
+      "objective": "I can identify privacy and bias problems in AI.",
+      "page": 18
+    }
+  ],
+  "units": [
+    {
+      "id": "g6_u1",
+      "number": 1,
+      "title": "What Makes AI Intelligent?",
+      "big_idea": "Societal Impact",
+      "page": 4,
+      "learn_paragraphs": [
+        "Intelligence is the ability to learn, reason and solve problems. Humans have it, and\nwe try to build some of it into machines.\nToday's AI is narrow AI: it is good at one task, like recognising faces or translating\ntext. It cannot do everything a human can.\nAI has three main domains: Data Science (numbers and tables), Computer Vision\n(images and video) and Natural Language Processing (text and speech)."
+      ],
+      "new_words": [
+        {
+          "term": "Condition",
+          "definition": "a check that is true or false"
+        },
+        {
+          "term": "Data exploration",
+          "definition": "studying data to find patterns"
+        },
+        {
+          "term": "Dataset",
+          "definition": "an organised collection of data"
+        }
+      ],
+      "did_you_know": "The term “Artificial Intelligence” was coined for a summer workshop at Dartmouth College in 1956.",
+      "think_and_talk": "If an AI can play chess very well, is it intelligent like a person? Why or why not?",
+      "self_check": "I can do well, or not yet?",
+      "activities": [
+        {
+          "id": "g6_u1_a1",
+          "number": 1,
+          "title": "Which AI domain?",
+          "instruction": "Write each example in the correct domain.",
+          "type": "sort_boxes",
+          "component": "SortBoxesActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "face unlock",
+              "weather forecast",
+              "voice typing",
+              "spam filter",
+              "number plate reader",
+              "movie ratings",
+              "Google Translate",
+              "crop photo check",
+              "Data Science",
+              "Computer Vision",
+              "NLP (language)"
+            ],
+            "prompt": "Write each example in the correct domain."
+          }
+        },
+        {
+          "id": "g6_u1_a2",
+          "number": 2,
+          "title": "Narrow AI or not?",
+          "instruction": "Is this something today's A",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [],
+            "prompt": "Is this something today's A"
+          }
+        }
+      ]
+    },
+    {
+      "id": "g6_u2",
+      "number": 2,
+      "title": "The AI Project Cycle",
+      "big_idea": "Representation & Reasoning",
+      "page": 6,
+      "learn_paragraphs": [
+        "Every AI project follows a cycle of five stages, called the AI Project Cycle.\n1 Problem Scoping – understand the problem. 2 Data Acquisition – collect data. 3\nData Exploration – study the data with charts. 4 Modelling – build the AI model. 5\nEvaluation – test how well it works.\nAfter evaluation we often go back and improve. That is why it is a cycle, not a\nstraight line."
+      ],
+      "new_words": [
+        {
+          "term": "Decision",
+          "definition": "a yes/no question in a flowchart"
+        },
+        {
+          "term": "Domain",
+          "definition": "an area of AI, like vision or language"
+        },
+        {
+          "term": "Ethics",
+          "definition": "ideas about right and wrong"
+        }
+      ],
+      "did_you_know": "Big tech teams often repeat the project cycle many times before an AI product is released.",
+      "think_and_talk": "Why do you think evaluation is important before using an AI in real life?",
+      "self_check": "I can name and order the five stages of the AI Project Cycle.",
+      "activities": [
+        {
+          "id": "g6_u2_a1",
+          "number": 1,
+          "title": "Order the cycle",
+          "instruction": "Number the stages from 1 to 5.",
+          "type": "order_steps",
+          "component": "OrderStepsActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Evaluation",
+              "Data Acquisition",
+              "Modelling",
+              "Problem Scoping",
+              "Data Exploration"
+            ],
+            "prompt": "Number the stages from 1 to 5."
+          }
+        },
+        {
+          "id": "g6_u2_a2",
+          "number": 2,
+          "title": "Match the stage to the task",
+          "instruction": "Draw a line from each task to its stage.",
+          "type": "match_pairs",
+          "component": "MatchPairsActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Making a survey form",
+              "Drawing a bar graph of",
+              "answers",
+              "Asking “who has this",
+              "problem?”",
+              "Checking if predictions are",
+              "right",
+              "Data Exploration",
+              "Evaluation",
+              "Data Acquisition",
+              "Problem Scoping"
+            ],
+            "prompt": "Draw a line from each task to its stage."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g6_u3",
+      "number": 3,
+      "title": "Problem Scoping with 4Ws",
+      "big_idea": "Societal Impact",
+      "page": 8,
+      "learn_paragraphs": [
+        "A good AI project starts with a clear problem. We use the 4Ws Canvas to\nunderstand it.\nWho has the problem? What is the problem? Where does it happen? Why does\nsolving it matter?\nThen we write a problem statement: “Our [who] have a problem that [what]\nwhen/while [where]. An ideal solution would [why].”"
+      ],
+      "new_words": [
+        {
+          "term": "Evaluation",
+          "definition": "testing how good the model is"
+        },
+        {
+          "term": "Flowchart",
+          "definition": "a diagram of an algorithm"
+        },
+        {
+          "term": "Intelligence",
+          "definition": "the ability to learn, reason and solve problems"
+        }
+      ],
+      "did_you_know": "Many failed tech products solved a problem that users did not really have.",
+      "think_and_talk": "Why should we talk to the stakeholders before building a solution?",
+      "self_check": "I can use the 4Ws to scope a problem and write a problem",
+      "activities": [
+        {
+          "id": "g6_u3_a1",
+          "number": 1,
+          "title": "4Ws Canvas: long canteen queues",
+          "instruction": "Fill the canvas for this school problem.",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "W",
+              "Your answer",
+              "Who?",
+              "What?",
+              "Where?",
+              "Why?"
+            ],
+            "prompt": "Fill the canvas for this school problem."
+          }
+        },
+        {
+          "id": "g6_u3_a2",
+          "number": 2,
+          "title": "Write the problem statement",
+          "instruction": "Use the template from the learn page.",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [],
+            "prompt": "Use the template from the learn page."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g6_u4",
+      "number": 4,
+      "title": "Data Acquisition",
+      "big_idea": "Representation & Reasoning",
+      "page": 10,
+      "learn_paragraphs": [
+        "Data acquisition means collecting the data an AI needs to learn.\nData can come from surveys, sensors, cameras, websites, open government data\nand records like attendance.\nPrimary data is collected by us. Secondary data is collected by someone else. Data\nmust be relevant, reliable and collected with permission."
+      ],
+      "new_words": [
+        {
+          "term": "Line graph",
+          "definition": "a chart that shows change over time"
+        },
+        {
+          "term": "Modelling",
+          "definition": "building the AI that makes predictions"
+        },
+        {
+          "term": "Narrow AI",
+          "definition": "AI built for one specific task"
+        }
+      ],
+      "did_you_know": "India's open data portal, data.gov.in, shares free datasets from government departments.",
+      "think_and_talk": "Why must we ask permission before collecting data about people?",
+      "self_check": "I can name data sources and tell primary from secondary",
+      "activities": [
+        {
+          "id": "g6_u4_a1",
+          "number": 1,
+          "title": "Primary or secondary?",
+          "instruction": "Tick the right box.",
+          "type": "tick_table",
+          "component": "TickTableActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Primary",
+              "Secondary",
+              "A survey you run in your class",
+              "Census data from the government",
+              "Temperature from your own sensor",
+              "Cricket scores from a sports website",
+              "Photos you take of plants"
+            ],
+            "prompt": "Tick the right box."
+          }
+        },
+        {
+          "id": "g6_u4_a2",
+          "number": 2,
+          "title": "Plan your data",
+          "instruction": "You want an AI that predicts if the school bus will be late. What data would you collect?",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "Data needed",
+              "Source",
+              "Is it okay to collect? Why?"
+            ],
+            "prompt": "You want an AI that predicts if the school bus will be late. What data would you collect?"
+          }
+        }
+      ]
+    },
+    {
+      "id": "g6_u5",
+      "number": 5,
+      "title": "Exploring Data with Charts",
+      "big_idea": "Representation & Reasoning",
+      "page": 12,
+      "learn_paragraphs": [
+        "Raw data is hard to read. Data exploration uses charts to find patterns and\nmistakes.\nA bar graph compares groups. A line graph shows change over time. A pie chart\nshows parts of a whole.\nChoosing the right chart makes the story in the data clear."
+      ],
+      "new_words": [
+        {
+          "term": "Pie chart",
+          "definition": "a circle chart showing parts of a whole"
+        },
+        {
+          "term": "Primary data",
+          "definition": "data we collect ourselves"
+        },
+        {
+          "term": "Privacy",
+          "definition": "control over your personal information"
+        }
+      ],
+      "did_you_know": "Florence Nightingale used charts in the 1850s to convince leaders to improve hospitals.",
+      "think_and_talk": "How could a wrong number in a dataset change what a chart tells you?",
+      "self_check": "I can choose the right chart and use it to explore data.",
+      "activities": [
+        {
+          "id": "g6_u5_a1",
+          "number": 1,
+          "title": "Pick the right chart",
+          "instruction": "Match each question to the best chart.",
+          "type": "match_pairs",
+          "component": "MatchPairsActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "How did my height change",
+              "from age 5 to 11?",
+              "Which sport is most",
+              "popular in class?",
+              "What share of my day is",
+              "sleep?",
+              "Pie chart",
+              "Line graph",
+              "Bar graph"
+            ],
+            "prompt": "Match each question to the best chart."
+          }
+        },
+        {
+          "id": "g6_u5_a2",
+          "number": 2,
+          "title": "Plot the survey",
+          "instruction": "Students' favourite subjects. Draw a bar for each.",
+          "type": "data_chart",
+          "component": "DataChartActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Maths: 7",
+              "Science: 9",
+              "English: 5",
+              "Art: 8",
+              "PE: 6",
+              "0",
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "10",
+              "Maths",
+              "Science",
+              "English",
+              "Art",
+              "PE"
+            ],
+            "prompt": "Students' favourite subjects. Draw a bar for each."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g6_u6",
+      "number": 6,
+      "title": "Algorithms and Flowcharts",
+      "big_idea": "Representation & Reasoning",
+      "page": 14,
+      "learn_paragraphs": [
+        "An algorithm is a set of steps to solve a problem. A flowchart draws an algorithm\nwith shapes.\nOval = Start/End. Rectangle = Process. Diamond = Decision (yes/no). Parallelogram\n= Input/Output. Arrows show the flow.\nDecisions let algorithms choose different paths, just like AI makes choices."
+      ],
+      "new_words": [
+        {
+          "term": "Problem scoping",
+          "definition": "understanding a problem before solving it"
+        },
+        {
+          "term": "Problem statement",
+          "definition": "one sentence that describes the problem"
+        },
+        {
+          "term": "Process",
+          "definition": "an action step"
+        }
+      ],
+      "did_you_know": "Programmers often sketch a flowchart before they write any code.",
+      "think_and_talk": "Where do you use decisions (if this, then that) in your daily routine?",
+      "self_check": "I can read and draw flowcharts with decisions.",
+      "activities": [
+        {
+          "id": "g6_u6_a1",
+          "number": 1,
+          "title": "Flowchart symbols",
+          "instruction": "Match each shape to its meaning.",
+          "type": "match_pairs",
+          "component": "MatchPairsActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Oval",
+              "Rectangle",
+              "Diamond",
+              "Parallelogram",
+              "Decision (yes/no)",
+              "Input / Output",
+              "Start / End",
+              "Process"
+            ],
+            "prompt": "Match each shape to its meaning."
+          }
+        },
+        {
+          "id": "g6_u6_a2",
+          "number": 2,
+          "title": "Draw a flowchart",
+          "instruction": "Draw a flowchart: input a number and print “Even” or “Odd”.",
+          "type": "drawing_canvas",
+          "component": "DrawingCanvasActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [],
+            "prompt": "Draw a flowchart: input a number and print “Even” or “Odd”."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g6_u7",
+      "number": 7,
+      "title": "Pseudocode and Conditions",
+      "big_idea": "Representation & Reasoning",
+      "page": 16,
+      "learn_paragraphs": [
+        "Pseudocode is an algorithm written in simple English-like steps, before real code.\nConditions use IF, ELSE and comparisons like >, < and =. Variables store values like\nscore or age.\nThese same ideas are used in Scratch, Python and every AI program."
+      ],
+      "new_words": [
+        {
+          "term": "Project cycle",
+          "definition": "the stages we follow to build an AI project"
+        },
+        {
+          "term": "Pseudocode",
+          "definition": "code-like steps written in plain words"
+        },
+        {
+          "term": "Secondary data",
+          "definition": "data collected by others"
+        }
+      ],
+      "did_you_know": "The first computer programmer is often said to be Ada Lovelace, who wrote an algorithm in the 1840s.",
+      "think_and_talk": "Why is it helpful to write pseudocode before real code?",
+      "self_check": "I can write and trace pseudocode with conditions.",
+      "activities": [
+        {
+          "id": "g6_u7_a1",
+          "number": 1,
+          "title": "Trace the pseudocode",
+          "instruction": "Read the pseudocode and answer.",
+          "type": "python_playground",
+          "component": "PythonPlaygroundActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "SET marks = 72",
+              "IF marks >= 90 THEN",
+              "PRINT \"Grade A\"",
+              "ELSE IF marks >= 60 THEN",
+              "PRINT \"Grade B\"",
+              "ELSE",
+              "PRINT \"Keep trying\"",
+              "END IF",
+              "What is printed when marks = 72?",
+              "What is printed when marks = 95?",
+              "What is printed when marks = 40?"
+            ],
+            "prompt": "Read the pseudocode and answer."
+          }
+        },
+        {
+          "id": "g6_u7_a2",
+          "number": 2,
+          "title": "Write your own",
+          "instruction": "Write pseudocode: if temperature is above 30, print “Turn on fan”, else print “Fan off”.",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [],
+            "prompt": "Write pseudocode: if temperature is above 30, print “Turn on fan”, else print “Fan off”."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g6_u8",
+      "number": 8,
+      "title": "AI Ethics: Privacy and Bias",
+      "big_idea": "Societal Impact",
+      "page": 18,
+      "learn_paragraphs": [
+        "AI uses lots of data, often about people. Privacy means people control their personal\ndata.\nBias happens when data or design favours some people over others, so the AI is\nunfair.\nEthical AI is fair, transparent, safe and respects privacy. Builders must think about\nwho could be harmed."
+      ],
+      "new_words": [
+        {
+          "term": "Stakeholder",
+          "definition": "a person affected by the problem"
+        },
+        {
+          "term": "Transparency",
+          "definition": "being open about how AI works"
+        },
+        {
+          "term": "Variable",
+          "definition": "a named box that stores a value"
+        }
+      ],
+      "did_you_know": "India passed the Digital Personal Data Protection Act in 2023 to protect people's personal data.",
+      "think_and_talk": "Should AI be allowed to use your photos to learn? Under what rules?",
+      "self_check": "I can identify privacy and bias problems in AI.",
+      "activities": [
+        {
+          "id": "g6_u8_a1",
+          "number": 1,
+          "title": "Ethical or not?",
+          "instruction": "Tick and give a reason.",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "A school app shares students' marks with advertisers.",
+              "Ethical",
+              "Not ethical",
+              "Why?",
+              "A hiring AI was trained mostly on data about men.",
+              "Ethical",
+              "Not ethical",
+              "Why?",
+              "A health app explains why it gave a suggestion.",
+              "Ethical",
+              "Not ethical",
+              "Why?"
+            ],
+            "prompt": "Tick and give a reason."
+          }
+        },
+        {
+          "id": "g6_u8_a2",
+          "number": 2,
+          "title": "Fix it",
+          "instruction": "Choose one “not ethical” case. How would you make it fair or private?",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [],
+            "prompt": "Choose one “not ethical” case. How would you make it fair or private?"
+          }
+        }
+      ]
+    }
+  ],
+  "final_project": {
+    "title": "Smart School Problem Canvas",
+    "page": 20,
+    "instructions": "Complete your guided capstone project and submit for teacher review.",
+    "fields": [
+      "Problem title",
+      "Who has the problem?",
+      "What is the problem?",
+      "Where does it happen?",
+      "Why does solving it matter?",
+      "What data would the AI need, and from where?",
+      "Draw the AI Project Cycle for your idea",
+      "F I N A L P R O J E C T",
+      "Smart School Problem Canvas"
+    ]
+  },
+  "glossary": [
+    {
+      "term": "Condition",
+      "definition": "a check that is true or false",
+      "mastered": false
+    },
+    {
+      "term": "Data exploration",
+      "definition": "studying data to find patterns",
+      "mastered": false
+    },
+    {
+      "term": "Dataset",
+      "definition": "an organised collection of data",
+      "mastered": false
+    },
+    {
+      "term": "Decision",
+      "definition": "a yes/no question in a flowchart",
+      "mastered": false
+    },
+    {
+      "term": "Domain",
+      "definition": "an area of AI, like vision or language",
+      "mastered": false
+    },
+    {
+      "term": "Ethics",
+      "definition": "ideas about right and wrong",
+      "mastered": false
+    },
+    {
+      "term": "Evaluation",
+      "definition": "testing how good the model is",
+      "mastered": false
+    },
+    {
+      "term": "Flowchart",
+      "definition": "a diagram of an algorithm",
+      "mastered": false
+    },
+    {
+      "term": "Intelligence",
+      "definition": "the ability to learn, reason and solve problems",
+      "mastered": false
+    },
+    {
+      "term": "Line graph",
+      "definition": "a chart that shows change over time",
+      "mastered": false
+    },
+    {
+      "term": "Modelling",
+      "definition": "building the AI that makes predictions",
+      "mastered": false
+    },
+    {
+      "term": "Narrow AI",
+      "definition": "AI built for one specific task",
+      "mastered": false
+    },
+    {
+      "term": "Pie chart",
+      "definition": "a circle chart showing parts of a whole",
+      "mastered": false
+    },
+    {
+      "term": "Primary data",
+      "definition": "data we collect ourselves",
+      "mastered": false
+    },
+    {
+      "term": "Privacy",
+      "definition": "control over your personal information",
+      "mastered": false
+    },
+    {
+      "term": "Problem scoping",
+      "definition": "understanding a problem before solving it",
+      "mastered": false
+    },
+    {
+      "term": "Problem statement",
+      "definition": "one sentence that describes the problem",
+      "mastered": false
+    },
+    {
+      "term": "Process",
+      "definition": "an action step",
+      "mastered": false
+    },
+    {
+      "term": "Project cycle",
+      "definition": "the stages we follow to build an AI project",
+      "mastered": false
+    },
+    {
+      "term": "Pseudocode",
+      "definition": "code-like steps written in plain words",
+      "mastered": false
+    },
+    {
+      "term": "Secondary data",
+      "definition": "data collected by others",
+      "mastered": false
+    },
+    {
+      "term": "Stakeholder",
+      "definition": "a person affected by the problem",
+      "mastered": false
+    },
+    {
+      "term": "Transparency",
+      "definition": "being open about how AI works",
+      "mastered": false
+    },
+    {
+      "term": "Variable",
+      "definition": "a named box that stores a value",
+      "mastered": false
+    }
+  ],
+  "certificate": {
+    "title": "Certificate of Completion - AI Thinkers",
+    "edition": "AI Thinkers",
+    "grade": 6,
+    "page": 22,
+    "text": "This certificate is proudly presented for completing the Parivestra AI & Future Skills Grade 6 Workbook with curiosity, creativity and care.",
+    "fields": [
+      "student_name",
+      "teacher_name",
+      "school_name",
+      "date"
+    ]
+  }
+}

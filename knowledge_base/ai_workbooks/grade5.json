@@ -1,0 +1,873 @@
+{
+  "grade": 5,
+  "edition_title": "AI Innovators",
+  "tagline": "Learn · Create · Lead",
+  "colors": {
+    "primary": "#8B5CF6",
+    "secondary": "#EC4899",
+    "bg": "#F5F3FF",
+    "robot": "#8B5CF6"
+  },
+  "band": "junior",
+  "welcome": {
+    "title": "Welcome, Explorer!",
+    "pari_tip": "There are no wrong ideas in this workbook. Try your best, ask questions, and have fun learning about AI!",
+    "page": 2
+  },
+  "syllabus": [
+    {
+      "unit": 1,
+      "topic": "AI in Our World",
+      "big_idea": "Societal Impact",
+      "objective": "I can give examples of AI in different fields.",
+      "page": 4
+    },
+    {
+      "unit": 2,
+      "topic": "Data and Charts",
+      "big_idea": "Representation & Reasoning",
+      "objective": "I can organise data, draw a bar graph and spot unclean data.",
+      "page": 6
+    },
+    {
+      "unit": 3,
+      "topic": "How Machines Learn",
+      "big_idea": "Learning",
+      "objective": "I can explain the machine learning steps and work out",
+      "page": 8
+    },
+    {
+      "unit": 4,
+      "topic": "Computer Vision",
+      "big_idea": "Perception",
+      "objective": "I can explain how computers see pictures as pixels.",
+      "page": 10
+    },
+    {
+      "unit": 5,
+      "topic": "Language AI and Prompts",
+      "big_idea": "Natural Interaction",
+      "objective": "I can write clear prompts and check AI answers.",
+      "page": 12
+    },
+    {
+      "unit": 6,
+      "topic": "Fair and Responsible AI",
+      "big_idea": "Societal Impact",
+      "objective": "I can judge if an AI is fair and responsible.",
+      "page": 14
+    },
+    {
+      "unit": 7,
+      "topic": "Fact or Fake?",
+      "big_idea": "Societal Impact",
+      "objective": "I can check if information is real before I share it.",
+      "page": 16
+    },
+    {
+      "unit": 8,
+      "topic": "Design Thinking",
+      "big_idea": "Societal Impact",
+      "objective": "I can use design thinking to plan a solution.",
+      "page": 18
+    }
+  ],
+  "units": [
+    {
+      "id": "g5_u1",
+      "number": 1,
+      "title": "AI in Our World",
+      "big_idea": "Societal Impact",
+      "page": 4,
+      "learn_paragraphs": [
+        "AI is used in many fields. In health it helps doctors read scans. In farming\nit spots sick leaves from photos.\nIn transport it finds the fastest route. In language it translates speech. In\nshopping it gives recommendations.\nAI is a tool. People decide how to use it, and people stay responsible."
+      ],
+      "new_words": [
+        {
+          "term": "Accuracy",
+          "definition": "how often the AI is right"
+        },
+        {
+          "term": "Application",
+          "definition": "a use of technology for a job"
+        },
+        {
+          "term": "Automation",
+          "definition": "a machine doing a task by itself"
+        }
+      ],
+      "did_you_know": "Translation apps can translate between many Indian languages, like Hindi, Marathi and Tamil.",
+      "think_and_talk": "Which job do you think AI should never do alone? Why?",
+      "self_check": "I can give examples of AI in different fields.",
+      "activities": [
+        {
+          "id": "g5_u1_a1",
+          "number": 1,
+          "title": "Match the field",
+          "instruction": "Draw a line from each field to how AI helps.",
+          "type": "match_pairs",
+          "component": "MatchPairsActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Health",
+              "Farming",
+              "Transport",
+              "Language",
+              "Shopping",
+              "Translates speech",
+              "Recommends products",
+              "Helps doctors look at X-",
+              "rays",
+              "Finds the fastest route",
+              "Spots sick leaves in photos"
+            ],
+            "prompt": "Draw a line from each field to how AI helps."
+          }
+        },
+        {
+          "id": "g5_u1_a2",
+          "number": 2,
+          "title": "AI interview",
+          "instruction": "Ask a family member where they use AI at home or work.",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "Where?",
+              "How does AI help?"
+            ],
+            "prompt": "Ask a family member where they use AI at home or work."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g5_u2",
+      "number": 2,
+      "title": "Data and Charts",
+      "big_idea": "Representation & Reasoning",
+      "page": 6,
+      "learn_paragraphs": [
+        "Data is useful when it is organised in a dataset, like a table.\nA bar graph shows data as bars, so patterns are easy to see.\nAI needs clean data: correct, complete and with no copies. Wrong data\nteaches wrong answers."
+      ],
+      "new_words": [
+        {
+          "term": "Bar graph",
+          "definition": "a chart that uses bars to show amounts"
+        },
+        {
+          "term": "Clean data",
+          "definition": "data that is correct and complete"
+        },
+        {
+          "term": "Dataset",
+          "definition": "a collection of organised data"
+        }
+      ],
+      "did_you_know": "Big AI models learn from huge datasets, far more text than one person could read in a lifetime.",
+      "think_and_talk": "How could wrong data make an AI give a wrong answer?",
+      "self_check": "I can organise data, draw a bar graph and spot unclean data.",
+      "activities": [
+        {
+          "id": "g5_u2_a1",
+          "number": 1,
+          "title": "Books read this month",
+          "instruction": "Draw a bar for each friend.",
+          "type": "data_chart",
+          "component": "DataChartActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Asha: 4",
+              "Ravi: 2",
+              "Meera: 5",
+              "Kabir: 3",
+              "Zoya: 4",
+              "0",
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "Asha",
+              "Ravi",
+              "Meera",
+              "Kabir",
+              "Zoya"
+            ],
+            "prompt": "Draw a bar for each friend."
+          }
+        },
+        {
+          "id": "g5_u2_a2",
+          "number": 2,
+          "title": "Read your graph",
+          "instruction": "Answer using your bar graph.",
+          "type": "data_chart",
+          "component": "DataChartActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Who read the most books?",
+              "How many books in total?",
+              "One row said “Ravi read 200 books”. Is that clean data? Why?"
+            ],
+            "prompt": "Answer using your bar graph."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g5_u3",
+      "number": 3,
+      "title": "How Machines Learn",
+      "big_idea": "Learning",
+      "page": 8,
+      "learn_paragraphs": [
+        "Machine learning has steps: collect data → label it → train → test →\nimprove.\nA trained AI is called a model.\nWe measure a model with accuracy: correct answers out of the total. 18\nright out of 20 is 90% accuracy."
+      ],
+      "new_words": [
+        {
+          "term": "Deepfake",
+          "definition": "a fake video or voice made with AI"
+        },
+        {
+          "term": "Empathy",
+          "definition": "understanding how others feel"
+        },
+        {
+          "term": "Fairness",
+          "definition": "treating everyone equally"
+        }
+      ],
+      "did_you_know": "Engineers keep some data aside just for testing, so the AI is checked on examples it has never seen.",
+      "think_and_talk": "Is 100% accuracy on training pictures enough? Why not?",
+      "self_check": "I can explain the machine learning steps and work out",
+      "activities": [
+        {
+          "id": "g5_u3_a1",
+          "number": 1,
+          "title": "Put the steps in order",
+          "instruction": "Number the machine learning steps from 1 to 5.",
+          "type": "order_steps",
+          "component": "OrderStepsActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Test the model with new data",
+              "Collect data",
+              "Improve and train again",
+              "Label the data",
+              "Train the model"
+            ],
+            "prompt": "Number the machine learning steps from 1 to 5."
+          }
+        },
+        {
+          "id": "g5_u3_a2",
+          "number": 2,
+          "title": "Work out the accuracy",
+          "instruction": "Accuracy = correct ÷ total × 100",
+          "type": "math_stats",
+          "component": "MathStatsActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "8 right out of 10 →",
+              "%",
+              "15 right out of 20 →",
+              "%",
+              "45 right out of 50 →",
+              "%",
+              "Which model is the most accurate?"
+            ],
+            "prompt": "Accuracy = correct ÷ total × 100"
+          }
+        }
+      ]
+    },
+    {
+      "id": "g5_u4",
+      "number": 4,
+      "title": "Computer Vision",
+      "big_idea": "Perception",
+      "page": 10,
+      "learn_paragraphs": [
+        "Computers see pictures as tiny squares called pixels. Each pixel is stored as\nnumbers for its colour.\nAI looks for features: edges, shapes, colours and textures.\nThis is how phones unlock with faces and apps read text from photos."
+      ],
+      "new_words": [
+        {
+          "term": "Feature",
+          "definition": "a detail that helps recognise something"
+        },
+        {
+          "term": "Ideate",
+          "definition": "to come up with many ideas"
+        },
+        {
+          "term": "Image",
+          "definition": "a picture stored as data"
+        }
+      ],
+      "did_you_know": "A phone photo can have more than 10 million pixels.",
+      "think_and_talk": "Why might AI find it hard to recognise things in the dark?",
+      "self_check": "I can explain how computers see pictures as pixels.",
+      "activities": [
+        {
+          "id": "g5_u4_a1",
+          "number": 1,
+          "title": "Be the computer",
+          "instruction": "Colour every square marked 1. Leave 0 white. What picture appears?",
+          "type": "pixels_vision",
+          "component": "PixelsVisionActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "1",
+              "1",
+              "0",
+              "0",
+              "0",
+              "1",
+              "1",
+              "0",
+              "0",
+              "1",
+              "1",
+              "1",
+              "1",
+              "0",
+              "1",
+              "1",
+              "1",
+              "1",
+              "0",
+              "1",
+              "1",
+              "1",
+              "1",
+              "1",
+              "1",
+              "1",
+              "1",
+              "1",
+              "1",
+              "1",
+              "1",
+              "1",
+              "1",
+              "1",
+              "1",
+              "1",
+              "1",
+              "1",
+              "1",
+              "0",
+              "1",
+              "1",
+              "1",
+              "1",
+              "1",
+              "1",
+              "1",
+              "1",
+              "0",
+              "0",
+              "0",
+              "1",
+              "1",
+              "1",
+              "1",
+              "1",
+              "1",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "1",
+              "1",
+              "1",
+              "1",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "1",
+              "1",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "My picture is a"
+            ],
+            "prompt": "Colour every square marked 1. Leave 0 white. What picture appears?"
+          }
+        },
+        {
+          "id": "g5_u4_a2",
+          "number": 2,
+          "title": "Find the features",
+          "instruction": "Write 3 features that help AI recognise a bicycle.",
+          "type": "pixels_vision",
+          "component": "PixelsVisionActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [],
+            "prompt": "Write 3 features that help AI recognise a bicycle."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g5_u5",
+      "number": 5,
+      "title": "Language AI and Prompts",
+      "big_idea": "Natural Interaction",
+      "page": 12,
+      "learn_paragraphs": [
+        "AI chatbots learn from lots of text and predict the next word, again and\nagain, to write a response.\nA prompt is what we ask. A good prompt has a task, details and a format.\nChatbots can make mistakes. Check facts, and never share private\ninformation."
+      ],
+      "new_words": [
+        {
+          "term": "Machine learning",
+          "definition": "when computers learn from data"
+        },
+        {
+          "term": "Model",
+          "definition": "a trained AI"
+        },
+        {
+          "term": "Pixel",
+          "definition": "one tiny square in a picture"
+        }
+      ],
+      "did_you_know": "AI chatbots build their answers one small piece of a word at a time.",
+      "think_and_talk": "Why might two people get different answers from the same chatbot?",
+      "self_check": "I can write clear prompts and check AI answers.",
+      "activities": [
+        {
+          "id": "g5_u5_a1",
+          "number": 1,
+          "title": "Predict the next word",
+          "instruction": "You are the AI! Write the most likely next word.",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "1. Twinkle, twinkle, little",
+              ".",
+              "2. The sun rises in the",
+              ".",
+              "3. Thank you very",
+              ".",
+              "4. Once upon a",
+              "."
+            ],
+            "prompt": "You are the AI! Write the most likely next word."
+          }
+        },
+        {
+          "id": "g5_u5_a2",
+          "number": 2,
+          "title": "Make it a better prompt",
+          "instruction": "Rewrite each prompt using Task + Details + Format.",
+          "type": "prompt_lab",
+          "component": "PromptLabActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "Task",
+              "+",
+              "Details",
+              "+",
+              "Format",
+              "Weak: “Tell me about animals.”",
+              "Better:",
+              "Weak: “Help with my homework.”",
+              "Better:"
+            ],
+            "prompt": "Rewrite each prompt using Task + Details + Format."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g5_u6",
+      "number": 6,
+      "title": "Fair and Responsible AI",
+      "big_idea": "Societal Impact",
+      "page": 14,
+      "learn_paragraphs": [
+        "Responsible AI is fair to everyone, safe, honest about being AI and\nprotects privacy.\nIf data leaves out some people, the AI may not work well for them.\nHumans must stay in charge and fix problems. That is being responsible."
+      ],
+      "new_words": [
+        {
+          "term": "Predict",
+          "definition": "to guess what comes next"
+        },
+        {
+          "term": "Privacy",
+          "definition": "keeping personal information safe"
+        },
+        {
+          "term": "Prompt",
+          "definition": "the question or instruction we give AI"
+        }
+      ],
+      "did_you_know": "Many countries are making rules to keep AI safe and fair.",
+      "think_and_talk": "Who should fix an AI that is unfair: the users, the makers, or both?",
+      "self_check": "I can judge if an AI is fair and responsible.",
+      "activities": [
+        {
+          "id": "g5_u6_a1",
+          "number": 1,
+          "title": "Fair or unfair?",
+          "instruction": "Tick Fair or Unfair and say why.",
+          "type": "tick_table_reason",
+          "component": "TickTableReasonActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "A face app works well only for some skin colours.",
+              "Fair",
+              "Unfair",
+              "Why?",
+              "A school AI tutor gives every student practice at their own level.",
+              "Fair",
+              "Unfair",
+              "Why?",
+              "A game collects players' locations without telling them.",
+              "Fair",
+              "Unfair",
+              "Why?"
+            ],
+            "prompt": "Tick Fair or Unfair and say why."
+          }
+        },
+        {
+          "id": "g5_u6_a2",
+          "number": 2,
+          "title": "Our AI rules",
+          "instruction": "Write 3 rules for using AI responsibly in your school.",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [],
+            "prompt": "Write 3 rules for using AI responsibly in your school."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g5_u7",
+      "number": 7,
+      "title": "Fact or Fake?",
+      "big_idea": "Societal Impact",
+      "page": 16,
+      "learn_paragraphs": [
+        "AI can make pictures, voices and videos that look real. A fake video of a\nreal person is called a deepfake.\nBefore you believe or share, verify: Who made it? Is the source trusted?\nDo other trusted sources say the same?\nUse STOP: Source, Think, Other sources, Pause before sharing."
+      ],
+      "new_words": [
+        {
+          "term": "Prototype",
+          "definition": "a first simple model of an idea"
+        },
+        {
+          "term": "Recommendation",
+          "definition": "a suggestion made for you"
+        },
+        {
+          "term": "Response",
+          "definition": "the answer AI gives"
+        }
+      ],
+      "did_you_know": "Fake pictures sometimes have clues, like odd hands, strange shadows or blurry writing.",
+      "think_and_talk": "What would you do if a friend shared a video that looked fake?",
+      "self_check": "I can check if information is real before I share it.",
+      "activities": [
+        {
+          "id": "g5_u7_a1",
+          "number": 1,
+          "title": "STOP check",
+          "instruction": "Read the headline and answer.",
+          "type": "prompt_lab",
+          "component": "PromptLabActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "“Robot elected class monitor in a Delhi school!”",
+              "S",
+              "Source: Who made this? Is it a trusted website?",
+              "T",
+              "Think: Does it sound possible or too strange?",
+              "O",
+              "Other sources: Do other trusted sources say the same?",
+              "P",
+              "Pause: Should I share it? Why or why not?"
+            ],
+            "prompt": "Read the headline and answer."
+          }
+        },
+        {
+          "id": "g5_u7_a2",
+          "number": 2,
+          "title": "True or false?",
+          "instruction": "Tick the right box.",
+          "type": "tick_table",
+          "component": "TickTableActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "True",
+              "False",
+              "If it is on the internet, it must be true.",
+              "AI pictures can look real.",
+              "Checking 2 trusted sources is a good habit.",
+              "It is fine to share a surprising video before checking."
+            ],
+            "prompt": "Tick the right box."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g5_u8",
+      "number": 8,
+      "title": "Design Thinking",
+      "big_idea": "Societal Impact",
+      "page": 18,
+      "learn_paragraphs": [
+        "Innovators solve problems with design thinking: Empathise → Define →\nIdeate → Prototype → Test.\nEmpathy means understanding how others feel. Start by listening to the\npeople with the problem.\nA prototype is a first, simple model, like a paper sketch of an app."
+      ],
+      "new_words": [
+        {
+          "term": "Responsible",
+          "definition": "taking care of what you make and do"
+        },
+        {
+          "term": "Source",
+          "definition": "where information comes from"
+        },
+        {
+          "term": "Verify",
+          "definition": "to check if something is true"
+        }
+      ],
+      "did_you_know": "Many famous apps started as sketches on paper!",
+      "think_and_talk": "Why is it important to talk to the people who have the problem?",
+      "self_check": "I can use design thinking to plan a solution.",
+      "activities": [
+        {
+          "id": "g5_u8_a1",
+          "number": 1,
+          "title": "Problem finder",
+          "instruction": "List problems at school or in your community. Circle the one you want to solve.",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "Problem",
+              "Who has this problem?"
+            ],
+            "prompt": "List problems at school or in your community. Circle the one you want to solve."
+          }
+        },
+        {
+          "id": "g5_u8_a2",
+          "number": 2,
+          "title": "Ideate",
+          "instruction": "How could AI help solve your problem? Write 3 ideas and star the best one.",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [],
+            "prompt": "How could AI help solve your problem? Write 3 ideas and star the best one."
+          }
+        }
+      ]
+    }
+  ],
+  "final_project": {
+    "title": "AI for Good Project",
+    "page": 20,
+    "instructions": "Complete your guided capstone project and submit for teacher review.",
+    "fields": [
+      "The problem",
+      "Who it helps",
+      "What data the AI needs",
+      "How the AI helps",
+      "Prototype: draw the app screen",
+      "Fairness check: who might it leave out?",
+      "Test: what did a friend say?",
+      "F I N A L P R O J E C T",
+      "AI for Good Project"
+    ]
+  },
+  "glossary": [
+    {
+      "term": "Accuracy",
+      "definition": "how often the AI is right",
+      "mastered": false
+    },
+    {
+      "term": "Application",
+      "definition": "a use of technology for a job",
+      "mastered": false
+    },
+    {
+      "term": "Automation",
+      "definition": "a machine doing a task by itself",
+      "mastered": false
+    },
+    {
+      "term": "Bar graph",
+      "definition": "a chart that uses bars to show amounts",
+      "mastered": false
+    },
+    {
+      "term": "Clean data",
+      "definition": "data that is correct and complete",
+      "mastered": false
+    },
+    {
+      "term": "Dataset",
+      "definition": "a collection of organised data",
+      "mastered": false
+    },
+    {
+      "term": "Deepfake",
+      "definition": "a fake video or voice made with AI",
+      "mastered": false
+    },
+    {
+      "term": "Empathy",
+      "definition": "understanding how others feel",
+      "mastered": false
+    },
+    {
+      "term": "Fairness",
+      "definition": "treating everyone equally",
+      "mastered": false
+    },
+    {
+      "term": "Feature",
+      "definition": "a detail that helps recognise something",
+      "mastered": false
+    },
+    {
+      "term": "Ideate",
+      "definition": "to come up with many ideas",
+      "mastered": false
+    },
+    {
+      "term": "Image",
+      "definition": "a picture stored as data",
+      "mastered": false
+    },
+    {
+      "term": "Machine learning",
+      "definition": "when computers learn from data",
+      "mastered": false
+    },
+    {
+      "term": "Model",
+      "definition": "a trained AI",
+      "mastered": false
+    },
+    {
+      "term": "Pixel",
+      "definition": "one tiny square in a picture",
+      "mastered": false
+    },
+    {
+      "term": "Predict",
+      "definition": "to guess what comes next",
+      "mastered": false
+    },
+    {
+      "term": "Privacy",
+      "definition": "keeping personal information safe",
+      "mastered": false
+    },
+    {
+      "term": "Prompt",
+      "definition": "the question or instruction we give AI",
+      "mastered": false
+    },
+    {
+      "term": "Prototype",
+      "definition": "a first simple model of an idea",
+      "mastered": false
+    },
+    {
+      "term": "Recommendation",
+      "definition": "a suggestion made for you",
+      "mastered": false
+    },
+    {
+      "term": "Response",
+      "definition": "the answer AI gives",
+      "mastered": false
+    },
+    {
+      "term": "Responsible",
+      "definition": "taking care of what you make and do",
+      "mastered": false
+    },
+    {
+      "term": "Source",
+      "definition": "where information comes from",
+      "mastered": false
+    },
+    {
+      "term": "Verify",
+      "definition": "to check if something is true",
+      "mastered": false
+    }
+  ],
+  "certificate": {
+    "title": "Certificate of Completion - AI Innovators",
+    "edition": "AI Innovators",
+    "grade": 5,
+    "page": 22,
+    "text": "This certificate is proudly presented for completing the Parivestra AI & Future Skills Grade 5 Workbook with curiosity, creativity and care.",
+    "fields": [
+      "student_name",
+      "teacher_name",
+      "school_name",
+      "date"
+    ]
+  }
+}

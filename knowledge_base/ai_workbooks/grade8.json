@@ -1,0 +1,842 @@
+{
+  "grade": 8,
+  "edition_title": "AI Engineers",
+  "tagline": "Train · Evaluate · Improve",
+  "colors": {
+    "primary": "#4338CA",
+    "secondary": "#D97706",
+    "bg": "#EEF2FF",
+    "robot": "#4338CA"
+  },
+  "band": "middle",
+  "welcome": {
+    "title": "Welcome, Explorer!",
+    "pari_tip": "There are no wrong ideas in this workbook. Try your best, ask questions, and have fun learning about AI!",
+    "page": 2
+  },
+  "syllabus": [
+    {
+      "unit": 1,
+      "topic": "How Machine Learning Works",
+      "big_idea": "Learning",
+      "objective": "I can identify features, labels and predictions.",
+      "page": 4
+    },
+    {
+      "unit": 2,
+      "topic": "Regression and Classification",
+      "big_idea": "Learning",
+      "objective": "I can tell regression and classification apart.",
+      "page": 6
+    },
+    {
+      "unit": 3,
+      "topic": "Decision Trees from Data",
+      "big_idea": "Representation & Reasoning",
+      "objective": "I can build a simple decision tree from data.",
+      "page": 8
+    },
+    {
+      "unit": 4,
+      "topic": "Evaluating Models",
+      "big_idea": "Learning",
+      "objective": "I can read a confusion matrix and calculate accuracy.",
+      "page": 10
+    },
+    {
+      "unit": 5,
+      "topic": "Python: Lists, Loops and If",
+      "big_idea": "Representation & Reasoning",
+      "objective": "I can use lists, loops and if statements in Python.",
+      "page": 12
+    },
+    {
+      "unit": 6,
+      "topic": "Neural Networks",
+      "big_idea": "Learning",
+      "objective": "I can explain neurons, weights and layers.",
+      "page": 14
+    },
+    {
+      "unit": 7,
+      "topic": "Conversational AI",
+      "big_idea": "Natural Interaction",
+      "objective": "I can identify intents and entities.",
+      "page": 16
+    },
+    {
+      "unit": 8,
+      "topic": "Fairness and Accountability",
+      "big_idea": "Societal Impact",
+      "objective": "I can explain fairness and accountability in AI.",
+      "page": 18
+    }
+  ],
+  "units": [
+    {
+      "id": "g8_u1",
+      "number": 1,
+      "title": "How Machine Learning Works",
+      "big_idea": "Learning",
+      "page": 4,
+      "learn_paragraphs": [
+        "Machine learning finds a pattern that links features (inputs) to a label (output).\nExample: features = size, location, rooms → label = house price. The learned pattern\nis the model.\nWhen the model sees new features, it makes a prediction. Training adjusts the model\nto make fewer errors."
+      ],
+      "new_words": [
+        {
+          "term": "Accountability",
+          "definition": "being responsible for results"
+        },
+        {
+          "term": "Appeal",
+          "definition": "asking for a decision to be reviewed"
+        },
+        {
+          "term": "Classification",
+          "definition": "predicting a category"
+        }
+      ],
+      "did_you_know": "Many email services use machine learning to filter spam before it reaches your inbox.",
+      "think_and_talk": "Can a model be 100% right about the future? Why or why not?",
+      "self_check": "I can identify features, labels and predictions.",
+      "activities": [
+        {
+          "id": "g8_u1_a1",
+          "number": 1,
+          "title": "Features and labels",
+          "instruction": "Write features and the label for each AI.",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "AI task",
+              "Features (inputs)",
+              "Label (output)",
+              "Predict exam result",
+              "Detect spam email",
+              "Recommend a movie"
+            ],
+            "prompt": "Write features and the label for each AI."
+          }
+        },
+        {
+          "id": "g8_u1_a2",
+          "number": 2,
+          "title": "Think like a model",
+          "instruction": "Data: 1 hour study → 50 marks, 2 hours → 60, 3 hours → 70.",
+          "type": "pattern_completion",
+          "component": "PatternCompletionActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Pattern: each extra hour adds",
+              "marks",
+              "Predict marks for 4 hours:",
+              "Is this prediction always reliable? Why not?"
+            ],
+            "prompt": "Data: 1 hour study → 50 marks, 2 hours → 60, 3 hours → 70."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g8_u2",
+      "number": 2,
+      "title": "Regression and Classification",
+      "big_idea": "Learning",
+      "page": 6,
+      "learn_paragraphs": [
+        "Regression predicts a number: price, temperature, marks.\nClassification predicts a category: spam/not spam, cat/dog, pass/fail.\nA simple regression draws a line of best fit through data points to predict new\nvalues."
+      ],
+      "new_words": [
+        {
+          "term": "Confusion matrix",
+          "definition": "a table of right and wrong predictions"
+        },
+        {
+          "term": "Entity",
+          "definition": "a key detail like a place or date"
+        },
+        {
+          "term": "Explainable",
+          "definition": "easy for people to understand why"
+        }
+      ],
+      "did_you_know": "Weather forecasts use regression to predict tomorrow's temperature.",
+      "think_and_talk": "How could predicting ice cream sales help a shop owner?",
+      "self_check": "I can tell regression and classification apart.",
+      "activities": [
+        {
+          "id": "g8_u2_a1",
+          "number": 1,
+          "title": "Regression or classification?",
+          "instruction": "Tick the right type.",
+          "type": "tick_table",
+          "component": "TickTableActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Regression",
+              "Classification",
+              "Predict tomorrow's rainfall in mm",
+              "Is this mushroom poisonous?",
+              "Predict a phone's battery life in hours",
+              "Which language is this text?",
+              "Predict a cricket team's score"
+            ],
+            "prompt": "Tick the right type."
+          }
+        },
+        {
+          "id": "g8_u2_a2",
+          "number": 2,
+          "title": "Ice cream sales vs temperature",
+          "instruction": "Plot the points as bars, then draw a line of best fit across the tops.",
+          "type": "match_pairs",
+          "component": "MatchPairsActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "25°: 20",
+              "28°: 30",
+              "31°: 40",
+              "34°: 50",
+              "37°: 55",
+              "0123456789",
+              "10",
+              "11",
+              "12",
+              "13",
+              "14",
+              "15",
+              "16",
+              "17",
+              "18",
+              "19",
+              "20",
+              "21",
+              "22",
+              "23",
+              "24",
+              "25",
+              "26",
+              "27",
+              "28",
+              "29",
+              "30",
+              "31",
+              "32",
+              "33",
+              "34",
+              "35",
+              "36",
+              "37",
+              "38",
+              "39",
+              "40",
+              "41",
+              "42",
+              "43",
+              "44",
+              "45",
+              "46",
+              "47",
+              "48",
+              "49",
+              "50",
+              "51",
+              "52",
+              "53",
+              "54",
+              "55",
+              "56",
+              "57",
+              "58",
+              "59",
+              "60",
+              "25°",
+              "28°",
+              "31°",
+              "34°",
+              "37°"
+            ],
+            "prompt": "Plot the points as bars, then draw a line of best fit across the tops."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g8_u3",
+      "number": 3,
+      "title": "Decision Trees from Data",
+      "big_idea": "Representation & Reasoning",
+      "page": 8,
+      "learn_paragraphs": [
+        "A decision tree model learns questions from data that best separate the classes.\nEach question splits the data. A good split makes groups that are as pure as possible\n(mostly one class).\nTrees are easy to explain: you can follow the path to see why a prediction was made."
+      ],
+      "new_words": [
+        {
+          "term": "Fallback",
+          "definition": "the reply when the bot doesn't understand"
+        },
+        {
+          "term": "False negative",
+          "definition": "predicting no when the truth is yes"
+        },
+        {
+          "term": "False positive",
+          "definition": "predicting yes when the truth is no"
+        }
+      ],
+      "did_you_know": "Random forests combine many decision trees and let them vote.",
+      "think_and_talk": "Why might doctors prefer an explainable model like a decision tree?",
+      "self_check": "I can build a simple decision tree from data.",
+      "activities": [
+        {
+          "id": "g8_u3_a1",
+          "number": 1,
+          "title": "Play outside? Data",
+          "instruction": "Study the data and answer below.",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "Weather",
+              "Homework done?",
+              "Play outside?",
+              "Sunny",
+              "Yes",
+              "Yes",
+              "Sunny",
+              "No",
+              "No",
+              "Rainy",
+              "Yes",
+              "No",
+              "Rainy",
+              "No",
+              "No",
+              "Cloudy",
+              "Yes",
+              "Yes"
+            ],
+            "prompt": "Study the data and answer below."
+          }
+        },
+        {
+          "id": "g8_u3_a2",
+          "number": 2,
+          "title": "Build the tree",
+          "instruction": "Use the data to fill the tree.",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "Yes",
+              "No",
+              "Yes",
+              "No",
+              "Yes",
+              "No",
+              "Is homework done?",
+              "________?",
+              "________?",
+              "________",
+              "________",
+              "________",
+              "________"
+            ],
+            "prompt": "Use the data to fill the tree."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g8_u4",
+      "number": 4,
+      "title": "Evaluating Models",
+      "big_idea": "Learning",
+      "page": 10,
+      "learn_paragraphs": [
+        "A confusion matrix compares predictions with the truth: True Positive (TP), True\nNegative (TN), False Positive (FP) and False Negative (FN).\nAccuracy = (TP + TN) ÷ total.\nAccuracy can mislead. If 95 of 100 emails are not spam, a model that says “not\nspam” every time is 95% accurate but useless."
+      ],
+      "new_words": [
+        {
+          "term": "Feature",
+          "definition": "an input value used to predict"
+        },
+        {
+          "term": "For loop",
+          "definition": "code that repeats for each item"
+        },
+        {
+          "term": "Human in the loop",
+          "definition": "a person checks AI decisions"
+        }
+      ],
+      "did_you_know": "In medical tests, a false negative can be more dangerous than a false positive.",
+      "think_and_talk": "Why isn't accuracy alone enough to judge a model?",
+      "self_check": "I can read a confusion matrix and calculate accuracy.",
+      "activities": [
+        {
+          "id": "g8_u4_a1",
+          "number": 1,
+          "title": "Read the confusion matrix",
+          "instruction": "A spam filter was tested on 100 emails.",
+          "type": "ml_lab",
+          "component": "MLLabActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Predicted: Spam",
+              "Predicted: Not spam",
+              "Actually spam",
+              "TP = 18",
+              "FN = 2",
+              "Actually not spam",
+              "FP = 5",
+              "TN = 75"
+            ],
+            "prompt": "A spam filter was tested on 100 emails."
+          }
+        },
+        {
+          "id": "g8_u4_a2",
+          "number": 2,
+          "title": "Calculate",
+          "instruction": "Use the matrix above.",
+          "type": "math_stats",
+          "component": "MathStatsActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Accuracy = (TP + TN) ÷ total =",
+              "%",
+              "How many good emails went to spam?",
+              "Which error is worse for this filter, FP or FN? Why?"
+            ],
+            "prompt": "Use the matrix above."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g8_u5",
+      "number": 5,
+      "title": "Python: Lists, Loops and If",
+      "big_idea": "Representation & Reasoning",
+      "page": 12,
+      "learn_paragraphs": [
+        "A list stores many values: marks = [72, 88, 95] .\nA for loop repeats code for each item. An if statement makes decisions.\nTogether they let us process whole datasets, which is the heart of AI programming."
+      ],
+      "new_words": [
+        {
+          "term": "Index",
+          "definition": "the position of an item, starting at 0"
+        },
+        {
+          "term": "Intent",
+          "definition": "what the user wants to do"
+        },
+        {
+          "term": "Label",
+          "definition": "the answer the model learns to predict"
+        }
+      ],
+      "did_you_know": "In Python, list positions start at 0, so marks[0] is the first item.",
+      "think_and_talk": "How would loops help an AI read 1 million photos?",
+      "self_check": "I can use lists, loops and if statements in Python.",
+      "activities": [
+        {
+          "id": "g8_u5_a1",
+          "number": 1,
+          "title": "Trace the code",
+          "instruction": "Read the code and answer.",
+          "type": "python_playground",
+          "component": "PythonPlaygroundActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "marks = [45, 78, 92, 60, 33]",
+              "passed = 0",
+              "for m in marks:",
+              "if m >= 40:",
+              "passed = passed + 1",
+              "print(passed)",
+              "print(marks[2])",
+              "What does print(passed) show?",
+              "What does print(marks[2]) show?",
+              "Change the code to also print the highest mark:"
+            ],
+            "prompt": "Read the code and answer."
+          }
+        },
+        {
+          "id": "g8_u5_a2",
+          "number": 2,
+          "title": "Write code",
+          "instruction": "Write Python to print the average of the list marks.",
+          "type": "python_playground",
+          "component": "PythonPlaygroundActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [],
+            "prompt": "Write Python to print the average of the list marks."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g8_u6",
+      "number": 6,
+      "title": "Neural Networks",
+      "big_idea": "Learning",
+      "page": 14,
+      "learn_paragraphs": [
+        "A neural network is inspired by the brain. It has layers of artificial neurons: input,\nhidden and output.\nEach neuron multiplies inputs by weights, adds them up, and passes the result on if it\nis strong enough.\nTraining adjusts the weights to reduce errors. Deep learning uses networks with\nmany hidden layers."
+      ],
+      "new_words": [
+        {
+          "term": "Layer",
+          "definition": "a group of neurons"
+        },
+        {
+          "term": "Leaf",
+          "definition": "the final answer at the end of a branch"
+        },
+        {
+          "term": "Line of best fit",
+          "definition": "a line that follows the trend in data"
+        }
+      ],
+      "did_you_know": "Deep learning helped make big leaps in image recognition from around 2012.",
+      "think_and_talk": "Why do you think bigger networks need more data to train?",
+      "self_check": "I can explain neurons, weights and layers.",
+      "activities": [
+        {
+          "id": "g8_u6_a1",
+          "number": 1,
+          "title": "Be a neuron",
+          "instruction": "Output = (x1 × w1) + (x2 × w2). If output ≥ 5 → say YES, else NO.",
+          "type": "ml_lab",
+          "component": "MLLabActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "x1 = 2, w1 = 2, x2 = 1, w2 = 1 → output =",
+              "→",
+              "x1 = 1, w1 = 3, x2 = 3, w2 = 1 → output =",
+              "→",
+              "x1 = 0, w1 = 4, x2 = 2, w2 = 1 → output =",
+              "→"
+            ],
+            "prompt": "Output = (x1 × w1) + (x2 × w2). If output ≥ 5 → say YES, else NO."
+          }
+        },
+        {
+          "id": "g8_u6_a2",
+          "number": 2,
+          "title": "Draw a network",
+          "instruction": "Draw a network with 3 inputs, 4 hidden neurons and 1 output. Connect them with arrows.",
+          "type": "drawing_canvas",
+          "component": "DrawingCanvasActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [],
+            "prompt": "Draw a network with 3 inputs, 4 hidden neurons and 1 output. Connect them with arrows."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g8_u7",
+      "number": 7,
+      "title": "Conversational AI",
+      "big_idea": "Natural Interaction",
+      "page": 16,
+      "learn_paragraphs": [
+        "Chatbots find the user's intent (what they want) and entities (important details).\nIn “Book a train to Pune tomorrow”, intent = book_ticket, entities = Pune, tomorrow.\nRule-based bots follow scripts. AI chatbots learn from examples and handle many\nways of asking."
+      ],
+      "new_words": [
+        {
+          "term": "List",
+          "definition": "an ordered collection of values"
+        },
+        {
+          "term": "Neuron",
+          "definition": "a unit that combines inputs"
+        },
+        {
+          "term": "Prediction",
+          "definition": "the model's output for new data"
+        }
+      ],
+      "did_you_know": "Many banks and railways use chatbots to answer common customer questions any time of day.",
+      "think_and_talk": "Should a chatbot always tell users that it is not a human? Why?",
+      "self_check": "I can identify intents and entities.",
+      "activities": [
+        {
+          "id": "g8_u7_a1",
+          "number": 1,
+          "title": "Find intent and entities",
+          "instruction": "Fill the table.",
+          "type": "order_steps",
+          "component": "OrderStepsActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "User message",
+              "Intent",
+              "Entities",
+              "Order 2 pizzas to Andheri",
+              "What's the weather in Delhi today?",
+              "Remind me to study at 6 pm"
+            ],
+            "prompt": "Fill the table."
+          }
+        },
+        {
+          "id": "g8_u7_a2",
+          "number": 2,
+          "title": "Write a fallback",
+          "instruction": "Write a helpful reply for when your bot doesn't understand the user.",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [],
+            "prompt": "Write a helpful reply for when your bot doesn't understand the user."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g8_u8",
+      "number": 8,
+      "title": "Fairness and Accountability",
+      "big_idea": "Societal Impact",
+      "page": 18,
+      "learn_paragraphs": [
+        "AI decisions can affect jobs, loans and grades, so they must be fair and accountable.\nAccountability means a person or organisation is responsible for what the AI does.\nGood practice: test on different groups, explain decisions, allow people to appeal,\nand keep a human in the loop."
+      ],
+      "new_words": [
+        {
+          "term": "Regression",
+          "definition": "predicting a number"
+        },
+        {
+          "term": "Split",
+          "definition": "dividing data using a question"
+        },
+        {
+          "term": "Weight",
+          "definition": "how important an input is"
+        }
+      ],
+      "did_you_know": "Some AI laws require that people can get a human to review important automated decisions.",
+      "think_and_talk": "If an AI makes a wrong decision, who should be responsible?",
+      "self_check": "I can explain fairness and accountability in AI.",
+      "activities": [
+        {
+          "id": "g8_u8_a1",
+          "number": 1,
+          "title": "Who is accountable?",
+          "instruction": "Tick and explain.",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "A loan AI rejects people from one area without explanation.",
+              "Fair",
+              "Unfair",
+              "Why?",
+              "An exam proctoring AI flags students, and a teacher reviews every flag.",
+              "Fair",
+              "Unfair",
+              "Why?",
+              "A face filter works poorly on darker skin and no one tests it.",
+              "Fair",
+              "Unfair",
+              "Why?"
+            ],
+            "prompt": "Tick and explain."
+          }
+        },
+        {
+          "id": "g8_u8_a2",
+          "number": 2,
+          "title": "Fairness checklist",
+          "instruction": "Write 4 checks you would run before launching an AI in your school.",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [],
+            "prompt": "Write 4 checks you would run before launching an AI in your school."
+          }
+        }
+      ]
+    }
+  ],
+  "final_project": {
+    "title": "Predict and Evaluate",
+    "page": 20,
+    "instructions": "Complete your guided capstone project and submit for teacher review.",
+    "fields": [
+      "Features (inputs)",
+      "Label (output) and classes",
+      "Training and test split",
+      "Confusion matrix from a pretend test of 20 cases",
+      "Predicted: Yes",
+      "Predicted: No",
+      "Actually yes",
+      "TP =",
+      "FN =",
+      "Actually no",
+      "FP =",
+      "TN =",
+      "Accuracy and one improvement",
+      "F I N A L P R O J E C T",
+      "Predict and Evaluate"
+    ]
+  },
+  "glossary": [
+    {
+      "term": "Accountability",
+      "definition": "being responsible for results",
+      "mastered": false
+    },
+    {
+      "term": "Appeal",
+      "definition": "asking for a decision to be reviewed",
+      "mastered": false
+    },
+    {
+      "term": "Classification",
+      "definition": "predicting a category",
+      "mastered": false
+    },
+    {
+      "term": "Confusion matrix",
+      "definition": "a table of right and wrong predictions",
+      "mastered": false
+    },
+    {
+      "term": "Entity",
+      "definition": "a key detail like a place or date",
+      "mastered": false
+    },
+    {
+      "term": "Explainable",
+      "definition": "easy for people to understand why",
+      "mastered": false
+    },
+    {
+      "term": "Fallback",
+      "definition": "the reply when the bot doesn't understand",
+      "mastered": false
+    },
+    {
+      "term": "False negative",
+      "definition": "predicting no when the truth is yes",
+      "mastered": false
+    },
+    {
+      "term": "False positive",
+      "definition": "predicting yes when the truth is no",
+      "mastered": false
+    },
+    {
+      "term": "Feature",
+      "definition": "an input value used to predict",
+      "mastered": false
+    },
+    {
+      "term": "For loop",
+      "definition": "code that repeats for each item",
+      "mastered": false
+    },
+    {
+      "term": "Human in the loop",
+      "definition": "a person checks AI decisions",
+      "mastered": false
+    },
+    {
+      "term": "Index",
+      "definition": "the position of an item, starting at 0",
+      "mastered": false
+    },
+    {
+      "term": "Intent",
+      "definition": "what the user wants to do",
+      "mastered": false
+    },
+    {
+      "term": "Label",
+      "definition": "the answer the model learns to predict",
+      "mastered": false
+    },
+    {
+      "term": "Layer",
+      "definition": "a group of neurons",
+      "mastered": false
+    },
+    {
+      "term": "Leaf",
+      "definition": "the final answer at the end of a branch",
+      "mastered": false
+    },
+    {
+      "term": "Line of best fit",
+      "definition": "a line that follows the trend in data",
+      "mastered": false
+    },
+    {
+      "term": "List",
+      "definition": "an ordered collection of values",
+      "mastered": false
+    },
+    {
+      "term": "Neuron",
+      "definition": "a unit that combines inputs",
+      "mastered": false
+    },
+    {
+      "term": "Prediction",
+      "definition": "the model's output for new data",
+      "mastered": false
+    },
+    {
+      "term": "Regression",
+      "definition": "predicting a number",
+      "mastered": false
+    },
+    {
+      "term": "Split",
+      "definition": "dividing data using a question",
+      "mastered": false
+    },
+    {
+      "term": "Weight",
+      "definition": "how important an input is",
+      "mastered": false
+    }
+  ],
+  "certificate": {
+    "title": "Certificate of Completion - AI Engineers",
+    "edition": "AI Engineers",
+    "grade": 8,
+    "page": 22,
+    "text": "This certificate is proudly presented for completing the Parivestra AI & Future Skills Grade 8 Workbook with curiosity, creativity and care.",
+    "fields": [
+      "student_name",
+      "teacher_name",
+      "school_name",
+      "date"
+    ]
+  }
+}

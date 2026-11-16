@@ -1,0 +1,769 @@
+{
+  "grade": 7,
+  "edition_title": "AI Makers",
+  "tagline": "See · Read · Code",
+  "colors": {
+    "primary": "#BE185D",
+    "secondary": "#3B82F6",
+    "bg": "#FDF2F8",
+    "robot": "#BE185D"
+  },
+  "band": "middle",
+  "welcome": {
+    "title": "Welcome, Explorer!",
+    "pari_tip": "There are no wrong ideas in this workbook. Try your best, ask questions, and have fun learning about AI!",
+    "page": 2
+  },
+  "syllabus": [
+    {
+      "unit": 1,
+      "topic": "Computer Vision Basics",
+      "big_idea": "Perception",
+      "objective": "I can explain pixels, RGB and resolution.",
+      "page": 4
+    },
+    {
+      "unit": 2,
+      "topic": "Natural Language Processing",
+      "big_idea": "Natural Interaction",
+      "objective": "I can read text.” → tokens:",
+      "page": 6
+    },
+    {
+      "unit": 3,
+      "topic": "Statistics for AI",
+      "big_idea": "Representation & Reasoning",
+      "objective": "I can find mean, median, mode, range and outliers.",
+      "page": 8
+    },
+    {
+      "unit": 4,
+      "topic": "Supervised vs Unsupervised",
+      "big_idea": "Learning",
+      "objective": "I can tell supervised, unsupervised and reinforcement",
+      "page": 10
+    },
+    {
+      "unit": 5,
+      "topic": "Training Data and Classification",
+      "big_idea": "Learning",
+      "objective": "I can plan training and test data for a classifier.",
+      "page": 12
+    },
+    {
+      "unit": 6,
+      "topic": "Python Basics",
+      "big_idea": "Representation & Reasoning",
+      "objective": "I can use print, variables and data types in Python.",
+      "page": 14
+    },
+    {
+      "unit": 7,
+      "topic": "Smart Sensors and IoT",
+      "big_idea": "Perception",
+      "objective": "I can explain the Sense → Decide → Act flow in IoT.",
+      "page": 16
+    },
+    {
+      "unit": 8,
+      "topic": "Digital Footprint and Safety",
+      "big_idea": "Societal Impact",
+      "objective": "I can manage my digital footprint and spot phishing.",
+      "page": 18
+    }
+  ],
+  "units": [
+    {
+      "id": "g7_u1",
+      "number": 1,
+      "title": "Computer Vision Basics",
+      "big_idea": "Perception",
+      "page": 4,
+      "learn_paragraphs": [
+        "Computer Vision helps computers understand images and video.\nAn image is a grid of pixels. In colour images each pixel has three numbers: Red,\nGreen and Blue (RGB), each from 0 to 255.\nResolution is the number of pixels, like 1920 × 1080. More pixels show more detail\nbut need more storage."
+      ],
+      "new_words": [
+        {
+          "term": "Actuator",
+          "definition": "a part that acts, like a motor"
+        },
+        {
+          "term": "Classification",
+          "definition": "sorting data into categories"
+        },
+        {
+          "term": "Cloud",
+          "definition": "computers on the internet that store and process data"
+        }
+      ],
+      "did_you_know": "An image of 1920 × 1080 pixels has 2,073,600 pixels in total.",
+      "think_and_talk": "Why might a self-driving car's camera struggle in heavy rain?",
+      "self_check": "I can explain pixels, RGB and resolution.",
+      "activities": [
+        {
+          "id": "g7_u1_a1",
+          "number": 1,
+          "title": "Name the colour",
+          "instruction": "Match the RGB values to the colour.",
+          "type": "match_pairs",
+          "component": "MatchPairsActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "(255, 0, 0)",
+              "(0, 0, 0)",
+              "(255, 255, 255)",
+              "(0, 0, 255)",
+              "White",
+              "Blue",
+              "Red",
+              "Black"
+            ],
+            "prompt": "Match the RGB values to the colour."
+          }
+        },
+        {
+          "id": "g7_u1_a2",
+          "number": 2,
+          "title": "Pixel maths",
+          "instruction": "Work out the answers.",
+          "type": "math_stats",
+          "component": "MathStatsActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "How many pixels in a 100 × 50 image?",
+              "Each pixel stores 3 numbers (R, G, B). How many numbers for a 10 × 10 image?",
+              "Which shows more detail: 640 × 480 or 1280 × 720?"
+            ],
+            "prompt": "Work out the answers."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g7_u2",
+      "number": 2,
+      "title": "Natural Language Processing",
+      "big_idea": "Natural Interaction",
+      "page": 6,
+      "learn_paragraphs": [
+        "Natural Language Processing (NLP) helps computers understand and produce\nhuman language.\nFirst, text is split into tokens (words or parts of words). Then the AI looks at\npatterns.\nSentiment analysis decides if text is positive, negative or neutral. It is used for\nreviews and feedback."
+      ],
+      "new_words": [
+        {
+          "term": "Clustering",
+          "definition": "grouping similar items"
+        },
+        {
+          "term": "Computer Vision",
+          "definition": "AI that understands images and video"
+        },
+        {
+          "term": "Data type",
+          "definition": "the kind of value, like int or str"
+        }
+      ],
+      "did_you_know": "There are 22 languages listed in the Eighth Schedule of India's Constitution, a big challenge and chance for Indian NLP.",
+      "think_and_talk": "Why is sarcasm (“Oh great, it rained again”) hard for sentiment AI?",
+      "self_check": "I can read text.” → tokens:",
+      "activities": [
+        {
+          "id": "g7_u2_a1",
+          "number": 1,
+          "title": "Tokenise",
+          "instruction": "Split each sentence into word tokens and count them.",
+          "type": "chatbot_builder",
+          "component": "ChatbotBuilderActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "“A"
+            ],
+            "prompt": "Split each sentence into word tokens and count them."
+          }
+        },
+        {
+          "id": "g7_u2_a2",
+          "number": 2,
+          "title": "Sentiment check",
+          "instruction": "Is each review positive or negative?",
+          "type": "chatbot_builder",
+          "component": "ChatbotBuilderActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Positive",
+              "Negative",
+              "“The food was delicious!”",
+              "“Delivery was very late.”",
+              "“Best app ever, so easy to use.”",
+              "“It keeps crashing.”",
+              "“Not bad at all, I liked it.”"
+            ],
+            "prompt": "Is each review positive or negative?"
+          }
+        }
+      ]
+    },
+    {
+      "id": "g7_u3",
+      "number": 3,
+      "title": "Statistics for AI",
+      "big_idea": "Representation & Reasoning",
+      "page": 8,
+      "learn_paragraphs": [
+        "AI relies on statistics to understand data.\nMean = sum ÷ count. Median = middle value after sorting. Mode = most frequent\nvalue.\nRange = largest − smallest. These help us describe data and spot unusual values\ncalled outliers."
+      ],
+      "new_words": [
+        {
+          "term": "Digital footprint",
+          "definition": "the data trail you leave online"
+        },
+        {
+          "term": "Function",
+          "definition": "a named action, like print()"
+        },
+        {
+          "term": "IoT",
+          "definition": "everyday devices connected to the internet"
+        }
+      ],
+      "did_you_know": "An outlier can pull the mean a lot, but the median hardly moves.",
+      "think_and_talk": "Why might an AI give bad results if its data has many outliers?",
+      "self_check": "I can find mean, median, mode, range and outliers.",
+      "activities": [
+        {
+          "id": "g7_u3_a1",
+          "number": 1,
+          "title": "Calculate",
+          "instruction": "Data: test scores 6, 8, 8, 9, 10, 7, 8",
+          "type": "math_stats",
+          "component": "MathStatsActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Mean =",
+              "Median =",
+              "Mode =",
+              "Range ="
+            ],
+            "prompt": "Data: test scores 6, 8, 8, 9, 10, 7, 8"
+          }
+        },
+        {
+          "id": "g7_u3_a2",
+          "number": 2,
+          "title": "Spot the outlier",
+          "instruction": "Daily steps: 4000, 4200, 3900, 4100, 40000",
+          "type": "math_stats",
+          "component": "MathStatsActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Which value is the outlier?",
+              "Should we use the mean or the median to describe this data? Why?"
+            ],
+            "prompt": "Daily steps: 4000, 4200, 3900, 4100, 40000"
+          }
+        }
+      ]
+    },
+    {
+      "id": "g7_u4",
+      "number": 4,
+      "title": "Supervised vs Unsupervised",
+      "big_idea": "Learning",
+      "page": 10,
+      "learn_paragraphs": [
+        "In supervised learning, the AI learns from labelled examples, like emails marked\n“spam” or “not spam”.\nIn unsupervised learning, data has no labels. The AI finds groups on its own, called\nclustering, like grouping shoppers with similar habits.\nA third type, reinforcement learning, learns by trial and error with rewards, like a\ngame AI."
+      ],
+      "new_words": [
+        {
+          "term": "Mean",
+          "definition": "the average"
+        },
+        {
+          "term": "Median",
+          "definition": "the middle value"
+        },
+        {
+          "term": "NLP",
+          "definition": "AI that works with human language"
+        }
+      ],
+      "did_you_know": "Reinforcement learning helped AlphaGo defeat a world champion at the board game Go in 2016.",
+      "think_and_talk": "Which type of learning do you use when you learn to ride a cycle?",
+      "self_check": "I can tell supervised, unsupervised and reinforcement",
+      "activities": [
+        {
+          "id": "g7_u4_a1",
+          "number": 1,
+          "title": "Which type of learning?",
+          "instruction": "Write each example in the right box.",
+          "type": "sort_boxes",
+          "component": "SortBoxesActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "photos tagged cat/dog",
+              "grouping songs by style",
+              "robot learning to walk",
+              "exam marks → pass/fail",
+              "finding customer groups",
+              "game AI earning points",
+              "Supervised",
+              "Unsupervised",
+              "Reinforcement"
+            ],
+            "prompt": "Write each example in the right box."
+          }
+        },
+        {
+          "id": "g7_u4_a2",
+          "number": 2,
+          "title": "Make clusters",
+          "instruction": "Draw 12 dots on the grid so they form 3 clear clusters. Circle each cluster.",
+          "type": "sort_boxes",
+          "component": "SortBoxesActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [],
+            "prompt": "Draw 12 dots on the grid so they form 3 clear clusters. Circle each cluster."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g7_u5",
+      "number": 5,
+      "title": "Training Data and Classification",
+      "big_idea": "Learning",
+      "page": 12,
+      "learn_paragraphs": [
+        "Classification means putting things into categories, like “ripe” or “unripe” mango.\nWe split data into a training set (to learn) and a test set (to check). A common split\nis 80% train, 20% test.\nGood training data is large, balanced (enough of each class) and varied."
+      ],
+      "new_words": [
+        {
+          "term": "Outlier",
+          "definition": "a value very different from the rest"
+        },
+        {
+          "term": "Permission",
+          "definition": "access an app asks for"
+        },
+        {
+          "term": "Phishing",
+          "definition": "a fake message that tries to steal information"
+        }
+      ],
+      "did_you_know": "Engineers never test a model on its training data, because it may have just memorised the answers.",
+      "think_and_talk": "What might happen if a model only saw ripe mangoes in good light?",
+      "self_check": "I can plan training and test data for a classifier.",
+      "activities": [
+        {
+          "id": "g7_u5_a1",
+          "number": 1,
+          "title": "Split the data",
+          "instruction": "You have 500 labelled photos.",
+          "type": "sort_boxes",
+          "component": "SortBoxesActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "80% for training =",
+              "photos",
+              "20% for testing =",
+              "photos",
+              "Your data has 450 ripe and 50 unripe mangoes. Is it balanced? What could go",
+              "wrong?"
+            ],
+            "prompt": "You have 500 labelled photos."
+          }
+        },
+        {
+          "id": "g7_u5_a2",
+          "number": 2,
+          "title": "Design a classifier",
+          "instruction": "Plan an AI that sorts plastic, paper and metal waste.",
+          "type": "sort_boxes",
+          "component": "SortBoxesActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Question",
+              "Your plan",
+              "Classes",
+              "Data to collect",
+              "How many examples per class?",
+              "How will you test it?"
+            ],
+            "prompt": "Plan an AI that sorts plastic, paper and metal waste."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g7_u6",
+      "number": 6,
+      "title": "Python Basics",
+      "big_idea": "Representation & Reasoning",
+      "page": 14,
+      "learn_paragraphs": [
+        "Python is the most popular language for AI because it is simple to read.\nprint() shows output. Variables store values: name = \"Asha\" . input() takes text\nfrom the user.\nData types: int (whole numbers), float (decimals), str (text), bool (True/False)."
+      ],
+      "new_words": [
+        {
+          "term": "Python",
+          "definition": "a programming language popular for AI"
+        },
+        {
+          "term": "Resolution",
+          "definition": "width × height in pixels"
+        },
+        {
+          "term": "RGB",
+          "definition": "red, green and blue values that make a colour"
+        }
+      ],
+      "did_you_know": "Python is named after the British comedy show Monty Python's Flying Circus, not the snake.",
+      "think_and_talk": "Why do you think programmers choose simple, readable languages?",
+      "self_check": "I can use print, variables and data types in Python.",
+      "activities": [
+        {
+          "id": "g7_u6_a1",
+          "number": 1,
+          "title": "Predict the output",
+          "instruction": "What will this code print?",
+          "type": "python_playground",
+          "component": "PythonPlaygroundActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "name = \"Asha\"",
+              "age = 12",
+              "print(\"Hi\", name)",
+              "print(age + 1)",
+              "print(type(3.5))",
+              "Line 3 prints:",
+              "Line 4 prints:",
+              "Line 5 prints:"
+            ],
+            "prompt": "What will this code print?"
+          }
+        },
+        {
+          "id": "g7_u6_a2",
+          "number": 2,
+          "title": "Match the data type",
+          "instruction": "Draw a line to the correct type.",
+          "type": "match_pairs",
+          "component": "MatchPairsActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "42",
+              "\"Hello\"",
+              "3.14",
+              "True",
+              "str",
+              "bool",
+              "int",
+              "float"
+            ],
+            "prompt": "Draw a line to the correct type."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g7_u7",
+      "number": 7,
+      "title": "Smart Sensors and IoT",
+      "big_idea": "Perception",
+      "page": 16,
+      "learn_paragraphs": [
+        "The Internet of Things (IoT) connects everyday devices to the internet: lights, fans,\nmeters, watches.\nThe flow is Sense → Send → Decide → Act. A sensor measures, data goes to the\ncloud, AI decides, and a device acts.\nExample: a soil moisture sensor tells a smart pump when to water a farm."
+      ],
+      "new_words": [
+        {
+          "term": "Sentiment",
+          "definition": "the feeling in a piece of text"
+        },
+        {
+          "term": "Supervised",
+          "definition": "learning from labelled examples"
+        },
+        {
+          "term": "Test set",
+          "definition": "new data used to check the model"
+        }
+      ],
+      "did_you_know": "Smart irrigation can save water by watering only when the soil is dry.",
+      "think_and_talk": "What could go wrong if a smart home device is hacked?",
+      "self_check": "I can explain the Sense → Decide → Act flow in IoT.",
+      "activities": [
+        {
+          "id": "g7_u7_a1",
+          "number": 1,
+          "title": "Sense → Decide → Act",
+          "instruction": "Complete the table for each smart device.",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "Device",
+              "Sensor",
+              "Decision",
+              "Action",
+              "Smart street light",
+              "Smart fan",
+              "Smart dustbin"
+            ],
+            "prompt": "Complete the table for each smart device."
+          }
+        },
+        {
+          "id": "g7_u7_a2",
+          "number": 2,
+          "title": "Design an IoT device",
+          "instruction": "Design a device for your home or school. Label the sensor, decision and action.",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [],
+            "prompt": "Design a device for your home or school. Label the sensor, decision and action."
+          }
+        }
+      ]
+    },
+    {
+      "id": "g7_u8",
+      "number": 8,
+      "title": "Digital Footprint and Safety",
+      "big_idea": "Societal Impact",
+      "page": 18,
+      "learn_paragraphs": [
+        "Your digital footprint is the trail of data you leave online: posts, likes, searches and\nlocation.\nActive footprints are things you share on purpose. Passive footprints are collected\nwithout you noticing, like location history.\nProtect yourself: strong passwords, two-step verification, think before posting, and\ncheck app permissions."
+      ],
+      "new_words": [
+        {
+          "term": "Token",
+          "definition": "a small piece of text, like a word"
+        },
+        {
+          "term": "Training set",
+          "definition": "data the model learns from"
+        },
+        {
+          "term": "Unsupervised",
+          "definition": "finding patterns without labels"
+        }
+      ],
+      "did_you_know": "Once something is posted online, copies can stay even after you delete it.",
+      "think_and_talk": "What would you want your digital footprint to say about you in 10 years?",
+      "self_check": "I can manage my digital footprint and spot phishing.",
+      "activities": [
+        {
+          "id": "g7_u8_a1",
+          "number": 1,
+          "title": "Active or passive?",
+          "instruction": "Tick the right type of footprint.",
+          "type": "tick_table",
+          "component": "TickTableActivity",
+          "auto_checkable": true,
+          "payload": {
+            "lines": [
+              "Active",
+              "Passive",
+              "Posting a photo",
+              "Websites tracking your visits",
+              "Writing a comment",
+              "Your phone saving location history",
+              "Filling an online form"
+            ],
+            "prompt": "Tick the right type of footprint."
+          }
+        },
+        {
+          "id": "g7_u8_a2",
+          "number": 2,
+          "title": "Spot the phishing",
+          "instruction": "Is this message safe or phishing? Say why.",
+          "type": "reflection_input",
+          "component": "ReflectionActivity",
+          "auto_checkable": false,
+          "payload": {
+            "lines": [
+              "“You won ₹50,000! Click this link and enter your bank PIN.”",
+              "Safe",
+              "Phishing",
+              "Why?",
+              "Your school's official app reminds you about an exam date.",
+              "Safe",
+              "Phishing",
+              "Why?",
+              "“Your account is blocked. Send your OTP to unlock it.”",
+              "Safe",
+              "Phishing",
+              "Why?"
+            ],
+            "prompt": "Is this message safe or phishing? Say why."
+          }
+        }
+      ]
+    }
+  ],
+  "final_project": {
+    "title": "Paper Sentiment Detector",
+    "page": 20,
+    "instructions": "Complete your guided capstone project and submit for teacher review.",
+    "fields": [
+      "List 5 positive words",
+      "List 5 negative words",
+      "Test it on 4 real reviews",
+      "Review",
+      "My detector says",
+      "Correct?",
+      "F I N A L P R O J E C T",
+      "Paper Sentiment Detector"
+    ]
+  },
+  "glossary": [
+    {
+      "term": "Actuator",
+      "definition": "a part that acts, like a motor",
+      "mastered": false
+    },
+    {
+      "term": "Classification",
+      "definition": "sorting data into categories",
+      "mastered": false
+    },
+    {
+      "term": "Cloud",
+      "definition": "computers on the internet that store and process data",
+      "mastered": false
+    },
+    {
+      "term": "Clustering",
+      "definition": "grouping similar items",
+      "mastered": false
+    },
+    {
+      "term": "Computer Vision",
+      "definition": "AI that understands images and video",
+      "mastered": false
+    },
+    {
+      "term": "Data type",
+      "definition": "the kind of value, like int or str",
+      "mastered": false
+    },
+    {
+      "term": "Digital footprint",
+      "definition": "the data trail you leave online",
+      "mastered": false
+    },
+    {
+      "term": "Function",
+      "definition": "a named action, like print()",
+      "mastered": false
+    },
+    {
+      "term": "IoT",
+      "definition": "everyday devices connected to the internet",
+      "mastered": false
+    },
+    {
+      "term": "Mean",
+      "definition": "the average",
+      "mastered": false
+    },
+    {
+      "term": "Median",
+      "definition": "the middle value",
+      "mastered": false
+    },
+    {
+      "term": "NLP",
+      "definition": "AI that works with human language",
+      "mastered": false
+    },
+    {
+      "term": "Outlier",
+      "definition": "a value very different from the rest",
+      "mastered": false
+    },
+    {
+      "term": "Permission",
+      "definition": "access an app asks for",
+      "mastered": false
+    },
+    {
+      "term": "Phishing",
+      "definition": "a fake message that tries to steal information",
+      "mastered": false
+    },
+    {
+      "term": "Python",
+      "definition": "a programming language popular for AI",
+      "mastered": false
+    },
+    {
+      "term": "Resolution",
+      "definition": "width × height in pixels",
+      "mastered": false
+    },
+    {
+      "term": "RGB",
+      "definition": "red, green and blue values that make a colour",
+      "mastered": false
+    },
+    {
+      "term": "Sentiment",
+      "definition": "the feeling in a piece of text",
+      "mastered": false
+    },
+    {
+      "term": "Supervised",
+      "definition": "learning from labelled examples",
+      "mastered": false
+    },
+    {
+      "term": "Test set",
+      "definition": "new data used to check the model",
+      "mastered": false
+    },
+    {
+      "term": "Token",
+      "definition": "a small piece of text, like a word",
+      "mastered": false
+    },
+    {
+      "term": "Training set",
+      "definition": "data the model learns from",
+      "mastered": false
+    },
+    {
+      "term": "Unsupervised",
+      "definition": "finding patterns without labels",
+      "mastered": false
+    }
+  ],
+  "certificate": {
+    "title": "Certificate of Completion - AI Makers",
+    "edition": "AI Makers",
+    "grade": 7,
+    "page": 22,
+    "text": "This certificate is proudly presented for completing the Parivestra AI & Future Skills Grade 7 Workbook with curiosity, creativity and care.",
+    "fields": [
+      "student_name",
+      "teacher_name",
+      "school_name",
+      "date"
+    ]
+  }
+}

@@ -1,0 +1,313 @@
+[
+  {
+    "activity_id": "g9_u1_a1",
+    "type": "reflection_input",
+    "auto_checkable": false,
+    "needs_review": true,
+    "rubric": [
+      {
+        "criterion": "Concept Application",
+        "max_score": 3,
+        "description": "Student clearly applies the unit concept and AI big idea."
+      },
+      {
+        "criterion": "Clarity & Detail",
+        "max_score": 3,
+        "description": "Explanation or drawing is well-structured, easy to understand, and detailed."
+      },
+      {
+        "criterion": "Safety & Critical Thinking",
+        "max_score": 2,
+        "description": "Considers user safety, fairness, limitations, or personal privacy rules."
+      }
+    ],
+    "sample_solution": "Sample response for 'Map the use case': Meets all 3 rubric dimensions with grounded reasoning."
+  },
+  {
+    "activity_id": "g9_u1_a2",
+    "type": "reflection_input",
+    "auto_checkable": false,
+    "needs_review": true,
+    "rubric": [
+      {
+        "criterion": "Concept Application",
+        "max_score": 3,
+        "description": "Student clearly applies the unit concept and AI big idea."
+      },
+      {
+        "criterion": "Clarity & Detail",
+        "max_score": 3,
+        "description": "Explanation or drawing is well-structured, easy to understand, and detailed."
+      },
+      {
+        "criterion": "Safety & Critical Thinking",
+        "max_score": 2,
+        "description": "Considers user safety, fairness, limitations, or personal privacy rules."
+      }
+    ],
+    "sample_solution": "Sample response for 'Pick a sector': Meets all 3 rubric dimensions with grounded reasoning."
+  },
+  {
+    "activity_id": "g9_u2_a1",
+    "type": "tick_table",
+    "auto_checkable": true,
+    "needs_review": true,
+    "solution": {
+      "valid_keys": [
+        "Structured",
+        "Unstructured",
+        "Attendance register",
+        "WhatsApp voice notes"
+      ],
+      "target_criteria": "Tick the right type."
+    },
+    "explanation": "Teacher solution for 'Structured or unstructured?'. Please verify against official curriculum key."
+  },
+  {
+    "activity_id": "g9_u2_a2",
+    "type": "reflection_input",
+    "auto_checkable": false,
+    "needs_review": true,
+    "rubric": [
+      {
+        "criterion": "Concept Application",
+        "max_score": 3,
+        "description": "Student clearly applies the unit concept and AI big idea."
+      },
+      {
+        "criterion": "Clarity & Detail",
+        "max_score": 3,
+        "description": "Explanation or drawing is well-structured, easy to understand, and detailed."
+      },
+      {
+        "criterion": "Safety & Critical Thinking",
+        "max_score": 2,
+        "description": "Considers user safety, fairness, limitations, or personal privacy rules."
+      }
+    ],
+    "sample_solution": "Sample response for 'Find the data problems': Meets all 3 rubric dimensions with grounded reasoning."
+  },
+  {
+    "activity_id": "g9_u3_a1",
+    "type": "math_stats",
+    "auto_checkable": true,
+    "needs_review": true,
+    "solution": {
+      "valid_keys": [
+        "P(red) =",
+        "P(blue) =",
+        "P(not green) =",
+        "P(yellow) ="
+      ],
+      "target_criteria": "A bag has 3 red, 5 blue and 2 green balls."
+    },
+    "explanation": "Teacher solution for 'Probability'. Please verify against official curriculum key."
+  },
+  {
+    "activity_id": "g9_u3_a2",
+    "type": "math_stats",
+    "auto_checkable": true,
+    "needs_review": true,
+    "solution": {
+      "valid_keys": [
+        "Mean of A =",
+        "Mean of B =",
+        "Which class has a higher standard deviation?",
+        "What does that tell you about Class B?"
+      ],
+      "target_criteria": "Class A marks: 70, 71, 69, 70, 70. Class B marks: 40, 100, 55, 95, 60."
+    },
+    "explanation": "Teacher solution for 'Compare spread'. Please verify against official curriculum key."
+  },
+  {
+    "activity_id": "g9_u4_a1",
+    "type": "math_stats",
+    "auto_checkable": true,
+    "needs_review": true,
+    "solution": {
+      "valid_keys": [
+        "import pandas as pd",
+        "df = pd.read_csv(\"students.csv\")",
+        "print(df.head())",
+        "print(df[\"marks\"].mean())"
+      ],
+      "target_criteria": "Assume students.csv has columns name, marks, city."
+    },
+    "explanation": "Teacher solution for 'Read the pandas code'. Please verify against official curriculum key."
+  },
+  {
+    "activity_id": "g9_u4_a2",
+    "type": "python_playground",
+    "auto_checkable": true,
+    "needs_review": true,
+    "solution": {
+      "valid_keys": [
+        "s = {\"name\": \"Kabir\", \"marks\": 81}",
+        "s[\"marks\"] = s[\"marks\"] + 5",
+        "print(s[\"name\"], s[\"marks\"])",
+        "Output:"
+      ],
+      "target_criteria": "Predict the output."
+    },
+    "explanation": "Teacher solution for 'Dictionary practice'. Please verify against official curriculum key."
+  },
+  {
+    "activity_id": "g9_u5_a1",
+    "type": "math_stats",
+    "auto_checkable": true,
+    "needs_review": true,
+    "solution": {
+      "valid_keys": [
+        "x1 = 2, x2 = 1 → z =",
+        "→ output",
+        "x1 = 0, x2 = 1 → z =",
+        "→ output"
+      ],
+      "target_criteria": "w1 = 0.5, w2 = −1, b = 0.5. Step activation: 1 if z ≥ 0 else 0."
+    },
+    "explanation": "Teacher solution for 'Compute the perceptron'. Please verify against official curriculum key."
+  },
+  {
+    "activity_id": "g9_u5_a2",
+    "type": "python_playground",
+    "auto_checkable": true,
+    "needs_review": true,
+    "solution": {
+      "valid_keys": [
+        "ReLU(3) =",
+        "ReLU(−2) =",
+        "ReLU(0) =",
+        "Why might a network need many neurons instead of one?"
+      ],
+      "target_criteria": "ReLU(z) = max(0, z)"
+    },
+    "explanation": "Teacher solution for 'ReLU'. Please verify against official curriculum key."
+  },
+  {
+    "activity_id": "g9_u6_a1",
+    "type": "match_pairs",
+    "auto_checkable": true,
+    "needs_review": true,
+    "solution": {
+      "valid_keys": [
+        "(1×1) + (2×0) + (3×0) + (4×−1) =",
+        "Patch [[5,5],[5,5]] with the same kernel =",
+        "What does a result of 0 suggest about that area?"
+      ],
+      "target_criteria": "Image patch [[1,2],[3,4]] and kernel [[1,0],[0,−1]]. Multiply matching cells and add."
+    },
+    "explanation": "Teacher solution for 'Do one convolution'. Please verify against official curriculum key."
+  },
+  {
+    "activity_id": "g9_u6_a2",
+    "type": "reflection_input",
+    "auto_checkable": false,
+    "needs_review": true,
+    "rubric": [
+      {
+        "criterion": "Concept Application",
+        "max_score": 3,
+        "description": "Student clearly applies the unit concept and AI big idea."
+      },
+      {
+        "criterion": "Clarity & Detail",
+        "max_score": 3,
+        "description": "Explanation or drawing is well-structured, easy to understand, and detailed."
+      },
+      {
+        "criterion": "Safety & Critical Thinking",
+        "max_score": 2,
+        "description": "Considers user safety, fairness, limitations, or personal privacy rules."
+      }
+    ],
+    "sample_solution": "Sample response for 'Features for a task': Meets all 3 rubric dimensions with grounded reasoning."
+  },
+  {
+    "activity_id": "g9_u7_a1",
+    "type": "prompt_lab",
+    "auto_checkable": false,
+    "needs_review": true,
+    "rubric": [
+      {
+        "criterion": "Concept Application",
+        "max_score": 3,
+        "description": "Student clearly applies the unit concept and AI big idea."
+      },
+      {
+        "criterion": "Clarity & Detail",
+        "max_score": 3,
+        "description": "Explanation or drawing is well-structured, easy to understand, and detailed."
+      },
+      {
+        "criterion": "Safety & Critical Thinking",
+        "max_score": 2,
+        "description": "Considers user safety, fairness, limitations, or personal privacy rules."
+      }
+    ],
+    "sample_solution": "Sample response for 'Engineer the prompt': Meets all 3 rubric dimensions with grounded reasoning."
+  },
+  {
+    "activity_id": "g9_u7_a2",
+    "type": "tick_table",
+    "auto_checkable": true,
+    "needs_review": true,
+    "solution": {
+      "valid_keys": [
+        "Good use",
+        "Misuse",
+        "Asking AI to quiz you before an exam",
+        "Submitting AI-written homework as your own"
+      ],
+      "target_criteria": "Tick the right box."
+    },
+    "explanation": "Teacher solution for 'Use or misuse?'. Please verify against official curriculum key."
+  },
+  {
+    "activity_id": "g9_u8_a1",
+    "type": "reflection_input",
+    "auto_checkable": false,
+    "needs_review": true,
+    "rubric": [
+      {
+        "criterion": "Concept Application",
+        "max_score": 3,
+        "description": "Student clearly applies the unit concept and AI big idea."
+      },
+      {
+        "criterion": "Clarity & Detail",
+        "max_score": 3,
+        "description": "Explanation or drawing is well-structured, easy to understand, and detailed."
+      },
+      {
+        "criterion": "Safety & Critical Thinking",
+        "max_score": 2,
+        "description": "Considers user safety, fairness, limitations, or personal privacy rules."
+      }
+    ],
+    "sample_solution": "Sample response for 'Legal and ethical check': Meets all 3 rubric dimensions with grounded reasoning."
+  },
+  {
+    "activity_id": "g9_u8_a2",
+    "type": "reflection_input",
+    "auto_checkable": false,
+    "needs_review": true,
+    "rubric": [
+      {
+        "criterion": "Concept Application",
+        "max_score": 3,
+        "description": "Student clearly applies the unit concept and AI big idea."
+      },
+      {
+        "criterion": "Clarity & Detail",
+        "max_score": 3,
+        "description": "Explanation or drawing is well-structured, easy to understand, and detailed."
+      },
+      {
+        "criterion": "Safety & Critical Thinking",
+        "max_score": 2,
+        "description": "Considers user safety, fairness, limitations, or personal privacy rules."
+      }
+    ],
+    "sample_solution": "Sample response for 'Draft a policy': Meets all 3 rubric dimensions with grounded reasoning."
+  }
+]
