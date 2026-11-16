@@ -36,6 +36,12 @@ class User(Base):
     masteries = relationship("Mastery", back_populates="user", cascade="all, delete-orphan")
     lesson_progresses = relationship("LessonProgress", back_populates="user", cascade="all, delete-orphan")
     video_watches = relationship("VideoWatch", back_populates="user", cascade="all, delete-orphan")
+    unit_progresses = relationship("UnitProgress", back_populates="user", cascade="all, delete-orphan")
+    activity_attempts = relationship("ActivityAttempt", back_populates="user", cascade="all, delete-orphan")
+    reflections = relationship("WorkbookReflection", back_populates="user", cascade="all, delete-orphan")
+    projects = relationship("ProjectEntry", back_populates="user", cascade="all, delete-orphan")
+    glossary_masteries = relationship("GlossaryMastery", back_populates="user", cascade="all, delete-orphan")
+    certificates = relationship("WorkbookCertificate", back_populates="user", cascade="all, delete-orphan")
 
 
 class Session(Base):
@@ -231,3 +237,101 @@ class SafetyIncident(Base):
     user_id = Column(String(64), nullable=False, index=True)
     flag_type = Column(String(50), nullable=False)  # sensitive_emotion, personal_info, inappropriate
     created_at = Column(DateTime, default=utc_now)
+
+
+# ========================================================
+# PARIVESTRA AI WORKBOOKS MODELS (GRADES 3 TO 10)
+# ========================================================
+class UnitProgress(Base):
+    __tablename__ = "unit_progress"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(String(64), ForeignKey("users.id"), nullable=False, index=True)
+    grade = Column(Integer, nullable=False, index=True)
+    unit_number = Column(Integer, nullable=False, index=True)
+    status = Column(String(50), default="not_started")  # not_started, in_progress, completed
+    stars = Column(Integer, default=0)
+    xp_earned = Column(Integer, default=0)
+    completed_at = Column(DateTime, nullable=True)
+    updated_at = Column(DateTime, default=utc_now, onupdate=utc_now)
+
+    user = relationship("User", back_populates="unit_progresses")
+
+
+class ActivityAttempt(Base):
+    __tablename__ = "activity_attempts"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(String(64), ForeignKey("users.id"), nullable=False, index=True)
+    activity_id = Column(String(100), nullable=False, index=True)  # e.g. g3_u1_a1
+    grade = Column(Integer, nullable=False)
+    unit_number = Column(Integer, nullable=False)
+    activity_number = Column(Integer, nullable=False)
+    answer_json = Column(Text, nullable=False)
+    is_correct = Column(Boolean, default=False)
+    score = Column(Float, default=0.0)
+    feedback = Column(Text, nullable=True)
+    needs_review = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=utc_now)
+
+    user = relationship("User", back_populates="activity_attempts")
+
+
+class WorkbookReflection(Base):
+    __tablename__ = "workbook_reflections"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(String(64), ForeignKey("users.id"), nullable=False, index=True)
+    grade = Column(Integer, nullable=False)
+    unit_number = Column(Integer, nullable=False)
+    type = Column(String(50), default="think_and_talk")  # think_and_talk, self_check
+    reflection_text = Column(Text, nullable=True)
+    stars = Column(Integer, default=0)
+    feedback = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=utc_now)
+
+    user = relationship("User", back_populates="reflections")
+
+
+class ProjectEntry(Base):
+    __tablename__ = "project_entries"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(String(64), ForeignKey("users.id"), nullable=False, index=True)
+    grade = Column(Integer, nullable=False, index=True)
+    project_title = Column(String(200), nullable=False)
+    fields_json = Column(Text, default="{}")
+    status = Column(String(50), default="draft")  # draft, submitted, approved
+    feedback = Column(Text, nullable=True)
+    score = Column(Integer, default=0)
+    submitted_at = Column(DateTime, nullable=True)
+    updated_at = Column(DateTime, default=utc_now, onupdate=utc_now)
+
+    user = relationship("User", back_populates="projects")
+
+
+class GlossaryMastery(Base):
+    __tablename__ = "glossary_masteries"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(String(64), ForeignKey("users.id"), nullable=False, index=True)
+    grade = Column(Integer, nullable=False, index=True)
+    term = Column(String(100), nullable=False)
+    mastered = Column(Boolean, default=True)
+    updated_at = Column(DateTime, default=utc_now, onupdate=utc_now)
+
+    user = relationship("User", back_populates="glossary_masteries")
+
+
+class WorkbookCertificate(Base):
+    __tablename__ = "workbook_certificates"
+
+    id = Column(String(64), primary_key=True, index=True)  # cert-g3-uuid
+    user_id = Column(String(64), ForeignKey("users.id"), nullable=False, index=True)
+    grade = Column(Integer, nullable=False)
+    student_name = Column(String(100), nullable=False)
+    teacher_name = Column(String(100), default="Teacher")
+    school_name = Column(String(200), default="Parivestra School")
+    issued_at = Column(DateTime, default=utc_now)
+
+    user = relationship("User", back_populates="certificates")

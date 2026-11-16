@@ -48,6 +48,7 @@ from backend.models import (
     VideoWatch,
 )
 from backend.video.provider import StoryPlayerProvider
+from backend.routes.workbook_router import router as workbook_router
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("api")
@@ -68,6 +69,9 @@ app = FastAPI(
     docs_url="/docs",
     redoc_url="/redoc",
 )
+
+# Include AI Workbooks router
+app.include_router(workbook_router)
 
 # Configure CORS
 app.add_middleware(
