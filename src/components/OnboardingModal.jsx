@@ -18,6 +18,9 @@ export default function OnboardingModal({ isOpen, onComplete }) {
   const [selectedGrade, setSelectedGrade] = useState(
     localStorage.getItem("parivestra_grade") || "Class 3"
   );
+  const [aiGoal, setAiGoal] = useState(
+    localStorage.getItem("parivestra_ai_goal") || ""
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!isOpen) return null;
@@ -30,6 +33,7 @@ export default function OnboardingModal({ isOpen, onComplete }) {
     localStorage.setItem("parivestra_display_name", finalNickname);
     localStorage.setItem("parivestra_avatar", selectedAvatar);
     localStorage.setItem("parivestra_grade", selectedGrade);
+    localStorage.setItem("parivestra_ai_goal", aiGoal.trim());
     localStorage.setItem("parivestra_onboarded", "true");
 
     // Persist to backend
@@ -344,6 +348,28 @@ export default function OnboardingModal({ isOpen, onComplete }) {
                     );
                   })}
                 </div>
+              </div>
+
+              {/* Workbook Welcome Goal */}
+              <div style={{ textAlign: "left", marginTop: 8, background: "#FFF9F0", padding: "10px 14px", borderRadius: "12px", border: "1.5px solid #FDE68A" }}>
+                <label style={{ display: "block", fontSize: 13, fontWeight: 800, color: "#92400E", marginBottom: 4 }}>
+                  ⭐ One thing I want to learn about AI:
+                </label>
+                <input
+                  type="text"
+                  value={aiGoal}
+                  onChange={(e) => setAiGoal(e.target.value)}
+                  placeholder="e.g. How robots recognize faces or how chatbots talk!"
+                  style={{
+                    width: "100%",
+                    padding: "8px 12px",
+                    borderRadius: "8px",
+                    border: "1.5px solid #CBD5E1",
+                    fontSize: 14,
+                    boxSizing: "border-box",
+                    background: "#FFFFFF",
+                  }}
+                />
               </div>
             </div>
 

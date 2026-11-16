@@ -367,3 +367,131 @@ export async function uploadLibraryResource(formData) {
   return await res.json();
 }
 
+// ---------------------------------------------------------
+// PARIVESTRA AI WORKBOOKS API CLIENT METHODS
+// ---------------------------------------------------------
+export async function getWorkbook(grade = 3) {
+  const gNum = parseInt(String(grade).replace(/\D/g, "") || "3", 10);
+  const res = await fetch(`${API_BASE_URL}/api/workbook/${gNum}`, {
+    headers: getHeaders(),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function getWorkbookUnit(grade = 3, unitNumber = 1) {
+  const gNum = parseInt(String(grade).replace(/\D/g, "") || "3", 10);
+  const res = await fetch(`${API_BASE_URL}/api/workbook/${gNum}/units/${unitNumber}`, {
+    headers: getHeaders(),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function checkWorkbookActivity(grade, activityId, answer) {
+  const gNum = parseInt(String(grade).replace(/\D/g, "") || "3", 10);
+  const res = await fetch(`${API_BASE_URL}/api/workbook/${gNum}/activities/${activityId}/check`, {
+    method: "POST",
+    headers: getHeaders(),
+    body: JSON.stringify({ answer }),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function submitWorkbookSelfCheck(grade, unitNumber, stars) {
+  const gNum = parseInt(String(grade).replace(/\D/g, "") || "3", 10);
+  const res = await fetch(`${API_BASE_URL}/api/workbook/${gNum}/self-check`, {
+    method: "POST",
+    headers: getHeaders(),
+    body: JSON.stringify({ unit_number: unitNumber, stars }),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function submitWorkbookReflection(grade, unitNumber, reflectionText) {
+  const gNum = parseInt(String(grade).replace(/\D/g, "") || "3", 10);
+  const res = await fetch(`${API_BASE_URL}/api/workbook/${gNum}/reflection`, {
+    method: "POST",
+    headers: getHeaders(),
+    body: JSON.stringify({ unit_number: unitNumber, reflection_text: reflectionText }),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function getWorkbookProject(grade = 3) {
+  const gNum = parseInt(String(grade).replace(/\D/g, "") || "3", 10);
+  const res = await fetch(`${API_BASE_URL}/api/workbook/${gNum}/project`, {
+    headers: getHeaders(),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function saveWorkbookProject(grade, fields) {
+  const gNum = parseInt(String(grade).replace(/\D/g, "") || "3", 10);
+  const res = await fetch(`${API_BASE_URL}/api/workbook/${gNum}/project`, {
+    method: "PUT",
+    headers: getHeaders(),
+    body: JSON.stringify({ fields }),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function submitWorkbookProject(grade, fields) {
+  const gNum = parseInt(String(grade).replace(/\D/g, "") || "3", 10);
+  const res = await fetch(`${API_BASE_URL}/api/workbook/${gNum}/project/submit`, {
+    method: "POST",
+    headers: getHeaders(),
+    body: JSON.stringify({ fields }),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function getWorkbookGlossary(grade = 3) {
+  const gNum = parseInt(String(grade).replace(/\D/g, "") || "3", 10);
+  const res = await fetch(`${API_BASE_URL}/api/glossary?grade=${gNum}`, {
+    headers: getHeaders(),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function updateWorkbookGlossary(grade, term, mastered) {
+  const gNum = parseInt(String(grade).replace(/\D/g, "") || "3", 10);
+  const res = await fetch(`${API_BASE_URL}/api/glossary`, {
+    method: "PATCH",
+    headers: getHeaders(),
+    body: JSON.stringify({ grade: gNum, term, mastered }),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function getWorkbookCertificates(grade = null) {
+  let url = `${API_BASE_URL}/api/certificates`;
+  if (grade) {
+    const gNum = parseInt(String(grade).replace(/\D/g, "") || "3", 10);
+    url += `?grade=${gNum}`;
+  }
+  const res = await fetch(url, { headers: getHeaders() });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function issueWorkbookCertificate(grade, studentName, schoolName = "Parivestra School") {
+  const gNum = parseInt(String(grade).replace(/\D/g, "") || "3", 10);
+  const res = await fetch(`${API_BASE_URL}/api/certificates`, {
+    method: "POST",
+    headers: getHeaders(),
+    body: JSON.stringify({ grade: gNum, student_name: studentName, school_name: schoolName }),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+

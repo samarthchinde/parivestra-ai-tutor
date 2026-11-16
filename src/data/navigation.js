@@ -1,6 +1,7 @@
 import {
   Sparkles,
   BookOpen,
+  BookMarked,
   Bot,
   ClipboardCheck,
   Gamepad2,
@@ -13,6 +14,7 @@ import {
 
 export const navigation = [
   { label: "Home", path: "/", icon: Sparkles, mobileTab: true },
+  { label: "AI Workbooks", path: "/workbook", icon: BookMarked, mobileTab: true },
   { label: "Courses", path: "/courses", icon: BookOpen, mobileTab: true },
   { label: "AI Tutor", path: "/tutor", icon: Bot, mobileTab: true },
   { label: "Practice", path: "/practice", icon: ClipboardCheck, mobileTab: true },

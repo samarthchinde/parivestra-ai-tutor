@@ -1,85 +1,116 @@
 import React from "react";
 
 /**
- * Pari: Original, kid-friendly friendly owl mascot.
- * Moods: 'happy', 'thinking', 'cheering', 'sleepy', 'oops'
+ * Robot Mascot Pari: Official AI buddy for Parivestra AI & Future Skills.
+ * Parameterized by mood ('happy'|'idle', 'thinking', 'cheering', 'waving', 'sleepy', 'oops')
+ * and grade (3 to 10) / primary color.
  */
-export default function Mascot({ mood = "happy", size = 120, className = "", style = {} }) {
-  const getMoodElements = () => {
+export const GRADE_MASCOT_COLORS = {
+  3: { primary: "#F97316", secondary: "#0D9488", visor: "#0F172A", glow: "#FDE047" },
+  4: { primary: "#0284C7", secondary: "#F59E0B", visor: "#0F172A", glow: "#38BDF8" },
+  5: { primary: "#8B5CF6", secondary: "#EC4899", visor: "#0F172A", glow: "#F472B6" },
+  6: { primary: "#0E7490", secondary: "#EA580C", visor: "#0F172A", glow: "#FB923C" },
+  7: { primary: "#BE185D", secondary: "#3B82F6", visor: "#0F172A", glow: "#60A5FA" },
+  8: { primary: "#4338CA", secondary: "#D97706", visor: "#0F172A", glow: "#FBBF24" },
+  9: { primary: "#DC2626", secondary: "#0284C7", visor: "#0F172A", glow: "#38BDF8" },
+  10: { primary: "#1E293B", secondary: "#D97706", visor: "#0B0F17", glow: "#FBBF24" },
+};
+
+export default function Mascot({
+  mood = "happy",
+  grade = 3,
+  size = 120,
+  color = null,
+  className = "",
+  style = {},
+}) {
+  const gradeKey = typeof grade === "number" ? grade : parseInt(String(grade).replace(/\D/g, "") || "3", 10);
+  const theme = GRADE_MASCOT_COLORS[gradeKey] || GRADE_MASCOT_COLORS[3];
+  const primaryColor = color || theme.primary;
+  const secondaryColor = theme.secondary;
+  const glowColor = theme.glow;
+  const visorColor = theme.visor;
+
+  // Mood-specific facial expression and arm gestures
+  const renderMoodDetails = () => {
     switch (mood) {
       case "thinking":
         return (
           <>
-            {/* Thoughtful curved eyebrow & tilted glasses */}
-            <circle cx="48" cy="48" r="14" fill="#FFFFFF" stroke="#2B2D5B" strokeWidth="3" />
-            <circle cx="72" cy="48" r="14" fill="#FFFFFF" stroke="#2B2D5B" strokeWidth="3" />
-            <path d="M60 48 H62" stroke="#2B2D5B" strokeWidth="3" />
-            {/* Looking up-right */}
-            <circle cx="52" cy="44" r="5" fill="#2B2D5B" />
-            <circle cx="76" cy="44" r="5" fill="#2B2D5B" />
-            <circle cx="54" cy="42" r="2" fill="#FFFFFF" />
-            <circle cx="78" cy="42" r="2" fill="#FFFFFF" />
-            {/* Hand to chin / wing touching face */}
+            {/* Thoughtful digital eyes looking up-right */}
+            <circle cx="50" cy="46" r="6" fill={glowColor} />
+            <circle cx="70" cy="44" r="6" fill={glowColor} />
+            <circle cx="52" cy="44" r="2.5" fill="#FFFFFF" />
+            <circle cx="72" cy="42" r="2.5" fill="#FFFFFF" />
+            {/* Thoughtful curved mouth line */}
+            <path d="M56 55 Q60 58 64 55" stroke={glowColor} strokeWidth="3" strokeLinecap="round" fill="none" />
+            {/* Left arm bent scratching head/chin */}
             <path
-              d="M32 68 C36 58 44 62 48 66"
+              d="M32 78 C28 65 38 52 46 54"
               fill="none"
-              stroke="#E05B3A"
-              strokeWidth="5"
+              stroke={primaryColor}
+              strokeWidth="6"
               strokeLinecap="round"
             />
-            {/* Cute smile */}
-            <path d="M56 64 Q60 67 64 64" fill="none" stroke="#2B2D5B" strokeWidth="3" strokeLinecap="round" />
-            {/* Thought sparkles */}
-            <circle cx="86" cy="24" r="3" fill="#FFC93C" />
-            <circle cx="94" cy="18" r="4.5" fill="#FFC93C" />
+            {/* Right arm resting */}
+            <path d="M88 78 C94 86 92 94 88 98" fill="none" stroke={primaryColor} strokeWidth="6" strokeLinecap="round" />
+            {/* Thought bubbles */}
+            <circle cx="86" cy="24" r="3.5" fill={secondaryColor} opacity="0.9" />
+            <circle cx="94" cy="16" r="5" fill={secondaryColor} />
           </>
         );
 
       case "cheering":
         return (
           <>
-            {/* Big joyful curved eyes */}
-            <path d="M40 50 Q48 42 56 50" fill="none" stroke="#2B2D5B" strokeWidth="3.5" strokeLinecap="round" />
-            <path d="M64 50 Q72 42 80 50" fill="none" stroke="#2B2D5B" strokeWidth="3.5" strokeLinecap="round" />
-            {/* Open happy beak */}
-            <path d="M54 58 L66 58 L60 68 Z" fill="#FFB703" stroke="#2B2D5B" strokeWidth="2" />
-            {/* Wings held up high */}
-            <path
-              d="M30 65 C18 45 22 35 34 40"
-              fill="none"
-              stroke="#E05B3A"
-              strokeWidth="6"
-              strokeLinecap="round"
-            />
-            <path
-              d="M90 65 C102 45 98 35 86 40"
-              fill="none"
-              stroke="#E05B3A"
-              strokeWidth="6"
-              strokeLinecap="round"
-            />
-            {/* Celebration stars */}
-            <polygon points="20,24 22,29 27,29 23,32 25,37 20,34 16,37 18,32 14,29 19,29" fill="#FFC93C" />
-            <polygon points="100,24 102,29 107,29 103,32 105,37 100,34 96,37 98,32 94,29 99,29" fill="#FFC93C" />
+            {/* Joyful upside-down U eyes */}
+            <path d="M44 48 Q50 40 56 48" fill="none" stroke={glowColor} strokeWidth="4" strokeLinecap="round" />
+            <path d="M64 48 Q70 40 76 48" fill="none" stroke={glowColor} strokeWidth="4" strokeLinecap="round" />
+            {/* Open happy smile */}
+            <path d="M52 54 Q60 62 68 54" fill={glowColor} stroke={glowColor} strokeWidth="2" strokeLinecap="round" />
+            {/* Both arms raised cheering high! */}
+            <path d="M30 76 C16 60 22 42 32 46" fill="none" stroke={primaryColor} strokeWidth="6" strokeLinecap="round" />
+            <path d="M90 76 C104 60 98 42 88 46" fill="none" stroke={primaryColor} strokeWidth="6" strokeLinecap="round" />
+            {/* Star celebration sparkles */}
+            <polygon points="18,28 20,33 25,33 21,36 23,41 18,38 14,41 16,36 12,33 17,33" fill="#FBBF24" />
+            <polygon points="102,28 104,33 109,33 105,36 107,41 102,38 98,41 100,36 96,33 101,33" fill="#FBBF24" />
+          </>
+        );
+
+      case "waving":
+        return (
+          <>
+            {/* Bright friendly round eyes with twinkle */}
+            <circle cx="48" cy="46" r="6" fill={glowColor} />
+            <circle cx="72" cy="46" r="6" fill={glowColor} />
+            <circle cx="50" cy="44" r="2" fill="#FFFFFF" />
+            <circle cx="74" cy="44" r="2" fill="#FFFFFF" />
+            {/* Warm smile */}
+            <path d="M52 54 Q60 62 68 54" fill="none" stroke={glowColor} strokeWidth="3" strokeLinecap="round" />
+            {/* Right arm waving up high */}
+            <path d="M90 76 C104 60 102 44 94 40" fill="none" stroke={primaryColor} strokeWidth="6" strokeLinecap="round" />
+            <circle cx="94" cy="38" r="4" fill={secondaryColor} />
+            {/* Left arm resting */}
+            <path d="M30 76 C24 85 26 94 30 98" fill="none" stroke={primaryColor} strokeWidth="6" strokeLinecap="round" />
           </>
         );
 
       case "sleepy":
         return (
           <>
-            {/* Sleepy closed curved eyes */}
-            <path d="M42 50 Q48 55 54 50" fill="none" stroke="#2B2D5B" strokeWidth="3" strokeLinecap="round" />
-            <path d="M66 50 Q72 55 78 50" fill="none" stroke="#2B2D5B" strokeWidth="3" strokeLinecap="round" />
-            {/* Small resting beak */}
-            <polygon points="56,56 64,56 60,62" fill="#FFB703" />
-            {/* Wings folded warmly */}
-            <path d="M32 62 C30 75 40 82 45 80" fill="none" stroke="#E05B3A" strokeWidth="5" strokeLinecap="round" />
-            <path d="M88 62 C90 75 80 82 75 80" fill="none" stroke="#E05B3A" strokeWidth="5" strokeLinecap="round" />
+            {/* Sleepy downward curved eyes */}
+            <path d="M44 46 Q50 52 56 46" fill="none" stroke={glowColor} strokeWidth="3.5" strokeLinecap="round" />
+            <path d="M64 46 Q70 52 76 46" fill="none" stroke={glowColor} strokeWidth="3.5" strokeLinecap="round" />
+            {/* Small mouth */}
+            <line x1="56" y1="56" x2="64" y2="56" stroke={glowColor} strokeWidth="2.5" strokeLinecap="round" />
+            {/* Arms resting */}
+            <path d="M30 78 C28 88 36 94 42 92" fill="none" stroke={primaryColor} strokeWidth="6" strokeLinecap="round" />
+            <path d="M90 78 C92 88 84 94 78 92" fill="none" stroke={primaryColor} strokeWidth="6" strokeLinecap="round" />
             {/* Zzz text */}
-            <text x="84" y="28" fill="#8A63F2" fontSize="13" fontWeight="900" fontFamily="sans-serif">
+            <text x="86" y="28" fill={secondaryColor} fontSize="12" fontWeight="900" fontFamily="sans-serif">
               z
             </text>
-            <text x="94" y="20" fill="#8A63F2" fontSize="17" fontWeight="900" fontFamily="sans-serif">
+            <text x="96" y="20" fill={secondaryColor} fontSize="16" fontWeight="900" fontFamily="sans-serif">
               Z
             </text>
           </>
@@ -88,19 +119,16 @@ export default function Mascot({ mood = "happy", size = 120, className = "", sty
       case "oops":
         return (
           <>
-            {/* Wide surprised eyes */}
-            <circle cx="48" cy="48" r="12" fill="#FFFFFF" stroke="#2B2D5B" strokeWidth="3" />
-            <circle cx="72" cy="48" r="12" fill="#FFFFFF" stroke="#2B2D5B" strokeWidth="3" />
-            <circle cx="48" cy="48" r="4.5" fill="#2B2D5B" />
-            <circle cx="72" cy="48" r="4.5" fill="#2B2D5B" />
-            {/* Rosy blush */}
-            <ellipse cx="36" cy="56" rx="5" ry="3" fill="#FFB4A2" opacity="0.8" />
-            <ellipse cx="84" cy="56" rx="5" ry="3" fill="#FFB4A2" opacity="0.8" />
+            {/* Wide surprised circle eyes */}
+            <circle cx="48" cy="46" r="7.5" fill={glowColor} />
+            <circle cx="72" cy="46" r="7.5" fill={glowColor} />
+            <circle cx="48" cy="46" r="3" fill={visorColor} />
+            <circle cx="72" cy="46" r="3" fill={visorColor} />
             {/* Small 'o' mouth */}
-            <ellipse cx="60" cy="62" rx="4" ry="5" fill="#2B2D5B" />
-            {/* One wing on head */}
-            <path d="M34 68 C30 52 42 36 52 38" fill="none" stroke="#E05B3A" strokeWidth="5" strokeLinecap="round" />
-            <path d="M88 68 C90 75 82 82 76 80" fill="none" stroke="#E05B3A" strokeWidth="5" strokeLinecap="round" />
+            <ellipse cx="60" cy="56" rx="4" ry="5" fill="none" stroke={glowColor} strokeWidth="3" />
+            {/* Arms up to cheeks */}
+            <path d="M30 78 C26 68 34 60 40 62" fill="none" stroke={primaryColor} strokeWidth="6" strokeLinecap="round" />
+            <path d="M90 78 C94 68 86 60 80 62" fill="none" stroke={primaryColor} strokeWidth="6" strokeLinecap="round" />
           </>
         );
 
@@ -108,87 +136,106 @@ export default function Mascot({ mood = "happy", size = 120, className = "", sty
       default:
         return (
           <>
-            {/* Friendly wide eyes with shine */}
-            <circle cx="48" cy="48" r="13" fill="#FFFFFF" stroke="#2B2D5B" strokeWidth="3" />
-            <circle cx="72" cy="48" r="13" fill="#FFFFFF" stroke="#2B2D5B" strokeWidth="3" />
-            <circle cx="49" cy="48" r="6" fill="#2B2D5B" />
-            <circle cx="73" cy="48" r="6" fill="#2B2D5B" />
-            <circle cx="46" cy="45" r="2.5" fill="#FFFFFF" />
-            <circle cx="70" cy="45" r="2.5" fill="#FFFFFF" />
-            {/* Cute beak */}
-            <polygon points="55,56 65,56 60,65" fill="#FFB703" stroke="#2B2D5B" strokeWidth="1.5" />
-            {/* Cheerful wings */}
-            <path
-              d="M30 60 C26 72 36 82 44 80"
-              fill="none"
-              stroke="#E05B3A"
-              strokeWidth="5.5"
-              strokeLinecap="round"
-            />
-            <path
-              d="M90 60 C94 72 84 82 76 80"
-              fill="none"
-              stroke="#E05B3A"
-              strokeWidth="5.5"
-              strokeLinecap="round"
-            />
-            {/* Cheerful rosy cheeks */}
-            <ellipse cx="36" cy="56" rx="5" ry="3" fill="#FFB4A2" opacity="0.7" />
-            <ellipse cx="84" cy="56" rx="5" ry="3" fill="#FFB4A2" opacity="0.7" />
+            {/* Cheerful curved smiling eyes */}
+            <path d="M44 47 Q50 39 56 47" fill="none" stroke={glowColor} strokeWidth="4" strokeLinecap="round" />
+            <path d="M64 47 Q70 39 76 47" fill="none" stroke={glowColor} strokeWidth="4" strokeLinecap="round" />
+            {/* Cheerful open smile */}
+            <path d="M52 54 Q60 62 68 54" fill="none" stroke={glowColor} strokeWidth="3" strokeLinecap="round" />
+            {/* Arms relaxed at sides with friendly hands */}
+            <path d="M30 76 C24 85 26 95 32 98" fill="none" stroke={primaryColor} strokeWidth="6" strokeLinecap="round" />
+            <path d="M90 76 C96 85 94 95 88 98" fill="none" stroke={primaryColor} strokeWidth="6" strokeLinecap="round" />
           </>
         );
     }
   };
 
   return (
-    <div
-      className={`pari-mascot-wrapper ${className}`}
-      style={{
-        display: "inline-flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        ...style,
-      }}
-      role="img"
-      aria-label={`Pari the tutor owl (${mood})`}
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 120 120"
+      className={`mascot-pari-robot ${className}`}
+      style={{ overflow: "visible", display: "inline-block", ...style }}
+      aria-label={`Pari the Robot Mascot (${mood})`}
     >
-      <svg
-        width={size}
-        height={size}
-        viewBox="0 0 120 120"
+      <defs>
+        {/* Shadow filter */}
+        <filter id="pariShadow" x="-10%" y="-10%" width="120%" height="130%">
+          <feDropShadow dx="0" dy="4" stdDeviation="3" floodOpacity="0.15" />
+        </filter>
+        {/* Subtle metallic gradient */}
+        <linearGradient id="pariHeadGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.4" />
+          <stop offset="100%" stopColor="#000000" stopOpacity="0.08" />
+        </linearGradient>
+      </defs>
+
+      {/* --- ANTENNA --- */}
+      {/* Stem */}
+      <line x1="60" y1="26" x2="60" y2="15" stroke={primaryColor} strokeWidth="4" strokeLinecap="round" />
+      {/* Signal tip sphere */}
+      <circle cx="60" cy="13" r="5.5" fill={secondaryColor} />
+      <circle cx="60" cy="13" r="8" fill={secondaryColor} opacity="0.3" />
+
+      {/* --- EARS / AUDIO SENSORS --- */}
+      <rect x="23" y="40" width="7" height="14" rx="3.5" fill={secondaryColor} />
+      <rect x="90" y="40" width="7" height="14" rx="3.5" fill={secondaryColor} />
+
+      {/* --- ROBOT HEAD --- */}
+      <rect
+        x="28"
+        y="25"
+        width="64"
+        height="44"
+        rx="16"
+        fill={primaryColor}
+        filter="url(#pariShadow)"
+      />
+      {/* Head highlight overlay */}
+      <rect x="28" y="25" width="64" height="44" rx="16" fill="url(#pariHeadGrad)" />
+
+      {/* --- FACE SCREEN / VISOR --- */}
+      <rect
+        x="36"
+        y="32"
+        width="48"
+        height="30"
+        rx="9"
+        fill={visorColor}
+        stroke="#1E293B"
+        strokeWidth="1.5"
+      />
+
+      {/* --- ROBOT BODY --- */}
+      <path
+        d="M38 72 C38 68, 82 68, 82 72 L86 98 C86 104, 34 104, 34 98 Z"
+        fill={primaryColor}
+        filter="url(#pariShadow)"
+      />
+      <path
+        d="M38 72 C38 68, 82 68, 82 72 L86 98 C86 104, 34 104, 34 98 Z"
+        fill="url(#pariHeadGrad)"
+      />
+
+      {/* --- CHEST TICK / HEART BADGE --- */}
+      <circle cx="60" cy="85" r="9" fill="#FFFFFF" />
+      <circle cx="60" cy="85" r="7.5" fill={secondaryColor} />
+      {/* Checkmark in badge */}
+      <path
+        d="M56 85 L59 88 L65 82"
         fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        style={{
-          filter: "drop-shadow(0 6px 12px rgba(43,45,91,0.12))",
-          transition: "transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)",
-        }}
-      >
-        {/* Owl Ear Tufts */}
-        <polygon points="34,30 46,12 52,32" fill="#E05B3A" stroke="#2B2D5B" strokeWidth="3" />
-        <polygon points="86,30 74,12 68,32" fill="#E05B3A" stroke="#2B2D5B" strokeWidth="3" />
-        {/* Inner ear tufts */}
-        <polygon points="38,28 46,18 49,29" fill="#FF9E80" />
-        <polygon points="82,28 74,18 71,29" fill="#FF9E80" />
+        stroke="#FFFFFF"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
 
-        {/* Round Owl Body */}
-        <ellipse cx="60" cy="62" rx="38" ry="40" fill="#FF7A66" stroke="#2B2D5B" strokeWidth="3.5" />
+      {/* --- TREADS / FEET --- */}
+      <rect x="40" y="100" width="16" height="8" rx="4" fill="#334155" />
+      <rect x="64" y="100" width="16" height="8" rx="4" fill="#334155" />
 
-        {/* Soft Tummy Patch */}
-        <ellipse cx="60" cy="70" rx="26" ry="24" fill="#FFF9F0" />
-        {/* Feather marks on tummy */}
-        <path d="M52 68 Q56 71 60 68" fill="none" stroke="#FFC93C" strokeWidth="2.5" strokeLinecap="round" />
-        <path d="M60 68 Q64 71 68 68" fill="none" stroke="#FFC93C" strokeWidth="2.5" strokeLinecap="round" />
-        <path d="M56 75 Q60 78 64 75" fill="none" stroke="#FFC93C" strokeWidth="2.5" strokeLinecap="round" />
-
-        {/* Mood-Specific Face and Wings */}
-        {getMoodElements()}
-
-        {/* Cute Feet */}
-        <ellipse cx="48" cy="100" rx="6" ry="3.5" fill="#FFB703" stroke="#2B2D5B" strokeWidth="2" />
-        <ellipse cx="72" cy="100" rx="6" ry="3.5" fill="#FFB703" stroke="#2B2D5B" strokeWidth="2" />
-      </svg>
-    </div>
+      {/* --- MOOD DETAILS (Eyes, Mouth, Arms) --- */}
+      {renderMoodDetails()}
+    </svg>
   );
 }
-

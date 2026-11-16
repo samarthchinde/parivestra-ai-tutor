@@ -75,6 +75,39 @@
   --shadow-button: 0 6px 0 rgba(43, 45, 91, 0.15);
   --shadow-button-primary: 0 6px 0 #2E6BCE;
 
+  /* Official Parivestra AI Workbook Grade Tokens */
+  --grade-3-primary: #F97316;
+  --grade-3-secondary: #0D9488;
+  --grade-3-bg: #FFF7ED;
+
+  --grade-4-primary: #0284C7;
+  --grade-4-secondary: #F59E0B;
+  --grade-4-bg: #F0F9FF;
+
+  --grade-5-primary: #8B5CF6;
+  --grade-5-secondary: #EC4899;
+  --grade-5-bg: #F5F3FF;
+
+  --grade-6-primary: #0E7490;
+  --grade-6-secondary: #EA580C;
+  --grade-6-bg: #ECFEFF;
+
+  --grade-7-primary: #BE185D;
+  --grade-7-secondary: #3B82F6;
+  --grade-7-bg: #FDF2F8;
+
+  --grade-8-primary: #4338CA;
+  --grade-8-secondary: #D97706;
+  --grade-8-bg: #EEF2FF;
+
+  --grade-9-primary: #DC2626;
+  --grade-9-secondary: #0284C7;
+  --grade-9-bg: #FEF2F2;
+
+  --grade-10-primary: #1E293B;
+  --grade-10-secondary: #D97706;
+  --grade-10-bg: #F8FAFC;
+
   /* Motion */
   --transition-fast: 150ms ease;
   --transition-normal: 250ms cubic-bezier(0.34, 1.56, 0.64, 1);

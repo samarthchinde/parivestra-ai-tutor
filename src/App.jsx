@@ -14,6 +14,11 @@ import Games from "./pages/Games";
 import Videos from "./pages/Videos";
 import StoryPlayer from "./pages/StoryPlayer";
 import GrownUps from "./pages/GrownUps";
+import WorkbookHome from "./pages/WorkbookHome";
+import WorkbookUnit from "./pages/WorkbookUnit";
+import WordBank from "./pages/WordBank";
+import CertificateView from "./pages/CertificateView";
+import FinalProjectView from "./pages/FinalProjectView";
 
 export default function App() {
   return (
@@ -21,6 +26,14 @@ export default function App() {
       <Route element={<AppLayout />}>
         {/* Child Learning Portal Routes */}
         <Route index element={<Dashboard />} />
+        
+        {/* Official Parivestra AI Workbooks */}
+        <Route path="workbook" element={<WorkbookHome />} />
+        <Route path="workbook/:grade/unit/:unitNumber" element={<WorkbookUnit />} />
+        <Route path="workbook/word-bank" element={<WordBank />} />
+        <Route path="workbook/certificate" element={<CertificateView />} />
+        <Route path="workbook/:grade/project" element={<FinalProjectView />} />
+
         <Route path="courses" element={<Courses />} />
         <Route path="courses/:id" element={<CourseDetail />} />
         <Route path="courses/:id/lessons/:lessonId" element={<LessonPlayer />} />
