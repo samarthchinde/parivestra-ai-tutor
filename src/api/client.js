@@ -494,4 +494,30 @@ export async function issueWorkbookCertificate(grade, studentName, schoolName = 
   return await res.json();
 }
 
+export async function getTeacherWorkbookProjects() {
+  const res = await fetch(`${API_BASE_URL}/api/teacher/workbooks/projects`, {
+    headers: getHeaders("application/json", true),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function reviewTeacherWorkbookProject(projectId, score, feedback) {
+  const res = await fetch(`${API_BASE_URL}/api/teacher/workbooks/projects/${projectId}/review`, {
+    method: "POST",
+    headers: getHeaders("application/json", true),
+    body: JSON.stringify({ score, feedback }),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function getWorkbookPacing() {
+  const res = await fetch(`${API_BASE_URL}/api/teacher/workbooks/pacing`, {
+    headers: getHeaders(),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { PageHeader, Card, PrimaryButton, Badge, Toast } from "../components/UI";
-import { checkHealth, verifyGrownUpsPin, setGrownUpsPin, getAdminQueue, approveContent, generateCourseDraft, resetUserProfile } from "../api/client";
-import { ShieldCheck, Lock, Key, Server, CheckCircle2, AlertTriangle, RefreshCw, Upload, Sparkles, BookOpen } from "lucide-react";
+import { checkHealth, verifyGrownUpsPin, setGrownUpsPin, getAdminQueue, approveContent, generateCourseDraft, resetUserProfile, getTeacherWorkbookProjects, reviewTeacherWorkbookProject, getWorkbookPacing } from "../api/client";
+import { ShieldCheck, Lock, Key, Server, CheckCircle2, AlertTriangle, RefreshCw, Upload, Sparkles, BookOpen, BookMarked, Award, FolderGit2 } from "lucide-react";
 import { playSuccess, playClick } from "../utils/sound";
 
 export default function GrownUps() {
@@ -19,6 +19,12 @@ export default function GrownUps() {
   const [queue, setQueue] = useState({ courses: [], stories: [], safety_incidents: [] });
   const [loadingQueue, setLoadingQueue] = useState(false);
   const [newPin, setNewPin] = useState("");
+
+  // AI Workbooks Teacher State
+  const [wbProjects, setWbProjects] = useState([]);
+  const [pacingInfo, setPacingInfo] = useState(null);
+  const [reviewScores, setReviewScores] = useState({});
+  const [reviewFeedbacks, setReviewFeedbacks] = useState({});
 
   // Accessibility Toggles
   const [dyslexicFont, setDyslexicFont] = useState(
@@ -48,6 +54,10 @@ export default function GrownUps() {
     try {
       const q = await getAdminQueue();
       if (q) setQueue(q);
+      const projs = await getTeacherWorkbookProjects();
+      if (projs) setWbProjects(projs);
+      const pacing = await getWorkbookPacing();
+      if (pacing) setPacingInfo(pacing);
     } catch (e) {
       console.warn("Could not load admin queue:", e);
     } finally {
@@ -100,6 +110,19 @@ export default function GrownUps() {
       loadHealthAndQueue();
     } catch (e) {
       setToast(`Approval error: ${e.message}`);
+    }
+  };
+
+  const handleReviewProject = async (projectId) => {
+    const score = reviewScores[projectId] !== undefined ? reviewScores[projectId] : 100;
+    const feedback = reviewFeedbacks[projectId] || "Great job on your AI workbook capstone project!";
+    try {
+      await reviewTeacherWorkbookProject(projectId, score, feedback);
+      playSuccess();
+      setToast(`Reviewed & approved project #${projectId}!`);
+      setWbProjects((prev) => prev.filter((p) => p.id !== projectId));
+    } catch (e) {
+      setToast(`Error: ${e.message}`);
     }
   };
 
@@ -406,6 +429,120 @@ export default function GrownUps() {
         ) : (
           <div style={{ padding: "12px 0", color: "var(--text-muted)", fontSize: 14 }}>
             ✓ No safety concerns or distress incidents detected.
+          </div>
+        )}
+      </Card>
+
+      {/* Official AI Workbooks: Teacher Guides, Pacing & Project Review */}
+      <Card title="Official AI Workbooks: Teacher Guides & Project Review Queue" icon={BookMarked}>
+        {/* Pacing Guidelines */}
+        <div
+          style={{
+            background: "#FFF7ED",
+            border: "1.5px solid #FDBA74",
+            borderRadius: "var(--radius-md)",
+            padding: "16px",
+            marginBottom: "20px",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "8px" }}>
+            <Sparkles size={18} color="#EA580C" />
+            <strong style={{ fontSize: "15px", color: "#9A3412" }}>
+              Curriculum Unit Pacing (Grades 3 to 10)
+            </strong>
+          </div>
+          <p style={{ margin: "0 0 8px", fontSize: "13.5px", color: "#7C2D12", lineHeight: "1.5" }}>
+            • <strong>Pacing:</strong> 2 lessons of 40 minutes per unit (16 lessons per grade).
+          </p>
+          <p style={{ margin: "0 0 8px", fontSize: "13.5px", color: "#7C2D12", lineHeight: "1.5" }}>
+            • <strong>Lesson 1 (40 min):</strong> Guided reading of "Let's learn", 3 New Words, Did you know? fact, and partner Think & talk dialogue.
+          </p>
+          <p style={{ margin: "0 0 8px", fontSize: "13.5px", color: "#7C2D12", lineHeight: "1.5" }}>
+            • <strong>Lesson 2 (40 min):</strong> Hands-on Activity 1 & Activity 2, student reflection, and "I can" 3-star self-check.
+          </p>
+          <p style={{ margin: 0, fontSize: "13px", color: "#9A3412", fontStyle: "italic" }}>
+            Materials: Unplugged activities require only pencil and paper/colors. Zero additional hardware required.
+          </p>
+        </div>
+
+        {/* Project Submissions Queue */}
+        <h4 style={{ margin: "0 0 10px", fontSize: "15px", color: "var(--text-main)" }}>
+          Student Capstone Submissions Needing Teacher Review ({wbProjects.length})
+        </h4>
+
+        {wbProjects.length === 0 ? (
+          <p style={{ fontSize: "14px", color: "var(--text-muted)" }}>
+            ✓ No student projects pending review.
+          </p>
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+            {wbProjects.map((proj) => (
+              <div
+                key={proj.id}
+                style={{
+                  background: "#F8FAFC",
+                  border: "1.5px solid #CBD5E1",
+                  borderRadius: "var(--radius-md)",
+                  padding: "16px",
+                }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                    <strong>{proj.student_name}</strong>
+                    <Badge variant="warning">Grade {proj.grade}</Badge>
+                    <Badge>{proj.project_title}</Badge>
+                  </div>
+                  <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>
+                    Submitted: {new Date(proj.submitted_at).toLocaleDateString()}
+                  </span>
+                </div>
+
+                {/* Form fields summary */}
+                <div
+                  style={{
+                    background: "#FFFFFF",
+                    padding: "10px 14px",
+                    borderRadius: "8px",
+                    border: "1px solid #E2E8F0",
+                    fontSize: "13px",
+                    marginBottom: "12px",
+                  }}
+                >
+                  {Object.entries(proj.fields).map(([k, v]) => (
+                    <div key={k} style={{ marginBottom: "4px" }}>
+                      <strong>{k.replace(/_/g, " ")}:</strong> {String(v)}
+                    </div>
+                  ))}
+                </div>
+
+                {/* Grading inputs */}
+                <div style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
+                  <input
+                    type="number"
+                    min="0"
+                    max="100"
+                    placeholder="Score (0-100)"
+                    value={reviewScores[proj.id] !== undefined ? reviewScores[proj.id] : 100}
+                    onChange={(e) =>
+                      setReviewScores({ ...reviewScores, [proj.id]: parseInt(e.target.value, 10) })
+                    }
+                    style={{ width: "110px", padding: "6px 10px", borderRadius: "6px", border: "1px solid #CBD5E1" }}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Teacher feedback (encouraging note)..."
+                    value={reviewFeedbacks[proj.id] || ""}
+                    onChange={(e) =>
+                      setReviewFeedbacks({ ...reviewFeedbacks, [proj.id]: e.target.value })
+                    }
+                    style={{ flex: 1, padding: "6px 10px", borderRadius: "6px", border: "1px solid #CBD5E1" }}
+                  />
+                  <PrimaryButton size="sm" onClick={() => handleReviewProject(proj.id)}>
+                    Approve & Award XP ✓
+                  </PrimaryButton>
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </Card>

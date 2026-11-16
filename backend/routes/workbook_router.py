@@ -848,3 +848,75 @@ def issue_certificate(
         "xp_earned": xp_awarded,
         "user_xp": user.xp,
     }
+
+
+# ---------------------------------------------------------
+# 9. Teacher Tools & Pacing Endpoints
+# ---------------------------------------------------------
+class ProjectReviewRequest(BaseModel):
+    score: int = Field(default=100, ge=0, le=100)
+    feedback: str = "Excellent work on your AI capstone project!"
+
+
+@router.get("/teacher/workbooks/projects")
+def get_teacher_project_queue(db: Session = Depends(get_db)):
+    """Returns submitted capstone projects requiring teacher review."""
+    projects = db.query(ProjectEntry).filter(ProjectEntry.status == "submitted").all()
+    res = []
+    for p in projects:
+        u = db.query(User).filter(User.id == p.user_id).first()
+        res.append({
+            "id": p.id,
+            "grade": p.grade,
+            "project_title": p.project_title,
+            "student_id": p.user_id,
+            "student_name": u.display_name if u else "Student",
+            "fields": json.loads(p.fields_json) if p.fields_json else {},
+            "submitted_at": p.submitted_at.isoformat() if p.submitted_at else None,
+        })
+    return res
+
+
+@router.post("/teacher/workbooks/projects/{project_id}/review")
+def review_teacher_project(
+    project_id: int,
+    req: ProjectReviewRequest,
+    db: Session = Depends(get_db),
+):
+    """Teacher approves student project and provides score & feedback."""
+    project = db.query(ProjectEntry).filter(ProjectEntry.id == project_id).first()
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+
+    project.status = "approved"
+    project.score = req.score
+    project.feedback = req.feedback
+    db.commit()
+
+    return {"status": "approved", "project_id": project_id, "score": req.score}
+
+
+@router.get("/teacher/workbooks/pacing")
+def get_workbook_pacing():
+    """Returns official unit pacing guidelines and discussion tips across all 8 grades."""
+    return {
+        "pacing_overview": {
+            "lessons_per_unit": 2,
+            "minutes_per_lesson": 40,
+            "lesson_1_structure": "Read 'Let's Learn' together, discuss 3 New Words, explore Did you know? bubble, and conduct Think & Talk partner dialogue (40 min).",
+            "lesson_2_structure": "Hands-on Activity 1 & Activity 2, followed by student reflection and 'I can' 3-star self assessment (40 min).",
+            "materials_needed": "Unplugged activities require only pencil and paper/colors. Digital activities run smoothly in browser."
+        },
+        "grades": [
+            {
+                "grade": g,
+                "title": GRADE_META[g]["edition_title"],
+                "tagline": GRADE_META[g]["tagline"],
+                "units_count": 8,
+                "total_lessons": 16,
+                "project_time": "2 to 3 lessons of 40 minutes"
+            }
+            for g in range(3, 11)
+        ]
+    }
+
