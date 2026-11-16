@@ -410,7 +410,7 @@ function renderProjectTemplateFields(grade, fields, onChange, disabled, theme) {
           </div>
           <div>
             <label style={{ display: "block", fontWeight: "800", marginBottom: "0.4rem" }}>
-              3. Script: Questions and Bot Replies
+              3. Script: Questions and Bot Replies (4 dialog pairs)
             </label>
             <textarea
               disabled={disabled}
@@ -418,6 +418,373 @@ function renderProjectTemplateFields(grade, fields, onChange, disabled, theme) {
               onChange={(e) => onChange("dialog_script", e.target.value)}
               placeholder="User asks: When is library day?&#10;Bot replies: Library day is every Thursday!&#10;User asks: How do I renew my book?&#10;Bot replies: Bring your book to Mrs. Sharma at the desk."
               rows={5}
+              style={inputStyle}
+            />
+          </div>
+          <div>
+            <label style={{ display: "block", fontWeight: "800", marginBottom: "0.4rem" }}>
+              4. A Decision Tree for one tricky question
+            </label>
+            <input
+              type="text"
+              disabled={disabled}
+              value={fields.decision_tree || ""}
+              onChange={(e) => onChange("decision_tree", e.target.value)}
+              placeholder="e.g. Is book overdue? Yes -> Ask teacher. No -> Renew for 7 days."
+              style={inputStyle}
+            />
+          </div>
+        </>
+      );
+
+    case 5: // AI for Good
+      return (
+        <>
+          <div>
+            <label style={{ display: "block", fontWeight: "800", marginBottom: "0.4rem" }}>1. The Problem</label>
+            <input
+              type="text"
+              disabled={disabled}
+              value={fields.problem || ""}
+              onChange={(e) => onChange("problem", e.target.value)}
+              placeholder="e.g. Food waste in school canteen"
+              style={inputStyle}
+            />
+          </div>
+          <div>
+            <label style={{ display: "block", fontWeight: "800", marginBottom: "0.4rem" }}>2. Who it helps</label>
+            <input
+              type="text"
+              disabled={disabled}
+              value={fields.who_helps || ""}
+              onChange={(e) => onChange("who_helps", e.target.value)}
+              placeholder="Students, canteen staff, and community"
+              style={inputStyle}
+            />
+          </div>
+          <div>
+            <label style={{ display: "block", fontWeight: "800", marginBottom: "0.4rem" }}>3. What data the AI needs</label>
+            <input
+              type="text"
+              disabled={disabled}
+              value={fields.data_needed || ""}
+              onChange={(e) => onChange("data_needed", e.target.value)}
+              placeholder="Attendance, menu, leftover food logs"
+              style={inputStyle}
+            />
+          </div>
+          <div>
+            <label style={{ display: "block", fontWeight: "800", marginBottom: "0.4rem" }}>4. How the AI helps</label>
+            <textarea
+              disabled={disabled}
+              value={fields.how_helps || ""}
+              onChange={(e) => onChange("how_helps", e.target.value)}
+              placeholder="Predicts how much meal to prepare each day"
+              rows={3}
+              style={inputStyle}
+            />
+          </div>
+          <div>
+            <label style={{ display: "block", fontWeight: "800", marginBottom: "0.4rem" }}>5. Fairness check: Who might it leave out?</label>
+            <input
+              type="text"
+              disabled={disabled}
+              value={fields.fairness_check || ""}
+              onChange={(e) => onChange("fairness_check", e.target.value)}
+              placeholder="Special dietary needs or absent students"
+              style={inputStyle}
+            />
+          </div>
+          <div>
+            <label style={{ display: "block", fontWeight: "800", marginBottom: "0.4rem" }}>6. Test: What did a friend say?</label>
+            <input
+              type="text"
+              disabled={disabled}
+              value={fields.friend_test || ""}
+              onChange={(e) => onChange("friend_test", e.target.value)}
+              placeholder="My friend suggested adding snack estimates too!"
+              style={inputStyle}
+            />
+          </div>
+        </>
+      );
+
+    case 6: // Smart School Problem Canvas
+      return (
+        <>
+          <div>
+            <label style={{ display: "block", fontWeight: "800", marginBottom: "0.4rem" }}>Problem Title</label>
+            <input
+              type="text"
+              disabled={disabled}
+              value={fields.problem_title || ""}
+              onChange={(e) => onChange("problem_title", e.target.value)}
+              placeholder="e.g. Long canteen queues at break time"
+              style={inputStyle}
+            />
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            <div>
+              <label style={{ display: "block", fontWeight: "800", marginBottom: "0.4rem" }}>Who has the problem?</label>
+              <input
+                type="text"
+                disabled={disabled}
+                value={fields.who || ""}
+                onChange={(e) => onChange("who", e.target.value)}
+                placeholder="Students and staff"
+                style={inputStyle}
+              />
+            </div>
+            <div>
+              <label style={{ display: "block", fontWeight: "800", marginBottom: "0.4rem" }}>Where does it happen?</label>
+              <input
+                type="text"
+                disabled={disabled}
+                value={fields.where || ""}
+                onChange={(e) => onChange("where", e.target.value)}
+                placeholder="School canteen during 20-min lunch"
+                style={inputStyle}
+              />
+            </div>
+          </div>
+          <div>
+            <label style={{ display: "block", fontWeight: "800", marginBottom: "0.4rem" }}>What is the problem?</label>
+            <textarea
+              disabled={disabled}
+              value={fields.what || ""}
+              onChange={(e) => onChange("what", e.target.value)}
+              placeholder="Queue takes 15 minutes, leaving only 5 minutes to eat"
+              rows={3}
+              style={inputStyle}
+            />
+          </div>
+          <div>
+            <label style={{ display: "block", fontWeight: "800", marginBottom: "0.4rem" }}>Why does solving it matter?</label>
+            <textarea
+              disabled={disabled}
+              value={fields.why || ""}
+              onChange={(e) => onChange("why", e.target.value)}
+              placeholder="Healthier eating, less stress, punctual return to classes"
+              rows={3}
+              style={inputStyle}
+            />
+          </div>
+        </>
+      );
+
+    case 7: // Paper Sentiment Detector
+      return (
+        <>
+          <div>
+            <label style={{ display: "block", fontWeight: "800", marginBottom: "0.4rem" }}>List 5 Positive Words</label>
+            <input
+              type="text"
+              disabled={disabled}
+              value={fields.pos_words || ""}
+              onChange={(e) => onChange("pos_words", e.target.value)}
+              placeholder="great, awesome, easy, fast, helpful"
+              style={inputStyle}
+            />
+          </div>
+          <div>
+            <label style={{ display: "block", fontWeight: "800", marginBottom: "0.4rem" }}>List 5 Negative Words</label>
+            <input
+              type="text"
+              disabled={disabled}
+              value={fields.neg_words || ""}
+              onChange={(e) => onChange("neg_words", e.target.value)}
+              placeholder="slow, confusing, broken, laggy, hard"
+              style={inputStyle}
+            />
+          </div>
+          <div>
+            <label style={{ display: "block", fontWeight: "800", marginBottom: "0.4rem" }}>
+              Your Rule: How will you decide positive, negative or neutral?
+            </label>
+            <textarea
+              disabled={disabled}
+              value={fields.rule || ""}
+              onChange={(e) => onChange("rule", e.target.value)}
+              placeholder="Count pos and neg words. If pos > neg: Positive. If neg > pos: Negative. If equal: Neutral."
+              rows={3}
+              style={inputStyle}
+            />
+          </div>
+          <div>
+            <label style={{ display: "block", fontWeight: "800", marginBottom: "0.4rem" }}>
+              Test it on 4 real reviews (Review &rarr; Prediction &rarr; Correct?)
+            </label>
+            <textarea
+              disabled={disabled}
+              value={fields.test_reviews || ""}
+              onChange={(e) => onChange("test_reviews", e.target.value)}
+              placeholder="1. 'The app is very fast and helpful' -> Pos (Correct)&#10;2. 'Laggy and crashes' -> Neg (Correct)"
+              rows={4}
+              style={inputStyle}
+            />
+          </div>
+        </>
+      );
+
+    case 8: // Predict and Evaluate
+      return (
+        <>
+          <div>
+            <label style={{ display: "block", fontWeight: "800", marginBottom: "0.4rem" }}>
+              Task: What will your model predict?
+            </label>
+            <input
+              type="text"
+              disabled={disabled}
+              value={fields.task || ""}
+              onChange={(e) => onChange("task", e.target.value)}
+              placeholder="e.g. Will the canteen run out of samosas?"
+              style={inputStyle}
+            />
+          </div>
+          <div>
+            <label style={{ display: "block", fontWeight: "800", marginBottom: "0.4rem" }}>Features (inputs)</label>
+            <input
+              type="text"
+              disabled={disabled}
+              value={fields.features || ""}
+              onChange={(e) => onChange("features", e.target.value)}
+              placeholder="Temperature, day of week, rain, special event"
+              style={inputStyle}
+            />
+          </div>
+          <div>
+            <label style={{ display: "block", fontWeight: "800", marginBottom: "0.4rem" }}>Label (output) & classes</label>
+            <input
+              type="text"
+              disabled={disabled}
+              value={fields.labels || ""}
+              onChange={(e) => onChange("labels", e.target.value)}
+              placeholder="RunOut: Yes or No"
+              style={inputStyle}
+            />
+          </div>
+          <div>
+            <label style={{ display: "block", fontWeight: "800", marginBottom: "0.4rem" }}>
+              Confusion Matrix & Accuracy (TP, FN, FP, TN)
+            </label>
+            <input
+              type="text"
+              disabled={disabled}
+              value={fields.confusion_matrix || ""}
+              onChange={(e) => onChange("confusion_matrix", e.target.value)}
+              placeholder="TP=8, FN=2, FP=1, TN=9 -> Accuracy = (8+9)/(20) = 85%"
+              style={inputStyle}
+            />
+          </div>
+        </>
+      );
+
+    case 9: // Data-to-Insight Report
+      return (
+        <>
+          <div>
+            <label style={{ display: "block", fontWeight: "800", marginBottom: "0.4rem" }}>Question you want to answer</label>
+            <input
+              type="text"
+              disabled={disabled}
+              value={fields.research_question || ""}
+              onChange={(e) => onChange("research_question", e.target.value)}
+              placeholder="e.g. Does student study time correlate with quiz score?"
+              style={inputStyle}
+            />
+          </div>
+          <div>
+            <label style={{ display: "block", fontWeight: "800", marginBottom: "0.4rem" }}>Data collected & Cleaning steps</label>
+            <textarea
+              disabled={disabled}
+              value={fields.data_cleaning || ""}
+              onChange={(e) => onChange("data_cleaning", e.target.value)}
+              placeholder="Collected 50 anonymous surveys. Handled missing values by dropping nulls."
+              rows={3}
+              style={inputStyle}
+            />
+          </div>
+          <div>
+            <label style={{ display: "block", fontWeight: "800", marginBottom: "0.4rem" }}>Key Statistics (Mean, Median, Spread)</label>
+            <input
+              type="text"
+              disabled={disabled}
+              value={fields.statistics || ""}
+              onChange={(e) => onChange("statistics", e.target.value)}
+              placeholder="Mean study time = 45 min, Median = 40 min, Std = 15 min"
+              style={inputStyle}
+            />
+          </div>
+          <div>
+            <label style={{ display: "block", fontWeight: "800", marginBottom: "0.4rem" }}>Insight & One Limitation</label>
+            <textarea
+              disabled={disabled}
+              value={fields.insights || ""}
+              onChange={(e) => onChange("insights", e.target.value)}
+              placeholder="Positive correlation observed. Limitation: sample size was restricted to one class section."
+              rows={3}
+              style={inputStyle}
+            />
+          </div>
+        </>
+      );
+
+    case 10: // Capstone: AI Solution Pitch
+      return (
+        <>
+          <div>
+            <label style={{ display: "block", fontWeight: "800", marginBottom: "0.4rem" }}>Problem & Users</label>
+            <input
+              type="text"
+              disabled={disabled}
+              value={fields.problem_users || ""}
+              onChange={(e) => onChange("problem_users", e.target.value)}
+              placeholder="Early detection of crop pest damage for regional organic farmers"
+              style={inputStyle}
+            />
+          </div>
+          <div>
+            <label style={{ display: "block", fontWeight: "800", marginBottom: "0.4rem" }}>Data: Source, size & consent</label>
+            <input
+              type="text"
+              disabled={disabled}
+              value={fields.data_consent || ""}
+              onChange={(e) => onChange("data_consent", e.target.value)}
+              placeholder="3,000 labeled leaf images with consent from agricultural cooperative"
+              style={inputStyle}
+            />
+          </div>
+          <div>
+            <label style={{ display: "block", fontWeight: "800", marginBottom: "0.4rem" }}>Model Approach & Metric Target</label>
+            <input
+              type="text"
+              disabled={disabled}
+              value={fields.model_metrics || ""}
+              onChange={(e) => onChange("model_metrics", e.target.value)}
+              placeholder="Convolutional Neural Network (MobileNet) with target Recall >= 0.92"
+              style={inputStyle}
+            />
+          </div>
+          <div>
+            <label style={{ display: "block", fontWeight: "800", marginBottom: "0.4rem" }}>Responsible AI & Governance</label>
+            <textarea
+              disabled={disabled}
+              value={fields.governance || ""}
+              onChange={(e) => onChange("governance", e.target.value)}
+              placeholder="Offline mobile deployment to protect farm location privacy; human-in-the-loop expert review for uncertain cases."
+              rows={3}
+              style={inputStyle}
+            />
+          </div>
+          <div>
+            <label style={{ display: "block", fontWeight: "800", marginBottom: "0.4rem" }}>30-Second Pitch Line</label>
+            <input
+              type="text"
+              disabled={disabled}
+              value={fields.pitch_line || ""}
+              onChange={(e) => onChange("pitch_line", e.target.value)}
+              placeholder="An offline smartphone AI that spots crop diseases in seconds, saving 30% of harvest."
               style={inputStyle}
             />
           </div>
