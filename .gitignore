@@ -1,6 +1,5 @@
-node_modules/
+.vscode/
+*.db
+*.log
 __pycache__/
-*.pyc
-.venv/
 .env
-.vite/
