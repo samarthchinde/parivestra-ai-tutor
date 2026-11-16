@@ -267,8 +267,7 @@ class BM25Retriever(BaseRetriever):
                         # De-boost other grade chunks
                         adj_score *= 0.7
 
-            if adj_score >= min_score:
-                filtered.append((chunk, adj_score))
+            filtered.append((chunk, adj_score))
 
         # Sort descending by score
         filtered.sort(key=lambda x: x[1], reverse=True)
