@@ -1,0 +1,123 @@
+[
+  {
+    "id": "wb_misc_01",
+    "grade": 3,
+    "topic": "AI vs Machine",
+    "wrong_belief": "AI is magic or a living creature like an animal.",
+    "correction": "AI is not magic and it is not alive. People build AI with computers and teach it using examples and steps.",
+    "citation": "Grade 3 · Unit 1 · Smart or Not? · p.4"
+  },
+  {
+    "id": "wb_misc_02",
+    "grade": 3,
+    "topic": "Smart Machines",
+    "wrong_belief": "Any machine with a battery or motor, like a ceiling fan or toy car, uses AI.",
+    "correction": "Machines like fans and battery toy cars only repeat the same mechanical motion. AI machines notice information from sensors and learn or decide.",
+    "citation": "Grade 3 · Unit 1 · Smart or Not? · p.4"
+  },
+  {
+    "id": "wb_misc_03",
+    "grade": 3,
+    "topic": "Sensors",
+    "wrong_belief": "Computers have human eyes and ears inside them.",
+    "correction": "Computers use electronic sensors. Cameras act like eyes, microphones like ears, and touchscreens like skin.",
+    "citation": "Grade 3 · Unit 2 · How Machines Sense · p.6"
+  },
+  {
+    "id": "wb_misc_04",
+    "grade": 4,
+    "topic": "Rules vs Learning",
+    "wrong_belief": "AI programs always need humans to write a separate rule for every single dog or cat picture.",
+    "correction": "Rule-based machines need explicit rules, but machine learning allows computers to find features on their own from many training examples.",
+    "citation": "Grade 4 · Unit 1 · Rules or Learning? · p.4"
+  },
+  {
+    "id": "wb_misc_05",
+    "grade": 4,
+    "topic": "Data & Training",
+    "wrong_belief": "If an AI makes a mistake, it means the computer is broken.",
+    "correction": "AI mistakes usually happen because the training data was too small, missing examples, or biased.",
+    "citation": "Grade 4 · Unit 7 · When AI Gets It Wrong · p.16"
+  },
+  {
+    "id": "wb_misc_06",
+    "grade": 5,
+    "topic": "Computer Vision",
+    "wrong_belief": "A computer sees an image the same way a human sees people and shapes.",
+    "correction": "A computer only sees a grid of numbers representing pixels and color intensities. It detects edges and features mathematically.",
+    "citation": "Grade 5 · Unit 4 · Computer Vision · p.10"
+  },
+  {
+    "id": "wb_misc_07",
+    "grade": 5,
+    "topic": "Fact or Fake",
+    "wrong_belief": "If a video or photo looks real on the internet, it must be real.",
+    "correction": "Generative AI can create realistic deepfakes. Always verify with the STOP framework (Source, Think, Other sources, Pause).",
+    "citation": "Grade 5 · Unit 7 · Fact or Fake? · p.16"
+  },
+  {
+    "id": "wb_misc_08",
+    "grade": 6,
+    "topic": "Narrow AI vs AGI",
+    "wrong_belief": "AI systems can understand everything about the world like humans do.",
+    "correction": "Current AI is Narrow AI (ANI) trained on specific domains and tasks. It does not have general human intelligence or feelings.",
+    "citation": "Grade 6 · Unit 1 · What Makes AI Intelligent? · p.4"
+  },
+  {
+    "id": "wb_misc_09",
+    "grade": 6,
+    "topic": "Data Bias",
+    "wrong_belief": "Computers are completely unbiased and objective by nature.",
+    "correction": "If training data contains historical human biases or misses certain groups, the AI model will learn and repeat that bias.",
+    "citation": "Grade 6 · Unit 8 · AI Ethics: Privacy and Bias · p.18"
+  },
+  {
+    "id": "wb_misc_10",
+    "grade": 7,
+    "topic": "NLP & Language",
+    "wrong_belief": "Chatbots understand the true meaning and feelings of words when they reply.",
+    "correction": "Chatbots perform tokenisation and statistical prediction of the most likely next tokens based on language patterns, without human consciousness.",
+    "citation": "Grade 7 · Unit 2 · Natural Language Processing · p.6"
+  },
+  {
+    "id": "wb_misc_11",
+    "grade": 7,
+    "topic": "Machine Learning Types",
+    "wrong_belief": "Supervised and unsupervised learning are the exact same thing.",
+    "correction": "Supervised learning uses labeled data with inputs and known target answers. Unsupervised learning finds natural clusters in unlabeled data.",
+    "citation": "Grade 7 · Unit 4 · Supervised vs Unsupervised · p.10"
+  },
+  {
+    "id": "wb_misc_12",
+    "grade": 8,
+    "topic": "Model Evaluation",
+    "wrong_belief": "Accuracy is the only metric you need to know if a machine learning model is good.",
+    "correction": "When classes are imbalanced (e.g. rare disease detection), high accuracy can be misleading. Precision, Recall, and F1 score are essential.",
+    "citation": "Grade 8 · Unit 4 · Evaluating Models · p.10"
+  },
+  {
+    "id": "wb_misc_13",
+    "grade": 8,
+    "topic": "Neural Networks",
+    "wrong_belief": "Artificial neural networks work exactly like the biological human brain.",
+    "correction": "Artificial neural networks are mathematical abstractions inspired by biological neurons, using linear weights, biases, and activation functions.",
+    "citation": "Grade 8 · Unit 6 · Neural Networks · p.14"
+  },
+  {
+    "id": "wb_misc_14",
+    "grade": 9,
+    "topic": "Overfitting",
+    "wrong_belief": "A model that scores 100% on the training set is a perfect model.",
+    "correction": "100% training score often indicates overfitting, where the model memorized noise and fails to generalize to unseen test data.",
+    "citation": "Grade 9 · Unit 5 · Neural Networks in Depth · p.12"
+  },
+  {
+    "id": "wb_misc_15",
+    "grade": 10,
+    "topic": "LLMs & Hallucinations",
+    "wrong_belief": "Large language models are search engines that always cite verified facts from memory.",
+    "correction": "LLMs generate plausible text based on probabilities, which can lead to confident hallucinations unless grounded via RAG and verified sources.",
+    "citation": "Grade 10 · Unit 6 · How LLMs Work · p.14"
+  }
+]
+

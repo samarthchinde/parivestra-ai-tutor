@@ -595,3 +595,4 @@ function renderActivityComponent(type, activity, lines, submission, setSubmissio
       );
   }
 }
+

@@ -84,6 +84,7 @@ def evaluate_response(
 def main():
     parser = argparse.ArgumentParser(description="Parivestra AI Tutor Evaluation")
     parser.add_argument("--mock-llm", action="store_true", help="Simulate LLM response from retrieved chunks")
+    parser.add_argument("--questions", default="eval/questions.json", help="Path to evaluation questions JSON file")
     args = parser.parse_args()
 
     print("=" * 60)
@@ -95,7 +96,9 @@ def main():
     print("=" * 60)
 
     eval_dir = ROOT_DIR / "eval"
-    questions_file = eval_dir / "questions.json"
+    questions_file = Path(args.questions)
+    if not questions_file.is_absolute():
+        questions_file = ROOT_DIR / questions_file
     results_dir = eval_dir / "results"
     results_dir.mkdir(parents=True, exist_ok=True)
 
@@ -116,8 +119,11 @@ def main():
         print(f"[{idx:02d}/{len(questions)}] Evaluating: \"{q_item['question'][:45]}...\"")
         start = time.perf_counter()
 
+        target_subject = q_item.get("subject", "AI & Future Skills" if "grade" in q_item else "Python")
+        target_grade = q_item.get("grade", "Class 3")
+
         if args.mock_llm:
-            retrieved = retriever.retrieve(q_item["question"], top_k=2, subject="Python")
+            retrieved = retriever.retrieve(q_item["question"], top_k=2, subject=target_subject, grade=target_grade)
             cited_chunks = [Citation(id=c.id, title=c.title) for c, _ in retrieved]
             if retrieved:
                 simulated_response = f"Based on verified course material: {retrieved[0][0].content}"
@@ -128,13 +134,14 @@ def main():
                 citations=cited_chunks,
                 hint_level=0,
             )
-            time.sleep(0.02)
+            time.sleep(0.01)
         else:
             tutor_out = tutor.explain(
                 TutorInput(
                     message=q_item["question"],
                     session_id=f"eval_{q_item['id']}",
-                    subject="Python",
+                    subject=target_subject,
+                    grade=target_grade,
                     hint_level=0,
                 )
             )

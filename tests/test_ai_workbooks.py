@@ -270,3 +270,4 @@ def test_glossary_mastery_and_certificate(wb_db):
     certs = get_certificates(grade=3, user=user, db=wb_db)
     assert len(certs) == 1
     assert certs[0]["student_name"] == "Aarav Sharma"
+

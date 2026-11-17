@@ -1,0 +1,1728 @@
+[
+  {
+    "id": "eval_g3_u1_q1",
+    "grade": "3",
+    "unit": 1,
+    "question": "Is a toy car that runs on batteries AI? Why or why not?",
+    "expected_chunk": "wb_g3_u1",
+    "expected_citation": "Grade 3 \u00b7 Unit 1 \u00b7 Smart or Not? \u00b7 p.4",
+    "key_points": [
+      "AI",
+      "Algorithm",
+      "Societal Impact"
+    ]
+  },
+  {
+    "id": "eval_g3_u1_q2",
+    "grade": "3",
+    "unit": 1,
+    "question": "What is AI and why is it important in Smart or Not??",
+    "expected_chunk": "wb_g3_u1",
+    "expected_citation": "Grade 3 \u00b7 Unit 1 \u00b7 Smart or Not? \u00b7 p.4",
+    "key_points": [
+      "AI",
+      "when",
+      "a",
+      "machine"
+    ]
+  },
+  {
+    "id": "eval_g3_u2_q1",
+    "grade": "3",
+    "unit": 2,
+    "question": "Which sense do you think is the hardest for a machine? Why?",
+    "expected_chunk": "wb_g3_u2",
+    "expected_citation": "Grade 3 \u00b7 Unit 2 \u00b7 How Machines Sense \u00b7 p.6",
+    "key_points": [
+      "Camera",
+      "Chatbot",
+      "Perception"
+    ]
+  },
+  {
+    "id": "eval_g3_u2_q2",
+    "grade": "3",
+    "unit": 2,
+    "question": "What is Camera and why is it important in How Machines Sense?",
+    "expected_chunk": "wb_g3_u2",
+    "expected_citation": "Grade 3 \u00b7 Unit 2 \u00b7 How Machines Sense \u00b7 p.6",
+    "key_points": [
+      "Camera",
+      "a",
+      "sensor",
+      "that"
+    ]
+  },
+  {
+    "id": "eval_g3_u3_q1",
+    "grade": "3",
+    "unit": 3,
+    "question": "How does finding a pattern help you guess what comes next?",
+    "expected_chunk": "wb_g3_u3",
+    "expected_citation": "Grade 3 \u00b7 Unit 3 \u00b7 Patterns Everywhere \u00b7 p.8",
+    "key_points": [
+      "Group",
+      "Instruction",
+      "Learning"
+    ]
+  },
+  {
+    "id": "eval_g3_u3_q2",
+    "grade": "3",
+    "unit": 3,
+    "question": "What is Group and why is it important in Patterns Everywhere?",
+    "expected_chunk": "wb_g3_u3",
+    "expected_citation": "Grade 3 \u00b7 Unit 3 \u00b7 Patterns Everywhere \u00b7 p.8",
+    "key_points": [
+      "Group",
+      "things",
+      "that",
+      "belong"
+    ]
+  },
+  {
+    "id": "eval_g3_u4_q1",
+    "grade": "3",
+    "unit": 4,
+    "question": "What features help you tell a cat from a dog?",
+    "expected_chunk": "wb_g3_u4",
+    "expected_citation": "Grade 3 \u00b7 Unit 4 \u00b7 Sorting and Grouping \u00b7 p.10",
+    "key_points": [
+      "Machine",
+      "Order",
+      "Representation & Reasoning"
+    ]
+  },
+  {
+    "id": "eval_g3_u4_q2",
+    "grade": "3",
+    "unit": 4,
+    "question": "What is Machine and why is it important in Sorting and Grouping?",
+    "expected_chunk": "wb_g3_u4",
+    "expected_citation": "Grade 3 \u00b7 Unit 4 \u00b7 Sorting and Grouping \u00b7 p.10",
+    "key_points": [
+      "Machine",
+      "a",
+      "thing",
+      "that"
+    ]
+  },
+  {
+    "id": "eval_g3_u5_q1",
+    "grade": "3",
+    "unit": 5,
+    "question": "What happens if a robot follows the steps in the wrong order?",
+    "expected_chunk": "wb_g3_u5",
+    "expected_citation": "Grade 3 \u00b7 Unit 5 \u00b7 Step by Step \u00b7 p.12",
+    "key_points": [
+      "Pattern",
+      "Predict",
+      "Representation & Reasoning"
+    ]
+  },
+  {
+    "id": "eval_g3_u5_q2",
+    "grade": "3",
+    "unit": 5,
+    "question": "What is Pattern and why is it important in Step by Step?",
+    "expected_chunk": "wb_g3_u5",
+    "expected_citation": "Grade 3 \u00b7 Unit 5 \u00b7 Step by Step \u00b7 p.12",
+    "key_points": [
+      "Pattern",
+      "something",
+      "that",
+      "repeats"
+    ]
+  },
+  {
+    "id": "eval_g3_u6_q1",
+    "grade": "3",
+    "unit": 6,
+    "question": "Why should we say please and thank you, even to a machine?",
+    "expected_chunk": "wb_g3_u6",
+    "expected_citation": "Grade 3 \u00b7 Unit 6 \u00b7 Talking to Machines \u00b7 p.14",
+    "key_points": [
+      "Repeat",
+      "Screen time",
+      "Natural Interaction"
+    ]
+  },
+  {
+    "id": "eval_g3_u6_q2",
+    "grade": "3",
+    "unit": 6,
+    "question": "What is Repeat and why is it important in Talking to Machines?",
+    "expected_chunk": "wb_g3_u6",
+    "expected_citation": "Grade 3 \u00b7 Unit 6 \u00b7 Talking to Machines \u00b7 p.14",
+    "key_points": [
+      "Repeat",
+      "to",
+      "do",
+      "or"
+    ]
+  },
+  {
+    "id": "eval_g3_u7_q1",
+    "grade": "3",
+    "unit": 7,
+    "question": "What would you do if a game asked for your home address?",
+    "expected_chunk": "wb_g3_u7",
+    "expected_citation": "Grade 3 \u00b7 Unit 7 \u00b7 Safe Online \u00b7 p.16",
+    "key_points": [
+      "Sensor",
+      "Smart speaker",
+      "Societal Impact"
+    ]
+  },
+  {
+    "id": "eval_g3_u7_q2",
+    "grade": "3",
+    "unit": 7,
+    "question": "What is Sensor and why is it important in Safe Online?",
+    "expected_chunk": "wb_g3_u7",
+    "expected_citation": "Grade 3 \u00b7 Unit 7 \u00b7 Safe Online \u00b7 p.16",
+    "key_points": [
+      "Sensor",
+      "a",
+      "machine",
+      "part"
+    ]
+  },
+  {
+    "id": "eval_g3_u8_q1",
+    "grade": "3",
+    "unit": 8,
+    "question": "How can AI help people who cannot see or hear well?",
+    "expected_chunk": "wb_g3_u8",
+    "expected_citation": "Grade 3 \u00b7 Unit 8 \u00b7 Kind with Tech \u00b7 p.18",
+    "key_points": [
+      "Step",
+      "Trusted adult",
+      "Societal Impact"
+    ]
+  },
+  {
+    "id": "eval_g3_u8_q2",
+    "grade": "3",
+    "unit": 8,
+    "question": "What is Step and why is it important in Kind with Tech?",
+    "expected_chunk": "wb_g3_u8",
+    "expected_citation": "Grade 3 \u00b7 Unit 8 \u00b7 Kind with Tech \u00b7 p.18",
+    "key_points": [
+      "Step",
+      "one",
+      "small",
+      "action"
+    ]
+  },
+  {
+    "id": "eval_g4_u1_q1",
+    "grade": "4",
+    "unit": 1,
+    "question": "Why can't we write rules for everything a robot might see?",
+    "expected_chunk": "wb_g4_u1",
+    "expected_citation": "Grade 4 \u00b7 Unit 1 \u00b7 Rules or Learning? \u00b7 p.4",
+    "key_points": [
+      "Bias",
+      "Branch",
+      "Learning"
+    ]
+  },
+  {
+    "id": "eval_g4_u1_q2",
+    "grade": "4",
+    "unit": 1,
+    "question": "What is Bias and why is it important in Rules or Learning??",
+    "expected_chunk": "wb_g4_u1",
+    "expected_citation": "Grade 4 \u00b7 Unit 1 \u00b7 Rules or Learning? \u00b7 p.4",
+    "key_points": [
+      "Bias",
+      "when",
+      "AI",
+      "favours"
+    ]
+  },
+  {
+    "id": "eval_g4_u2_q1",
+    "grade": "4",
+    "unit": 2,
+    "question": "What other data could you collect about your class?",
+    "expected_chunk": "wb_g4_u2",
+    "expected_citation": "Grade 4 \u00b7 Unit 2 \u00b7 Data is Everywhere \u00b7 p.6",
+    "key_points": [
+      "Citizen",
+      "Data",
+      "Representation & Reasoning"
+    ]
+  },
+  {
+    "id": "eval_g4_u2_q2",
+    "grade": "4",
+    "unit": 2,
+    "question": "What is Citizen and why is it important in Data is Everywhere?",
+    "expected_chunk": "wb_g4_u2",
+    "expected_citation": "Grade 4 \u00b7 Unit 2 \u00b7 Data is Everywhere \u00b7 p.6",
+    "key_points": [
+      "Citizen",
+      "a",
+      "member",
+      "of"
+    ]
+  },
+  {
+    "id": "eval_g4_u3_q1",
+    "grade": "4",
+    "unit": 3,
+    "question": "What might happen if we trained an AI with only 3 pictures?",
+    "expected_chunk": "wb_g4_u3",
+    "expected_citation": "Grade 4 \u00b7 Unit 3 \u00b7 Teaching a Machine \u00b7 p.8",
+    "key_points": [
+      "Example",
+      "Fair",
+      "Learning"
+    ]
+  },
+  {
+    "id": "eval_g4_u3_q2",
+    "grade": "4",
+    "unit": 3,
+    "question": "What is Example and why is it important in Teaching a Machine?",
+    "expected_chunk": "wb_g4_u3",
+    "expected_citation": "Grade 4 \u00b7 Unit 3 \u00b7 Teaching a Machine \u00b7 p.8",
+    "key_points": [
+      "Example",
+      "one",
+      "sample",
+      "used"
+    ]
+  },
+  {
+    "id": "eval_g4_u4_q1",
+    "grade": "4",
+    "unit": 4,
+    "question": "How many questions do you need to guess one of 8 animals?",
+    "expected_chunk": "wb_g4_u4",
+    "expected_citation": "Grade 4 \u00b7 Unit 4 \u00b7 Decision Trees \u00b7 p.10",
+    "key_points": [
+      "Learn",
+      "Loop",
+      "Representation & Reasoning"
+    ]
+  },
+  {
+    "id": "eval_g4_u4_q2",
+    "grade": "4",
+    "unit": 4,
+    "question": "What is Learn and why is it important in Decision Trees?",
+    "expected_chunk": "wb_g4_u4",
+    "expected_citation": "Grade 4 \u00b7 Unit 4 \u00b7 Decision Trees \u00b7 p.10",
+    "key_points": [
+      "Learn",
+      "to",
+      "get",
+      "better"
+    ]
+  },
+  {
+    "id": "eval_g4_u5_q1",
+    "grade": "4",
+    "unit": 5,
+    "question": "What shape does \u201crepeat 4 times: draw line, turn right\u201d make?",
+    "expected_chunk": "wb_g4_u5",
+    "expected_citation": "Grade 4 \u00b7 Unit 5 \u00b7 Algorithms and Loops \u00b7 p.12",
+    "key_points": [
+      "Permission",
+      "Question",
+      "Representation & Reasoning"
+    ]
+  },
+  {
+    "id": "eval_g4_u5_q2",
+    "grade": "4",
+    "unit": 5,
+    "question": "What is Permission and why is it important in Algorithms and Loops?",
+    "expected_chunk": "wb_g4_u5",
+    "expected_citation": "Grade 4 \u00b7 Unit 5 \u00b7 Algorithms and Loops \u00b7 p.12",
+    "key_points": [
+      "Permission",
+      "saying",
+      "yes",
+      "before"
+    ]
+  },
+  {
+    "id": "eval_g4_u6_q1",
+    "grade": "4",
+    "unit": 6,
+    "question": "Why do chatbots need to understand different ways of asking?",
+    "expected_chunk": "wb_g4_u6",
+    "expected_citation": "Grade 4 \u00b7 Unit 6 \u00b7 Chatbots \u00b7 p.14",
+    "key_points": [
+      "Reply",
+      "Respect",
+      "Natural Interaction"
+    ]
+  },
+  {
+    "id": "eval_g4_u6_q2",
+    "grade": "4",
+    "unit": 6,
+    "question": "What is Reply and why is it important in Chatbots?",
+    "expected_chunk": "wb_g4_u6",
+    "expected_citation": "Grade 4 \u00b7 Unit 6 \u00b7 Chatbots \u00b7 p.14",
+    "key_points": [
+      "Reply",
+      "an",
+      "answer"
+    ]
+  },
+  {
+    "id": "eval_g4_u7_q1",
+    "grade": "4",
+    "unit": 7,
+    "question": "Who should check if an AI is fair?",
+    "expected_chunk": "wb_g4_u7",
+    "expected_citation": "Grade 4 \u00b7 Unit 7 \u00b7 When AI Gets It Wrong \u00b7 p.16",
+    "key_points": [
+      "Script",
+      "Sequence",
+      "Societal Impact"
+    ]
+  },
+  {
+    "id": "eval_g4_u7_q2",
+    "grade": "4",
+    "unit": 7,
+    "question": "What is Script and why is it important in When AI Gets It Wrong?",
+    "expected_chunk": "wb_g4_u7",
+    "expected_citation": "Grade 4 \u00b7 Unit 7 \u00b7 When AI Gets It Wrong \u00b7 p.16",
+    "key_points": [
+      "Script",
+      "planned",
+      "questions",
+      "and"
+    ]
+  },
+  {
+    "id": "eval_g4_u8_q1",
+    "grade": "4",
+    "unit": 8,
+    "question": "Is it okay to copy a friend's drawing and post it online? Why?",
+    "expected_chunk": "wb_g4_u8",
+    "expected_citation": "Grade 4 \u00b7 Unit 8 \u00b7 Digital Citizen \u00b7 p.18",
+    "key_points": [
+      "Tally",
+      "Test",
+      "Societal Impact"
+    ]
+  },
+  {
+    "id": "eval_g4_u8_q2",
+    "grade": "4",
+    "unit": 8,
+    "question": "What is Tally and why is it important in Digital Citizen?",
+    "expected_chunk": "wb_g4_u8",
+    "expected_citation": "Grade 4 \u00b7 Unit 8 \u00b7 Digital Citizen \u00b7 p.18",
+    "key_points": [
+      "Tally",
+      "marks",
+      "we",
+      "use"
+    ]
+  },
+  {
+    "id": "eval_g5_u1_q1",
+    "grade": "5",
+    "unit": 1,
+    "question": "Which job do you think AI should never do alone? Why?",
+    "expected_chunk": "wb_g5_u1",
+    "expected_citation": "Grade 5 \u00b7 Unit 1 \u00b7 AI in Our World \u00b7 p.4",
+    "key_points": [
+      "Accuracy",
+      "Application",
+      "Societal Impact"
+    ]
+  },
+  {
+    "id": "eval_g5_u1_q2",
+    "grade": "5",
+    "unit": 1,
+    "question": "What is Accuracy and why is it important in AI in Our World?",
+    "expected_chunk": "wb_g5_u1",
+    "expected_citation": "Grade 5 \u00b7 Unit 1 \u00b7 AI in Our World \u00b7 p.4",
+    "key_points": [
+      "Accuracy",
+      "how",
+      "often",
+      "the"
+    ]
+  },
+  {
+    "id": "eval_g5_u2_q1",
+    "grade": "5",
+    "unit": 2,
+    "question": "How could wrong data make an AI give a wrong answer?",
+    "expected_chunk": "wb_g5_u2",
+    "expected_citation": "Grade 5 \u00b7 Unit 2 \u00b7 Data and Charts \u00b7 p.6",
+    "key_points": [
+      "Bar graph",
+      "Clean data",
+      "Representation & Reasoning"
+    ]
+  },
+  {
+    "id": "eval_g5_u2_q2",
+    "grade": "5",
+    "unit": 2,
+    "question": "What is Bar graph and why is it important in Data and Charts?",
+    "expected_chunk": "wb_g5_u2",
+    "expected_citation": "Grade 5 \u00b7 Unit 2 \u00b7 Data and Charts \u00b7 p.6",
+    "key_points": [
+      "Bar graph",
+      "a",
+      "chart",
+      "that"
+    ]
+  },
+  {
+    "id": "eval_g5_u3_q1",
+    "grade": "5",
+    "unit": 3,
+    "question": "Is 100% accuracy on training pictures enough? Why not?",
+    "expected_chunk": "wb_g5_u3",
+    "expected_citation": "Grade 5 \u00b7 Unit 3 \u00b7 How Machines Learn \u00b7 p.8",
+    "key_points": [
+      "Deepfake",
+      "Empathy",
+      "Learning"
+    ]
+  },
+  {
+    "id": "eval_g5_u3_q2",
+    "grade": "5",
+    "unit": 3,
+    "question": "What is Deepfake and why is it important in How Machines Learn?",
+    "expected_chunk": "wb_g5_u3",
+    "expected_citation": "Grade 5 \u00b7 Unit 3 \u00b7 How Machines Learn \u00b7 p.8",
+    "key_points": [
+      "Deepfake",
+      "a",
+      "fake",
+      "video"
+    ]
+  },
+  {
+    "id": "eval_g5_u4_q1",
+    "grade": "5",
+    "unit": 4,
+    "question": "Why might AI find it hard to recognise things in the dark?",
+    "expected_chunk": "wb_g5_u4",
+    "expected_citation": "Grade 5 \u00b7 Unit 4 \u00b7 Computer Vision \u00b7 p.10",
+    "key_points": [
+      "Feature",
+      "Ideate",
+      "Perception"
+    ]
+  },
+  {
+    "id": "eval_g5_u4_q2",
+    "grade": "5",
+    "unit": 4,
+    "question": "What is Feature and why is it important in Computer Vision?",
+    "expected_chunk": "wb_g5_u4",
+    "expected_citation": "Grade 5 \u00b7 Unit 4 \u00b7 Computer Vision \u00b7 p.10",
+    "key_points": [
+      "Feature",
+      "a",
+      "detail",
+      "that"
+    ]
+  },
+  {
+    "id": "eval_g5_u5_q1",
+    "grade": "5",
+    "unit": 5,
+    "question": "Why might two people get different answers from the same chatbot?",
+    "expected_chunk": "wb_g5_u5",
+    "expected_citation": "Grade 5 \u00b7 Unit 5 \u00b7 Language AI and Prompts \u00b7 p.12",
+    "key_points": [
+      "Machine learning",
+      "Model",
+      "Natural Interaction"
+    ]
+  },
+  {
+    "id": "eval_g5_u5_q2",
+    "grade": "5",
+    "unit": 5,
+    "question": "What is Machine learning and why is it important in Language AI and Prompts?",
+    "expected_chunk": "wb_g5_u5",
+    "expected_citation": "Grade 5 \u00b7 Unit 5 \u00b7 Language AI and Prompts \u00b7 p.12",
+    "key_points": [
+      "Machine learning",
+      "when",
+      "computers",
+      "learn"
+    ]
+  },
+  {
+    "id": "eval_g5_u6_q1",
+    "grade": "5",
+    "unit": 6,
+    "question": "Who should fix an AI that is unfair: the users, the makers, or both?",
+    "expected_chunk": "wb_g5_u6",
+    "expected_citation": "Grade 5 \u00b7 Unit 6 \u00b7 Fair and Responsible AI \u00b7 p.14",
+    "key_points": [
+      "Predict",
+      "Privacy",
+      "Societal Impact"
+    ]
+  },
+  {
+    "id": "eval_g5_u6_q2",
+    "grade": "5",
+    "unit": 6,
+    "question": "What is Predict and why is it important in Fair and Responsible AI?",
+    "expected_chunk": "wb_g5_u6",
+    "expected_citation": "Grade 5 \u00b7 Unit 6 \u00b7 Fair and Responsible AI \u00b7 p.14",
+    "key_points": [
+      "Predict",
+      "to",
+      "guess",
+      "what"
+    ]
+  },
+  {
+    "id": "eval_g5_u7_q1",
+    "grade": "5",
+    "unit": 7,
+    "question": "What would you do if a friend shared a video that looked fake?",
+    "expected_chunk": "wb_g5_u7",
+    "expected_citation": "Grade 5 \u00b7 Unit 7 \u00b7 Fact or Fake? \u00b7 p.16",
+    "key_points": [
+      "Prototype",
+      "Recommendation",
+      "Societal Impact"
+    ]
+  },
+  {
+    "id": "eval_g5_u7_q2",
+    "grade": "5",
+    "unit": 7,
+    "question": "What is Prototype and why is it important in Fact or Fake??",
+    "expected_chunk": "wb_g5_u7",
+    "expected_citation": "Grade 5 \u00b7 Unit 7 \u00b7 Fact or Fake? \u00b7 p.16",
+    "key_points": [
+      "Prototype",
+      "a",
+      "first",
+      "simple"
+    ]
+  },
+  {
+    "id": "eval_g5_u8_q1",
+    "grade": "5",
+    "unit": 8,
+    "question": "Why is it important to talk to the people who have the problem?",
+    "expected_chunk": "wb_g5_u8",
+    "expected_citation": "Grade 5 \u00b7 Unit 8 \u00b7 Design Thinking \u00b7 p.18",
+    "key_points": [
+      "Responsible",
+      "Source",
+      "Societal Impact"
+    ]
+  },
+  {
+    "id": "eval_g5_u8_q2",
+    "grade": "5",
+    "unit": 8,
+    "question": "What is Responsible and why is it important in Design Thinking?",
+    "expected_chunk": "wb_g5_u8",
+    "expected_citation": "Grade 5 \u00b7 Unit 8 \u00b7 Design Thinking \u00b7 p.18",
+    "key_points": [
+      "Responsible",
+      "taking",
+      "care",
+      "of"
+    ]
+  },
+  {
+    "id": "eval_g6_u1_q1",
+    "grade": "6",
+    "unit": 1,
+    "question": "If an AI can play chess very well, is it intelligent like a person? Why or why not?",
+    "expected_chunk": "wb_g6_u1",
+    "expected_citation": "Grade 6 \u00b7 Unit 1 \u00b7 What Makes AI Intelligent? \u00b7 p.4",
+    "key_points": [
+      "Condition",
+      "Data exploration",
+      "Societal Impact"
+    ]
+  },
+  {
+    "id": "eval_g6_u1_q2",
+    "grade": "6",
+    "unit": 1,
+    "question": "What is Condition and why is it important in What Makes AI Intelligent??",
+    "expected_chunk": "wb_g6_u1",
+    "expected_citation": "Grade 6 \u00b7 Unit 1 \u00b7 What Makes AI Intelligent? \u00b7 p.4",
+    "key_points": [
+      "Condition",
+      "a",
+      "check",
+      "that"
+    ]
+  },
+  {
+    "id": "eval_g6_u2_q1",
+    "grade": "6",
+    "unit": 2,
+    "question": "Why do you think evaluation is important before using an AI in real life?",
+    "expected_chunk": "wb_g6_u2",
+    "expected_citation": "Grade 6 \u00b7 Unit 2 \u00b7 The AI Project Cycle \u00b7 p.6",
+    "key_points": [
+      "Decision",
+      "Domain",
+      "Representation & Reasoning"
+    ]
+  },
+  {
+    "id": "eval_g6_u2_q2",
+    "grade": "6",
+    "unit": 2,
+    "question": "What is Decision and why is it important in The AI Project Cycle?",
+    "expected_chunk": "wb_g6_u2",
+    "expected_citation": "Grade 6 \u00b7 Unit 2 \u00b7 The AI Project Cycle \u00b7 p.6",
+    "key_points": [
+      "Decision",
+      "a",
+      "yes/no",
+      "question"
+    ]
+  },
+  {
+    "id": "eval_g6_u3_q1",
+    "grade": "6",
+    "unit": 3,
+    "question": "Why should we talk to the stakeholders before building a solution?",
+    "expected_chunk": "wb_g6_u3",
+    "expected_citation": "Grade 6 \u00b7 Unit 3 \u00b7 Problem Scoping with 4Ws \u00b7 p.8",
+    "key_points": [
+      "Evaluation",
+      "Flowchart",
+      "Societal Impact"
+    ]
+  },
+  {
+    "id": "eval_g6_u3_q2",
+    "grade": "6",
+    "unit": 3,
+    "question": "What is Evaluation and why is it important in Problem Scoping with 4Ws?",
+    "expected_chunk": "wb_g6_u3",
+    "expected_citation": "Grade 6 \u00b7 Unit 3 \u00b7 Problem Scoping with 4Ws \u00b7 p.8",
+    "key_points": [
+      "Evaluation",
+      "testing",
+      "how",
+      "good"
+    ]
+  },
+  {
+    "id": "eval_g6_u4_q1",
+    "grade": "6",
+    "unit": 4,
+    "question": "Why must we ask permission before collecting data about people?",
+    "expected_chunk": "wb_g6_u4",
+    "expected_citation": "Grade 6 \u00b7 Unit 4 \u00b7 Data Acquisition \u00b7 p.10",
+    "key_points": [
+      "Line graph",
+      "Modelling",
+      "Representation & Reasoning"
+    ]
+  },
+  {
+    "id": "eval_g6_u4_q2",
+    "grade": "6",
+    "unit": 4,
+    "question": "What is Line graph and why is it important in Data Acquisition?",
+    "expected_chunk": "wb_g6_u4",
+    "expected_citation": "Grade 6 \u00b7 Unit 4 \u00b7 Data Acquisition \u00b7 p.10",
+    "key_points": [
+      "Line graph",
+      "a",
+      "chart",
+      "that"
+    ]
+  },
+  {
+    "id": "eval_g6_u5_q1",
+    "grade": "6",
+    "unit": 5,
+    "question": "How could a wrong number in a dataset change what a chart tells you?",
+    "expected_chunk": "wb_g6_u5",
+    "expected_citation": "Grade 6 \u00b7 Unit 5 \u00b7 Exploring Data with Charts \u00b7 p.12",
+    "key_points": [
+      "Pie chart",
+      "Primary data",
+      "Representation & Reasoning"
+    ]
+  },
+  {
+    "id": "eval_g6_u5_q2",
+    "grade": "6",
+    "unit": 5,
+    "question": "What is Pie chart and why is it important in Exploring Data with Charts?",
+    "expected_chunk": "wb_g6_u5",
+    "expected_citation": "Grade 6 \u00b7 Unit 5 \u00b7 Exploring Data with Charts \u00b7 p.12",
+    "key_points": [
+      "Pie chart",
+      "a",
+      "circle",
+      "chart"
+    ]
+  },
+  {
+    "id": "eval_g6_u6_q1",
+    "grade": "6",
+    "unit": 6,
+    "question": "Where do you use decisions (if this, then that) in your daily routine?",
+    "expected_chunk": "wb_g6_u6",
+    "expected_citation": "Grade 6 \u00b7 Unit 6 \u00b7 Algorithms and Flowcharts \u00b7 p.14",
+    "key_points": [
+      "Problem scoping",
+      "Problem statement",
+      "Representation & Reasoning"
+    ]
+  },
+  {
+    "id": "eval_g6_u6_q2",
+    "grade": "6",
+    "unit": 6,
+    "question": "What is Problem scoping and why is it important in Algorithms and Flowcharts?",
+    "expected_chunk": "wb_g6_u6",
+    "expected_citation": "Grade 6 \u00b7 Unit 6 \u00b7 Algorithms and Flowcharts \u00b7 p.14",
+    "key_points": [
+      "Problem scoping",
+      "understanding",
+      "a",
+      "problem"
+    ]
+  },
+  {
+    "id": "eval_g6_u7_q1",
+    "grade": "6",
+    "unit": 7,
+    "question": "Why is it helpful to write pseudocode before real code?",
+    "expected_chunk": "wb_g6_u7",
+    "expected_citation": "Grade 6 \u00b7 Unit 7 \u00b7 Pseudocode and Conditions \u00b7 p.16",
+    "key_points": [
+      "Project cycle",
+      "Pseudocode",
+      "Representation & Reasoning"
+    ]
+  },
+  {
+    "id": "eval_g6_u7_q2",
+    "grade": "6",
+    "unit": 7,
+    "question": "What is Project cycle and why is it important in Pseudocode and Conditions?",
+    "expected_chunk": "wb_g6_u7",
+    "expected_citation": "Grade 6 \u00b7 Unit 7 \u00b7 Pseudocode and Conditions \u00b7 p.16",
+    "key_points": [
+      "Project cycle",
+      "the",
+      "stages",
+      "we"
+    ]
+  },
+  {
+    "id": "eval_g6_u8_q1",
+    "grade": "6",
+    "unit": 8,
+    "question": "Should AI be allowed to use your photos to learn? Under what rules?",
+    "expected_chunk": "wb_g6_u8",
+    "expected_citation": "Grade 6 \u00b7 Unit 8 \u00b7 AI Ethics: Privacy and Bias \u00b7 p.18",
+    "key_points": [
+      "Stakeholder",
+      "Transparency",
+      "Societal Impact"
+    ]
+  },
+  {
+    "id": "eval_g6_u8_q2",
+    "grade": "6",
+    "unit": 8,
+    "question": "What is Stakeholder and why is it important in AI Ethics: Privacy and Bias?",
+    "expected_chunk": "wb_g6_u8",
+    "expected_citation": "Grade 6 \u00b7 Unit 8 \u00b7 AI Ethics: Privacy and Bias \u00b7 p.18",
+    "key_points": [
+      "Stakeholder",
+      "a",
+      "person",
+      "affected"
+    ]
+  },
+  {
+    "id": "eval_g7_u1_q1",
+    "grade": "7",
+    "unit": 1,
+    "question": "Why might a self-driving car's camera struggle in heavy rain?",
+    "expected_chunk": "wb_g7_u1",
+    "expected_citation": "Grade 7 \u00b7 Unit 1 \u00b7 Computer Vision Basics \u00b7 p.4",
+    "key_points": [
+      "Actuator",
+      "Classification",
+      "Perception"
+    ]
+  },
+  {
+    "id": "eval_g7_u1_q2",
+    "grade": "7",
+    "unit": 1,
+    "question": "What is Actuator and why is it important in Computer Vision Basics?",
+    "expected_chunk": "wb_g7_u1",
+    "expected_citation": "Grade 7 \u00b7 Unit 1 \u00b7 Computer Vision Basics \u00b7 p.4",
+    "key_points": [
+      "Actuator",
+      "a",
+      "part",
+      "that"
+    ]
+  },
+  {
+    "id": "eval_g7_u2_q1",
+    "grade": "7",
+    "unit": 2,
+    "question": "Why is sarcasm (\u201cOh great, it rained again\u201d) hard for sentiment AI?",
+    "expected_chunk": "wb_g7_u2",
+    "expected_citation": "Grade 7 \u00b7 Unit 2 \u00b7 Natural Language Processing \u00b7 p.6",
+    "key_points": [
+      "Clustering",
+      "Computer Vision",
+      "Natural Interaction"
+    ]
+  },
+  {
+    "id": "eval_g7_u2_q2",
+    "grade": "7",
+    "unit": 2,
+    "question": "What is Clustering and why is it important in Natural Language Processing?",
+    "expected_chunk": "wb_g7_u2",
+    "expected_citation": "Grade 7 \u00b7 Unit 2 \u00b7 Natural Language Processing \u00b7 p.6",
+    "key_points": [
+      "Clustering",
+      "grouping",
+      "similar",
+      "items"
+    ]
+  },
+  {
+    "id": "eval_g7_u3_q1",
+    "grade": "7",
+    "unit": 3,
+    "question": "Why might an AI give bad results if its data has many outliers?",
+    "expected_chunk": "wb_g7_u3",
+    "expected_citation": "Grade 7 \u00b7 Unit 3 \u00b7 Statistics for AI \u00b7 p.8",
+    "key_points": [
+      "Digital footprint",
+      "Function",
+      "Representation & Reasoning"
+    ]
+  },
+  {
+    "id": "eval_g7_u3_q2",
+    "grade": "7",
+    "unit": 3,
+    "question": "What is Digital footprint and why is it important in Statistics for AI?",
+    "expected_chunk": "wb_g7_u3",
+    "expected_citation": "Grade 7 \u00b7 Unit 3 \u00b7 Statistics for AI \u00b7 p.8",
+    "key_points": [
+      "Digital footprint",
+      "the",
+      "data",
+      "trail"
+    ]
+  },
+  {
+    "id": "eval_g7_u4_q1",
+    "grade": "7",
+    "unit": 4,
+    "question": "Which type of learning do you use when you learn to ride a cycle?",
+    "expected_chunk": "wb_g7_u4",
+    "expected_citation": "Grade 7 \u00b7 Unit 4 \u00b7 Supervised vs Unsupervised \u00b7 p.10",
+    "key_points": [
+      "Mean",
+      "Median",
+      "Learning"
+    ]
+  },
+  {
+    "id": "eval_g7_u4_q2",
+    "grade": "7",
+    "unit": 4,
+    "question": "What is Mean and why is it important in Supervised vs Unsupervised?",
+    "expected_chunk": "wb_g7_u4",
+    "expected_citation": "Grade 7 \u00b7 Unit 4 \u00b7 Supervised vs Unsupervised \u00b7 p.10",
+    "key_points": [
+      "Mean",
+      "the",
+      "average"
+    ]
+  },
+  {
+    "id": "eval_g7_u5_q1",
+    "grade": "7",
+    "unit": 5,
+    "question": "What might happen if a model only saw ripe mangoes in good light?",
+    "expected_chunk": "wb_g7_u5",
+    "expected_citation": "Grade 7 \u00b7 Unit 5 \u00b7 Training Data and Classification \u00b7 p.12",
+    "key_points": [
+      "Outlier",
+      "Permission",
+      "Learning"
+    ]
+  },
+  {
+    "id": "eval_g7_u5_q2",
+    "grade": "7",
+    "unit": 5,
+    "question": "What is Outlier and why is it important in Training Data and Classification?",
+    "expected_chunk": "wb_g7_u5",
+    "expected_citation": "Grade 7 \u00b7 Unit 5 \u00b7 Training Data and Classification \u00b7 p.12",
+    "key_points": [
+      "Outlier",
+      "a",
+      "value",
+      "very"
+    ]
+  },
+  {
+    "id": "eval_g7_u6_q1",
+    "grade": "7",
+    "unit": 6,
+    "question": "Why do you think programmers choose simple, readable languages?",
+    "expected_chunk": "wb_g7_u6",
+    "expected_citation": "Grade 7 \u00b7 Unit 6 \u00b7 Python Basics \u00b7 p.14",
+    "key_points": [
+      "Python",
+      "Resolution",
+      "Representation & Reasoning"
+    ]
+  },
+  {
+    "id": "eval_g7_u6_q2",
+    "grade": "7",
+    "unit": 6,
+    "question": "What is Python and why is it important in Python Basics?",
+    "expected_chunk": "wb_g7_u6",
+    "expected_citation": "Grade 7 \u00b7 Unit 6 \u00b7 Python Basics \u00b7 p.14",
+    "key_points": [
+      "Python",
+      "a",
+      "programming",
+      "language"
+    ]
+  },
+  {
+    "id": "eval_g7_u7_q1",
+    "grade": "7",
+    "unit": 7,
+    "question": "What could go wrong if a smart home device is hacked?",
+    "expected_chunk": "wb_g7_u7",
+    "expected_citation": "Grade 7 \u00b7 Unit 7 \u00b7 Smart Sensors and IoT \u00b7 p.16",
+    "key_points": [
+      "Sentiment",
+      "Supervised",
+      "Perception"
+    ]
+  },
+  {
+    "id": "eval_g7_u7_q2",
+    "grade": "7",
+    "unit": 7,
+    "question": "What is Sentiment and why is it important in Smart Sensors and IoT?",
+    "expected_chunk": "wb_g7_u7",
+    "expected_citation": "Grade 7 \u00b7 Unit 7 \u00b7 Smart Sensors and IoT \u00b7 p.16",
+    "key_points": [
+      "Sentiment",
+      "the",
+      "feeling",
+      "in"
+    ]
+  },
+  {
+    "id": "eval_g7_u8_q1",
+    "grade": "7",
+    "unit": 8,
+    "question": "What would you want your digital footprint to say about you in 10 years?",
+    "expected_chunk": "wb_g7_u8",
+    "expected_citation": "Grade 7 \u00b7 Unit 8 \u00b7 Digital Footprint and Safety \u00b7 p.18",
+    "key_points": [
+      "Token",
+      "Training set",
+      "Societal Impact"
+    ]
+  },
+  {
+    "id": "eval_g7_u8_q2",
+    "grade": "7",
+    "unit": 8,
+    "question": "What is Token and why is it important in Digital Footprint and Safety?",
+    "expected_chunk": "wb_g7_u8",
+    "expected_citation": "Grade 7 \u00b7 Unit 8 \u00b7 Digital Footprint and Safety \u00b7 p.18",
+    "key_points": [
+      "Token",
+      "a",
+      "small",
+      "piece"
+    ]
+  },
+  {
+    "id": "eval_g8_u1_q1",
+    "grade": "8",
+    "unit": 1,
+    "question": "Can a model be 100% right about the future? Why or why not?",
+    "expected_chunk": "wb_g8_u1",
+    "expected_citation": "Grade 8 \u00b7 Unit 1 \u00b7 How Machine Learning Works \u00b7 p.4",
+    "key_points": [
+      "Accountability",
+      "Appeal",
+      "Learning"
+    ]
+  },
+  {
+    "id": "eval_g8_u1_q2",
+    "grade": "8",
+    "unit": 1,
+    "question": "What is Accountability and why is it important in How Machine Learning Works?",
+    "expected_chunk": "wb_g8_u1",
+    "expected_citation": "Grade 8 \u00b7 Unit 1 \u00b7 How Machine Learning Works \u00b7 p.4",
+    "key_points": [
+      "Accountability",
+      "being",
+      "responsible",
+      "for"
+    ]
+  },
+  {
+    "id": "eval_g8_u2_q1",
+    "grade": "8",
+    "unit": 2,
+    "question": "How could predicting ice cream sales help a shop owner?",
+    "expected_chunk": "wb_g8_u2",
+    "expected_citation": "Grade 8 \u00b7 Unit 2 \u00b7 Regression and Classification \u00b7 p.6",
+    "key_points": [
+      "Confusion matrix",
+      "Entity",
+      "Learning"
+    ]
+  },
+  {
+    "id": "eval_g8_u2_q2",
+    "grade": "8",
+    "unit": 2,
+    "question": "What is Confusion matrix and why is it important in Regression and Classification?",
+    "expected_chunk": "wb_g8_u2",
+    "expected_citation": "Grade 8 \u00b7 Unit 2 \u00b7 Regression and Classification \u00b7 p.6",
+    "key_points": [
+      "Confusion matrix",
+      "a",
+      "table",
+      "of"
+    ]
+  },
+  {
+    "id": "eval_g8_u3_q1",
+    "grade": "8",
+    "unit": 3,
+    "question": "Why might doctors prefer an explainable model like a decision tree?",
+    "expected_chunk": "wb_g8_u3",
+    "expected_citation": "Grade 8 \u00b7 Unit 3 \u00b7 Decision Trees from Data \u00b7 p.8",
+    "key_points": [
+      "Fallback",
+      "False negative",
+      "Representation & Reasoning"
+    ]
+  },
+  {
+    "id": "eval_g8_u3_q2",
+    "grade": "8",
+    "unit": 3,
+    "question": "What is Fallback and why is it important in Decision Trees from Data?",
+    "expected_chunk": "wb_g8_u3",
+    "expected_citation": "Grade 8 \u00b7 Unit 3 \u00b7 Decision Trees from Data \u00b7 p.8",
+    "key_points": [
+      "Fallback",
+      "the",
+      "reply",
+      "when"
+    ]
+  },
+  {
+    "id": "eval_g8_u4_q1",
+    "grade": "8",
+    "unit": 4,
+    "question": "Why isn't accuracy alone enough to judge a model?",
+    "expected_chunk": "wb_g8_u4",
+    "expected_citation": "Grade 8 \u00b7 Unit 4 \u00b7 Evaluating Models \u00b7 p.10",
+    "key_points": [
+      "Feature",
+      "For loop",
+      "Learning"
+    ]
+  },
+  {
+    "id": "eval_g8_u4_q2",
+    "grade": "8",
+    "unit": 4,
+    "question": "What is Feature and why is it important in Evaluating Models?",
+    "expected_chunk": "wb_g8_u4",
+    "expected_citation": "Grade 8 \u00b7 Unit 4 \u00b7 Evaluating Models \u00b7 p.10",
+    "key_points": [
+      "Feature",
+      "an",
+      "input",
+      "value"
+    ]
+  },
+  {
+    "id": "eval_g8_u5_q1",
+    "grade": "8",
+    "unit": 5,
+    "question": "How would loops help an AI read 1 million photos?",
+    "expected_chunk": "wb_g8_u5",
+    "expected_citation": "Grade 8 \u00b7 Unit 5 \u00b7 Python: Lists, Loops and If \u00b7 p.12",
+    "key_points": [
+      "Index",
+      "Intent",
+      "Representation & Reasoning"
+    ]
+  },
+  {
+    "id": "eval_g8_u5_q2",
+    "grade": "8",
+    "unit": 5,
+    "question": "What is Index and why is it important in Python: Lists, Loops and If?",
+    "expected_chunk": "wb_g8_u5",
+    "expected_citation": "Grade 8 \u00b7 Unit 5 \u00b7 Python: Lists, Loops and If \u00b7 p.12",
+    "key_points": [
+      "Index",
+      "the",
+      "position",
+      "of"
+    ]
+  },
+  {
+    "id": "eval_g8_u6_q1",
+    "grade": "8",
+    "unit": 6,
+    "question": "Why do you think bigger networks need more data to train?",
+    "expected_chunk": "wb_g8_u6",
+    "expected_citation": "Grade 8 \u00b7 Unit 6 \u00b7 Neural Networks \u00b7 p.14",
+    "key_points": [
+      "Layer",
+      "Leaf",
+      "Learning"
+    ]
+  },
+  {
+    "id": "eval_g8_u6_q2",
+    "grade": "8",
+    "unit": 6,
+    "question": "What is Layer and why is it important in Neural Networks?",
+    "expected_chunk": "wb_g8_u6",
+    "expected_citation": "Grade 8 \u00b7 Unit 6 \u00b7 Neural Networks \u00b7 p.14",
+    "key_points": [
+      "Layer",
+      "a",
+      "group",
+      "of"
+    ]
+  },
+  {
+    "id": "eval_g8_u7_q1",
+    "grade": "8",
+    "unit": 7,
+    "question": "Should a chatbot always tell users that it is not a human? Why?",
+    "expected_chunk": "wb_g8_u7",
+    "expected_citation": "Grade 8 \u00b7 Unit 7 \u00b7 Conversational AI \u00b7 p.16",
+    "key_points": [
+      "List",
+      "Neuron",
+      "Natural Interaction"
+    ]
+  },
+  {
+    "id": "eval_g8_u7_q2",
+    "grade": "8",
+    "unit": 7,
+    "question": "What is List and why is it important in Conversational AI?",
+    "expected_chunk": "wb_g8_u7",
+    "expected_citation": "Grade 8 \u00b7 Unit 7 \u00b7 Conversational AI \u00b7 p.16",
+    "key_points": [
+      "List",
+      "an",
+      "ordered",
+      "collection"
+    ]
+  },
+  {
+    "id": "eval_g8_u8_q1",
+    "grade": "8",
+    "unit": 8,
+    "question": "If an AI makes a wrong decision, who should be responsible?",
+    "expected_chunk": "wb_g8_u8",
+    "expected_citation": "Grade 8 \u00b7 Unit 8 \u00b7 Fairness and Accountability \u00b7 p.18",
+    "key_points": [
+      "Regression",
+      "Split",
+      "Societal Impact"
+    ]
+  },
+  {
+    "id": "eval_g8_u8_q2",
+    "grade": "8",
+    "unit": 8,
+    "question": "What is Regression and why is it important in Fairness and Accountability?",
+    "expected_chunk": "wb_g8_u8",
+    "expected_citation": "Grade 8 \u00b7 Unit 8 \u00b7 Fairness and Accountability \u00b7 p.18",
+    "key_points": [
+      "Regression",
+      "predicting",
+      "a",
+      "number"
+    ]
+  },
+  {
+    "id": "eval_g9_u1_q1",
+    "grade": "9",
+    "unit": 1,
+    "question": "Which sector in India could benefit most from AI? Justify your answer.",
+    "expected_chunk": "wb_g9_u1",
+    "expected_citation": "Grade 9 \u00b7 Unit 1 \u00b7 AI Domains in Action \u00b7 p.4",
+    "key_points": [
+      "Activation function",
+      "Bias",
+      "Societal Impact"
+    ]
+  },
+  {
+    "id": "eval_g9_u1_q2",
+    "grade": "9",
+    "unit": 1,
+    "question": "What is Activation function and why is it important in AI Domains in Action?",
+    "expected_chunk": "wb_g9_u1",
+    "expected_citation": "Grade 9 \u00b7 Unit 1 \u00b7 AI Domains in Action \u00b7 p.4",
+    "key_points": [
+      "Activation function",
+      "decides",
+      "a",
+      "neuron's"
+    ]
+  },
+  {
+    "id": "eval_g9_u2_q1",
+    "grade": "9",
+    "unit": 2,
+    "question": "How could dirty data cause harm in a hospital AI?",
+    "expected_chunk": "wb_g9_u2",
+    "expected_citation": "Grade 9 \u00b7 Unit 2 \u00b7 Data Literacy \u00b7 p.6",
+    "key_points": [
+      "Consent",
+      "Convolution",
+      "Representation & Reasoning"
+    ]
+  },
+  {
+    "id": "eval_g9_u2_q2",
+    "grade": "9",
+    "unit": 2,
+    "question": "What is Consent and why is it important in Data Literacy?",
+    "expected_chunk": "wb_g9_u2",
+    "expected_citation": "Grade 9 \u00b7 Unit 2 \u00b7 Data Literacy \u00b7 p.6",
+    "key_points": [
+      "Consent",
+      "clear",
+      "permission",
+      "to"
+    ]
+  },
+  {
+    "id": "eval_g9_u3_q1",
+    "grade": "9",
+    "unit": 3,
+    "question": "An AI says \u201c60% chance this X-ray shows disease\u201d. What should a doctor do?",
+    "expected_chunk": "wb_g9_u3",
+    "expected_citation": "Grade 9 \u00b7 Unit 3 \u00b7 Statistics and Probability \u00b7 p.8",
+    "key_points": [
+      "Data cleaning",
+      "DataFrame",
+      "Representation & Reasoning"
+    ]
+  },
+  {
+    "id": "eval_g9_u3_q2",
+    "grade": "9",
+    "unit": 3,
+    "question": "What is Data cleaning and why is it important in Statistics and Probability?",
+    "expected_chunk": "wb_g9_u3",
+    "expected_citation": "Grade 9 \u00b7 Unit 3 \u00b7 Statistics and Probability \u00b7 p.8",
+    "key_points": [
+      "Data cleaning",
+      "fixing",
+      "errors",
+      "in"
+    ]
+  },
+  {
+    "id": "eval_g9_u4_q1",
+    "grade": "9",
+    "unit": 4,
+    "question": "Why do data scientists use libraries instead of writing everything from scratch?",
+    "expected_chunk": "wb_g9_u4",
+    "expected_citation": "Grade 9 \u00b7 Unit 4 \u00b7 Python for Data \u00b7 p.10",
+    "key_points": [
+      "Dictionary",
+      "Feature map",
+      "Representation & Reasoning"
+    ]
+  },
+  {
+    "id": "eval_g9_u4_q2",
+    "grade": "9",
+    "unit": 4,
+    "question": "What is Dictionary and why is it important in Python for Data?",
+    "expected_chunk": "wb_g9_u4",
+    "expected_citation": "Grade 9 \u00b7 Unit 4 \u00b7 Python for Data \u00b7 p.10",
+    "key_points": [
+      "Dictionary",
+      "key\u2013value",
+      "pairs",
+      "in"
+    ]
+  },
+  {
+    "id": "eval_g9_u5_q1",
+    "grade": "9",
+    "unit": 5,
+    "question": "How is an artificial neuron similar to, and different from, a brain neuron?",
+    "expected_chunk": "wb_g9_u5",
+    "expected_citation": "Grade 9 \u00b7 Unit 5 \u00b7 Neural Networks in Depth \u00b7 p.12",
+    "key_points": [
+      "Hallucination",
+      "Kernel",
+      "Learning"
+    ]
+  },
+  {
+    "id": "eval_g9_u5_q2",
+    "grade": "9",
+    "unit": 5,
+    "question": "What is Hallucination and why is it important in Neural Networks in Depth?",
+    "expected_chunk": "wb_g9_u5",
+    "expected_citation": "Grade 9 \u00b7 Unit 5 \u00b7 Neural Networks in Depth \u00b7 p.12",
+    "key_points": [
+      "Hallucination",
+      "a",
+      "confident",
+      "but"
+    ]
+  },
+  {
+    "id": "eval_g9_u6_q1",
+    "grade": "9",
+    "unit": 6,
+    "question": "Why might a CNN trained on daytime roads fail at night?",
+    "expected_chunk": "wb_g9_u6",
+    "expected_citation": "Grade 9 \u00b7 Unit 6 \u00b7 Convolution and Image Features \u00b7 p.14",
+    "key_points": [
+      "LLM",
+      "Multimodal",
+      "Perception"
+    ]
+  },
+  {
+    "id": "eval_g9_u6_q2",
+    "grade": "9",
+    "unit": 6,
+    "question": "What is LLM and why is it important in Convolution and Image Features?",
+    "expected_chunk": "wb_g9_u6",
+    "expected_citation": "Grade 9 \u00b7 Unit 6 \u00b7 Convolution and Image Features \u00b7 p.14",
+    "key_points": [
+      "LLM",
+      "a",
+      "large",
+      "AI"
+    ]
+  },
+  {
+    "id": "eval_g9_u7_q1",
+    "grade": "9",
+    "unit": 7,
+    "question": "How would you check whether an AI's answer is a hallucination?",
+    "expected_chunk": "wb_g9_u7",
+    "expected_citation": "Grade 9 \u00b7 Unit 7 \u00b7 Generative AI and Prompting \u00b7 p.16",
+    "key_points": [
+      "Probability",
+      "Prompt engineering",
+      "Natural Interaction"
+    ]
+  },
+  {
+    "id": "eval_g9_u7_q2",
+    "grade": "9",
+    "unit": 7,
+    "question": "What is Probability and why is it important in Generative AI and Prompting?",
+    "expected_chunk": "wb_g9_u7",
+    "expected_citation": "Grade 9 \u00b7 Unit 7 \u00b7 Generative AI and Prompting \u00b7 p.16",
+    "key_points": [
+      "Probability",
+      "how",
+      "likely",
+      "an"
+    ]
+  },
+  {
+    "id": "eval_g9_u8_q1",
+    "grade": "9",
+    "unit": 8,
+    "question": "Should AI-generated images always carry a label? Why?",
+    "expected_chunk": "wb_g9_u8",
+    "expected_citation": "Grade 9 \u00b7 Unit 8 \u00b7 AI Ethics and Law \u00b7 p.18",
+    "key_points": [
+      "Structured data",
+      "Unstructured data",
+      "Societal Impact"
+    ]
+  },
+  {
+    "id": "eval_g9_u8_q2",
+    "grade": "9",
+    "unit": 8,
+    "question": "What is Structured data and why is it important in AI Ethics and Law?",
+    "expected_chunk": "wb_g9_u8",
+    "expected_citation": "Grade 9 \u00b7 Unit 8 \u00b7 AI Ethics and Law \u00b7 p.18",
+    "key_points": [
+      "Structured data",
+      "data",
+      "organised",
+      "in"
+    ]
+  },
+  {
+    "id": "eval_g10_u1_q1",
+    "grade": "10",
+    "unit": 1,
+    "question": "Why do models need monitoring after deployment?",
+    "expected_chunk": "wb_g10_u1",
+    "expected_citation": "Grade 10 \u00b7 Unit 1 \u00b7 AI Project Cycle in Depth \u00b7 p.4",
+    "key_points": [
+      "Bag of Words",
+      "Bounding box",
+      "Representation & Reasoning"
+    ]
+  },
+  {
+    "id": "eval_g10_u1_q2",
+    "grade": "10",
+    "unit": 1,
+    "question": "What is Bag of Words and why is it important in AI Project Cycle in Depth?",
+    "expected_chunk": "wb_g10_u1",
+    "expected_citation": "Grade 10 \u00b7 Unit 1 \u00b7 AI Project Cycle in Depth \u00b7 p.4",
+    "key_points": [
+      "Bag of Words",
+      "word",
+      "counts",
+      "used"
+    ]
+  },
+  {
+    "id": "eval_g10_u2_q1",
+    "grade": "10",
+    "unit": 2,
+    "question": "For a spam filter, would you prefer high precision or high recall? Why?",
+    "expected_chunk": "wb_g10_u2",
+    "expected_citation": "Grade 10 \u00b7 Unit 2 \u00b7 Precision, Recall and F1 \u00b7 p.6",
+    "key_points": [
+      "Deployment",
+      "Explainability",
+      "Learning"
+    ]
+  },
+  {
+    "id": "eval_g10_u2_q2",
+    "grade": "10",
+    "unit": 2,
+    "question": "What is Deployment and why is it important in Precision, Recall and F1?",
+    "expected_chunk": "wb_g10_u2",
+    "expected_citation": "Grade 10 \u00b7 Unit 2 \u00b7 Precision, Recall and F1 \u00b7 p.6",
+    "key_points": [
+      "Deployment",
+      "putting",
+      "a",
+      "model"
+    ]
+  },
+  {
+    "id": "eval_g10_u3_q1",
+    "grade": "10",
+    "unit": 3,
+    "question": "Why could removing stopwords sometimes change the meaning, as in \u201cnot good\u201d?",
+    "expected_chunk": "wb_g10_u3",
+    "expected_citation": "Grade 10 \u00b7 Unit 3 \u00b7 The NLP Pipeline \u00b7 p.8",
+    "key_points": [
+      "Fit",
+      "ML engineer",
+      "Natural Interaction"
+    ]
+  },
+  {
+    "id": "eval_g10_u3_q2",
+    "grade": "10",
+    "unit": 3,
+    "question": "What is Fit and why is it important in The NLP Pipeline?",
+    "expected_chunk": "wb_g10_u3",
+    "expected_citation": "Grade 10 \u00b7 Unit 3 \u00b7 The NLP Pipeline \u00b7 p.8",
+    "key_points": [
+      "Fit",
+      "train",
+      "a",
+      "model"
+    ]
+  },
+  {
+    "id": "eval_g10_u4_q1",
+    "grade": "10",
+    "unit": 4,
+    "question": "Should CCTV with face recognition be allowed in schools? Argue both sides.",
+    "expected_chunk": "wb_g10_u4",
+    "expected_citation": "Grade 10 \u00b7 Unit 4 \u00b7 Computer Vision Applications \u00b7 p.10",
+    "key_points": [
+      "Monitoring",
+      "Object detection",
+      "Perception"
+    ]
+  },
+  {
+    "id": "eval_g10_u4_q2",
+    "grade": "10",
+    "unit": 4,
+    "question": "What is Monitoring and why is it important in Computer Vision Applications?",
+    "expected_chunk": "wb_g10_u4",
+    "expected_citation": "Grade 10 \u00b7 Unit 4 \u00b7 Computer Vision Applications \u00b7 p.10",
+    "key_points": [
+      "Monitoring",
+      "tracking",
+      "a",
+      "model's"
+    ]
+  },
+  {
+    "id": "eval_g10_u5_q1",
+    "grade": "10",
+    "unit": 5,
+    "question": "How could limiting a tree's depth reduce overfitting?",
+    "expected_chunk": "wb_g10_u5",
+    "expected_citation": "Grade 10 \u00b7 Unit 5 \u00b7 The ML Workflow in Python \u00b7 p.12",
+    "key_points": [
+      "Pitch",
+      "Precision",
+      "Learning"
+    ]
+  },
+  {
+    "id": "eval_g10_u5_q2",
+    "grade": "10",
+    "unit": 5,
+    "question": "What is Pitch and why is it important in The ML Workflow in Python?",
+    "expected_chunk": "wb_g10_u5",
+    "expected_citation": "Grade 10 \u00b7 Unit 5 \u00b7 The ML Workflow in Python \u00b7 p.12",
+    "key_points": [
+      "Pitch",
+      "a",
+      "short",
+      "talk"
+    ]
+  },
+  {
+    "id": "eval_g10_u6_q1",
+    "grade": "10",
+    "unit": 6,
+    "question": "Why can't an LLM know about events after its training data ends unless it uses tools?",
+    "expected_chunk": "wb_g10_u6",
+    "expected_citation": "Grade 10 \u00b7 Unit 6 \u00b7 How LLMs Work \u00b7 p.14",
+    "key_points": [
+      "RAG",
+      "Recall",
+      "Learning"
+    ]
+  },
+  {
+    "id": "eval_g10_u6_q2",
+    "grade": "10",
+    "unit": 6,
+    "question": "What is RAG and why is it important in How LLMs Work?",
+    "expected_chunk": "wb_g10_u6",
+    "expected_citation": "Grade 10 \u00b7 Unit 6 \u00b7 How LLMs Work \u00b7 p.14",
+    "key_points": [
+      "RAG",
+      "retrieving",
+      "documents",
+      "to"
+    ]
+  },
+  {
+    "id": "eval_g10_u7_q1",
+    "grade": "10",
+    "unit": 7,
+    "question": "Who should set rules for AI: governments, companies or users? Discuss.",
+    "expected_chunk": "wb_g10_u7",
+    "expected_citation": "Grade 10 \u00b7 Unit 7 \u00b7 Responsible AI and Governance \u00b7 p.16",
+    "key_points": [
+      "Segmentation",
+      "Stemming",
+      "Societal Impact"
+    ]
+  },
+  {
+    "id": "eval_g10_u7_q2",
+    "grade": "10",
+    "unit": 7,
+    "question": "What is Segmentation and why is it important in Responsible AI and Governance?",
+    "expected_chunk": "wb_g10_u7",
+    "expected_citation": "Grade 10 \u00b7 Unit 7 \u00b7 Responsible AI and Governance \u00b7 p.16",
+    "key_points": [
+      "Segmentation",
+      "labelling",
+      "every",
+      "pixel"
+    ]
+  },
+  {
+    "id": "eval_g10_u8_q1",
+    "grade": "10",
+    "unit": 8,
+    "question": "Which AI career fits your strengths? What can you start learning now?",
+    "expected_chunk": "wb_g10_u8",
+    "expected_citation": "Grade 10 \u00b7 Unit 8 \u00b7 AI Careers and Entrepreneurship \u00b7 p.18",
+    "key_points": [
+      "Temperature",
+      "Transformer",
+      "Societal Impact"
+    ]
+  },
+  {
+    "id": "eval_g10_u8_q2",
+    "grade": "10",
+    "unit": 8,
+    "question": "What is Temperature and why is it important in AI Careers and Entrepreneurship?",
+    "expected_chunk": "wb_g10_u8",
+    "expected_citation": "Grade 10 \u00b7 Unit 8 \u00b7 AI Careers and Entrepreneurship \u00b7 p.18",
+    "key_points": [
+      "Temperature",
+      "a",
+      "setting",
+      "for"
+    ]
+  }
+]

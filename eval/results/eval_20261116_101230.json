@@ -1,0 +1,2190 @@
+{
+  "timestamp": "2026-11-16T10:12:30.161626+00:00",
+  "total_questions": 128,
+  "metrics": {
+    "citation_correctness_pct": 100.0,
+    "concept_accuracy_pct": 100.0,
+    "hallucination_rate_pct": 0.0,
+    "average_latency_ms": 11.81,
+    "average_tokens_per_answer": 132.6
+  },
+  "taxonomy_failures": {},
+  "results": [
+    {
+      "id": "eval_g3_u1_q1",
+      "question": "Is a toy car that runs on batteries AI? Why or why not?",
+      "expected_chunk": "wb_g3_u1",
+      "cited_chunks": [
+        "wb_g3_u1",
+        "wb_g3_u2"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 150,
+      "latency_ms": 11.71,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 3\nUnit: Smart or Not?\nBig Idea: Societal Impact\nLearning Objecti..."
+    },
+    {
+      "id": "eval_g3_u1_q2",
+      "question": "What is AI and why is it important in Smart or Not??",
+      "expected_chunk": "wb_g3_u1",
+      "cited_chunks": [
+        "wb_g3_u1",
+        "wb_g3_u7"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 150,
+      "latency_ms": 11.11,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 3\nUnit: Smart or Not?\nBig Idea: Societal Impact\nLearning Objecti..."
+    },
+    {
+      "id": "eval_g3_u2_q1",
+      "question": "Which sense do you think is the hardest for a machine? Why?",
+      "expected_chunk": "wb_g3_u2",
+      "cited_chunks": [
+        "wb_g3_u2",
+        "wb_g3_u6"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 133,
+      "latency_ms": 11.53,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 3\nUnit: How Machines Sense\nBig Idea: Perception\nLearning Objecti..."
+    },
+    {
+      "id": "eval_g3_u2_q2",
+      "question": "What is Camera and why is it important in How Machines Sense?",
+      "expected_chunk": "wb_g3_u2",
+      "cited_chunks": [
+        "wb_g3_u2",
+        "wb_g3_u6"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 133,
+      "latency_ms": 11.43,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 3\nUnit: How Machines Sense\nBig Idea: Perception\nLearning Objecti..."
+    },
+    {
+      "id": "eval_g3_u3_q1",
+      "question": "How does finding a pattern help you guess what comes next?",
+      "expected_chunk": "wb_g3_u3",
+      "cited_chunks": [
+        "wb_g3_u3",
+        "wb_g3_u5"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 124,
+      "latency_ms": 11.7,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 3\nUnit: Patterns Everywhere\nBig Idea: Learning\nLearning Objectiv..."
+    },
+    {
+      "id": "eval_g3_u3_q2",
+      "question": "What is Group and why is it important in Patterns Everywhere?",
+      "expected_chunk": "wb_g3_u3",
+      "cited_chunks": [
+        "wb_g3_u3",
+        "wb_g3_u5"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 124,
+      "latency_ms": 11.83,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 3\nUnit: Patterns Everywhere\nBig Idea: Learning\nLearning Objectiv..."
+    },
+    {
+      "id": "eval_g3_u4_q1",
+      "question": "What features help you tell a cat from a dog?",
+      "expected_chunk": "wb_g3_u4",
+      "cited_chunks": [
+        "wb_g3_u4",
+        "wb_g3_u3"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 128,
+      "latency_ms": 11.86,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 3\nUnit: Sorting and Grouping\nBig Idea: Representation & Reasonin..."
+    },
+    {
+      "id": "eval_g3_u4_q2",
+      "question": "What is Machine and why is it important in Sorting and Grouping?",
+      "expected_chunk": "wb_g3_u4",
+      "cited_chunks": [
+        "wb_g3_u4",
+        "wb_g3_u6"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 128,
+      "latency_ms": 11.77,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 3\nUnit: Sorting and Grouping\nBig Idea: Representation & Reasonin..."
+    },
+    {
+      "id": "eval_g3_u5_q1",
+      "question": "What happens if a robot follows the steps in the wrong order?",
+      "expected_chunk": "wb_g3_u5",
+      "cited_chunks": [
+        "wb_g3_u5",
+        "wb_g3_u1"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 118,
+      "latency_ms": 11.2,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 3\nUnit: Step by Step\nBig Idea: Representation & Reasoning\nLearni..."
+    },
+    {
+      "id": "eval_g3_u5_q2",
+      "question": "What is Pattern and why is it important in Step by Step?",
+      "expected_chunk": "wb_g3_u5",
+      "cited_chunks": [
+        "wb_g3_u5",
+        "wb_g3_u4"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 118,
+      "latency_ms": 11.99,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 3\nUnit: Step by Step\nBig Idea: Representation & Reasoning\nLearni..."
+    },
+    {
+      "id": "eval_g3_u6_q1",
+      "question": "Why should we say please and thank you, even to a machine?",
+      "expected_chunk": "wb_g3_u6",
+      "cited_chunks": [
+        "wb_g3_u6",
+        "wb_g3_u2"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 124,
+      "latency_ms": 12.42,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 3\nUnit: Talking to Machines\nBig Idea: Natural Interaction\nLearni..."
+    },
+    {
+      "id": "eval_g3_u6_q2",
+      "question": "What is Repeat and why is it important in Talking to Machines?",
+      "expected_chunk": "wb_g3_u6",
+      "cited_chunks": [
+        "wb_g3_u6",
+        "wb_g3_u1"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 124,
+      "latency_ms": 11.56,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 3\nUnit: Talking to Machines\nBig Idea: Natural Interaction\nLearni..."
+    },
+    {
+      "id": "eval_g3_u7_q1",
+      "question": "What would you do if a game asked for your home address?",
+      "expected_chunk": "wb_g3_u7",
+      "cited_chunks": [
+        "wb_g3_u7",
+        "wb_g3_u5"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 125,
+      "latency_ms": 11.58,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 3\nUnit: Safe Online\nBig Idea: Societal Impact\nLearning Objective..."
+    },
+    {
+      "id": "eval_g3_u7_q2",
+      "question": "What is Sensor and why is it important in Safe Online?",
+      "expected_chunk": "wb_g3_u7",
+      "cited_chunks": [
+        "wb_g3_u7",
+        "wb_g3_u2"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 125,
+      "latency_ms": 12.48,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 3\nUnit: Safe Online\nBig Idea: Societal Impact\nLearning Objective..."
+    },
+    {
+      "id": "eval_g3_u8_q1",
+      "question": "How can AI help people who cannot see or hear well?",
+      "expected_chunk": "wb_g3_u8",
+      "cited_chunks": [
+        "wb_g3_u8",
+        "wb_g3_u2"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 132,
+      "latency_ms": 12.17,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 3\nUnit: Kind with Tech\nBig Idea: Societal Impact\nLearning Object..."
+    },
+    {
+      "id": "eval_g3_u8_q2",
+      "question": "What is Step and why is it important in Kind with Tech?",
+      "expected_chunk": "wb_g3_u8",
+      "cited_chunks": [
+        "wb_g3_u8",
+        "wb_g3_u5"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 132,
+      "latency_ms": 11.93,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 3\nUnit: Kind with Tech\nBig Idea: Societal Impact\nLearning Object..."
+    },
+    {
+      "id": "eval_g4_u1_q1",
+      "question": "Why can't we write rules for everything a robot might see?",
+      "expected_chunk": "wb_g4_u1",
+      "cited_chunks": [
+        "wb_g4_u1",
+        "wb_g4_u3"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 138,
+      "latency_ms": 11.69,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 4\nUnit: Rules or Learning?\nBig Idea: Learning\nLearning Objective..."
+    },
+    {
+      "id": "eval_g4_u1_q2",
+      "question": "What is Bias and why is it important in Rules or Learning??",
+      "expected_chunk": "wb_g4_u1",
+      "cited_chunks": [
+        "wb_g4_u1",
+        "wb_g4_u7"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 138,
+      "latency_ms": 12.78,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 4\nUnit: Rules or Learning?\nBig Idea: Learning\nLearning Objective..."
+    },
+    {
+      "id": "eval_g4_u2_q1",
+      "question": "What other data could you collect about your class?",
+      "expected_chunk": "wb_g4_u2",
+      "cited_chunks": [
+        "wb_g4_u2",
+        "wb_g6_u8"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 120,
+      "latency_ms": 11.4,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 4\nUnit: Data is Everywhere\nBig Idea: Representation & Reasoning\n..."
+    },
+    {
+      "id": "eval_g4_u2_q2",
+      "question": "What is Citizen and why is it important in Data is Everywhere?",
+      "expected_chunk": "wb_g4_u2",
+      "cited_chunks": [
+        "wb_g4_u2",
+        "wb_g4_u8"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 120,
+      "latency_ms": 11.97,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 4\nUnit: Data is Everywhere\nBig Idea: Representation & Reasoning\n..."
+    },
+    {
+      "id": "eval_g4_u3_q1",
+      "question": "What might happen if we trained an AI with only 3 pictures?",
+      "expected_chunk": "wb_g4_u3",
+      "cited_chunks": [
+        "wb_g4_u3",
+        "wb_g4_u7"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 121,
+      "latency_ms": 11.7,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 4\nUnit: Teaching a Machine\nBig Idea: Learning\nLearning Objective..."
+    },
+    {
+      "id": "eval_g4_u3_q2",
+      "question": "What is Example and why is it important in Teaching a Machine?",
+      "expected_chunk": "wb_g4_u3",
+      "cited_chunks": [
+        "wb_g4_u3",
+        "wb_g4_u8"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 121,
+      "latency_ms": 11.99,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 4\nUnit: Teaching a Machine\nBig Idea: Learning\nLearning Objective..."
+    },
+    {
+      "id": "eval_g4_u4_q1",
+      "question": "How many questions do you need to guess one of 8 animals?",
+      "expected_chunk": "wb_g4_u4",
+      "cited_chunks": [
+        "wb_g4_u4",
+        "wb_g4_u6"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 115,
+      "latency_ms": 11.6,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 4\nUnit: Decision Trees\nBig Idea: Representation & Reasoning\nLear..."
+    },
+    {
+      "id": "eval_g4_u4_q2",
+      "question": "What is Learn and why is it important in Decision Trees?",
+      "expected_chunk": "wb_g4_u4",
+      "cited_chunks": [
+        "wb_g4_u4",
+        "wb_g4_u2"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 115,
+      "latency_ms": 11.23,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 4\nUnit: Decision Trees\nBig Idea: Representation & Reasoning\nLear..."
+    },
+    {
+      "id": "eval_g4_u5_q1",
+      "question": "What shape does \u201crepeat 4 times: draw line, turn right\u201d make?",
+      "expected_chunk": "wb_g4_u5",
+      "cited_chunks": [
+        "wb_g4_u5",
+        "wb_g4_u4"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 109,
+      "latency_ms": 12.04,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 4\nUnit: Algorithms and Loops\nBig Idea: Representation & Reasonin..."
+    },
+    {
+      "id": "eval_g4_u5_q2",
+      "question": "What is Permission and why is it important in Algorithms and Loops?",
+      "expected_chunk": "wb_g4_u5",
+      "cited_chunks": [
+        "wb_g4_u5",
+        "wb_g4_u8"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 109,
+      "latency_ms": 12.47,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 4\nUnit: Algorithms and Loops\nBig Idea: Representation & Reasonin..."
+    },
+    {
+      "id": "eval_g4_u6_q1",
+      "question": "Why do chatbots need to understand different ways of asking?",
+      "expected_chunk": "wb_g4_u6",
+      "cited_chunks": [
+        "wb_g4_u6",
+        "wb_g8_u7"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 111,
+      "latency_ms": 11.72,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 4\nUnit: Chatbots\nBig Idea: Natural Interaction\nLearning Objectiv..."
+    },
+    {
+      "id": "eval_g4_u6_q2",
+      "question": "What is Reply and why is it important in Chatbots?",
+      "expected_chunk": "wb_g4_u6",
+      "cited_chunks": [
+        "wb_g4_u6",
+        "wb_g8_u7"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 111,
+      "latency_ms": 11.33,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 4\nUnit: Chatbots\nBig Idea: Natural Interaction\nLearning Objectiv..."
+    },
+    {
+      "id": "eval_g4_u7_q1",
+      "question": "Who should check if an AI is fair?",
+      "expected_chunk": "wb_g4_u7",
+      "cited_chunks": [
+        "wb_g4_u7",
+        "wb_g4_u3"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 130,
+      "latency_ms": 11.44,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 4\nUnit: When AI Gets It Wrong\nBig Idea: Societal Impact\nLearning..."
+    },
+    {
+      "id": "eval_g4_u7_q2",
+      "question": "What is Script and why is it important in When AI Gets It Wrong?",
+      "expected_chunk": "wb_g4_u7",
+      "cited_chunks": [
+        "wb_g4_u7",
+        "wb_g4_u8"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 130,
+      "latency_ms": 12.02,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 4\nUnit: When AI Gets It Wrong\nBig Idea: Societal Impact\nLearning..."
+    },
+    {
+      "id": "eval_g4_u8_q1",
+      "question": "Is it okay to copy a friend's drawing and post it online? Why?",
+      "expected_chunk": "wb_g4_u8",
+      "cited_chunks": [
+        "wb_g4_u8",
+        "wb_g4_u2"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 115,
+      "latency_ms": 11.51,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 4\nUnit: Digital Citizen\nBig Idea: Societal Impact\nLearning Objec..."
+    },
+    {
+      "id": "eval_g4_u8_q2",
+      "question": "What is Tally and why is it important in Digital Citizen?",
+      "expected_chunk": "wb_g4_u8",
+      "cited_chunks": [
+        "wb_g4_u8",
+        "wb_g4_u2"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 115,
+      "latency_ms": 11.46,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 4\nUnit: Digital Citizen\nBig Idea: Societal Impact\nLearning Objec..."
+    },
+    {
+      "id": "eval_g5_u1_q1",
+      "question": "Which job do you think AI should never do alone? Why?",
+      "expected_chunk": "wb_g5_u1",
+      "cited_chunks": [
+        "wb_g5_u1",
+        "wb_g5_u7"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 139,
+      "latency_ms": 11.68,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 5\nUnit: AI in Our World\nBig Idea: Societal Impact\nLearning Objec..."
+    },
+    {
+      "id": "eval_g5_u1_q2",
+      "question": "What is Accuracy and why is it important in AI in Our World?",
+      "expected_chunk": "wb_g5_u1",
+      "cited_chunks": [
+        "wb_g5_u1",
+        "wb_g5_u3"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 139,
+      "latency_ms": 11.81,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 5\nUnit: AI in Our World\nBig Idea: Societal Impact\nLearning Objec..."
+    },
+    {
+      "id": "eval_g5_u2_q1",
+      "question": "How could wrong data make an AI give a wrong answer?",
+      "expected_chunk": "wb_g5_u2",
+      "cited_chunks": [
+        "wb_g5_u2",
+        "wb_g4_u7"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 137,
+      "latency_ms": 11.88,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 5\nUnit: Data and Charts\nBig Idea: Representation & Reasoning\nLea..."
+    },
+    {
+      "id": "eval_g5_u2_q2",
+      "question": "What is Bar graph and why is it important in Data and Charts?",
+      "expected_chunk": "wb_g5_u2",
+      "cited_chunks": [
+        "wb_g5_u2",
+        "wb_g6_u5"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 137,
+      "latency_ms": 11.27,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 5\nUnit: Data and Charts\nBig Idea: Representation & Reasoning\nLea..."
+    },
+    {
+      "id": "eval_g5_u3_q1",
+      "question": "Is 100% accuracy on training pictures enough? Why not?",
+      "expected_chunk": "wb_g5_u3",
+      "cited_chunks": [
+        "wb_g5_u3",
+        "wb_g8_u4"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 127,
+      "latency_ms": 11.84,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 5\nUnit: How Machines Learn\nBig Idea: Learning\nLearning Objective..."
+    },
+    {
+      "id": "eval_g5_u3_q2",
+      "question": "What is Deepfake and why is it important in How Machines Learn?",
+      "expected_chunk": "wb_g5_u3",
+      "cited_chunks": [
+        "wb_g5_u3",
+        "wb_g5_u8"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 127,
+      "latency_ms": 11.28,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 5\nUnit: How Machines Learn\nBig Idea: Learning\nLearning Objective..."
+    },
+    {
+      "id": "eval_g5_u4_q1",
+      "question": "Why might AI find it hard to recognise things in the dark?",
+      "expected_chunk": "wb_g5_u4",
+      "cited_chunks": [
+        "wb_g5_u4",
+        "wb_g5_u1"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 118,
+      "latency_ms": 12.31,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 5\nUnit: Computer Vision\nBig Idea: Perception\nLearning Objective:..."
+    },
+    {
+      "id": "eval_g5_u4_q2",
+      "question": "What is Feature and why is it important in Computer Vision?",
+      "expected_chunk": "wb_g5_u4",
+      "cited_chunks": [
+        "wb_g5_u4",
+        "wb_g5_u8"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 118,
+      "latency_ms": 12.32,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 5\nUnit: Computer Vision\nBig Idea: Perception\nLearning Objective:..."
+    },
+    {
+      "id": "eval_g5_u5_q1",
+      "question": "Why might two people get different answers from the same chatbot?",
+      "expected_chunk": "wb_g5_u5",
+      "cited_chunks": [
+        "wb_g5_u5",
+        "wb_g4_u6"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 129,
+      "latency_ms": 12.23,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 5\nUnit: Language AI and Prompts\nBig Idea: Natural Interaction\nLe..."
+    },
+    {
+      "id": "eval_g5_u5_q2",
+      "question": "What is Machine learning and why is it important in Language AI and Prompts?",
+      "expected_chunk": "wb_g5_u5",
+      "cited_chunks": [
+        "wb_g5_u5",
+        "wb_g5_u1"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 129,
+      "latency_ms": 11.71,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 5\nUnit: Language AI and Prompts\nBig Idea: Natural Interaction\nLe..."
+    },
+    {
+      "id": "eval_g5_u6_q1",
+      "question": "Who should fix an AI that is unfair: the users, the makers, or both?",
+      "expected_chunk": "wb_g5_u6",
+      "cited_chunks": [
+        "wb_g5_u6",
+        "wb_g5_u7"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 125,
+      "latency_ms": 12.43,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 5\nUnit: Fair and Responsible AI\nBig Idea: Societal Impact\nLearni..."
+    },
+    {
+      "id": "eval_g5_u6_q2",
+      "question": "What is Predict and why is it important in Fair and Responsible AI?",
+      "expected_chunk": "wb_g5_u6",
+      "cited_chunks": [
+        "wb_g5_u6",
+        "wb_g5_u8"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 125,
+      "latency_ms": 12.41,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 5\nUnit: Fair and Responsible AI\nBig Idea: Societal Impact\nLearni..."
+    },
+    {
+      "id": "eval_g5_u7_q1",
+      "question": "What would you do if a friend shared a video that looked fake?",
+      "expected_chunk": "wb_g5_u7",
+      "cited_chunks": [
+        "wb_g5_u7",
+        "wb_g5_u3"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 136,
+      "latency_ms": 11.97,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 5\nUnit: Fact or Fake?\nBig Idea: Societal Impact\nLearning Objecti..."
+    },
+    {
+      "id": "eval_g5_u7_q2",
+      "question": "What is Prototype and why is it important in Fact or Fake??",
+      "expected_chunk": "wb_g5_u7",
+      "cited_chunks": [
+        "wb_g5_u7",
+        "wb_g5_u8"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 136,
+      "latency_ms": 11.93,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 5\nUnit: Fact or Fake?\nBig Idea: Societal Impact\nLearning Objecti..."
+    },
+    {
+      "id": "eval_g5_u8_q1",
+      "question": "Why is it important to talk to the people who have the problem?",
+      "expected_chunk": "wb_g5_u8",
+      "cited_chunks": [
+        "wb_g5_u8",
+        "wb_g6_u3"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 124,
+      "latency_ms": 11.57,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 5\nUnit: Design Thinking\nBig Idea: Societal Impact\nLearning Objec..."
+    },
+    {
+      "id": "eval_g5_u8_q2",
+      "question": "What is Responsible and why is it important in Design Thinking?",
+      "expected_chunk": "wb_g5_u8",
+      "cited_chunks": [
+        "wb_g5_u8",
+        "wb_g5_u6"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 124,
+      "latency_ms": 11.75,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 5\nUnit: Design Thinking\nBig Idea: Societal Impact\nLearning Objec..."
+    },
+    {
+      "id": "eval_g6_u1_q1",
+      "question": "If an AI can play chess very well, is it intelligent like a person? Why or why not?",
+      "expected_chunk": "wb_g6_u1",
+      "cited_chunks": [
+        "wb_g6_u1",
+        "wb_g6_u2"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 161,
+      "latency_ms": 11.51,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 6\nUnit: What Makes AI Intelligent?\nBig Idea: Societal Impact\nLea..."
+    },
+    {
+      "id": "eval_g6_u1_q2",
+      "question": "What is Condition and why is it important in What Makes AI Intelligent??",
+      "expected_chunk": "wb_g6_u1",
+      "cited_chunks": [
+        "wb_g6_u1",
+        "wb_g6_u3"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 161,
+      "latency_ms": 11.89,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 6\nUnit: What Makes AI Intelligent?\nBig Idea: Societal Impact\nLea..."
+    },
+    {
+      "id": "eval_g6_u2_q1",
+      "question": "Why do you think evaluation is important before using an AI in real life?",
+      "expected_chunk": "wb_g6_u2",
+      "cited_chunks": [
+        "wb_g6_u2",
+        "wb_g6_u7"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 167,
+      "latency_ms": 11.45,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 6\nUnit: The AI Project Cycle\nBig Idea: Representation & Reasonin..."
+    },
+    {
+      "id": "eval_g6_u2_q2",
+      "question": "What is Decision and why is it important in The AI Project Cycle?",
+      "expected_chunk": "wb_g6_u2",
+      "cited_chunks": [
+        "wb_g6_u2",
+        "wb_g6_u7"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 167,
+      "latency_ms": 11.32,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 6\nUnit: The AI Project Cycle\nBig Idea: Representation & Reasonin..."
+    },
+    {
+      "id": "eval_g6_u3_q1",
+      "question": "Why should we talk to the stakeholders before building a solution?",
+      "expected_chunk": "wb_g6_u3",
+      "cited_chunks": [
+        "wb_g6_u3",
+        "wb_g6_u4"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 144,
+      "latency_ms": 11.44,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 6\nUnit: Problem Scoping with 4Ws\nBig Idea: Societal Impact\nLearn..."
+    },
+    {
+      "id": "eval_g6_u3_q2",
+      "question": "What is Evaluation and why is it important in Problem Scoping with 4Ws?",
+      "expected_chunk": "wb_g6_u3",
+      "cited_chunks": [
+        "wb_g6_u3",
+        "wb_g6_u2"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 144,
+      "latency_ms": 12.83,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 6\nUnit: Problem Scoping with 4Ws\nBig Idea: Societal Impact\nLearn..."
+    },
+    {
+      "id": "eval_g6_u4_q1",
+      "question": "Why must we ask permission before collecting data about people?",
+      "expected_chunk": "wb_g6_u4",
+      "cited_chunks": [
+        "wb_g6_u4",
+        "wb_g6_u8"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 133,
+      "latency_ms": 12.48,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 6\nUnit: Data Acquisition\nBig Idea: Representation & Reasoning\nLe..."
+    },
+    {
+      "id": "eval_g6_u4_q2",
+      "question": "What is Line graph and why is it important in Data Acquisition?",
+      "expected_chunk": "wb_g6_u4",
+      "cited_chunks": [
+        "wb_g6_u4",
+        "wb_g6_u2"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 133,
+      "latency_ms": 11.75,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 6\nUnit: Data Acquisition\nBig Idea: Representation & Reasoning\nLe..."
+    },
+    {
+      "id": "eval_g6_u5_q1",
+      "question": "How could a wrong number in a dataset change what a chart tells you?",
+      "expected_chunk": "wb_g6_u5",
+      "cited_chunks": [
+        "wb_g6_u5",
+        "wb_g5_u2"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 139,
+      "latency_ms": 11.7,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 6\nUnit: Exploring Data with Charts\nBig Idea: Representation & Re..."
+    },
+    {
+      "id": "eval_g6_u5_q2",
+      "question": "What is Pie chart and why is it important in Exploring Data with Charts?",
+      "expected_chunk": "wb_g6_u5",
+      "cited_chunks": [
+        "wb_g6_u5",
+        "wb_g6_u2"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 139,
+      "latency_ms": 12.38,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 6\nUnit: Exploring Data with Charts\nBig Idea: Representation & Re..."
+    },
+    {
+      "id": "eval_g6_u6_q1",
+      "question": "Where do you use decisions (if this, then that) in your daily routine?",
+      "expected_chunk": "wb_g6_u6",
+      "cited_chunks": [
+        "wb_g6_u6",
+        "wb_g6_u3"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 128,
+      "latency_ms": 12.3,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 6\nUnit: Algorithms and Flowcharts\nBig Idea: Representation & Rea..."
+    },
+    {
+      "id": "eval_g6_u6_q2",
+      "question": "What is Problem scoping and why is it important in Algorithms and Flowcharts?",
+      "expected_chunk": "wb_g6_u6",
+      "cited_chunks": [
+        "wb_g6_u6",
+        "wb_g6_u3"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 128,
+      "latency_ms": 12.4,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 6\nUnit: Algorithms and Flowcharts\nBig Idea: Representation & Rea..."
+    },
+    {
+      "id": "eval_g6_u7_q1",
+      "question": "Why is it helpful to write pseudocode before real code?",
+      "expected_chunk": "wb_g6_u7",
+      "cited_chunks": [
+        "wb_g6_u7",
+        "wb_g6_u3"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 133,
+      "latency_ms": 11.57,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 6\nUnit: Pseudocode and Conditions\nBig Idea: Representation & Rea..."
+    },
+    {
+      "id": "eval_g6_u7_q2",
+      "question": "What is Project cycle and why is it important in Pseudocode and Conditions?",
+      "expected_chunk": "wb_g6_u7",
+      "cited_chunks": [
+        "wb_g6_u7",
+        "wb_g6_u2"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 133,
+      "latency_ms": 11.68,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 6\nUnit: Pseudocode and Conditions\nBig Idea: Representation & Rea..."
+    },
+    {
+      "id": "eval_g6_u8_q1",
+      "question": "Should AI be allowed to use your photos to learn? Under what rules?",
+      "expected_chunk": "wb_g6_u8",
+      "cited_chunks": [
+        "wb_g6_u8",
+        "wb_g6_u3"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 139,
+      "latency_ms": 11.58,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 6\nUnit: AI Ethics: Privacy and Bias\nBig Idea: Societal Impact\nLe..."
+    },
+    {
+      "id": "eval_g6_u8_q2",
+      "question": "What is Stakeholder and why is it important in AI Ethics: Privacy and Bias?",
+      "expected_chunk": "wb_g6_u8",
+      "cited_chunks": [
+        "wb_g6_u8",
+        "wb_g6_u2"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 139,
+      "latency_ms": 12.1,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 6\nUnit: AI Ethics: Privacy and Bias\nBig Idea: Societal Impact\nLe..."
+    },
+    {
+      "id": "eval_g7_u1_q1",
+      "question": "Why might a self-driving car's camera struggle in heavy rain?",
+      "expected_chunk": "wb_g7_u1",
+      "cited_chunks": [
+        "wb_g7_u1",
+        "wb_g7_u6"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 133,
+      "latency_ms": 11.93,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 7\nUnit: Computer Vision Basics\nBig Idea: Perception\nLearning Obj..."
+    },
+    {
+      "id": "eval_g7_u1_q2",
+      "question": "What is Actuator and why is it important in Computer Vision Basics?",
+      "expected_chunk": "wb_g7_u1",
+      "cited_chunks": [
+        "wb_g7_u1",
+        "wb_g7_u2"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 133,
+      "latency_ms": 11.84,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 7\nUnit: Computer Vision Basics\nBig Idea: Perception\nLearning Obj..."
+    },
+    {
+      "id": "eval_g7_u2_q1",
+      "question": "Why is sarcasm (\u201cOh great, it rained again\u201d) hard for sentiment AI?",
+      "expected_chunk": "wb_g7_u2",
+      "cited_chunks": [
+        "wb_g7_u2",
+        "wb_g7_u7"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 135,
+      "latency_ms": 11.8,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 7\nUnit: Natural Language Processing\nBig Idea: Natural Interactio..."
+    },
+    {
+      "id": "eval_g7_u2_q2",
+      "question": "What is Clustering and why is it important in Natural Language Processing?",
+      "expected_chunk": "wb_g7_u2",
+      "cited_chunks": [
+        "wb_g7_u2",
+        "wb_g7_u6"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 135,
+      "latency_ms": 11.66,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 7\nUnit: Natural Language Processing\nBig Idea: Natural Interactio..."
+    },
+    {
+      "id": "eval_g7_u3_q1",
+      "question": "Why might an AI give bad results if its data has many outliers?",
+      "expected_chunk": "wb_g7_u3",
+      "cited_chunks": [
+        "wb_g7_u3",
+        "wb_g7_u1"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 126,
+      "latency_ms": 12.29,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 7\nUnit: Statistics for AI\nBig Idea: Representation & Reasoning\nL..."
+    },
+    {
+      "id": "eval_g7_u3_q2",
+      "question": "What is Digital footprint and why is it important in Statistics for AI?",
+      "expected_chunk": "wb_g7_u3",
+      "cited_chunks": [
+        "wb_g7_u3",
+        "wb_g7_u8"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 126,
+      "latency_ms": 12.53,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 7\nUnit: Statistics for AI\nBig Idea: Representation & Reasoning\nL..."
+    },
+    {
+      "id": "eval_g7_u4_q1",
+      "question": "Which type of learning do you use when you learn to ride a cycle?",
+      "expected_chunk": "wb_g7_u4",
+      "cited_chunks": [
+        "wb_g7_u4",
+        "wb_g7_u2"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 133,
+      "latency_ms": 11.92,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 7\nUnit: Supervised vs Unsupervised\nBig Idea: Learning\nLearning O..."
+    },
+    {
+      "id": "eval_g7_u4_q2",
+      "question": "What is Mean and why is it important in Supervised vs Unsupervised?",
+      "expected_chunk": "wb_g7_u4",
+      "cited_chunks": [
+        "wb_g7_u4",
+        "wb_g7_u8"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 133,
+      "latency_ms": 11.75,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 7\nUnit: Supervised vs Unsupervised\nBig Idea: Learning\nLearning O..."
+    },
+    {
+      "id": "eval_g7_u5_q1",
+      "question": "What might happen if a model only saw ripe mangoes in good light?",
+      "expected_chunk": "wb_g7_u5",
+      "cited_chunks": [
+        "wb_g7_u5",
+        "wb_g7_u7"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 139,
+      "latency_ms": 11.46,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 7\nUnit: Training Data and Classification\nBig Idea: Learning\nLear..."
+    },
+    {
+      "id": "eval_g7_u5_q2",
+      "question": "What is Outlier and why is it important in Training Data and Classification?",
+      "expected_chunk": "wb_g7_u5",
+      "cited_chunks": [
+        "wb_g7_u5",
+        "wb_g7_u1"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 139,
+      "latency_ms": 12.01,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 7\nUnit: Training Data and Classification\nBig Idea: Learning\nLear..."
+    },
+    {
+      "id": "eval_g7_u6_q1",
+      "question": "Why do you think programmers choose simple, readable languages?",
+      "expected_chunk": "wb_g7_u6",
+      "cited_chunks": [
+        "wb_g7_u6",
+        "wb_g7_u2"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 128,
+      "latency_ms": 11.72,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 7\nUnit: Python Basics\nBig Idea: Representation & Reasoning\nLearn..."
+    },
+    {
+      "id": "eval_g7_u6_q2",
+      "question": "What is Python and why is it important in Python Basics?",
+      "expected_chunk": "wb_g7_u6",
+      "cited_chunks": [
+        "wb_g7_u6",
+        "wb_g7_u1"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 128,
+      "latency_ms": 11.76,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 7\nUnit: Python Basics\nBig Idea: Representation & Reasoning\nLearn..."
+    },
+    {
+      "id": "eval_g7_u7_q1",
+      "question": "What could go wrong if a smart home device is hacked?",
+      "expected_chunk": "wb_g7_u7",
+      "cited_chunks": [
+        "wb_g7_u7",
+        "wb_g3_u7"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 141,
+      "latency_ms": 11.42,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 7\nUnit: Smart Sensors and IoT\nBig Idea: Perception\nLearning Obje..."
+    },
+    {
+      "id": "eval_g7_u7_q2",
+      "question": "What is Sentiment and why is it important in Smart Sensors and IoT?",
+      "expected_chunk": "wb_g7_u7",
+      "cited_chunks": [
+        "wb_g7_u7",
+        "wb_g7_u2"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 141,
+      "latency_ms": 11.9,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 7\nUnit: Smart Sensors and IoT\nBig Idea: Perception\nLearning Obje..."
+    },
+    {
+      "id": "eval_g7_u8_q1",
+      "question": "What would you want your digital footprint to say about you in 10 years?",
+      "expected_chunk": "wb_g7_u8",
+      "cited_chunks": [
+        "wb_g7_u8",
+        "wb_g7_u3"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 135,
+      "latency_ms": 11.65,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 7\nUnit: Digital Footprint and Safety\nBig Idea: Societal Impact\nL..."
+    },
+    {
+      "id": "eval_g7_u8_q2",
+      "question": "What is Token and why is it important in Digital Footprint and Safety?",
+      "expected_chunk": "wb_g7_u8",
+      "cited_chunks": [
+        "wb_g7_u8",
+        "wb_g7_u3"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 135,
+      "latency_ms": 11.44,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 7\nUnit: Digital Footprint and Safety\nBig Idea: Societal Impact\nL..."
+    },
+    {
+      "id": "eval_g8_u1_q1",
+      "question": "Can a model be 100% right about the future? Why or why not?",
+      "expected_chunk": "wb_g8_u1",
+      "cited_chunks": [
+        "wb_g8_u1",
+        "wb_g8_u4"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 129,
+      "latency_ms": 11.36,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 8\nUnit: How Machine Learning Works\nBig Idea: Learning\nLearning O..."
+    },
+    {
+      "id": "eval_g8_u1_q2",
+      "question": "What is Accountability and why is it important in How Machine Learning Works?",
+      "expected_chunk": "wb_g8_u1",
+      "cited_chunks": [
+        "wb_g8_u1",
+        "wb_g8_u8"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 129,
+      "latency_ms": 11.56,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 8\nUnit: How Machine Learning Works\nBig Idea: Learning\nLearning O..."
+    },
+    {
+      "id": "eval_g8_u2_q1",
+      "question": "How could predicting ice cream sales help a shop owner?",
+      "expected_chunk": "wb_g8_u2",
+      "cited_chunks": [
+        "wb_g8_u2",
+        "wb_g8_u1"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 110,
+      "latency_ms": 11.54,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 8\nUnit: Regression and Classification\nBig Idea: Learning\nLearnin..."
+    },
+    {
+      "id": "eval_g8_u2_q2",
+      "question": "What is Confusion matrix and why is it important in Regression and Classification?",
+      "expected_chunk": "wb_g8_u2",
+      "cited_chunks": [
+        "wb_g8_u2",
+        "wb_g8_u8"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 110,
+      "latency_ms": 12.36,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 8\nUnit: Regression and Classification\nBig Idea: Learning\nLearnin..."
+    },
+    {
+      "id": "eval_g8_u3_q1",
+      "question": "Why might doctors prefer an explainable model like a decision tree?",
+      "expected_chunk": "wb_g8_u3",
+      "cited_chunks": [
+        "wb_g8_u3",
+        "wb_g8_u2"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 137,
+      "latency_ms": 11.18,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 8\nUnit: Decision Trees from Data\nBig Idea: Representation & Reas..."
+    },
+    {
+      "id": "eval_g8_u3_q2",
+      "question": "What is Fallback and why is it important in Decision Trees from Data?",
+      "expected_chunk": "wb_g8_u3",
+      "cited_chunks": [
+        "wb_g8_u3",
+        "wb_g8_u8"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 137,
+      "latency_ms": 11.63,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 8\nUnit: Decision Trees from Data\nBig Idea: Representation & Reas..."
+    },
+    {
+      "id": "eval_g8_u4_q1",
+      "question": "Why isn't accuracy alone enough to judge a model?",
+      "expected_chunk": "wb_g8_u4",
+      "cited_chunks": [
+        "wb_g8_u4",
+        "wb_g8_u3"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 136,
+      "latency_ms": 11.85,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 8\nUnit: Evaluating Models\nBig Idea: Learning\nLearning Objective:..."
+    },
+    {
+      "id": "eval_g8_u4_q2",
+      "question": "What is Feature and why is it important in Evaluating Models?",
+      "expected_chunk": "wb_g8_u4",
+      "cited_chunks": [
+        "wb_g8_u4",
+        "wb_g8_u7"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 136,
+      "latency_ms": 11.2,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 8\nUnit: Evaluating Models\nBig Idea: Learning\nLearning Objective:..."
+    },
+    {
+      "id": "eval_g8_u5_q1",
+      "question": "How would loops help an AI read 1 million photos?",
+      "expected_chunk": "wb_g8_u5",
+      "cited_chunks": [
+        "wb_g8_u5",
+        "wb_g5_u4"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 128,
+      "latency_ms": 11.86,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 8\nUnit: Python: Lists, Loops and If\nBig Idea: Representation & R..."
+    },
+    {
+      "id": "eval_g8_u5_q2",
+      "question": "What is Index and why is it important in Python: Lists, Loops and If?",
+      "expected_chunk": "wb_g8_u5",
+      "cited_chunks": [
+        "wb_g8_u5",
+        "wb_g8_u8"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 128,
+      "latency_ms": 11.85,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 8\nUnit: Python: Lists, Loops and If\nBig Idea: Representation & R..."
+    },
+    {
+      "id": "eval_g8_u6_q1",
+      "question": "Why do you think bigger networks need more data to train?",
+      "expected_chunk": "wb_g8_u6",
+      "cited_chunks": [
+        "wb_g8_u6",
+        "wb_g8_u7"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 137,
+      "latency_ms": 13.09,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 8\nUnit: Neural Networks\nBig Idea: Learning\nLearning Objective: I..."
+    },
+    {
+      "id": "eval_g8_u6_q2",
+      "question": "What is Layer and why is it important in Neural Networks?",
+      "expected_chunk": "wb_g8_u6",
+      "cited_chunks": [
+        "wb_g8_u6",
+        "wb_g8_u7"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 137,
+      "latency_ms": 11.41,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 8\nUnit: Neural Networks\nBig Idea: Learning\nLearning Objective: I..."
+    },
+    {
+      "id": "eval_g8_u7_q1",
+      "question": "Should a chatbot always tell users that it is not a human? Why?",
+      "expected_chunk": "wb_g8_u7",
+      "cited_chunks": [
+        "wb_g8_u7",
+        "wb_g8_u4"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 123,
+      "latency_ms": 11.91,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 8\nUnit: Conversational AI\nBig Idea: Natural Interaction\nLearning..."
+    },
+    {
+      "id": "eval_g8_u7_q2",
+      "question": "What is List and why is it important in Conversational AI?",
+      "expected_chunk": "wb_g8_u7",
+      "cited_chunks": [
+        "wb_g8_u7",
+        "wb_g8_u8"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 123,
+      "latency_ms": 11.81,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 8\nUnit: Conversational AI\nBig Idea: Natural Interaction\nLearning..."
+    },
+    {
+      "id": "eval_g8_u8_q1",
+      "question": "If an AI makes a wrong decision, who should be responsible?",
+      "expected_chunk": "wb_g8_u8",
+      "cited_chunks": [
+        "wb_g8_u8",
+        "wb_g8_u1"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 127,
+      "latency_ms": 12.34,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 8\nUnit: Fairness and Accountability\nBig Idea: Societal Impact\nLe..."
+    },
+    {
+      "id": "eval_g8_u8_q2",
+      "question": "What is Regression and why is it important in Fairness and Accountability?",
+      "expected_chunk": "wb_g8_u8",
+      "cited_chunks": [
+        "wb_g8_u8",
+        "wb_g8_u2"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 127,
+      "latency_ms": 11.89,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 8\nUnit: Fairness and Accountability\nBig Idea: Societal Impact\nLe..."
+    },
+    {
+      "id": "eval_g9_u1_q1",
+      "question": "Which sector in India could benefit most from AI? Justify your answer.",
+      "expected_chunk": "wb_g9_u1",
+      "cited_chunks": [
+        "wb_g9_u1",
+        "wb_g9_u8"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 147,
+      "latency_ms": 11.56,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 9\nUnit: AI Domains in Action\nBig Idea: Societal Impact\nLearning ..."
+    },
+    {
+      "id": "eval_g9_u1_q2",
+      "question": "What is Activation function and why is it important in AI Domains in Action?",
+      "expected_chunk": "wb_g9_u1",
+      "cited_chunks": [
+        "wb_g9_u1",
+        "wb_g9_u5"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 147,
+      "latency_ms": 12.05,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 9\nUnit: AI Domains in Action\nBig Idea: Societal Impact\nLearning ..."
+    },
+    {
+      "id": "eval_g9_u2_q1",
+      "question": "How could dirty data cause harm in a hospital AI?",
+      "expected_chunk": "wb_g9_u2",
+      "cited_chunks": [
+        "wb_g9_u2",
+        "wb_g9_u8"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 119,
+      "latency_ms": 11.77,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 9\nUnit: Data Literacy\nBig Idea: Representation & Reasoning\nLearn..."
+    },
+    {
+      "id": "eval_g9_u2_q2",
+      "question": "What is Consent and why is it important in Data Literacy?",
+      "expected_chunk": "wb_g9_u2",
+      "cited_chunks": [
+        "wb_g9_u2",
+        "wb_g9_u8"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 119,
+      "latency_ms": 11.37,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 9\nUnit: Data Literacy\nBig Idea: Representation & Reasoning\nLearn..."
+    },
+    {
+      "id": "eval_g9_u3_q1",
+      "question": "An AI says \u201c60% chance this X-ray shows disease\u201d. What should a doctor do?",
+      "expected_chunk": "wb_g9_u3",
+      "cited_chunks": [
+        "wb_g9_u3",
+        "wb_g4_u6"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 139,
+      "latency_ms": 11.93,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 9\nUnit: Statistics and Probability\nBig Idea: Representation & Re..."
+    },
+    {
+      "id": "eval_g9_u3_q2",
+      "question": "What is Data cleaning and why is it important in Statistics and Probability?",
+      "expected_chunk": "wb_g9_u3",
+      "cited_chunks": [
+        "wb_g9_u3",
+        "wb_g9_u2"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 139,
+      "latency_ms": 11.72,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 9\nUnit: Statistics and Probability\nBig Idea: Representation & Re..."
+    },
+    {
+      "id": "eval_g9_u4_q1",
+      "question": "Why do data scientists use libraries instead of writing everything from scratch?",
+      "expected_chunk": "wb_g9_u4",
+      "cited_chunks": [
+        "wb_g9_u4",
+        "wb_g9_u2"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 118,
+      "latency_ms": 11.28,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 9\nUnit: Python for Data\nBig Idea: Representation & Reasoning\nLea..."
+    },
+    {
+      "id": "eval_g9_u4_q2",
+      "question": "What is Dictionary and why is it important in Python for Data?",
+      "expected_chunk": "wb_g9_u4",
+      "cited_chunks": [
+        "wb_g9_u4",
+        "wb_g9_u8"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 118,
+      "latency_ms": 12.09,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 9\nUnit: Python for Data\nBig Idea: Representation & Reasoning\nLea..."
+    },
+    {
+      "id": "eval_g9_u5_q1",
+      "question": "How is an artificial neuron similar to, and different from, a brain neuron?",
+      "expected_chunk": "wb_g9_u5",
+      "cited_chunks": [
+        "wb_g9_u5",
+        "wb_g9_u6"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 141,
+      "latency_ms": 12.96,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 9\nUnit: Neural Networks in Depth\nBig Idea: Learning\nLearning Obj..."
+    },
+    {
+      "id": "eval_g9_u5_q2",
+      "question": "What is Hallucination and why is it important in Neural Networks in Depth?",
+      "expected_chunk": "wb_g9_u5",
+      "cited_chunks": [
+        "wb_g9_u5",
+        "wb_g8_u6"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 141,
+      "latency_ms": 12.2,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 9\nUnit: Neural Networks in Depth\nBig Idea: Learning\nLearning Obj..."
+    },
+    {
+      "id": "eval_g9_u6_q1",
+      "question": "Why might a CNN trained on daytime roads fail at night?",
+      "expected_chunk": "wb_g9_u6",
+      "cited_chunks": [
+        "wb_g9_u6",
+        "wb_g5_u5"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 133,
+      "latency_ms": 11.7,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 9\nUnit: Convolution and Image Features\nBig Idea: Perception\nLear..."
+    },
+    {
+      "id": "eval_g9_u6_q2",
+      "question": "What is LLM and why is it important in Convolution and Image Features?",
+      "expected_chunk": "wb_g9_u6",
+      "cited_chunks": [
+        "wb_g9_u6",
+        "wb_g9_u2"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 133,
+      "latency_ms": 12.25,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 9\nUnit: Convolution and Image Features\nBig Idea: Perception\nLear..."
+    },
+    {
+      "id": "eval_g9_u7_q1",
+      "question": "How would you check whether an AI's answer is a hallucination?",
+      "expected_chunk": "wb_g9_u7",
+      "cited_chunks": [
+        "wb_g9_u7",
+        "wb_g9_u5"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 136,
+      "latency_ms": 11.52,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 9\nUnit: Generative AI and Prompting\nBig Idea: Natural Interactio..."
+    },
+    {
+      "id": "eval_g9_u7_q2",
+      "question": "What is Probability and why is it important in Generative AI and Prompting?",
+      "expected_chunk": "wb_g9_u7",
+      "cited_chunks": [
+        "wb_g9_u7",
+        "wb_g9_u3"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 136,
+      "latency_ms": 11.73,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 9\nUnit: Generative AI and Prompting\nBig Idea: Natural Interactio..."
+    },
+    {
+      "id": "eval_g9_u8_q1",
+      "question": "Should AI-generated images always carry a label? Why?",
+      "expected_chunk": "wb_g9_u8",
+      "cited_chunks": [
+        "wb_g9_u8",
+        "wb_g9_u6"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 134,
+      "latency_ms": 12.12,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 9\nUnit: AI Ethics and Law\nBig Idea: Societal Impact\nLearning Obj..."
+    },
+    {
+      "id": "eval_g9_u8_q2",
+      "question": "What is Structured data and why is it important in AI Ethics and Law?",
+      "expected_chunk": "wb_g9_u8",
+      "cited_chunks": [
+        "wb_g9_u8",
+        "wb_g9_u2"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 134,
+      "latency_ms": 11.52,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 9\nUnit: AI Ethics and Law\nBig Idea: Societal Impact\nLearning Obj..."
+    },
+    {
+      "id": "eval_g10_u1_q1",
+      "question": "Why do models need monitoring after deployment?",
+      "expected_chunk": "wb_g10_u1",
+      "cited_chunks": [
+        "wb_g10_u1",
+        "wb_g10_u2"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 153,
+      "latency_ms": 11.08,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 10\nUnit: AI Project Cycle in Depth\nBig Idea: Representation & Re..."
+    },
+    {
+      "id": "eval_g10_u1_q2",
+      "question": "What is Bag of Words and why is it important in AI Project Cycle in Depth?",
+      "expected_chunk": "wb_g10_u1",
+      "cited_chunks": [
+        "wb_g10_u1",
+        "wb_g10_u3"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 153,
+      "latency_ms": 11.71,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 10\nUnit: AI Project Cycle in Depth\nBig Idea: Representation & Re..."
+    },
+    {
+      "id": "eval_g10_u2_q1",
+      "question": "For a spam filter, would you prefer high precision or high recall? Why?",
+      "expected_chunk": "wb_g10_u2",
+      "cited_chunks": [
+        "wb_g10_u2",
+        "wb_g10_u6"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 148,
+      "latency_ms": 11.71,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 10\nUnit: Precision, Recall and F1\nBig Idea: Learning\nLearning Ob..."
+    },
+    {
+      "id": "eval_g10_u2_q2",
+      "question": "What is Deployment and why is it important in Precision, Recall and F1?",
+      "expected_chunk": "wb_g10_u2",
+      "cited_chunks": [
+        "wb_g10_u2",
+        "wb_g10_u5"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 148,
+      "latency_ms": 12.04,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 10\nUnit: Precision, Recall and F1\nBig Idea: Learning\nLearning Ob..."
+    },
+    {
+      "id": "eval_g10_u3_q1",
+      "question": "Why could removing stopwords sometimes change the meaning, as in \u201cnot good\u201d?",
+      "expected_chunk": "wb_g10_u3",
+      "cited_chunks": [
+        "wb_g10_u3",
+        "wb_g10_u1"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 143,
+      "latency_ms": 11.73,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 10\nUnit: The NLP Pipeline\nBig Idea: Natural Interaction\nLearning..."
+    },
+    {
+      "id": "eval_g10_u3_q2",
+      "question": "What is Fit and why is it important in The NLP Pipeline?",
+      "expected_chunk": "wb_g10_u3",
+      "cited_chunks": [
+        "wb_g10_u3",
+        "wb_g10_u5"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 143,
+      "latency_ms": 11.88,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 10\nUnit: The NLP Pipeline\nBig Idea: Natural Interaction\nLearning..."
+    },
+    {
+      "id": "eval_g10_u4_q1",
+      "question": "Should CCTV with face recognition be allowed in schools? Argue both sides.",
+      "expected_chunk": "wb_g10_u4",
+      "cited_chunks": [
+        "wb_g10_u4",
+        "wb_g6_u8"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 143,
+      "latency_ms": 11.49,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 10\nUnit: Computer Vision Applications\nBig Idea: Perception\nLearn..."
+    },
+    {
+      "id": "eval_g10_u4_q2",
+      "question": "What is Monitoring and why is it important in Computer Vision Applications?",
+      "expected_chunk": "wb_g10_u4",
+      "cited_chunks": [
+        "wb_g10_u4",
+        "wb_g10_u1"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 143,
+      "latency_ms": 11.29,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 10\nUnit: Computer Vision Applications\nBig Idea: Perception\nLearn..."
+    },
+    {
+      "id": "eval_g10_u5_q1",
+      "question": "How could limiting a tree's depth reduce overfitting?",
+      "expected_chunk": "wb_g10_u5",
+      "cited_chunks": [
+        "wb_g10_u5",
+        "wb_g10_u4"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 135,
+      "latency_ms": 11.56,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 10\nUnit: The ML Workflow in Python\nBig Idea: Learning\nLearning O..."
+    },
+    {
+      "id": "eval_g10_u5_q2",
+      "question": "What is Pitch and why is it important in The ML Workflow in Python?",
+      "expected_chunk": "wb_g10_u5",
+      "cited_chunks": [
+        "wb_g10_u5",
+        "wb_g10_u8"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 135,
+      "latency_ms": 11.83,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 10\nUnit: The ML Workflow in Python\nBig Idea: Learning\nLearning O..."
+    },
+    {
+      "id": "eval_g10_u6_q1",
+      "question": "Why can't an LLM know about events after its training data ends unless it uses tools?",
+      "expected_chunk": "wb_g10_u6",
+      "cited_chunks": [
+        "wb_g10_u6",
+        "wb_g10_u7"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 138,
+      "latency_ms": 12.24,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 10\nUnit: How LLMs Work\nBig Idea: Learning\nLearning Objective: I ..."
+    },
+    {
+      "id": "eval_g10_u6_q2",
+      "question": "What is RAG and why is it important in How LLMs Work?",
+      "expected_chunk": "wb_g10_u6",
+      "cited_chunks": [
+        "wb_g10_u6",
+        "wb_g10_u8"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 138,
+      "latency_ms": 11.75,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 10\nUnit: How LLMs Work\nBig Idea: Learning\nLearning Objective: I ..."
+    },
+    {
+      "id": "eval_g10_u7_q1",
+      "question": "Who should set rules for AI: governments, companies or users? Discuss.",
+      "expected_chunk": "wb_g10_u7",
+      "cited_chunks": [
+        "wb_g10_u7",
+        "wb_g10_u4"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 144,
+      "latency_ms": 11.23,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 10\nUnit: Responsible AI and Governance\nBig Idea: Societal Impact..."
+    },
+    {
+      "id": "eval_g10_u7_q2",
+      "question": "What is Segmentation and why is it important in Responsible AI and Governance?",
+      "expected_chunk": "wb_g10_u7",
+      "cited_chunks": [
+        "wb_g10_u7",
+        "wb_g10_u4"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 144,
+      "latency_ms": 11.58,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 10\nUnit: Responsible AI and Governance\nBig Idea: Societal Impact..."
+    },
+    {
+      "id": "eval_g10_u8_q1",
+      "question": "Which AI career fits your strengths? What can you start learning now?",
+      "expected_chunk": "wb_g10_u8",
+      "cited_chunks": [
+        "wb_g10_u8",
+        "wb_g10_u4"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 144,
+      "latency_ms": 12.4,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 10\nUnit: AI Careers and Entrepreneurship\nBig Idea: Societal Impa..."
+    },
+    {
+      "id": "eval_g10_u8_q2",
+      "question": "What is Temperature and why is it important in AI Careers and Entrepreneurship?",
+      "expected_chunk": "wb_g10_u8",
+      "cited_chunks": [
+        "wb_g10_u8",
+        "wb_g10_u6"
+      ],
+      "citation_correct": true,
+      "accurate": true,
+      "coverage_ratio": 1.0,
+      "hallucinated": false,
+      "tokens": 144,
+      "latency_ms": 11.53,
+      "failure_taxonomy": null,
+      "response_preview": "Based on verified course material: Subject: AI & Future Skills\nGrade: Grade 10\nUnit: AI Careers and Entrepreneurship\nBig Idea: Societal Impa..."
+    }
+  ]
+}

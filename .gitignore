@@ -22,6 +22,9 @@ dist/
 *.log
 logs/
 data/videos/
+data/workbooks/
+docs/workbooks_renders/
+
 
 # Model files (too large for Git)
 *.gguf
