@@ -17,6 +17,7 @@ from sqlalchemy.orm import Session
 from backend.database import get_db
 from backend.models import (
     ActivityAttempt,
+    Class,
     GlossaryMastery,
     ProjectEntry,
     SafetyIncident,
@@ -25,6 +26,7 @@ from backend.models import (
     WorkbookCertificate,
     WorkbookReflection,
 )
+from backend.auth.dependencies import get_current_user
 from backend.llm.gateway import LLMGateway
 
 logger = logging.getLogger("backend.workbook_router")
@@ -40,24 +42,21 @@ def utc_now():
     return datetime.now(timezone.utc)
 
 
+def check_grade_permission(user: User, grade: int, db: Session):
+    """Enforce class grade lock if student's teacher disabled grade switching."""
+    if user.role == "student" and user.class_id:
+        cls = db.query(Class).filter(Class.id == user.class_id).first()
+        if cls and not cls.allow_grade_switch:
+            if cls.grade != f"Class {grade}":
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail=f"Access denied: Learning is locked to {cls.grade} by your teacher.",
+                )
+
+
 def get_current_user_local(request: Request, db: Session = Depends(get_db)) -> User:
-    """Helper to get or create student user."""
-    user_id = request.headers.get("X-User-ID", "student_default")
-    user = db.query(User).filter(User.id == user_id).first()
-    if not user:
-        user = User(
-            id=user_id,
-            name="Kid Explorer",
-            display_name="Kid Explorer",
-            avatar="robot_pari",
-            grade="Class 3",
-            xp=0,
-            streak=1,
-        )
-        db.add(user)
-        db.commit()
-        db.refresh(user)
-    return user
+    """Helper to get student user via session or header."""
+    return get_current_user(request=request, db=db)
 
 
 def load_grade_data(grade: int) -> Dict[str, Any]:
@@ -138,6 +137,7 @@ def get_workbook(
     db: Session = Depends(get_db),
 ):
     """Returns full workbook metadata, syllabus, units summary, and user progress."""
+    check_grade_permission(user, grade, db)
     wb = load_grade_data(grade)
 
     # Fetch user unit progress
@@ -212,6 +212,7 @@ def get_workbook_unit(
 ):
     """Returns unit details, verbatim learn paragraphs, 3 new words, did you know,
     think & talk, and activities (without answer keys!)."""
+    check_grade_permission(user, grade, db)
     wb = load_grade_data(grade)
     matching_unit = None
     for u in wb.get("units", []):

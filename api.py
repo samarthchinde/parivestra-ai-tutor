@@ -46,9 +46,14 @@ from backend.models import (
     Video,
     VideoStory,
     VideoWatch,
+    UnitProgress,
+    GlossaryMastery,
+    WorkbookCertificate,
 )
 from backend.video.provider import StoryPlayerProvider
 from backend.routes.workbook_router import router as workbook_router
+from backend.routes.auth_router import router as auth_router
+from backend.auth.dependencies import get_current_user, get_active_grade
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("api")
@@ -70,7 +75,8 @@ app = FastAPI(
     redoc_url="/redoc",
 )
 
-# Include AI Workbooks router
+# Include Authentication and AI Workbooks routers
+app.include_router(auth_router)
 app.include_router(workbook_router)
 
 # Configure CORS
@@ -112,29 +118,9 @@ async def global_exception_handler(request: Request, exc: Exception):
     )
 
 
-# Dependency: User Identity from X-User-Id header
-def get_current_user(
-    x_user_id: Optional[str] = Header(None, alias="X-User-Id"),
-    db: Session = Depends(get_db),
-) -> User:
-    uid = x_user_id.strip() if x_user_id and x_user_id.strip() else "student_default"
-    user = db.query(User).filter(User.id == uid).first()
-    if not user:
-        user = User(
-            id=uid,
-            name="Kid Explorer",
-            display_name="Kid Explorer",
-            avatar="owl",
-            grade="Class 3",
-            xp=0,
-            streak=1,
-        )
-        db.add(user)
-        db.commit()
-        db.refresh(user)
-    return user
-
-
+# ---------------------------------------------------------
+# Dependencies: verify_admin (ADMIN_KEY fallback)
+# ---------------------------------------------------------
 # Dependency: Admin Key Authorization
 def verify_admin(
     x_admin_key: Optional[str] = Header(None, alias="X-Admin-Key"),
@@ -185,6 +171,7 @@ class PracticeSubmitRequest(BaseModel):
     subject: Optional[str] = None
     topic: Optional[str] = None
     difficulty: Optional[str] = None
+    grade: Optional[str] = None
     question: Optional[str] = None
     options: Optional[List[str]] = None
     correct_answer: Optional[str] = None
@@ -347,13 +334,20 @@ def set_grown_ups_pin(
 
 
 # ---------------------------------------------------------
-# Subjects Directory
+# Subjects Directory (Grade Scoped)
 # ---------------------------------------------------------
 @app.get("/api/subjects")
-def get_subjects():
-    """Return available Class 3-4 primary subjects along with legacy subjects."""
-    return {
-        "subjects": [
+def get_subjects(active_grade: str = Depends(get_active_grade)):
+    """Return available subjects scoped for the active grade, plus backward-compatible legacy subjects."""
+    if not isinstance(active_grade, str):
+        active_grade = "Class 3"
+
+    digits = "".join(filter(str.isdigit, active_grade))
+    grade_num = int(digits) if digits else 3
+
+    if grade_num <= 5:
+        # Classes 3 to 5: Maths, English, EVS, AI & Future Skills
+        core_subjects = [
             {
                 "id": "maths",
                 "name": "Maths",
@@ -375,29 +369,121 @@ def get_subjects():
                 "description": "Living Plants, Animals & Habitats, Water Cycle, and Healthy Bodies.",
                 "topics": ["Plants", "Animals", "Water", "Human Body", "Weather", "Community"],
             },
-            # Preserved for backward compatibility
             {
-                "id": "python",
-                "name": "Python",
-                "color": "#8A63F2",
-                "description": "Beginner friendly visual coding and computer commands.",
-                "topics": ["Introduction", "Variables", "Lists", "Functions"],
-            },
-            {
-                "id": "ai",
-                "name": "Artificial Intelligence",
-                "color": "#6366F1",
-                "description": "Principles and applications of intelligent systems.",
-                "topics": ["Artificial Intelligence", "Machine Learning"],
-            },
-            {
-                "id": "networks",
-                "name": "Computer Networks",
-                "color": "#0EA5E9",
-                "description": "Protocols, topologies, and network architecture.",
-                "topics": ["Networking Basics", "OSI Model"],
+                "id": "ai-skills",
+                "name": "AI & Future Skills",
+                "color": "#8B5CF6",
+                "description": "Smart Machines, Sensors, How AI Sees, and Robot Rules.",
+                "topics": ["Smart Machines", "Sensors", "Patterns", "Computer Vision", "Chatbots", "AI Ethics"],
             },
         ]
+    elif 6 <= grade_num <= 8:
+        # Classes 6 to 8: Maths, English, Science, Social Science, AI & Future Skills
+        core_subjects = [
+            {
+                "id": "maths",
+                "name": "Maths",
+                "color": "#4C8DF6",
+                "description": "Integers, Algebra, Linear Equations, Geometry and Data Handling.",
+                "topics": ["Integers", "Algebra", "Equations", "Geometry", "Mensuration", "Data Handling"],
+            },
+            {
+                "id": "english",
+                "name": "English",
+                "color": "#FF7A66",
+                "description": "Grammar, Active/Passive Voice, Clauses, Reading and Creative Writing.",
+                "topics": ["Tenses", "Voice", "Clauses", "Comprehension", "Creative Writing", "Vocabulary"],
+            },
+            {
+                "id": "science",
+                "name": "Science",
+                "color": "#10B981",
+                "description": "Motion, Light & Electricity, Living Organisms, Acids and Chemical Reactions.",
+                "topics": ["Motion", "Light", "Electricity", "Organisms", "Acids & Bases", "Force"],
+            },
+            {
+                "id": "social-science",
+                "name": "Social Science",
+                "color": "#F59E0B",
+                "description": "Our Past, Globe & Maps, Indian Constitution, and Earth Resources.",
+                "topics": ["History", "Geography", "Civics", "Resources", "Constitution"],
+            },
+            {
+                "id": "ai-skills",
+                "name": "AI & Future Skills",
+                "color": "#8B5CF6",
+                "description": "AI Project Cycle, Computer Vision, NLP, and Data Bias.",
+                "topics": ["AI Project Cycle", "Computer Vision", "NLP", "Machine Learning", "Data Ethics"],
+            },
+        ]
+    else:
+        # Classes 9 and 10: Maths, English, Science, Social Science, AI & Future Skills
+        core_subjects = [
+            {
+                "id": "maths",
+                "name": "Maths",
+                "color": "#4C8DF6",
+                "description": "Real Numbers, Polynomials, Coordinate Geometry, Trigonometry and Statistics.",
+                "topics": ["Real Numbers", "Polynomials", "Geometry", "Trigonometry", "Statistics", "Probability"],
+            },
+            {
+                "id": "english",
+                "name": "English",
+                "color": "#FF7A66",
+                "description": "Analytical Reading, Formal Writing, Advanced Grammar and Literature.",
+                "topics": ["Analytical Reading", "Writing Skills", "Advanced Grammar", "Literature Studies"],
+            },
+            {
+                "id": "science",
+                "name": "Science",
+                "color": "#10B981",
+                "description": "Physics (Optics & Electricity), Chemistry (Reactions & Carbon), Biology (Life Processes).",
+                "topics": ["Light & Optics", "Electricity", "Chemical Reactions", "Carbon Compounds", "Life Processes", "Genetics"],
+            },
+            {
+                "id": "social-science",
+                "name": "Social Science",
+                "color": "#F59E0B",
+                "description": "Contemporary World History, Democratic Politics, Economics and Resources.",
+                "topics": ["India & World History", "Democratic Politics", "Economics", "Resource Development"],
+            },
+            {
+                "id": "ai-skills",
+                "name": "AI & Future Skills",
+                "color": "#8B5CF6",
+                "description": "Data Science & Pandas, Deep Learning Basics, Model Evaluation, and AI Law.",
+                "topics": ["Data Science", "Neural Networks", "Model Evaluation", "AI Ethics & Law", "Future Careers"],
+            },
+        ]
+
+    # Preserved for backward compatibility
+    legacy_subjects = [
+        {
+            "id": "python",
+            "name": "Python",
+            "color": "#8A63F2",
+            "description": "Beginner friendly visual coding and computer commands.",
+            "topics": ["Introduction", "Variables", "Lists", "Functions"],
+        },
+        {
+            "id": "ai",
+            "name": "Artificial Intelligence",
+            "color": "#6366F1",
+            "description": "Principles and applications of intelligent systems.",
+            "topics": ["Artificial Intelligence", "Machine Learning"],
+        },
+        {
+            "id": "networks",
+            "name": "Computer Networks",
+            "color": "#0EA5E9",
+            "description": "Protocols, topologies, and network architecture.",
+            "topics": ["Networking Basics", "OSI Model"],
+        },
+    ]
+
+    return {
+        "grade": active_grade,
+        "subjects": core_subjects + legacy_subjects,
     }
 
 
@@ -543,8 +629,10 @@ def practice_submit(
         if m_out.matched_id:
             misconception_res = m_out.model_dump()
 
+    target_grade = req.grade or user.default_grade or user.grade or "Class 3"
     attempt = Attempt(
         user_id=user.id,
+        grade=target_grade,
         subject=subject,
         topic=topic,
         difficulty=difficulty,
@@ -568,6 +656,7 @@ def practice_submit(
         subject=subject,
         topic=topic,
         correct=grade_res.is_correct,
+        grade=target_grade,
     )
 
     return {
@@ -589,6 +678,7 @@ def practice_submit(
 def get_courses(
     grade: Optional[str] = None,
     x_admin_key: Optional[str] = Header(None, alias="X-Admin-Key"),
+    active_grade: str = Depends(get_active_grade),
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
@@ -599,9 +689,9 @@ def get_courses(
     if not is_admin:
         query = query.filter(Course.status.in_(["approved", "published"]))
 
-    target_grade = grade or user.grade
-    if target_grade and target_grade.lower() != "all":
-        query = query.filter(Course.grade == target_grade)
+    effective_grade = grade if isinstance(grade, str) else (active_grade if isinstance(active_grade, str) else getattr(user, "default_grade", None) or getattr(user, "grade", "Class 3"))
+    if effective_grade and str(effective_grade).lower() != "all":
+        query = query.filter(Course.grade == str(effective_grade))
 
     courses = query.order_by(Course.created_at.asc()).all()
 
@@ -639,12 +729,24 @@ def get_courses(
 @app.get("/api/courses/{course_id}")
 def get_course_detail(
     course_id: str,
+    active_grade: str = Depends(get_active_grade),
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
     course = db.query(Course).filter(Course.id == course_id).first()
     if not course:
         raise HTTPException(status_code=404, detail="Course not found")
+
+    effective_grade = active_grade if isinstance(active_grade, str) else (getattr(user, "default_grade", None) or getattr(user, "grade", "Class 3"))
+    # If student cannot switch grades and course is from another grade
+    if getattr(user, "role", "student") == "student" and getattr(user, "class_id", None):
+        from backend.models import Class as ClassModel
+        cls = db.query(ClassModel).filter(ClassModel.id == user.class_id).first()
+        if cls and not cls.allow_grade_switch and course.grade != cls.grade:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=f"This course is from {course.grade}. Your teacher has locked learning to {cls.grade}.",
+            )
 
     completed_ids = {
         lp.lesson_id for lp in db.query(LessonProgress).filter(
@@ -689,12 +791,23 @@ def get_course_detail(
 def get_lesson_content(
     course_id: str,
     lesson_id: str,
+    active_grade: str = Depends(get_active_grade),
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
     lesson = db.query(CourseLesson).filter(CourseLesson.id == lesson_id).first()
     if not lesson:
         raise HTTPException(status_code=404, detail="Lesson not found")
+
+    course = db.query(Course).filter(Course.id == course_id).first()
+    if course and getattr(user, "role", "student") == "student" and getattr(user, "class_id", None):
+        from backend.models import Class as ClassModel
+        cls = db.query(ClassModel).filter(ClassModel.id == user.class_id).first()
+        if cls and not cls.allow_grade_switch and course.grade != cls.grade:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=f"This lesson is from {course.grade}. Your teacher has locked learning to {cls.grade}.",
+            )
 
     parsed_content = {}
     if lesson.content_json:
@@ -725,6 +838,9 @@ def complete_lesson(
     if not lesson:
         raise HTTPException(status_code=404, detail="Lesson not found")
 
+    course = db.query(Course).filter(Course.id == course_id).first()
+    course_grade = course.grade if course else "Class 3"
+
     prog = db.query(LessonProgress).filter(
         LessonProgress.user_id == user.id, LessonProgress.lesson_id == lesson_id
     ).first()
@@ -735,12 +851,14 @@ def complete_lesson(
         prog = LessonProgress(
             user_id=user.id,
             lesson_id=lesson_id,
+            grade=course_grade,
             status="completed",
             score=req.score or 100.0,
         )
         db.add(prog)
     else:
         prog.status = "completed"
+        prog.grade = course_grade
         prog.score = max(prog.score, req.score or 100.0)
 
     # Award XP on first completion
@@ -1053,20 +1171,24 @@ async def upload_library_resource(
 def get_videos(
     grade: Optional[str] = None,
     subject: Optional[str] = None,
+    active_grade: str = Depends(get_active_grade),
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
     query = db.query(Video).filter(Video.status == "approved")
-    target_grade = grade or user.grade
-    if target_grade and target_grade.lower() != "all":
-        query = query.filter(Video.grade == target_grade)
-    if subject and subject.lower() != "all":
-        query = query.filter(Video.subject.ilike(subject))
+    target_grade = grade if isinstance(grade, str) else (active_grade if isinstance(active_grade, str) else getattr(user, "default_grade", None) or getattr(user, "grade", "Class 3"))
+    if target_grade and str(target_grade).lower() != "all":
+        query = query.filter(Video.grade == str(target_grade))
+    if subject and str(subject).lower() != "all":
+        query = query.filter(Video.subject.ilike(str(subject)))
 
     videos = query.order_by(Video.created_at.desc()).all()
 
-    # Also retrieve approved stories for player
-    stories = db.query(VideoStory).filter(VideoStory.status == "approved").all()
+    # Also retrieve approved stories for player matching target_grade
+    story_query = db.query(VideoStory).filter(VideoStory.status == "approved")
+    if target_grade and str(target_grade).lower() != "all":
+        story_query = story_query.filter(VideoStory.grade == str(target_grade))
+    stories = story_query.all()
 
     return {
         "videos": [
@@ -1318,14 +1440,146 @@ def approve_content(
 
 
 # ---------------------------------------------------------
-# Progress & Legacy Endpoints
+# Progress, Report Card & Legacy Endpoints
 # ---------------------------------------------------------
 @app.get("/api/progress")
 def get_progress(
+    grade: Optional[str] = None,
+    active_grade: str = Depends(get_active_grade),
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    return progress_agent.get_progress_summary(db=db, user_id=user.id).model_dump()
+    target_grade = grade if isinstance(grade, str) else (active_grade if isinstance(active_grade, str) else getattr(user, "default_grade", None) or getattr(user, "grade", "Class 3"))
+    summary = progress_agent.get_progress_summary(db=db, user_id=user.id, grade=target_grade).model_dump()
+    summary["active_grade"] = target_grade
+    summary["total_xp_across_grades"] = getattr(user, "xp", 0) or 0
+    return summary
+
+
+@app.get("/api/report-card")
+def get_report_card(
+    grade: Optional[str] = None,
+    active_grade: str = Depends(get_active_grade),
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Returns comprehensive report card for the requested/active grade.
+    Includes per-subject averages, mastery, lessons completed, workbook units completed, stars, and recent activity.
+    """
+    raw_grade = grade if isinstance(grade, str) else (active_grade if isinstance(active_grade, str) else getattr(user, "default_grade", None) or getattr(user, "grade", "Class 3"))
+    digits = "".join(filter(str.isdigit, str(raw_grade)))
+    grade_num = int(digits) if digits else 3
+    norm_grade = f"Class {grade_num}"
+
+    # 1. Attempts and scores by subject in this grade
+    attempts = db.query(Attempt).filter(Attempt.user_id == user.id, Attempt.grade == norm_grade).all()
+    subject_attempts = {}
+    for a in attempts:
+        subject_attempts.setdefault(a.subject, []).append(a)
+
+    # 2. Masteries for this grade
+    masteries = db.query(Mastery).filter(Mastery.user_id == user.id, Mastery.grade == norm_grade).all()
+    subject_mastery = {}
+    for m in masteries:
+        subject_mastery.setdefault(m.subject, []).append(m.score)
+
+    # Compile subjects metrics
+    if grade_num <= 5:
+        expected_subs = ["Maths", "English", "EVS", "AI & Future Skills"]
+    elif 6 <= grade_num <= 8:
+        expected_subs = ["Maths", "English", "Science", "Social Science", "AI & Future Skills"]
+    else:
+        expected_subs = ["Maths", "English", "Science", "Social Science", "AI & Future Skills"]
+
+    all_subject_names = list(set(expected_subs + list(subject_attempts.keys()) + list(subject_mastery.keys())))
+
+    subject_cards = []
+    for sub in sorted(all_subject_names):
+        sub_atts = subject_attempts.get(sub, [])
+        total_quizzes = len(sub_atts)
+        correct_count = sum(1 for a in sub_atts if a.correct)
+        quiz_avg = round((correct_count / total_quizzes * 100), 1) if total_quizzes > 0 else 0.0
+
+        scores = subject_mastery.get(sub, [])
+        avg_mastery = round(sum(scores) / len(scores), 1) if scores else 0.0
+
+        subject_cards.append({
+            "subject": sub,
+            "quiz_attempts": total_quizzes,
+            "quiz_accuracy": quiz_avg,
+            "mastery_score": avg_mastery,
+            "status": "Proficient" if avg_mastery >= 75 or quiz_avg >= 75 else "Developing" if (total_quizzes > 0 or scores) else "Not Started",
+        })
+
+    # 3. Lessons completed for courses of this grade
+    lessons_done = (
+        db.query(LessonProgress)
+        .filter(LessonProgress.user_id == user.id, LessonProgress.grade == norm_grade, LessonProgress.status == "completed")
+        .count()
+    )
+
+    # 4. Workbook units and stars in this grade
+    wb_units = db.query(UnitProgress).filter(UnitProgress.user_id == user.id, UnitProgress.grade == grade_num).all()
+    wb_completed = sum(1 for u in wb_units if u.status == "completed")
+    wb_stars = sum(u.stars or 0 for u in wb_units)
+
+    # 5. Glossary words mastered in this grade
+    words_mastered = (
+        db.query(GlossaryMastery)
+        .filter(GlossaryMastery.user_id == user.id, GlossaryMastery.grade == grade_num, GlossaryMastery.mastered == True)
+        .count()
+    )
+
+    # 6. Certificates earned in this grade
+    certs = (
+        db.query(WorkbookCertificate)
+        .filter(WorkbookCertificate.user_id == user.id, WorkbookCertificate.grade == grade_num)
+        .all()
+    )
+
+    # 7. Recent activity in this grade
+    recent = (
+        db.query(Attempt)
+        .filter(Attempt.user_id == user.id, Attempt.grade == norm_grade)
+        .order_by(Attempt.created_at.desc())
+        .limit(10)
+        .all()
+    )
+    recent_activity = [
+        {
+            "id": r.id,
+            "subject": r.subject,
+            "topic": r.topic,
+            "correct": r.correct,
+            "time_taken": r.time_taken,
+            "created_at": r.created_at.isoformat() if r.created_at else None,
+        }
+        for r in recent
+    ]
+
+    total_grade_xp = sum(15 if a.correct else 5 for a in attempts) + (wb_completed * 20) + (lessons_done * 20)
+
+    return {
+        "status": "ok",
+        "student": {
+            "id": user.id,
+            "display_name": user.display_name or user.name,
+            "avatar": user.avatar or "owl",
+            "grade": norm_grade,
+        },
+        "grade": norm_grade,
+        "grade_num": grade_num,
+        "subjects": subject_cards,
+        "lessons_completed": lessons_done,
+        "workbook_units_completed": wb_completed,
+        "workbook_stars": wb_stars,
+        "words_mastered": words_mastered,
+        "certificates_count": len(certs),
+        "grade_xp": total_grade_xp,
+        "total_xp_across_grades": user.xp or 0,
+        "streak": user.streak or 1,
+        "recent_activity": recent_activity,
+    }
 
 
 @app.post("/ask")

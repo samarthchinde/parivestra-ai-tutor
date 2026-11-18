@@ -36,23 +36,24 @@ class ProgressAgent:
         subject: str,
         topic: str,
         correct: bool,
+        grade: Optional[str] = "Class 3",
     ) -> TopicMastery:
         """Update topic mastery using weighted moving average."""
-        mastery = (
-            db.query(Mastery)
-            .filter(
-                Mastery.user_id == user_id,
-                Mastery.subject == subject,
-                Mastery.topic == topic,
-            )
-            .first()
+        query = db.query(Mastery).filter(
+            Mastery.user_id == user_id,
+            Mastery.subject == subject,
+            Mastery.topic == topic,
         )
+        if grade:
+            query = query.filter(Mastery.grade == grade)
+        mastery = query.first()
 
         attempt_score = 100.0 if correct else 0.0
 
         if not mastery:
             mastery = Mastery(
                 user_id=user_id,
+                grade=grade or "Class 3",
                 subject=subject,
                 topic=topic,
                 score=attempt_score,
@@ -61,6 +62,8 @@ class ProgressAgent:
             db.add(mastery)
         else:
             mastery.attempts += 1
+            if grade and not mastery.grade:
+                mastery.grade = grade
             mastery.score = round(
                 (1.0 - self.alpha) * mastery.score + self.alpha * attempt_score, 1
             )
@@ -76,13 +79,21 @@ class ProgressAgent:
             sufficient_data=mastery.attempts >= 3,
         )
 
-    def get_progress_summary(self, db: Session, user_id: str) -> ProgressSummary:
-        """Calculate comprehensive progress summary for a student."""
-        all_masteries = (
-            db.query(Mastery)
-            .filter(Mastery.user_id == user_id)
-            .all()
-        )
+    def get_progress_summary(
+        self,
+        db: Session,
+        user_id: str,
+        grade: Optional[str] = None,
+    ) -> ProgressSummary:
+        """Calculate comprehensive progress summary for a student, scoped by grade if provided."""
+        m_query = db.query(Mastery).filter(Mastery.user_id == user_id)
+        a_query = db.query(Attempt).filter(Attempt.user_id == user_id)
+
+        if grade:
+            m_query = m_query.filter(Mastery.grade == grade)
+            a_query = a_query.filter(Attempt.grade == grade)
+
+        all_masteries = m_query.all()
 
         mastery_list: List[TopicMastery] = []
         for m in all_masteries:
@@ -98,8 +109,7 @@ class ProgressAgent:
 
         # Recent attempts
         attempts = (
-            db.query(Attempt)
-            .filter(Attempt.user_id == user_id)
+            a_query
             .order_by(Attempt.created_at.desc())
             .limit(20)
             .all()
