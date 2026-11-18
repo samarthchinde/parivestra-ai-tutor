@@ -18,19 +18,76 @@ def utc_now():
     return datetime.now(timezone.utc)
 
 
+class Class(Base):
+    __tablename__ = "classes"
+
+    id = Column(String(64), primary_key=True, index=True)
+    name = Column(String(100), nullable=False)
+    grade = Column(String(20), nullable=False, index=True)
+    section = Column(String(20), default="A")
+    join_code = Column(String(32), unique=True, index=True, nullable=True)
+    teacher_id = Column(String(64), ForeignKey("users.id"), nullable=True, index=True)
+    allow_grade_switch = Column(Boolean, default=True)
+    allow_join_by_code = Column(Boolean, default=False)
+    consent_confirmed = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=utc_now)
+
+    teacher = relationship("User", back_populates="taught_classes", foreign_keys=[teacher_id])
+    students = relationship("User", back_populates="assigned_class", foreign_keys="User.class_id")
+
+
+class AuthSession(Base):
+    __tablename__ = "auth_sessions"
+
+    id = Column(String(64), primary_key=True, index=True)
+    user_id = Column(String(64), ForeignKey("users.id"), nullable=False, index=True)
+    token_hash = Column(String(128), unique=True, index=True, nullable=False)
+    active_grade = Column(String(20), default="Class 3", nullable=False)
+    expires_at = Column(DateTime, nullable=False)
+    last_seen_at = Column(DateTime, default=utc_now)
+    device_label = Column(String(100), nullable=True)
+    created_at = Column(DateTime, default=utc_now)
+
+    user = relationship("User", back_populates="auth_sessions")
+
+
+class AuditLog(Base):
+    __tablename__ = "audit_log"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(String(64), nullable=True, index=True)
+    event = Column(String(50), nullable=False, index=True)  # login_success, login_failed, lockout, logout, secret_reset, grade_switch, account_created
+    detail = Column(Text, nullable=True)
+    ip = Column(String(64), nullable=True)
+    created_at = Column(DateTime, default=utc_now)
+
+
 class User(Base):
     __tablename__ = "users"
 
     id = Column(String(64), primary_key=True, index=True)
+    username = Column(String(64), unique=True, index=True, nullable=True)
+    email = Column(String(120), unique=True, index=True, nullable=True)
+    password_hash = Column(String(255), nullable=True)
     name = Column(String(100), default="Kid Explorer")
     display_name = Column(String(100), default="Kid Explorer")
     avatar = Column(String(50), default="owl")
+    role = Column(String(20), default="student", index=True)  # student, teacher, admin
+    default_grade = Column(String(20), default="Class 3")
     grade = Column(String(20), default="Class 3")
+    class_id = Column(String(64), ForeignKey("classes.id"), nullable=True, index=True)
     pin_hash = Column(String(128), nullable=True)
     xp = Column(Integer, default=0)
     streak = Column(Integer, default=1)
+    active = Column(Boolean, default=True)
+    failed_attempts = Column(Integer, default=0)
+    locked_until = Column(DateTime, nullable=True)
+    last_login_at = Column(DateTime, nullable=True)
     created_at = Column(DateTime, default=utc_now)
 
+    assigned_class = relationship("Class", back_populates="students", foreign_keys=[class_id])
+    taught_classes = relationship("Class", back_populates="teacher", foreign_keys="Class.teacher_id")
+    auth_sessions = relationship("AuthSession", back_populates="user", cascade="all, delete-orphan")
     sessions = relationship("Session", back_populates="user", cascade="all, delete-orphan")
     attempts = relationship("Attempt", back_populates="user", cascade="all, delete-orphan")
     masteries = relationship("Mastery", back_populates="user", cascade="all, delete-orphan")
@@ -74,6 +131,7 @@ class Attempt(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(String(64), ForeignKey("users.id"), nullable=False, index=True)
+    grade = Column(String(20), default="Class 3", index=True)
     subject = Column(String(100), nullable=False)
     topic = Column(String(100), nullable=False)
     difficulty = Column(String(50), nullable=False)
@@ -93,6 +151,7 @@ class Mastery(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(String(64), ForeignKey("users.id"), nullable=False, index=True)
+    grade = Column(String(20), default="Class 3", index=True)
     subject = Column(String(100), nullable=False)
     topic = Column(String(100), nullable=False)
     score = Column(Float, default=0.0)
@@ -175,6 +234,7 @@ class LessonProgress(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(String(64), ForeignKey("users.id"), nullable=False, index=True)
     lesson_id = Column(String(64), nullable=False, index=True)
+    grade = Column(String(20), default="Class 3", index=True)
     status = Column(String(50), default="completed")  # in_progress, completed
     score = Column(Float, default=100.0)
     completed_at = Column(DateTime, default=utc_now)
@@ -207,6 +267,7 @@ class VideoWatch(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(String(64), ForeignKey("users.id"), nullable=False, index=True)
     video_id = Column(String(64), ForeignKey("videos.id"), nullable=False, index=True)
+    grade = Column(String(20), default="Class 3", index=True)
     seconds = Column(Integer, default=0)
     completed = Column(Boolean, default=False)
     updated_at = Column(DateTime, default=utc_now, onupdate=utc_now)

@@ -42,9 +42,69 @@ def run_migrations():
                 ("pin_hash", "VARCHAR(128)"),
                 ("xp", "INTEGER DEFAULT 0"),
                 ("streak", "INTEGER DEFAULT 1"),
+                ("role", "VARCHAR(20) DEFAULT 'student'"),
+                ("username", "VARCHAR(64)"),
+                ("email", "VARCHAR(120)"),
+                ("password_hash", "VARCHAR(255)"),
+                ("default_grade", "VARCHAR(20) DEFAULT 'Class 3'"),
+                ("class_id", "VARCHAR(64)"),
+                ("active", "BOOLEAN DEFAULT 1"),
+                ("failed_attempts", "INTEGER DEFAULT 0"),
+                ("locked_until", "DATETIME"),
+                ("last_login_at", "DATETIME"),
             ]:
                 if col_name not in existing_user_cols:
                     conn.execute(text(f"ALTER TABLE users ADD COLUMN {col_name} {col_type}"))
+
+            # Attempts table migrations
+            res_attempts = conn.execute(text("PRAGMA table_info(attempts)")).fetchall()
+            existing_attempt_cols = {row[1] for row in res_attempts}
+            if "grade" not in existing_attempt_cols:
+                conn.execute(text("ALTER TABLE attempts ADD COLUMN grade VARCHAR(20) DEFAULT 'Class 3'"))
+
+            # Mastery table migrations
+            res_mastery = conn.execute(text("PRAGMA table_info(mastery)")).fetchall()
+            existing_mastery_cols = {row[1] for row in res_mastery}
+            if "grade" not in existing_mastery_cols:
+                conn.execute(text("ALTER TABLE mastery ADD COLUMN grade VARCHAR(20) DEFAULT 'Class 3'"))
+
+            # LessonProgress table migrations
+            res_lp = conn.execute(text("PRAGMA table_info(lesson_progress)")).fetchall()
+            existing_lp_cols = {row[1] for row in res_lp}
+            if "grade" not in existing_lp_cols:
+                conn.execute(text("ALTER TABLE lesson_progress ADD COLUMN grade VARCHAR(20) DEFAULT 'Class 3'"))
+
+            # VideoWatches table migrations
+            res_vw = conn.execute(text("PRAGMA table_info(video_watches)")).fetchall()
+            existing_vw_cols = {row[1] for row in res_vw}
+            if "grade" not in existing_vw_cols:
+                conn.execute(text("ALTER TABLE video_watches ADD COLUMN grade VARCHAR(20) DEFAULT 'Class 3'"))
+
+            # Data backfills for clean consistency
+            conn.execute(text("UPDATE users SET role = 'student' WHERE role IS NULL OR role = ''"))
+            conn.execute(text("UPDATE users SET username = id WHERE username IS NULL OR username = ''"))
+            conn.execute(text("UPDATE users SET default_grade = COALESCE(grade, 'Class 3') WHERE default_grade IS NULL OR default_grade = ''"))
+            conn.execute(text("UPDATE attempts SET grade = 'Class 3' WHERE grade IS NULL OR grade = ''"))
+            conn.execute(text("UPDATE mastery SET grade = 'Class 3' WHERE grade IS NULL OR grade = ''"))
+            conn.execute(text("""
+                UPDATE lesson_progress
+                SET grade = COALESCE(
+                    (SELECT c.grade FROM courses c 
+                     JOIN course_modules m ON m.course_id = c.id 
+                     JOIN course_lessons l ON l.module_id = m.id 
+                     WHERE l.id = lesson_progress.lesson_id),
+                    'Class 3'
+                )
+                WHERE grade IS NULL OR grade = ''
+            """))
+            conn.execute(text("""
+                UPDATE video_watches
+                SET grade = COALESCE(
+                    (SELECT v.grade FROM videos v WHERE v.id = video_watches.video_id),
+                    'Class 3'
+                )
+                WHERE grade IS NULL OR grade = ''
+            """))
 
             # Courses table migrations
             res_courses = conn.execute(text("PRAGMA table_info(courses)")).fetchall()

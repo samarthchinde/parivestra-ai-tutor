@@ -16,6 +16,11 @@ LLM_PROVIDER: str = os.getenv("LLM_PROVIDER", "openai").lower()
 
 DATABASE_URL: str = os.getenv("DATABASE_URL", f"sqlite:///{ROOT_DIR / 'parivestra.db'}")
 ADMIN_KEY: str = os.getenv("ADMIN_KEY", "parivestra_admin_secret")
+AUTH_REQUIRED: bool = os.getenv("AUTH_REQUIRED", "true").lower() in ("true", "1", "yes")
+SECRET_KEY: str = os.getenv("SECRET_KEY", "parivestra_super_secure_secret_key_2026")
+SESSION_HOURS: int = int(os.getenv("SESSION_HOURS", "24"))
+SESSION_IDLE_MINUTES: int = int(os.getenv("SESSION_IDLE_MINUTES", "30"))
+STUDENT_SESSION_IDLE_MINUTES: int = int(os.getenv("STUDENT_SESSION_IDLE_MINUTES", "20"))
 
 CORS_ORIGINS: list[str] = [
     origin.strip()
