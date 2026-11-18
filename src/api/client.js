@@ -515,8 +515,198 @@ export async function reviewTeacherWorkbookProject(projectId, score, feedback) {
 export async function getWorkbookPacing() {
   const res = await fetch(`${API_BASE_URL}/api/teacher/workbooks/pacing`, {
     headers: getHeaders(),
+    credentials: "include",
   });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+// ========================================================
+// Authentication & Grade-Scoping APIs
+// ========================================================
+export async function loginUser({ username, email, secret, grade }) {
+  const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
+    method: "POST",
+    headers: getHeaders(),
+    credentials: "include",
+    body: JSON.stringify({ username, email, secret, grade }),
+  });
+  if (!res.ok) {
+    const errData = await res.json().catch(() => ({}));
+    throw new Error(errData.detail || `Login failed (HTTP ${res.status})`);
+  }
+  return await res.json();
+}
+
+export async function logoutUser() {
+  try {
+    await fetch(`${API_BASE_URL}/api/auth/logout`, {
+      method: "POST",
+      headers: getHeaders(),
+      credentials: "include",
+    });
+  } catch (err) {
+    console.warn("Logout error:", err);
+  }
+}
+
+export async function getAuthMe() {
+  const res = await fetch(`${API_BASE_URL}/api/auth/me`, {
+    method: "GET",
+    headers: getHeaders(),
+    credentials: "include",
+  });
+  if (!res.ok) throw new Error(`Not authenticated (HTTP ${res.status})`);
+  return await res.json();
+}
+
+export async function loginGuest(grade = "Class 3") {
+  const res = await fetch(`${API_BASE_URL}/api/auth/guest`, {
+    method: "POST",
+    headers: getHeaders(),
+    credentials: "include",
+    body: JSON.stringify({ grade }),
+  });
+  if (!res.ok) throw new Error(`Guest session failed (HTTP ${res.status})`);
+  return await res.json();
+}
+
+export async function switchGradeApi(grade) {
+  const res = await fetch(`${API_BASE_URL}/api/auth/switch-grade`, {
+    method: "POST",
+    headers: getHeaders(),
+    credentials: "include",
+    body: JSON.stringify({ grade }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Grade switch failed (HTTP ${res.status})`);
+  }
+  return await res.json();
+}
+
+export async function joinClassByCodeApi({ code, username, secret, display_name, avatar }) {
+  const res = await fetch(`${API_BASE_URL}/api/auth/join-class`, {
+    method: "POST",
+    headers: getHeaders(),
+    credentials: "include",
+    body: JSON.stringify({ code, username, secret, display_name, avatar }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Class join failed (HTTP ${res.status})`);
+  }
+  return await res.json();
+}
+
+// ========================================================
+// Report Card API
+// ========================================================
+export async function getReportCard(grade) {
+  const url = grade ? `${API_BASE_URL}/api/report-card?grade=${encodeURIComponent(grade)}` : `${API_BASE_URL}/api/report-card`;
+  const res = await fetch(url, {
+    method: "GET",
+    headers: getHeaders(),
+    credentials: "include",
+  });
+  if (!res.ok) throw new Error(`Report card failed (HTTP ${res.status})`);
+  return await res.json();
+}
+
+// ========================================================
+// Teacher & Admin Management APIs
+// ========================================================
+export async function createTeacherClass(payload) {
+  const res = await fetch(`${API_BASE_URL}/api/auth/teacher/classes`, {
+    method: "POST",
+    headers: getHeaders(),
+    credentials: "include",
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Create class failed (HTTP ${res.status})`);
+  }
+  return await res.json();
+}
+
+export async function getTeacherClasses() {
+  const res = await fetch(`${API_BASE_URL}/api/auth/teacher/classes`, {
+    method: "GET",
+    headers: getHeaders(),
+    credentials: "include",
+  });
+  if (!res.ok) throw new Error(`Fetch classes failed (HTTP ${res.status})`);
+  return await res.json();
+}
+
+export async function getTeacherStudents(classId = null) {
+  const url = classId
+    ? `${API_BASE_URL}/api/auth/teacher/students?class_id=${encodeURIComponent(classId)}`
+    : `${API_BASE_URL}/api/auth/teacher/students`;
+  const res = await fetch(url, {
+    method: "GET",
+    headers: getHeaders(),
+    credentials: "include",
+  });
+  if (!res.ok) throw new Error(`Fetch students failed (HTTP ${res.status})`);
+  return await res.json();
+}
+
+export async function updateClassSettings(classId, payload) {
+  const res = await fetch(`${API_BASE_URL}/api/auth/teacher/classes/${classId}`, {
+    method: "PUT",
+    headers: getHeaders(),
+    credentials: "include",
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) throw new Error(`Update class failed (HTTP ${res.status})`);
+  return await res.json();
+}
+
+export async function createTeacherStudent(payload) {
+  const res = await fetch(`${API_BASE_URL}/api/auth/teacher/students`, {
+    method: "POST",
+    headers: getHeaders(),
+    credentials: "include",
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Create student failed (HTTP ${res.status})`);
+  }
+  return await res.json();
+}
+
+export async function bulkImportStudentsApi(csvText) {
+  const res = await fetch(`${API_BASE_URL}/api/auth/teacher/students/bulk`, {
+    method: "POST",
+    headers: getHeaders(),
+    credentials: "include",
+    body: JSON.stringify({ csv_text: csvText }),
+  });
+  if (!res.ok) throw new Error(`Bulk import failed (HTTP ${res.status})`);
+  return await res.json();
+}
+
+export async function resetStudentSecretApi(studentId, newSecret = null) {
+  const res = await fetch(`${API_BASE_URL}/api/auth/teacher/students/${studentId}/reset-secret`, {
+    method: "POST",
+    headers: getHeaders(),
+    credentials: "include",
+    body: JSON.stringify({ new_secret: newSecret }),
+  });
+  if (!res.ok) throw new Error(`Reset secret failed (HTTP ${res.status})`);
+  return await res.json();
+}
+
+export async function getClassLoginCards(classId) {
+  const res = await fetch(`${API_BASE_URL}/api/auth/teacher/classes/${classId}/login-cards`, {
+    method: "GET",
+    headers: getHeaders(),
+    credentials: "include",
+  });
+  if (!res.ok) throw new Error(`Login cards failed (HTTP ${res.status})`);
   return await res.json();
 }
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { PageHeader, Card, Badge, ProgressBar, Mascot } from "../components/UI";
 import { getProgress } from "../assessment/progressStorage";
 import { getProgressSummary, getUserProfile } from "../api/client";
+import { useGrade } from "../context/GradeContext";
 import {
   Award,
   Sparkles,
@@ -16,6 +17,7 @@ import {
 import "../assessment/assessment.css";
 
 export default function Progress() {
+  const { activeGrade } = useGrade();
   const [history, setHistory] = useState([]);
   const [apiProgress, setApiProgress] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
@@ -34,9 +36,9 @@ export default function Progress() {
         console.warn("Could not load user profile:", err);
       }
 
-      // 2. Fetch from Backend API
+      // 2. Fetch from Backend API scoped by activeGrade
       try {
-        const apiData = await getProgressSummary();
+        const apiData = await getProgressSummary(activeGrade);
         if (apiData && apiData.user_id) {
           setApiProgress(apiData);
           setIsBackendOnline(true);
@@ -61,7 +63,7 @@ export default function Progress() {
     }
 
     loadAllProgress();
-  }, []);
+  }, [activeGrade]);
 
   const totalAttempts = history.length;
   const totalQuestions = history.reduce((sum, item) => sum + (item.totalQuestions || 0), 0);

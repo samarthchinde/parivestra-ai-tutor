@@ -12,7 +12,7 @@ from backend.auth.service import resolve_session, utc_now
 logger = logging.getLogger("backend.auth.dependencies")
 
 
-def extract_session_token(request: Request) -> Optional[str]:
+def extract_session_token(request: Request, authorization: Optional[str] = None) -> Optional[str]:
     """Extract token from cookie or Authorization Bearer header."""
     try:
         cookie_token = request.cookies.get("session_token")
@@ -21,12 +21,15 @@ def extract_session_token(request: Request) -> Optional[str]:
     except Exception:
         pass
 
-    try:
-        auth_hdr = request.headers.get("authorization")
-        if auth_hdr and isinstance(auth_hdr, str) and auth_hdr.lower().startswith("bearer "):
-            return auth_hdr[7:].strip()
-    except Exception:
-        pass
+    auth_hdr = authorization
+    if not auth_hdr:
+        try:
+            auth_hdr = request.headers.get("authorization")
+        except Exception:
+            pass
+
+    if auth_hdr and isinstance(auth_hdr, str) and auth_hdr.lower().startswith("bearer "):
+        return auth_hdr[7:].strip()
 
     return None
 

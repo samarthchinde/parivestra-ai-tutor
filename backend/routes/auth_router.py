@@ -664,6 +664,44 @@ def list_classes(
     return {"status": "ok", "classes": res}
 
 
+@router.get("/teacher/students")
+def list_students(
+    class_id: Optional[str] = None,
+    auth: Tuple[User, AuthSession] = Depends(require_role(["teacher", "admin"])),
+    db: Session = Depends(get_db),
+):
+    """List students filtered optionally by class_id."""
+    user, _ = auth
+    query = db.query(User).filter(User.role == "student")
+    if class_id:
+        query = query.filter(User.class_id == class_id)
+    elif user.role != "admin":
+        teacher_class_ids = [c.id for c in db.query(Class).filter(Class.teacher_id == user.id).all()]
+        if teacher_class_ids:
+            query = query.filter(User.class_id.in_(teacher_class_ids))
+        else:
+            query = query.filter(User.id == "__none__")
+
+    students = query.order_by(User.username).all()
+    res = []
+    for s in students:
+        cls = db.query(Class).filter(Class.id == s.class_id).first() if s.class_id else None
+        res.append({
+            "id": s.id,
+            "username": s.username or s.id,
+            "display_name": s.display_name or s.name,
+            "grade": s.grade or s.default_grade or "Class 3",
+            "class_id": s.class_id,
+            "class_name": cls.name if cls else "Unassigned",
+            "failed_attempts": s.failed_attempts or 0,
+            "is_locked": bool(s.locked_until and s.locked_until > utc_now()),
+            "xp": s.xp or 0,
+            "streak": s.streak or 1,
+            "last_login_at": s.last_login_at.isoformat() if s.last_login_at else None,
+        })
+    return {"status": "ok", "students": res}
+
+
 @router.put("/teacher/classes/{class_id}")
 def update_class_settings(
     class_id: str,

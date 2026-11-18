@@ -1,5 +1,10 @@
+import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
+import { GradeProvider } from "./context/GradeContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 import AppLayout from "./components/AppLayout";
+import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Tutor from "./pages/Tutor";
 import LearningPath from "./pages/LearningPath";
@@ -14,6 +19,7 @@ import Games from "./pages/Games";
 import Videos from "./pages/Videos";
 import StoryPlayer from "./pages/StoryPlayer";
 import GrownUps from "./pages/GrownUps";
+import ReportCard from "./pages/ReportCard";
 import WorkbookHome from "./pages/WorkbookHome";
 import WorkbookUnit from "./pages/WorkbookUnit";
 import WordBank from "./pages/WordBank";
@@ -22,41 +28,63 @@ import FinalProjectView from "./pages/FinalProjectView";
 
 export default function App() {
   return (
-    <Routes>
-      <Route element={<AppLayout />}>
-        {/* Child Learning Portal Routes */}
-        <Route index element={<Dashboard />} />
-        
-        {/* Official Parivestra AI Workbooks */}
-        <Route path="workbook" element={<WorkbookHome />} />
-        <Route path="workbook/:grade/unit/:unitNumber" element={<WorkbookUnit />} />
-        <Route path="workbook/word-bank" element={<WordBank />} />
-        <Route path="workbook/certificate" element={<CertificateView />} />
-        <Route path="workbook/:grade/project" element={<FinalProjectView />} />
+    <AuthProvider>
+      <GradeProvider>
+        <Routes>
+          {/* Public Authentication Route */}
+          <Route path="/login" element={<Login />} />
 
-        <Route path="courses" element={<Courses />} />
-        <Route path="courses/:id" element={<CourseDetail />} />
-        <Route path="courses/:id/lessons/:lessonId" element={<LessonPlayer />} />
-        <Route path="tutor" element={<Tutor />} />
-        <Route path="practice" element={<Practice />} />
-        <Route path="games" element={<Games />} />
-        <Route path="videos" element={<Videos />} />
-        <Route path="videos/story/:storyId" element={<StoryPlayer />} />
-        <Route path="learning-path" element={<LearningPath />} />
-        <Route path="subjects" element={<Subjects />} />
-        <Route path="library" element={<Library />} />
-        <Route path="progress" element={<Progress />} />
+          {/* Protected Application Routes */}
+          <Route
+            element={
+              <ProtectedRoute>
+                <AppLayout />
+              </ProtectedRoute>
+            }
+          >
+            {/* Child Learning Portal Routes */}
+            <Route index element={<Dashboard />} />
 
-        {/* Grown-ups & Teacher Area */}
-        <Route path="grown-ups" element={<GrownUps />} />
+            {/* Official Parivestra AI Workbooks */}
+            <Route path="workbook" element={<WorkbookHome />} />
+            <Route path="workbook/:grade/unit/:unitNumber" element={<WorkbookUnit />} />
+            <Route path="workbook/word-bank" element={<WordBank />} />
+            <Route path="workbook/certificate" element={<CertificateView />} />
+            <Route path="workbook/:grade/project" element={<FinalProjectView />} />
 
-        {/* Legacy Redirects */}
-        <Route path="resources" element={<Navigate to="/library" replace />} />
-        <Route path="settings" element={<Navigate to="/grown-ups" replace />} />
+            <Route path="courses" element={<Courses />} />
+            <Route path="courses/:id" element={<CourseDetail />} />
+            <Route path="courses/:id/lessons/:lessonId" element={<LessonPlayer />} />
+            <Route path="tutor" element={<Tutor />} />
+            <Route path="practice" element={<Practice />} />
+            <Route path="games" element={<Games />} />
+            <Route path="videos" element={<Videos />} />
+            <Route path="videos/story/:storyId" element={<StoryPlayer />} />
+            <Route path="learning-path" element={<LearningPath />} />
+            <Route path="subjects" element={<Subjects />} />
+            <Route path="library" element={<Library />} />
+            <Route path="progress" element={<Progress />} />
+            <Route path="report-card" element={<ReportCard />} />
 
-        {/* Catch-all */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Route>
-    </Routes>
+            {/* Grown-ups & Teacher Area */}
+            <Route
+              path="grown-ups"
+              element={
+                <ProtectedRoute allowedRoles={["teacher", "admin", "guest"]}>
+                  <GrownUps />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Legacy Redirects */}
+            <Route path="resources" element={<Navigate to="/library" replace />} />
+            <Route path="settings" element={<Navigate to="/grown-ups" replace />} />
+
+            {/* Catch-all */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Route>
+        </Routes>
+      </GradeProvider>
+    </AuthProvider>
   );
 }

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { PageHeader, Card, PrimaryButton, ProgressRing, XPChip, SubjectTile, Mascot } from "../components/UI";
 import { getProgressSummary, getUserProfile, getCourses } from "../api/client";
+import { useGrade } from "../context/GradeContext";
+import { useAuth } from "../context/AuthContext";
 import { getAvatar } from "../data/avatars";
 import { playClick } from "../utils/sound";
 import {
@@ -23,12 +25,15 @@ import { getSubjectsForGrade, getBandForGrade } from "../config/bands";
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { activeGrade, band, bandConfig } = useGrade();
+
   const [profile, setProfile] = useState({
-    display_name: localStorage.getItem("parivestra_display_name") || "Explorer",
-    avatar: localStorage.getItem("parivestra_avatar") || "owl",
-    grade: localStorage.getItem("parivestra_grade") || "Class 3",
-    xp: 0,
-    streak: 1,
+    display_name: user?.display_name || localStorage.getItem("parivestra_display_name") || "Explorer",
+    avatar: user?.avatar || localStorage.getItem("parivestra_avatar") || "owl",
+    grade: activeGrade || "Class 3",
+    xp: user?.xp || 0,
+    streak: user?.streak || 1,
   });
 
   const [stats, setStats] = useState({
@@ -45,20 +50,20 @@ export default function Dashboard() {
     async function loadData() {
       try {
         const p = await getUserProfile();
-        if (p) setProfile(p);
+        if (p) setProfile((prev) => ({ ...prev, ...p }));
       } catch (e) {
         console.warn(e);
       }
 
       try {
-        const c = await getCourses();
+        const c = await getCourses(activeGrade);
         if (c && c.courses) setCourses(c.courses.slice(0, 3));
       } catch (e) {
         console.warn(e);
       }
 
       try {
-        const prog = await getProgressSummary();
+        const prog = await getProgressSummary(activeGrade);
         if (prog) {
           setStats((prev) => ({
             ...prev,
@@ -73,7 +78,7 @@ export default function Dashboard() {
       }
     }
     loadData();
-  }, []);
+  }, [activeGrade, user]);
 
   const avatar = getAvatar(profile.avatar);
   const goalPercentage = Math.round((stats.dailyCompleted / stats.dailyGoal) * 100);
@@ -223,7 +228,7 @@ export default function Dashboard() {
           <div>
             <h2 style={{ margin: 0, fontSize: 24, color: "var(--text-main)" }}>Explore Subjects</h2>
             <p style={{ margin: "2px 0 0", color: "var(--text-muted)", fontSize: 14 }}>
-              Tailored for {profile.grade} learners
+              Tailored for {activeGrade} learners
             </p>
           </div>
           <Link
@@ -235,7 +240,7 @@ export default function Dashboard() {
         </div>
 
         <div className="grid three" style={{ gap: 18 }}>
-          {getSubjectsForGrade(profile.grade).map((subj) => {
+          {getSubjectsForGrade(activeGrade).map((subj) => {
             let icon = BookOpen;
             let color = "var(--color-primary)";
             let bg = "#F1F5F9";

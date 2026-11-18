@@ -4,6 +4,7 @@ import { PageHeader, Card, PrimaryButton, StarRating, Mascot, XPChip } from "../
 import { questionBank } from "../assessment/questionBank";
 import { saveProgress, getProgress } from "../assessment/progressStorage";
 import { generatePracticeQuestions, submitPracticeAnswer } from "../api/client";
+import { useGrade } from "../context/GradeContext";
 import { playSuccess, playNudge, playClick } from "../utils/sound";
 import { getSubjectsForGrade, getBandForGrade } from "../config/bands";
 import {
@@ -17,12 +18,11 @@ import {
 } from "lucide-react";
 
 export default function Practice() {
+  const { activeGrade } = useGrade();
   const [page, setPage] = useState("dashboard"); // 'dashboard', 'quiz', 'feedback', 'result'
   const [subject, setSubject] = useState("Maths");
   const [difficulty, setDifficulty] = useState("Beginner");
-  const [grade, setGrade] = useState(
-    localStorage.getItem("parivestra_grade") || "Class 3"
-  );
+  const grade = activeGrade || "Class 3";
 
   const [questions, setQuestions] = useState([]);
   const [current, setCurrent] = useState(0);

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getVideos, uploadVideo } from "../api/client";
+import { useGrade } from "../context/GradeContext";
 import {
   PageHeader,
   Card,
@@ -26,13 +27,20 @@ import {
 
 export default function Videos() {
   const navigate = useNavigate();
+  const { activeGrade } = useGrade();
 
   const [videos, setVideos] = useState([]);
   const [stories, setStories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("stories"); // "stories" | "videos"
   const [selectedSubject, setSelectedSubject] = useState("All");
-  const [selectedGrade, setSelectedGrade] = useState("All");
+  const [selectedGrade, setSelectedGrade] = useState(activeGrade || "Class 3");
+
+  useEffect(() => {
+    if (activeGrade) {
+      setSelectedGrade(activeGrade);
+    }
+  }, [activeGrade]);
 
   // Video player modal state
   const [playingVideo, setPlayingVideo] = useState(null);

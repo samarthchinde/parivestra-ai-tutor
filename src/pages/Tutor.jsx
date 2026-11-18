@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { PageHeader, Card, PrimaryButton, Badge, Mascot } from "../components/UI";
 import { streamTutorChat, getSubjects } from "../api/client";
+import { useGrade } from "../context/GradeContext";
 import { getAvatar } from "../data/avatars";
 import { playClick, playSuccess, playNudge } from "../utils/sound";
 import {
@@ -16,12 +17,11 @@ import {
 } from "lucide-react";
 
 export default function Tutor() {
+  const { activeGrade } = useGrade();
   const [sessionId, setSessionId] = useState(`session_${Date.now()}`);
   const [subject, setSubject] = useState("Maths");
   const [topic, setTopic] = useState("");
-  const [grade, setGrade] = useState(
-    localStorage.getItem("parivestra_grade") || "Class 3"
-  );
+  const grade = activeGrade || "Class 3";
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [speakingId, setSpeakingId] = useState(null);
@@ -38,7 +38,7 @@ export default function Tutor() {
       id: "welcome",
       role: "assistant",
       content:
-        "Hello! I am Pari, your learning buddy. Ask me any question about Maths, English, or EVS, and we will explore it together! 🌟",
+        `Hello! I am Pari, your ${grade} learning buddy. Ask me any question, and we will explore it together! 🌟`,
       citations: [],
       hintLevel: 0,
       source: "assistant",
@@ -50,16 +50,19 @@ export default function Tutor() {
   useEffect(() => {
     async function loadSubjects() {
       try {
-        const data = await getSubjects();
+        const data = await getSubjects(grade);
         if (data && data.subjects) {
           setSubjectsList(data.subjects);
+          if (data.subjects.length > 0) {
+            setSubject(data.subjects[0].name);
+          }
         }
       } catch (e) {
         // Fallback
       }
     }
     loadSubjects();
-  }, []);
+  }, [grade]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });

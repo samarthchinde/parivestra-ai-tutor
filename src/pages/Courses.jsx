@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { PageHeader, Card, PrimaryButton, ProgressRing, Badge, EmptyState } from "../components/UI";
 import { getCourses, getUserProfile } from "../api/client";
+import { useGrade } from "../context/GradeContext";
 import { playClick } from "../utils/sound";
 import {
   BookOpen,
@@ -25,12 +26,11 @@ export default function Courses() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const initialSubject = searchParams.get("subject") || "All";
+  const { activeGrade, setGrade: setActiveGrade } = useGrade();
 
   const [courses, setCourses] = useState([]);
   const [revisionCourses, setRevisionCourses] = useState([]);
-  const [grade, setGrade] = useState(
-    localStorage.getItem("parivestra_grade") || "Class 3"
-  );
+  const grade = activeGrade || "Class 3";
   const [selectedSubject, setSelectedSubject] = useState(initialSubject);
   const [loading, setLoading] = useState(true);
 

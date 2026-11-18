@@ -1,11 +1,55 @@
 import React, { useEffect, useState } from "react";
-import { PageHeader, Card, PrimaryButton, Badge, Toast } from "../components/UI";
-import { checkHealth, verifyGrownUpsPin, setGrownUpsPin, getAdminQueue, approveContent, generateCourseDraft, resetUserProfile, getTeacherWorkbookProjects, reviewTeacherWorkbookProject, getWorkbookPacing } from "../api/client";
-import { ShieldCheck, Lock, Key, Server, CheckCircle2, AlertTriangle, RefreshCw, Upload, Sparkles, BookOpen, BookMarked, Award, FolderGit2 } from "lucide-react";
+import { PageHeader, Card, PrimaryButton, Badge, Toast, Modal } from "../components/UI";
+import {
+  checkHealth,
+  verifyGrownUpsPin,
+  setGrownUpsPin,
+  getAdminQueue,
+  approveContent,
+  generateCourseDraft,
+  resetUserProfile,
+  getTeacherWorkbookProjects,
+  reviewTeacherWorkbookProject,
+  getWorkbookPacing,
+  getTeacherClasses,
+  createTeacherClass,
+  updateClassSettings,
+  createTeacherStudent,
+  bulkImportStudentsApi,
+  resetStudentSecretApi,
+  getClassLoginCards,
+  getTeacherStudents,
+} from "../api/client";
+import { useAuth } from "../context/AuthContext";
+import {
+  ShieldCheck,
+  Lock,
+  Key,
+  Server,
+  CheckCircle2,
+  AlertTriangle,
+  RefreshCw,
+  Upload,
+  Sparkles,
+  BookOpen,
+  BookMarked,
+  Award,
+  FolderGit2,
+  Users,
+  PlusCircle,
+  FileSpreadsheet,
+  Printer,
+  Copy,
+  Check,
+  RotateCcw,
+} from "lucide-react";
 import { playSuccess, playClick } from "../utils/sound";
 
 export default function GrownUps() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { user } = useAuth();
+  const isTeacherOrAdmin = user?.role === "teacher" || user?.role === "admin";
+
+  const [isAuthenticated, setIsAuthenticated] = useState(isTeacherOrAdmin);
   const [pinInput, setPinInput] = useState("");
   const [challengeAnswer, setChallengeAnswer] = useState("");
   const [authError, setAuthError] = useState("");
@@ -19,6 +63,36 @@ export default function GrownUps() {
   const [queue, setQueue] = useState({ courses: [], stories: [], safety_incidents: [] });
   const [loadingQueue, setLoadingQueue] = useState(false);
   const [newPin, setNewPin] = useState("");
+
+  // Teacher Class & Student State
+  const [classes, setClasses] = useState([]);
+  const [selectedClassId, setSelectedClassId] = useState("");
+  const [students, setStudents] = useState([]);
+  const [loadingClasses, setLoadingClasses] = useState(false);
+  const [loadingStudents, setLoadingStudents] = useState(false);
+
+  // Modals
+  const [showCreateClassModal, setShowCreateClassModal] = useState(false);
+  const [newClassName, setNewClassName] = useState("");
+  const [newClassGrade, setNewClassGrade] = useState("Class 3");
+  const [newClassSection, setNewClassSection] = useState("A");
+  const [newClassAllowSwitch, setNewClassAllowSwitch] = useState(true);
+  const [newClassAllowJoinCode, setNewClassAllowJoinCode] = useState(true);
+
+  const [showAddStudentModal, setShowAddStudentModal] = useState(false);
+  const [newStudentUsername, setNewStudentUsername] = useState("");
+  const [newStudentDisplayName, setNewStudentDisplayName] = useState("");
+  const [newStudentGrade, setNewStudentGrade] = useState("Class 3");
+  const [createdStudentSecret, setCreatedStudentSecret] = useState(null);
+
+  const [showBulkModal, setShowBulkModal] = useState(false);
+  const [bulkCsvText, setBulkCsvText] = useState("");
+  const [bulkResults, setBulkResults] = useState(null);
+
+  const [showLoginCardsModal, setShowLoginCardsModal] = useState(false);
+  const [loginCardsData, setLoginCardsData] = useState(null);
+
+  const [secretResetResult, setSecretResetResult] = useState(null);
 
   // AI Workbooks Teacher State
   const [wbProjects, setWbProjects] = useState([]);
@@ -41,10 +115,54 @@ export default function GrownUps() {
   const [isDrafting, setIsDrafting] = useState(false);
 
   useEffect(() => {
+    if (isTeacherOrAdmin) {
+      setIsAuthenticated(true);
+    }
+  }, [isTeacherOrAdmin]);
+
+  useEffect(() => {
     if (isAuthenticated) {
       loadHealthAndQueue();
+      loadClasses();
     }
   }, [isAuthenticated]);
+
+  useEffect(() => {
+    if (isAuthenticated && selectedClassId) {
+      loadStudents(selectedClassId);
+    }
+  }, [selectedClassId, isAuthenticated]);
+
+  const loadClasses = async () => {
+    setLoadingClasses(true);
+    try {
+      const res = await getTeacherClasses();
+      if (res && res.classes) {
+        setClasses(res.classes);
+        if (res.classes.length > 0 && !selectedClassId) {
+          setSelectedClassId(res.classes[0].id);
+        }
+      }
+    } catch (e) {
+      console.warn("Could not load classes:", e);
+    } finally {
+      setLoadingClasses(false);
+    }
+  };
+
+  const loadStudents = async (cId) => {
+    setLoadingStudents(true);
+    try {
+      const res = await getTeacherStudents(cId);
+      if (res && res.students) {
+        setStudents(res.students);
+      }
+    } catch (e) {
+      console.warn("Could not load students:", e);
+    } finally {
+      setLoadingStudents(false);
+    }
+  };
 
   const loadHealthAndQueue = async () => {
     const h = await checkHealth();
@@ -99,6 +217,94 @@ export default function GrownUps() {
       setNewPin("");
     } catch (e) {
       setToast(`Error: ${e.message}`);
+    }
+  };
+
+  const handleCreateClass = async (e) => {
+    e.preventDefault();
+    if (!newClassName.trim()) return;
+    try {
+      const res = await createTeacherClass({
+        name: newClassName.trim(),
+        grade: newClassGrade,
+        section: newClassSection.trim() || "A",
+        allow_grade_switch: newClassAllowSwitch,
+        allow_join_by_code: newClassAllowJoinCode,
+      });
+      playSuccess();
+      setToast(`Created class ${newClassName}!`);
+      setShowCreateClassModal(false);
+      setNewClassName("");
+      loadClasses();
+    } catch (err) {
+      setToast(`Error creating class: ${err.message}`);
+    }
+  };
+
+  const handleToggleGradeSwitch = async (cls) => {
+    try {
+      await updateClassSettings(cls.id, {
+        allow_grade_switch: !cls.allow_grade_switch,
+      });
+      playSuccess();
+      loadClasses();
+    } catch (err) {
+      setToast(`Error updating class: ${err.message}`);
+    }
+  };
+
+  const handleAddStudent = async (e) => {
+    e.preventDefault();
+    if (!newStudentUsername.trim()) return;
+    try {
+      const res = await createTeacherStudent({
+        username: newStudentUsername.trim(),
+        display_name: newStudentDisplayName.trim() || undefined,
+        grade: newStudentGrade,
+        class_id: selectedClassId || undefined,
+      });
+      playSuccess();
+      setCreatedStudentSecret(res.student);
+      setNewStudentUsername("");
+      setNewStudentDisplayName("");
+      if (selectedClassId) loadStudents(selectedClassId);
+    } catch (err) {
+      setToast(`Error creating student: ${err.message}`);
+    }
+  };
+
+  const handleBulkImport = async (e) => {
+    e.preventDefault();
+    if (!bulkCsvText.trim()) return;
+    try {
+      const res = await bulkImportStudentsApi(bulkCsvText.trim());
+      playSuccess();
+      setBulkResults(res);
+      setToast(`Imported ${res.imported_count} student accounts!`);
+      if (selectedClassId) loadStudents(selectedClassId);
+    } catch (err) {
+      setToast(`Bulk import error: ${err.message}`);
+    }
+  };
+
+  const handleResetSecret = async (studentId) => {
+    try {
+      const res = await resetStudentSecretApi(studentId);
+      playSuccess();
+      setSecretResetResult(res);
+      if (selectedClassId) loadStudents(selectedClassId);
+    } catch (err) {
+      setToast(`Reset secret error: ${err.message}`);
+    }
+  };
+
+  const handleOpenLoginCards = async (classId) => {
+    try {
+      const res = await getClassLoginCards(classId);
+      setLoginCardsData(res);
+      setShowLoginCardsModal(true);
+    } catch (err) {
+      setToast(`Could not load cards: ${err.message}`);
     }
   };
 
@@ -169,7 +375,7 @@ export default function GrownUps() {
     }
   };
 
-  // 1. GATE VIEW
+  // 1. GATE VIEW (For unauthenticated guardian/guests)
   if (!isAuthenticated) {
     return (
       <div style={{ maxWidth: 520, margin: "40px auto", textAlign: "center" }}>
@@ -248,7 +454,7 @@ export default function GrownUps() {
             )}
 
             <PrimaryButton type="submit" size="lg" style={{ width: "100%", marginTop: 8 }}>
-              Unlock Grown-ups Area 🔓
+              Unlock Grown-ups Dashboard
             </PrimaryButton>
           </form>
         </Card>
@@ -256,21 +462,249 @@ export default function GrownUps() {
     );
   }
 
-  // 2. UNLOCKED PORTAL VIEW
+  // 2. AUTHENTICATED PORTAL VIEW
   return (
-    <div style={{ maxWidth: 960, margin: "0 auto" }}>
+    <div style={{ maxWidth: 1040, margin: "0 auto", display: "flex", flexDirection: "column", gap: 28 }}>
       <PageHeader
-        eyebrow="GROWN-UPS CONTROL PANEL"
-        title="Parents & Teachers Hub"
-        description="Review learning content, monitor local AI model health, configure accessibility, and manage child safety."
+        eyebrow="EDUCATOR & GUARDIAN DASHBOARD"
+        title="Grown-ups Management Portal"
+        description="Manage school classes, provision child accounts with zero PII, and review AI content."
         action={
-          <PrimaryButton variant="secondary" onClick={() => setIsAuthenticated(false)}>
-            Lock Area 🔒
-          </PrimaryButton>
+          <div style={{ display: "flex", gap: 8 }}>
+            <PrimaryButton
+              variant="secondary"
+              size="sm"
+              icon={RefreshCw}
+              onClick={() => {
+                loadHealthAndQueue();
+                loadClasses();
+              }}
+            >
+              Refresh Data
+            </PrimaryButton>
+          </div>
         }
       />
 
       {toast && <Toast message={toast} onClose={() => setToast("")} />}
+
+      {/* CLASS & STUDENT MANAGEMENT SUITE */}
+      <Card title="Classroom & Student Management (Classes 3 to 10)" icon={Users}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18, flexWrap: "wrap", gap: 12 }}>
+          <p style={{ margin: 0, fontSize: 14, color: "var(--text-muted)" }}>
+            Zero-PII student authentication: Students log in via big PIN pads (Junior) or memorable passwords (Middle/Senior).
+          </p>
+          <div style={{ display: "flex", gap: 8 }}>
+            <PrimaryButton
+              size="sm"
+              icon={PlusCircle}
+              onClick={() => setShowCreateClassModal(true)}
+            >
+              Create Class
+            </PrimaryButton>
+            <PrimaryButton
+              size="sm"
+              variant="secondary"
+              icon={FileSpreadsheet}
+              onClick={() => setShowBulkModal(true)}
+            >
+              Bulk Import (CSV)
+            </PrimaryButton>
+          </div>
+        </div>
+
+        {/* Class Selection & Settings */}
+        {loadingClasses ? (
+          <p>Loading classes...</p>
+        ) : classes.length === 0 ? (
+          <div style={{ textAlign: "center", padding: "20px 0", color: "#64748B" }}>
+            No classes created yet. Click "Create Class" above to set up your first class!
+          </div>
+        ) : (
+          <div>
+            <div style={{ display: "flex", gap: 12, overflowX: "auto", paddingBottom: 10, marginBottom: 16 }}>
+              {classes.map((cls) => (
+                <div
+                  key={cls.id}
+                  onClick={() => setSelectedClassId(cls.id)}
+                  style={{
+                    padding: "12px 16px",
+                    borderRadius: 14,
+                    border: selectedClassId === cls.id ? "2px solid #EA580C" : "1px solid #E2E8F0",
+                    background: selectedClassId === cls.id ? "#FFF7ED" : "#F8FAFC",
+                    cursor: "pointer",
+                    minWidth: 180,
+                    transition: "all 0.15s ease",
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <strong style={{ fontSize: 15, color: "#0F172A" }}>{cls.name}</strong>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: "#EA580C", background: "#FFEDD5", padding: "2px 6px", borderRadius: 8 }}>
+                      {cls.grade}
+                    </span>
+                  </div>
+                  <div style={{ fontSize: 12, color: "#64748B", marginTop: 4 }}>
+                    Sec {cls.section} · {cls.student_count || 0} Students
+                  </div>
+                  <div style={{ fontSize: 12, color: "#166534", marginTop: 4, fontWeight: 700 }}>
+                    Code: <code>{cls.join_code}</code>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Selected Class Action Toolbar */}
+            {(() => {
+              const currentClass = classes.find((c) => c.id === selectedClassId);
+              if (!currentClass) return null;
+              return (
+                <div
+                  style={{
+                    background: "#F8FAFC",
+                    border: "1px solid #E2E8F0",
+                    borderRadius: 14,
+                    padding: "14px 18px",
+                    marginBottom: 20,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    flexWrap: "wrap",
+                    gap: 12,
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+                    <div>
+                      <span style={{ fontSize: 12, color: "#64748B", fontWeight: 700 }}>Join Code for Students:</span>
+                      <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 2 }}>
+                        <code style={{ fontSize: 16, fontWeight: 800, color: "#16A34A", background: "#DCFCE7", padding: "2px 8px", borderRadius: 6 }}>
+                          {currentClass.join_code}
+                        </code>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            navigator.clipboard.writeText(currentClass.join_code);
+                            setToast(`Copied ${currentClass.join_code} to clipboard!`);
+                          }}
+                          style={{ background: "none", border: "none", cursor: "pointer", color: "#64748B" }}
+                          title="Copy Code"
+                        >
+                          <Copy size={16} />
+                        </button>
+                      </div>
+                    </div>
+
+                    <div style={{ height: 32, width: 1, background: "#CBD5E1" }} />
+
+                    <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
+                      <input
+                        type="checkbox"
+                        checked={currentClass.allow_grade_switch}
+                        onChange={() => handleToggleGradeSwitch(currentClass)}
+                      />
+                      <span>Allow Students to Switch Grades</span>
+                    </label>
+                  </div>
+
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <PrimaryButton
+                      size="sm"
+                      variant="secondary"
+                      icon={Printer}
+                      onClick={() => handleOpenLoginCards(currentClass.id)}
+                    >
+                      Print Login Cards
+                    </PrimaryButton>
+                    <PrimaryButton
+                      size="sm"
+                      icon={PlusCircle}
+                      onClick={() => {
+                        setNewStudentGrade(currentClass.grade);
+                        setShowAddStudentModal(true);
+                      }}
+                    >
+                      Add Student to {currentClass.name}
+                    </PrimaryButton>
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* Students Table */}
+            <div>
+              <h4 style={{ fontSize: 15, fontWeight: 800, color: "#1E293B", marginBottom: 10 }}>
+                Enrolled Students
+              </h4>
+              {loadingStudents ? (
+                <p>Loading students...</p>
+              ) : students.length === 0 ? (
+                <div style={{ padding: 20, textAlign: "center", color: "#64748B", background: "#F8FAFC", borderRadius: 12 }}>
+                  No students in this class yet. Click "Add Student" or use "Bulk Import".
+                </div>
+              ) : (
+                <div style={{ borderRadius: 12, border: "1px solid #E2E8F0", overflow: "hidden" }}>
+                  <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13, textAlign: "left" }}>
+                    <thead>
+                      <tr style={{ background: "#F1F5F9", borderBottom: "1px solid #CBD5E1" }}>
+                        <th style={{ padding: "10px 14px", fontWeight: 700 }}>Username</th>
+                        <th style={{ padding: "10px 14px", fontWeight: 700 }}>Display Name</th>
+                        <th style={{ padding: "10px 14px", fontWeight: 700 }}>Grade</th>
+                        <th style={{ padding: "10px 14px", fontWeight: 700 }}>XP</th>
+                        <th style={{ padding: "10px 14px", fontWeight: 700 }}>Status</th>
+                        <th style={{ padding: "10px 14px", fontWeight: 700 }}>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {students.map((st, idx) => (
+                        <tr
+                          key={st.id || idx}
+                          style={{
+                            borderBottom: idx < students.length - 1 ? "1px solid #F1F5F9" : "none",
+                            background: st.is_locked ? "#FEF2F2" : "#FFFFFF",
+                          }}
+                        >
+                          <td style={{ padding: "10px 14px", fontWeight: 700 }}>
+                            <code>{st.username}</code>
+                          </td>
+                          <td style={{ padding: "10px 14px" }}>{st.display_name}</td>
+                          <td style={{ padding: "10px 14px" }}>{st.grade}</td>
+                          <td style={{ padding: "10px 14px", fontWeight: 700, color: "#EA580C" }}>
+                            {st.xp} XP
+                          </td>
+                          <td style={{ padding: "10px 14px" }}>
+                            {st.is_locked ? (
+                              <span style={{ color: "#DC2626", fontWeight: 700 }}>Locked (5 fails)</span>
+                            ) : (
+                              <span style={{ color: "#16A34A", fontWeight: 700 }}>Active</span>
+                            )}
+                          </td>
+                          <td style={{ padding: "10px 14px" }}>
+                            <button
+                              type="button"
+                              onClick={() => handleResetSecret(st.id)}
+                              style={{
+                                padding: "4px 8px",
+                                borderRadius: 6,
+                                border: "1px solid #CBD5E1",
+                                background: "#F8FAFC",
+                                fontSize: 12,
+                                fontWeight: 700,
+                                cursor: "pointer",
+                                color: "#0F172A",
+                              }}
+                            >
+                              Reset PIN/PW
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </Card>
 
       {/* Local AI Model & Backend Status */}
       <Card title="Local AI Model & System Diagnostics" icon={Server}>
@@ -351,292 +785,29 @@ export default function GrownUps() {
                 }}
               >
                 <div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                    <Badge variant={c.status === "draft" ? "warning" : "success"}>
+                      {c.status.toUpperCase()}
+                    </Badge>
                     <strong>{c.title}</strong>
-                    <Badge variant="warning">Needs Review</Badge>
-                    <Badge>{c.grade}</Badge>
-                    <Badge>{c.subject}</Badge>
+                    <span style={{ fontSize: 12, color: "var(--text-muted)" }}>
+                      ({c.subject} · {c.grade})
+                    </span>
                   </div>
-                </div>
-                <PrimaryButton size="sm" onClick={() => handleApprove("course", c.id)}>
-                  Approve Course ✓
-                </PrimaryButton>
-              </div>
-            ))}
-
-            {/* Stories to review */}
-            {queue.stories.map((s) => (
-              <div
-                key={s.id}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  background: "#F8FAFC",
-                  border: "1px solid #E2E8F0",
-                  borderRadius: "var(--radius-md)",
-                  padding: "12px 18px",
-                }}
-              >
-                <div>
-                  <strong>Story: {s.topic}</strong> ({s.grade} - {s.subject})
-                </div>
-                <PrimaryButton size="sm" onClick={() => handleApprove("story", s.id)}>
-                  Approve Story ✓
-                </PrimaryButton>
-              </div>
-            ))}
-          </div>
-        )}
-      </Card>
-
-      {/* Child Safety Incident Log */}
-      <Card title="Child Safety & Wellbeing Alerts" icon={AlertTriangle}>
-        <p style={{ fontSize: 14, color: "var(--text-muted)", marginTop: 0 }}>
-          Zero child free-text is retained. Only timestamps and safety classification tags are recorded so grown-ups can check in.
-        </p>
-
-        {queue.safety_incidents && queue.safety_incidents.length > 0 ? (
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {queue.safety_incidents.map((inc) => (
-              <div
-                key={inc.id}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  background: "#FEF2F2",
-                  border: "1px solid #FCA5A5",
-                  borderRadius: "var(--radius-sm)",
-                  padding: "10px 14px",
-                  fontSize: 13,
-                }}
-              >
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <Badge variant="danger">{inc.flag_type}</Badge>
-                  <span style={{ color: "#991B1B" }}>
-                    {inc.flag_type === "sensitive_emotion"
-                      ? "Child expressed feelings of distress or sadness. Pari redirected to trusted grown-up."
-                      : "Filtered inappropriate content or personal data attempt."}
-                  </span>
-                </div>
-                <span style={{ color: "var(--text-muted)", fontSize: 12 }}>
-                  {new Date(inc.timestamp).toLocaleString()}
-                </span>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div style={{ padding: "12px 0", color: "var(--text-muted)", fontSize: 14 }}>
-            ✓ No safety concerns or distress incidents detected.
-          </div>
-        )}
-      </Card>
-
-      {/* Official AI Workbooks: Teacher Guides, Pacing & Project Review */}
-      <Card title="Official AI Workbooks: Teacher Guides & Project Review Queue" icon={BookMarked}>
-        {/* Pacing Guidelines */}
-        <div
-          style={{
-            background: "#FFF7ED",
-            border: "1.5px solid #FDBA74",
-            borderRadius: "var(--radius-md)",
-            padding: "16px",
-            marginBottom: "20px",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "8px" }}>
-            <Sparkles size={18} color="#EA580C" />
-            <strong style={{ fontSize: "15px", color: "#9A3412" }}>
-              Curriculum Unit Pacing (Grades 3 to 10)
-            </strong>
-          </div>
-          <p style={{ margin: "0 0 8px", fontSize: "13.5px", color: "#7C2D12", lineHeight: "1.5" }}>
-            • <strong>Pacing:</strong> 2 lessons of 40 minutes per unit (16 lessons per grade).
-          </p>
-          <p style={{ margin: "0 0 8px", fontSize: "13.5px", color: "#7C2D12", lineHeight: "1.5" }}>
-            • <strong>Lesson 1 (40 min):</strong> Guided reading of "Let's learn", 3 New Words, Did you know? fact, and partner Think & talk dialogue.
-          </p>
-          <p style={{ margin: "0 0 8px", fontSize: "13.5px", color: "#7C2D12", lineHeight: "1.5" }}>
-            • <strong>Lesson 2 (40 min):</strong> Hands-on Activity 1 & Activity 2, student reflection, and "I can" 3-star self-check.
-          </p>
-          <p style={{ margin: 0, fontSize: "13px", color: "#9A3412", fontStyle: "italic" }}>
-            Materials: Unplugged activities require only pencil and paper/colors. Zero additional hardware required.
-          </p>
-        </div>
-
-        {/* Project Submissions Queue */}
-        <h4 style={{ margin: "0 0 10px", fontSize: "15px", color: "var(--text-main)" }}>
-          Student Capstone Submissions Needing Teacher Review ({wbProjects.length})
-        </h4>
-
-        {wbProjects.length === 0 ? (
-          <p style={{ fontSize: "14px", color: "var(--text-muted)" }}>
-            ✓ No student projects pending review.
-          </p>
-        ) : (
-          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-            {wbProjects.map((proj) => (
-              <div
-                key={proj.id}
-                style={{
-                  background: "#F8FAFC",
-                  border: "1.5px solid #CBD5E1",
-                  borderRadius: "var(--radius-md)",
-                  padding: "16px",
-                }}
-              >
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <strong>{proj.student_name}</strong>
-                    <Badge variant="warning">Grade {proj.grade}</Badge>
-                    <Badge>{proj.project_title}</Badge>
-                  </div>
-                  <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>
-                    Submitted: {new Date(proj.submitted_at).toLocaleDateString()}
-                  </span>
+                  <p style={{ margin: "4px 0 0", fontSize: 13, color: "var(--text-muted)" }}>
+                    {c.description}
+                  </p>
                 </div>
 
-                {/* Form fields summary */}
-                <div
-                  style={{
-                    background: "#FFFFFF",
-                    padding: "10px 14px",
-                    borderRadius: "8px",
-                    border: "1px solid #E2E8F0",
-                    fontSize: "13px",
-                    marginBottom: "12px",
-                  }}
-                >
-                  {Object.entries(proj.fields).map(([k, v]) => (
-                    <div key={k} style={{ marginBottom: "4px" }}>
-                      <strong>{k.replace(/_/g, " ")}:</strong> {String(v)}
-                    </div>
-                  ))}
-                </div>
-
-                {/* Grading inputs */}
-                <div style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
-                  <input
-                    type="number"
-                    min="0"
-                    max="100"
-                    placeholder="Score (0-100)"
-                    value={reviewScores[proj.id] !== undefined ? reviewScores[proj.id] : 100}
-                    onChange={(e) =>
-                      setReviewScores({ ...reviewScores, [proj.id]: parseInt(e.target.value, 10) })
-                    }
-                    style={{ width: "110px", padding: "6px 10px", borderRadius: "6px", border: "1px solid #CBD5E1" }}
-                  />
-                  <input
-                    type="text"
-                    placeholder="Teacher feedback (encouraging note)..."
-                    value={reviewFeedbacks[proj.id] || ""}
-                    onChange={(e) =>
-                      setReviewFeedbacks({ ...reviewFeedbacks, [proj.id]: e.target.value })
-                    }
-                    style={{ flex: 1, padding: "6px 10px", borderRadius: "6px", border: "1px solid #CBD5E1" }}
-                  />
-                  <PrimaryButton size="sm" onClick={() => handleReviewProject(proj.id)}>
-                    Approve & Award XP ✓
+                {c.status === "draft" && (
+                  <PrimaryButton size="sm" onClick={() => handleApprove("course", c.id)}>
+                    Approve Course ✓
                   </PrimaryButton>
-                </div>
+                )}
               </div>
             ))}
           </div>
         )}
-      </Card>
-
-      {/* AI Course Draft Generator */}
-      <Card title="Generate New Course Draft (AI)" icon={Sparkles}>
-        <form onSubmit={handleGenerateCourse} style={{ display: "flex", flexWrap: "wrap", gap: 14, alignItems: "flex-end" }}>
-          <div style={{ flex: 1, minWidth: 140 }}>
-            <label style={{ display: "block", fontSize: 13, fontWeight: 700, marginBottom: 4 }}>Subject:</label>
-            <select
-              value={draftSubject}
-              onChange={(e) => setDraftSubject(e.target.value)}
-              style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #CBD5E1" }}
-            >
-              <option value="Maths">Maths</option>
-              <option value="English">English</option>
-              <option value="EVS">EVS</option>
-            </select>
-          </div>
-
-          <div style={{ flex: 1, minWidth: 140 }}>
-            <label style={{ display: "block", fontSize: 13, fontWeight: 700, marginBottom: 4 }}>Grade:</label>
-            <select
-              value={draftGrade}
-              onChange={(e) => setDraftGrade(e.target.value)}
-              style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #CBD5E1" }}
-            >
-              <option value="Class 3">Class 3</option>
-              <option value="Class 4">Class 4</option>
-            </select>
-          </div>
-
-          <div style={{ flex: 2, minWidth: 220 }}>
-            <label style={{ display: "block", fontSize: 13, fontWeight: 700, marginBottom: 4 }}>Topic Name:</label>
-            <input
-              type="text"
-              value={draftTopic}
-              onChange={(e) => setDraftTopic(e.target.value)}
-              placeholder="e.g. Solar System, Fractions, Adjectives"
-              style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #CBD5E1" }}
-            />
-          </div>
-
-          <PrimaryButton type="submit" disabled={isDrafting}>
-            {isDrafting ? "Drafting with AI..." : "Draft Outline ✨"}
-          </PrimaryButton>
-        </form>
-      </Card>
-
-      {/* Accessibility & Preferences */}
-      <Card title="Accessibility & Display Preferences" icon={BookOpen}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: 12, border: "1px solid #E2E8F0", borderRadius: "var(--radius-md)" }}>
-            <div>
-              <strong>Dyslexia-Friendly Font (Lexend)</strong>
-              <p style={{ margin: 0, fontSize: 12, color: "var(--text-muted)" }}>Improves reading flow and character distinction</p>
-            </div>
-            <button
-              onClick={handleToggleDyslexic}
-              style={{
-                background: dyslexicFont ? "var(--color-primary)" : "#E2E8F0",
-                color: dyslexicFont ? "#FFF" : "#475569",
-                border: "none",
-                borderRadius: 20,
-                padding: "6px 14px",
-                fontWeight: 700,
-                cursor: "pointer",
-              }}
-            >
-              {dyslexicFont ? "ON" : "OFF"}
-            </button>
-          </div>
-
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: 12, border: "1px solid #E2E8F0", borderRadius: "var(--radius-md)" }}>
-            <div>
-              <strong>Calm Mode</strong>
-              <p style={{ margin: 0, fontSize: 12, color: "var(--text-muted)" }}>Removes animations and visual motion effects</p>
-            </div>
-            <button
-              onClick={handleToggleCalm}
-              style={{
-                background: calmMode ? "var(--color-primary)" : "#E2E8F0",
-                color: calmMode ? "#FFF" : "#475569",
-                border: "none",
-                borderRadius: 20,
-                padding: "6px 14px",
-                fontWeight: 700,
-                cursor: "pointer",
-              }}
-            >
-              {calmMode ? "ON" : "OFF"}
-            </button>
-          </div>
-        </div>
       </Card>
 
       {/* Admin Key & Security */}
@@ -700,7 +871,249 @@ export default function GrownUps() {
           </button>
         </div>
       </Card>
+
+      {/* MODAL: CREATE CLASS */}
+      {showCreateClassModal && (
+        <Modal title="Create New Class Section" onClose={() => setShowCreateClassModal(false)}>
+          <form onSubmit={handleCreateClass} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            <div>
+              <label style={{ display: "block", fontSize: 13, fontWeight: 700, marginBottom: 4 }}>Class Name</label>
+              <input
+                type="text"
+                value={newClassName}
+                onChange={(e) => setNewClassName(e.target.value)}
+                placeholder="e.g. 4-A Pioneers or Green Valley Class 5"
+                required
+                style={{ width: "100%", padding: 10, borderRadius: 8, border: "1px solid #CBD5E1", boxSizing: "border-box" }}
+              />
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+              <div>
+                <label style={{ display: "block", fontSize: 13, fontWeight: 700, marginBottom: 4 }}>Grade</label>
+                <select
+                  value={newClassGrade}
+                  onChange={(e) => setNewClassGrade(e.target.value)}
+                  style={{ width: "100%", padding: 10, borderRadius: 8, border: "1px solid #CBD5E1" }}
+                >
+                  {[3, 4, 5, 6, 7, 8, 9, 10].map((g) => (
+                    <option key={g} value={`Class ${g}`}>{`Class ${g}`}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label style={{ display: "block", fontSize: 13, fontWeight: 700, marginBottom: 4 }}>Section</label>
+                <input
+                  type="text"
+                  value={newClassSection}
+                  onChange={(e) => setNewClassSection(e.target.value)}
+                  placeholder="A"
+                  style={{ width: "100%", padding: 10, borderRadius: 8, border: "1px solid #CBD5E1", boxSizing: "border-box" }}
+                />
+              </div>
+            </div>
+            <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, fontWeight: 600 }}>
+              <input
+                type="checkbox"
+                checked={newClassAllowSwitch}
+                onChange={(e) => setNewClassAllowSwitch(e.target.checked)}
+              />
+              Allow students to switch grades freely
+            </label>
+            <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, fontWeight: 600 }}>
+              <input
+                type="checkbox"
+                checked={newClassAllowJoinCode}
+                onChange={(e) => setNewClassAllowJoinCode(e.target.checked)}
+              />
+              Allow students to self-join using class join code
+            </label>
+            <PrimaryButton type="submit" style={{ marginTop: 10 }}>
+              Create Class & Generate Code
+            </PrimaryButton>
+          </form>
+        </Modal>
+      )}
+
+      {/* MODAL: ADD STUDENT */}
+      {showAddStudentModal && (
+        <Modal title="Add Single Student" onClose={() => { setShowAddStudentModal(false); setCreatedStudentSecret(null); }}>
+          {createdStudentSecret ? (
+            <div style={{ textAlign: "center", padding: "16px 0" }}>
+              <CheckCircle2 size={48} color="#16A34A" style={{ margin: "0 auto 12px auto" }} />
+              <h3 style={{ fontSize: 18, color: "#0F172A", margin: 0 }}>Student Created!</h3>
+              <p style={{ color: "#64748B", fontSize: 13, margin: "6px 0 16px 0" }}>
+                Make sure to write down or share this secret now. It is never stored in plain text:
+              </p>
+              <div style={{ background: "#F1F5F9", borderRadius: 12, padding: 16, display: "inline-block", textAlign: "left" }}>
+                <div><strong>Username:</strong> <code>{createdStudentSecret.username}</code></div>
+                <div><strong>Grade:</strong> {createdStudentSecret.grade}</div>
+                <div style={{ marginTop: 6, fontSize: 16, color: "#EA580C", fontWeight: 800 }}>
+                  <strong>One-Time Secret:</strong> <code>{createdStudentSecret.secret}</code>
+                </div>
+              </div>
+              <div style={{ marginTop: 20 }}>
+                <PrimaryButton onClick={() => { setShowAddStudentModal(false); setCreatedStudentSecret(null); }}>
+                  Done
+                </PrimaryButton>
+              </div>
+            </div>
+          ) : (
+            <form onSubmit={handleAddStudent} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+              <div>
+                <label style={{ display: "block", fontSize: 13, fontWeight: 700, marginBottom: 4 }}>Student Nickname / Username</label>
+                <input
+                  type="text"
+                  value={newStudentUsername}
+                  onChange={(e) => setNewStudentUsername(e.target.value)}
+                  placeholder="e.g. kid4, aarav, priya"
+                  required
+                  style={{ width: "100%", padding: 10, borderRadius: 8, border: "1px solid #CBD5E1", boxSizing: "border-box" }}
+                />
+              </div>
+              <div>
+                <label style={{ display: "block", fontSize: 13, fontWeight: 700, marginBottom: 4 }}>Display Name (Optional)</label>
+                <input
+                  type="text"
+                  value={newStudentDisplayName}
+                  onChange={(e) => setNewStudentDisplayName(e.target.value)}
+                  placeholder="e.g. Aarav M."
+                  style={{ width: "100%", padding: 10, borderRadius: 8, border: "1px solid #CBD5E1", boxSizing: "border-box" }}
+                />
+              </div>
+              <PrimaryButton type="submit" style={{ marginTop: 10 }}>
+                Generate Account & Secret
+              </PrimaryButton>
+            </form>
+          )}
+        </Modal>
+      )}
+
+      {/* MODAL: BULK CSV IMPORT */}
+      {showBulkModal && (
+        <Modal title="Bulk Import Students (CSV)" onClose={() => { setShowBulkModal(false); setBulkResults(null); }}>
+          {bulkResults ? (
+            <div>
+              <h3 style={{ fontSize: 16, fontWeight: 800, color: "#166534" }}>
+                Successfully Imported {bulkResults.imported_count} Accounts!
+              </h3>
+              <p style={{ fontSize: 12, color: "#64748B" }}>
+                Copy or print these initial credentials for your students:
+              </p>
+              <div style={{ maxHeight: 260, overflowY: "auto", border: "1px solid #E2E8F0", borderRadius: 8, marginTop: 10 }}>
+                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
+                  <thead>
+                    <tr style={{ background: "#F1F5F9" }}>
+                      <th style={{ padding: 6 }}>Username</th>
+                      <th style={{ padding: 6 }}>Grade</th>
+                      <th style={{ padding: 6 }}>Secret (PIN/Password)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {bulkResults.students.map((s, idx) => (
+                      <tr key={idx} style={{ borderBottom: "1px solid #F1F5F9" }}>
+                        <td style={{ padding: 6 }}><code>{s.username}</code></td>
+                        <td style={{ padding: 6 }}>{s.grade}</td>
+                        <td style={{ padding: 6, fontWeight: 700, color: "#EA580C" }}><code>{s.secret}</code></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <PrimaryButton style={{ marginTop: 16 }} onClick={() => { setShowBulkModal(false); setBulkResults(null); }}>
+                Close
+              </PrimaryButton>
+            </div>
+          ) : (
+            <form onSubmit={handleBulkImport} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <p style={{ fontSize: 13, color: "#64748B", margin: 0 }}>
+                Enter one student per line in format: <code>username,grade,section</code> (or just usernames).
+              </p>
+              <textarea
+                rows={6}
+                value={bulkCsvText}
+                onChange={(e) => setBulkCsvText(e.target.value)}
+                placeholder={"aarav_4,Class 4,A\nmaya_4,Class 4,A\nrohan_4,Class 4,A"}
+                style={{ width: "100%", padding: 10, borderRadius: 8, border: "1px solid #CBD5E1", fontFamily: "monospace", fontSize: 13 }}
+              />
+              <PrimaryButton type="submit">
+                Import & Generate Credentials
+              </PrimaryButton>
+            </form>
+          )}
+        </Modal>
+      )}
+
+      {/* MODAL: SECRET RESET POPUP */}
+      {secretResetResult && (
+        <Modal title="Student Secret Reset" onClose={() => setSecretResetResult(null)}>
+          <div style={{ textAlign: "center", padding: "12px 0" }}>
+            <Key size={40} color="#EA580C" style={{ margin: "0 auto 8px auto" }} />
+            <h3 style={{ fontSize: 17, color: "#0F172A" }}>
+              New Secret for <code>{secretResetResult.username}</code>
+            </h3>
+            <div style={{ background: "#FFF7ED", border: "1.5px solid #FFEDD5", borderRadius: 12, padding: "14px 20px", display: "inline-block", margin: "14px 0" }}>
+              <div style={{ fontSize: 24, fontWeight: 900, color: "#EA580C", letterSpacing: 2 }}>
+                <code>{secretResetResult.new_secret}</code>
+              </div>
+            </div>
+            <p style={{ fontSize: 12, color: "#64748B" }}>
+              Account lock has been cleared and failed attempts reset to 0. Share this secret with the student.
+            </p>
+            <PrimaryButton onClick={() => setSecretResetResult(null)}>
+              Close
+            </PrimaryButton>
+          </div>
+        </Modal>
+      )}
+
+      {/* MODAL: PRINTABLE LOGIN CARDS */}
+      {showLoginCardsModal && loginCardsData && (
+        <Modal title={`Print Student Login Cards · ${loginCardsData.class?.name}`} onClose={() => setShowLoginCardsModal(false)}>
+          <div style={{ marginBottom: 12, display: "flex", justifyContent: "flex-end" }}>
+            <PrimaryButton size="sm" icon={Printer} onClick={() => window.print()}>
+              Print Login Cards
+            </PrimaryButton>
+          </div>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+              gap: 12,
+              maxHeight: 380,
+              overflowY: "auto",
+              padding: 4,
+            }}
+          >
+            {loginCardsData.cards.map((c) => (
+              <div
+                key={c.id}
+                style={{
+                  border: "2px dashed #CBD5E1",
+                  borderRadius: 12,
+                  padding: 12,
+                  background: "#FFFFFF",
+                  textAlign: "center",
+                }}
+              >
+                <div style={{ fontSize: 10, fontWeight: 800, color: "#EA580C", textTransform: "uppercase" }}>
+                  Parivestra Student Card
+                </div>
+                <div style={{ fontSize: 16, fontWeight: 900, color: "#0F172A", marginTop: 4 }}>
+                  {c.display_name}
+                </div>
+                <div style={{ fontSize: 12, color: "#64748B" }}>{c.grade} · {c.class_name}</div>
+                <div style={{ marginTop: 8, background: "#F1F5F9", borderRadius: 6, padding: "4px 8px" }}>
+                  <span style={{ fontSize: 11, color: "#64748B" }}>Username: </span>
+                  <code style={{ fontSize: 12, fontWeight: 800 }}>{c.username}</code>
+                </div>
+                <div style={{ fontSize: 11, color: "#94A3B8", marginTop: 4 }}>
+                  Secret Type: <strong>{c.secret_type}</strong>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }
-
