@@ -131,3 +131,4 @@ Every page must consume the active grade from a unified `GradeContext` and refle
 - `backend/rag/retriever.py` (BM25 search engine core logic)
 - `src/components/Mascot.jsx` (Vector SVG Pari robot mascot)
 - `knowledge_base/*` (Existing curriculum data & workbooks)
+

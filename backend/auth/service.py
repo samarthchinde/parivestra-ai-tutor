@@ -136,3 +136,4 @@ def resolve_session(
     db.commit()
 
     return user, session
+

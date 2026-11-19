@@ -52,3 +52,4 @@ def generate_join_code(prefix: str = "PARI") -> str:
     """Generate unique 8-character uppercase class join code."""
     chars = "".join(secrets.choice("ABCDEFGHJKLMNPQRSTUVWXYZ23456789") for _ in range(4))
     return f"{prefix}-{chars}"
+

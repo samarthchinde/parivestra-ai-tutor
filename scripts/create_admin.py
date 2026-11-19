@@ -70,3 +70,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     create_or_reset_admin(args.username, args.email, args.secret)
+
