@@ -11,26 +11,30 @@ export function AuthProvider({ children }) {
   const [idleSecondsLeft, setIdleSecondsLeft] = useState(60);
 
   const lastActivityRef = useRef(Date.now());
-  const idleCheckIntervalRef = useRef(null);
+  const hasLoadedRef = useRef(false);
 
-  // Load session on startup
+  // Load session on startup (called once on app load)
   const refreshUser = async () => {
     try {
       const data = await getAuthMe();
       if (data && data.user) {
         setUser(data.user);
-        setIsGuest(data.user.username === "guest" || data.user.id.startsWith("guest_"));
+        setIsGuest(data.user.username === "guest" || data.user.id?.startsWith("guest_"));
       } else {
         setUser(null);
+        setIsGuest(false);
       }
     } catch (err) {
       setUser(null);
+      setIsGuest(false);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
+    if (hasLoadedRef.current) return;
+    hasLoadedRef.current = true;
     refreshUser();
   }, []);
 
@@ -80,14 +84,34 @@ export function AuthProvider({ children }) {
     };
   }, [user, idleWarning]);
 
-  const handleLogin = async ({ username, email, secret, grade }) => {
+  const handleLogin = async (credentials) => {
     setIsLoading(true);
     try {
-      const data = await loginUser({ username, email, secret, grade });
-      setUser(data.user);
+      const payload = {
+        username: credentials.username || credentials.identifier,
+        email: credentials.email || (credentials.identifier?.includes("@") ? credentials.identifier : undefined),
+        secret: credentials.secret || credentials.password,
+        grade: credentials.grade,
+      };
+      const data = await loginUser(payload);
+      
+      // Confirm and fetch fresh user profile from /me
+      let resolvedUser = data.user;
+      try {
+        const meData = await getAuthMe();
+        if (meData && meData.user) {
+          resolvedUser = meData.user;
+        }
+      } catch (e) {
+        // Fallback to loginUser response
+      }
+
+      setUser(resolvedUser);
       setIsGuest(false);
       lastActivityRef.current = Date.now();
-      return data;
+      return { success: true, user: resolvedUser, status: "ok" };
+    } catch (err) {
+      return { success: false, error: err.message || "Login failed" };
     } finally {
       setIsLoading(false);
     }
@@ -113,7 +137,9 @@ export function AuthProvider({ children }) {
       setUser(data.user);
       setIsGuest(true);
       lastActivityRef.current = Date.now();
-      return data;
+      return { success: true, user: data.user, status: "ok" };
+    } catch (err) {
+      return { success: false, error: err.message || "Guest session failed" };
     } finally {
       setIsLoading(false);
     }
@@ -126,11 +152,18 @@ export function AuthProvider({ children }) {
   };
 
   const handleJoinClass = async (payload) => {
-    const data = await joinClassByCodeApi(payload);
-    setUser(data.user);
-    setIsGuest(false);
-    lastActivityRef.current = Date.now();
-    return data;
+    setIsLoading(true);
+    try {
+      const data = await joinClassByCodeApi(payload);
+      setUser(data.user);
+      setIsGuest(false);
+      lastActivityRef.current = Date.now();
+      return { success: true, user: data.user, status: "ok" };
+    } catch (err) {
+      return { success: false, error: err.message || "Class join failed" };
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const staySignedIn = () => {
@@ -146,14 +179,17 @@ export function AuthProvider({ children }) {
         role: user?.role || "student",
         isAuthenticated: !!user,
         isLoading,
+        loading: isLoading, // Alias for backward compatibility
         isGuest,
         idleWarning,
         idleSecondsLeft,
         login: handleLogin,
         logout: handleLogout,
         guestLogin: handleGuestLogin,
-        switchGrade: handleSwitchGrade,
+        loginAsGuest: handleGuestLogin, // Alias
         joinClass: handleJoinClass,
+        joinWithClassCode: handleJoinClass, // Alias
+        switchGrade: handleSwitchGrade,
         staySignedIn,
         refreshUser,
         updateUser: setUser,
@@ -169,4 +205,3 @@ export function useAuth() {
   if (!ctx) throw new Error("useAuth must be used within an AuthProvider");
   return ctx;
 }
-

@@ -4,10 +4,11 @@ import { useAuth } from "../context/AuthContext";
 import Mascot from "./Mascot";
 
 export default function ProtectedRoute({ children, allowedRoles }) {
-  const { user, isAuthenticated, loading } = useAuth();
+  const { user, isAuthenticated, isLoading, loading } = useAuth();
+  const isAuthLoading = isLoading ?? loading ?? false;
   const location = useLocation();
 
-  if (loading) {
+  if (isAuthLoading) {
     return (
       <div
         style={{
@@ -45,4 +46,3 @@ export default function ProtectedRoute({ children, allowedRoles }) {
 
   return children;
 }
-

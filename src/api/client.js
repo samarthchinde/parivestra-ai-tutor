@@ -551,13 +551,23 @@ export async function logoutUser() {
 }
 
 export async function getAuthMe() {
-  const res = await fetch(`${API_BASE_URL}/api/auth/me`, {
-    method: "GET",
-    headers: getHeaders(),
-    credentials: "include",
-  });
-  if (!res.ok) throw new Error(`Not authenticated (HTTP ${res.status})`);
-  return await res.json();
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/auth/me`, {
+      method: "GET",
+      headers: getHeaders(),
+      credentials: "include",
+    });
+    if (res.status === 401) {
+      // Treat 401 on /me as "not signed in", not as an error
+      return { status: "unauthenticated", user: null };
+    }
+    if (!res.ok) {
+      return { status: "unauthenticated", user: null };
+    }
+    return await res.json();
+  } catch (err) {
+    return { status: "unauthenticated", user: null };
+  }
 }
 
 export async function loginGuest(grade = "Class 3") {

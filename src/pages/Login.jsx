@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useGrade } from "../context/GradeContext";
@@ -22,8 +22,15 @@ import {
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { login, loginAsGuest, joinWithClassCode } = useAuth();
+  const { user, isAuthenticated, isLoading, login, loginAsGuest, joinWithClassCode } = useAuth();
   const { activeGrade, setGrade, band } = useGrade();
+
+  // An already signed-in user who opens /login is redirected to Home
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      navigate("/", { replace: true });
+    }
+  }, [isAuthenticated, isLoading, navigate]);
 
   const [mode, setMode] = useState("student"); // 'student' | 'teacher' | 'guest' | 'join'
   const [selectedGrade, setSelectedGrade] = useState(activeGrade || "Class 3");
@@ -86,17 +93,24 @@ export default function Login() {
     }
 
     setSubmitting(true);
-    const res = await login({
-      username: u,
-      secret: secret,
-      grade: selectedGrade,
-    });
-    setSubmitting(false);
+    try {
+      const res = await login({
+        username: u,
+        secret: secret,
+        grade: selectedGrade,
+      });
 
-    if (res.success) {
-      navigate(fromPath, { replace: true });
-    } else {
-      setErrorMsg(res.error || "Login failed. Please check your username and secret!");
+      if (res && (res.success || res.status === "ok")) {
+        setGrade(selectedGrade);
+        const targetPath = fromPath && fromPath !== "/login" ? fromPath : "/";
+        navigate(targetPath, { replace: true });
+      } else {
+        setErrorMsg(res?.error || "Login failed. Please check your username and secret!");
+      }
+    } catch (err) {
+      setErrorMsg(err.message || "Login failed. Please check your username and secret!");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -110,29 +124,40 @@ export default function Login() {
     }
 
     setSubmitting(true);
-    const res = await login({
-      identifier: adultIdentifier.trim(),
-      password: adultPassword,
-    });
-    setSubmitting(false);
+    try {
+      const res = await login({
+        identifier: adultIdentifier.trim(),
+        password: adultPassword,
+      });
 
-    if (res.success) {
-      navigate("/grown-ups", { replace: true });
-    } else {
-      setErrorMsg(res.error || "Invalid teacher/admin credentials.");
+      if (res && (res.success || res.status === "ok")) {
+        navigate("/grown-ups", { replace: true });
+      } else {
+        setErrorMsg(res?.error || "Invalid teacher/admin credentials.");
+      }
+    } catch (err) {
+      setErrorMsg(err.message || "Invalid teacher/admin credentials.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
   const handleGuestSubmit = async () => {
     setErrorMsg("");
     setSubmitting(true);
-    const res = await loginAsGuest(selectedGrade);
-    setSubmitting(false);
-
-    if (res.success) {
-      navigate(fromPath, { replace: true });
-    } else {
-      setErrorMsg(res.error || "Could not start guest session.");
+    try {
+      const res = await loginAsGuest(selectedGrade);
+      if (res && (res.success || res.status === "ok")) {
+        setGrade(selectedGrade);
+        const targetPath = fromPath && fromPath !== "/login" ? fromPath : "/";
+        navigate(targetPath, { replace: true });
+      } else {
+        setErrorMsg(res?.error || "Could not start guest session.");
+      }
+    } catch (err) {
+      setErrorMsg(err.message || "Could not start guest session.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -146,13 +171,22 @@ export default function Login() {
     }
 
     setSubmitting(true);
-    const res = await joinWithClassCode(joinCode.trim().toUpperCase(), joinNickname.trim());
-    setSubmitting(false);
+    try {
+      const res = await joinWithClassCode({
+        code: joinCode.trim().toUpperCase(),
+        display_name: joinNickname.trim(),
+      });
 
-    if (res.success) {
-      navigate(fromPath, { replace: true });
-    } else {
-      setErrorMsg(res.error || "Could not join class. Check your code.");
+      if (res && (res.success || res.status === "ok")) {
+        const targetPath = fromPath && fromPath !== "/login" ? fromPath : "/";
+        navigate(targetPath, { replace: true });
+      } else {
+        setErrorMsg(res?.error || "Could not join class. Check your code.");
+      }
+    } catch (err) {
+      setErrorMsg(err.message || "Could not join class. Check your code.");
+    } finally {
+      setSubmitting(false);
     }
   };
 

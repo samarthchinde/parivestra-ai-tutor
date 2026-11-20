@@ -9,7 +9,7 @@ import uuid
 from typing import Any, Dict, List, Optional
 from fastapi import Depends, FastAPI, File, Form, Header, HTTPException, Request, UploadFile, status
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, StreamingResponse
+from fastapi.responses import JSONResponse, StreamingResponse, FileResponse
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
@@ -236,6 +236,14 @@ def health_check():
         "backend": "online",
         "llm": llm_health,
     }
+
+
+@app.get("/favicon.ico", include_in_schema=False)
+def favicon():
+    fav_path = Path("public") / "favicon.svg"
+    if fav_path.exists():
+        return FileResponse(str(fav_path), media_type="image/svg+xml")
+    return JSONResponse(status_code=204, content=None)
 
 
 # ---------------------------------------------------------

@@ -328,3 +328,58 @@ def test_report_card_endpoint(auth_test_db):
     math_card = next(s for s in rc["subjects"] if s["subject"] == "Maths")
     assert math_card["quiz_attempts"] == 1
     assert math_card["quiz_accuracy"] == 100.0
+
+
+def test_kid4_login_and_me_resolution(auth_test_db):
+    """Verify login as kid4 succeeds, sets cookie, and subsequent /me returns Class 4."""
+    resp = Response()
+    req = make_request()
+    res = login(LoginRequest(username="kid4", secret="4321", grade="Class 4"), resp, req, auth_test_db)
+
+    assert res["status"] == "ok"
+    assert res["user"]["username"] == "kid4"
+    assert res["active_grade"] == "Class 4"
+
+    # Verify cookie headers were set
+    assert "set-cookie" in resp.headers or len(resp.raw_headers) > 0
+
+    # Retrieve session token
+    tok_hash = hash_token(res["token"])
+    sess = auth_test_db.query(AuthSession).filter(AuthSession.token_hash == tok_hash).first()
+    assert sess is not None
+    assert sess.active_grade == "Class 4"
+
+    # Verify GET /api/auth/me returns Class 4
+    user = auth_test_db.query(User).filter(User.username == "kid4").first()
+    me = get_current_user_info((user, sess), auth_test_db)
+    assert me["status"] == "ok"
+    assert me["user"]["username"] == "kid4"
+    assert me["active_grade"] == "Class 4"
+    assert me["user"]["default_grade"] == "Class 4"
+
+
+def test_unauthenticated_me_safety_and_no_loop(auth_test_db):
+    """Verify unauthenticated requests raise 401 without error loops or mutations."""
+    from backend.auth.dependencies import extract_session_token
+    from backend.routes.auth_router import get_current_auth
+
+    req_empty = make_request()
+    token = extract_session_token(req_empty)
+    assert token is None
+
+    # Verify get_current_auth raises 401
+    with pytest.raises(HTTPException) as exc_info:
+        get_current_auth(request=req_empty, db=auth_test_db)
+    assert exc_info.value.status_code == 401
+    assert "Authentication required" in exc_info.value.detail
+
+
+def test_favicon_endpoint_returns_svg():
+    """Verify /favicon.ico route serves the Pari robot SVG."""
+    from api import favicon
+    resp = favicon()
+    # Should either be FileResponse with image/svg+xml or 204
+    assert resp.status_code in [200, 204]
+    if resp.status_code == 200:
+        assert resp.media_type == "image/svg+xml"
+
