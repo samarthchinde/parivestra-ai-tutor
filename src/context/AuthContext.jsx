@@ -1,5 +1,16 @@
 import React, { createContext, useContext, useEffect, useState, useRef } from "react";
-import { getAuthMe, loginUser, logoutUser, loginGuest, switchGradeApi, joinClassByCodeApi, updateUserProfile } from "../api/client";
+import {
+  getAuthMe,
+  loginUser,
+  logoutUser,
+  loginGuest,
+  switchGradeApi,
+  joinClassByCodeApi,
+  updateUserProfile,
+  registerStudentApi,
+  registerTeacherApi,
+  registerParentApi,
+} from "../api/client";
 
 const AuthContext = createContext(null);
 
@@ -166,6 +177,51 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const handleRegisterStudent = async (payload) => {
+    setIsLoading(true);
+    try {
+      const data = await registerStudentApi(payload);
+      setUser(data.user);
+      setIsGuest(false);
+      lastActivityRef.current = Date.now();
+      return { success: true, user: data.user, status: "ok" };
+    } catch (err) {
+      return { success: false, error: err.message || "Student registration failed" };
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRegisterTeacher = async (payload) => {
+    setIsLoading(true);
+    try {
+      const data = await registerTeacherApi(payload);
+      setUser(data.user);
+      setIsGuest(false);
+      lastActivityRef.current = Date.now();
+      return { success: true, user: data.user, status: "ok" };
+    } catch (err) {
+      return { success: false, error: err.message || "Teacher registration failed" };
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRegisterParent = async (payload) => {
+    setIsLoading(true);
+    try {
+      const data = await registerParentApi(payload);
+      setUser(data.user);
+      setIsGuest(false);
+      lastActivityRef.current = Date.now();
+      return { success: true, user: data.user, status: "ok" };
+    } catch (err) {
+      return { success: false, error: err.message || "Parent registration failed" };
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const staySignedIn = () => {
     lastActivityRef.current = Date.now();
     setIdleWarning(false);
@@ -189,6 +245,9 @@ export function AuthProvider({ children }) {
         loginAsGuest: handleGuestLogin, // Alias
         joinClass: handleJoinClass,
         joinWithClassCode: handleJoinClass, // Alias
+        registerStudent: handleRegisterStudent,
+        registerTeacher: handleRegisterTeacher,
+        registerParent: handleRegisterParent,
         switchGrade: handleSwitchGrade,
         staySignedIn,
         refreshUser,

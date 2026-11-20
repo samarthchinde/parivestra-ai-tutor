@@ -259,15 +259,27 @@ All API routes validate payloads with Pydantic:
 | `GET` | `/api/progress` | Topic mastery, recent attempts, and next recommended study topic |
 | `POST` | `/ask` | Backward-compatible legacy endpoint returning `{success, topic, type, response}` |
 
-### Client Identification (`X-User-Id` & `X-Admin-Key`)
-The frontend automatically generates and persists a unique client identifier (`user_<random>`) in browser `localStorage`. It passes this in the `X-User-Id` HTTP header. Grown-ups and teachers authenticate to administrative endpoints via the `X-Admin-Key` header (`ADMIN_KEY=parivestra_admin_secret`).
+### Client Identification, Authentication & Multi-Role Policies
+
+- **HttpOnly Secure Session Cookies**: Used for secure stateful authentication with rate-limiting, lockout defense, and role boundary enforcement.
+- **Roles**:
+  - `student`: Access to age-band curriculum, official AI workbooks (Units 1-8), interactive practice, videos, and tutor. Authenticates with a 4-digit PIN (Classes 3-5) or password (Classes 6-10).
+  - `teacher`: Full Grown-ups portal access (`/grown-ups`), student secret resets, printable student login cards, and parent link code generator (`TEACHER_INVITE_CODE=TEACH-PARIVESTRA-2026`).
+  - `parent`: Dedicated read-only portal (`/parent`) displaying progress, practice accuracy, workbook completions, and certificates for linked children. Strict privacy boundary: zero tutor chat messages or logs are ever accessible to parents.
+  - `admin`: Platform administration and content review.
+- **Environment Variables**:
+  - `TEACHER_INVITE_CODE`: Secret invite code required for teacher self-registration (Default: `TEACH-PARIVESTRA-2026`).
+  - `DEMO_MODE`: Controls display of quick demo accounts on login (Default: `true`).
+  - `ALLOW_SELF_SIGNUP`: Teacher-configurable toggle for self-registration (Default: `true`).
+  - `REQUIRE_CLASS_CODE`: When enabled, students must provide a valid teacher class join code during registration (Default: `false`).
 
 ---
 
 ## Verification & Test Results
 
-- **Unit & Integration Tests**: 37/37 tests passing (`tests/`).
-- **Benchmark Evaluation**: 20/20 questions evaluated, 90% citation correctness, 0% hallucination rate (`eval/run_eval.py`).
+- **Unit & Integration Tests**: 65/65 tests passing across entire test suite (`pytest tests/`).
+- **Login Polish Test Suite**: 8/8 comprehensive tests passing in `tests/test_login_polish.py`.
 - **Frontend Build**: Vite production build bundles with zero errors (`npm run build`).
 - **Child Privacy**: Zero external CDN calls, self-hosted typography, sensitive flags logged without child text.
 - **Resilience**: Full backward-compatibility and offline fallback verified across all routes.
+

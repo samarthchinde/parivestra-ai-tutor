@@ -720,4 +720,167 @@ export async function getClassLoginCards(classId) {
   return await res.json();
 }
 
+// ========================================================
+// Multi-Role Self-Registration & Parent Portal APIs
+// ========================================================
+export async function checkUsernameAvailableApi(username) {
+  const res = await fetch(`${API_BASE_URL}/api/auth/username-available?username=${encodeURIComponent(username)}`, {
+    method: "GET",
+    headers: getHeaders(),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    return { available: false, reason: err.detail || `HTTP ${res.status}` };
+  }
+  return await res.json();
+}
+
+export async function registerStudentApi(payload) {
+  const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
+    method: "POST",
+    headers: getHeaders(),
+    credentials: "include",
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Registration failed (HTTP ${res.status})`);
+  }
+  return await res.json();
+}
+
+export async function registerTeacherApi(payload) {
+  const res = await fetch(`${API_BASE_URL}/api/auth/register-teacher`, {
+    method: "POST",
+    headers: getHeaders(),
+    credentials: "include",
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Teacher registration failed (HTTP ${res.status})`);
+  }
+  return await res.json();
+}
+
+export async function registerParentApi(payload) {
+  const res = await fetch(`${API_BASE_URL}/api/auth/register-parent`, {
+    method: "POST",
+    headers: getHeaders(),
+    credentials: "include",
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Parent registration failed (HTTP ${res.status})`);
+  }
+  return await res.json();
+}
+
+export async function linkChildApi({ child_username, link_code }) {
+  const res = await fetch(`${API_BASE_URL}/api/parent/link-child`, {
+    method: "POST",
+    headers: getHeaders(),
+    credentials: "include",
+    body: JSON.stringify({ child_username, link_code }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Linking child failed (HTTP ${res.status})`);
+  }
+  return await res.json();
+}
+
+export async function getParentChildrenApi() {
+  const res = await fetch(`${API_BASE_URL}/api/parent/children`, {
+    method: "GET",
+    headers: getHeaders(),
+    credentials: "include",
+  });
+  if (!res.ok) throw new Error(`Could not load children (HTTP ${res.status})`);
+  return await res.json();
+}
+
+export async function getParentChildReportCardApi(childId) {
+  const res = await fetch(`${API_BASE_URL}/api/parent/children/${encodeURIComponent(childId)}/report-card`, {
+    method: "GET",
+    headers: getHeaders(),
+    credentials: "include",
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Could not load report card (HTTP ${res.status})`);
+  }
+  return await res.json();
+}
+
+export async function getParentChildProgressApi(childId) {
+  const res = await fetch(`${API_BASE_URL}/api/parent/children/${encodeURIComponent(childId)}/progress`, {
+    method: "GET",
+    headers: getHeaders(),
+    credentials: "include",
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Could not load progress (HTTP ${res.status})`);
+  }
+  return await res.json();
+}
+
+export async function createTeacherLinkCodeApi(studentId) {
+  const res = await fetch(`${API_BASE_URL}/api/teacher/link-codes`, {
+    method: "POST",
+    headers: getHeaders(),
+    credentials: "include",
+    body: JSON.stringify({ student_id: studentId }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Link code generation failed (HTTP ${res.status})`);
+  }
+  return await res.json();
+}
+
+export async function getTeacherLinkCodesApi() {
+  const res = await fetch(`${API_BASE_URL}/api/teacher/link-codes`, {
+    method: "GET",
+    headers: getHeaders(),
+    credentials: "include",
+  });
+  if (!res.ok) throw new Error(`Could not load link codes (HTTP ${res.status})`);
+  return await res.json();
+}
+
+export async function getTeacherUnassignedStudentsApi() {
+  const res = await fetch(`${API_BASE_URL}/api/teacher/unassigned-students`, {
+    method: "GET",
+    headers: getHeaders(),
+    credentials: "include",
+  });
+  if (!res.ok) throw new Error(`Could not load unassigned students (HTTP ${res.status})`);
+  return await res.json();
+}
+
+export async function getTeacherAuthSettingsApi() {
+  const res = await fetch(`${API_BASE_URL}/api/teacher/settings`, {
+    method: "GET",
+    headers: getHeaders(),
+    credentials: "include",
+  });
+  if (!res.ok) throw new Error(`Could not load auth settings (HTTP ${res.status})`);
+  return await res.json();
+}
+
+export async function updateTeacherAuthSettingsApi(payload) {
+  const res = await fetch(`${API_BASE_URL}/api/teacher/settings`, {
+    method: "POST",
+    headers: getHeaders(),
+    credentials: "include",
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) throw new Error(`Could not update settings (HTTP ${res.status})`);
+  return await res.json();
+}
+
+
 

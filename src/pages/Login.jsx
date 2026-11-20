@@ -2,8 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useGrade } from "../context/GradeContext";
-import GradeGrid from "../components/GradeGrid";
+import ClassDropdown from "../components/ClassDropdown";
+import { GRADE_DETAILS } from "../components/GradeGrid";
 import Mascot from "../components/Mascot";
+import { AVATARS } from "../data/avatars";
+import { playClick, playSuccess } from "../utils/sound";
+import confetti from "canvas-confetti";
 import {
   Sparkles,
   Lock,
@@ -17,47 +21,101 @@ import {
   Eye,
   EyeOff,
   Users,
+  UserPlus,
+  LogIn,
+  HeartHandshake,
+  Check,
+  AlertCircle,
+  CheckCircle2,
 } from "lucide-react";
+import { checkUsernameAvailableApi } from "../api/client";
 
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, isAuthenticated, isLoading, login, loginAsGuest, joinWithClassCode } = useAuth();
-  const { activeGrade, setGrade, band } = useGrade();
+  const {
+    user,
+    isAuthenticated,
+    isLoading,
+    login,
+    loginAsGuest,
+    joinWithClassCode,
+    registerStudent,
+    registerTeacher,
+    registerParent,
+  } = useAuth();
+  const { activeGrade, setGrade } = useGrade();
 
-  // An already signed-in user who opens /login is redirected to Home
+  // If already signed in, redirect to Home (or appropriate portal)
   useEffect(() => {
-    if (!isLoading && isAuthenticated) {
-      navigate("/", { replace: true });
+    if (!isLoading && isAuthenticated && user) {
+      if (user.role === "parent") {
+        navigate("/parent", { replace: true });
+      } else if (user.role === "teacher" || user.role === "admin") {
+        navigate("/grown-ups", { replace: true });
+      } else {
+        navigate("/", { replace: true });
+      }
     }
-  }, [isAuthenticated, isLoading, navigate]);
+  }, [isAuthenticated, isLoading, user, navigate]);
 
-  const [mode, setMode] = useState("student"); // 'student' | 'teacher' | 'guest' | 'join'
+  // Main Tabs: "signin" | "signup"
+  const [authTab, setAuthTab] = useState("signin");
+  // Role selector: "student" | "teacher" | "parent" | "join"
+  const [roleMode, setRoleMode] = useState("student");
+
+  // Selected Class
   const [selectedGrade, setSelectedGrade] = useState(activeGrade || "Class 3");
-  
-  // Student login fields
+  const gradeDigits = parseInt(selectedGrade.replace(/\D/g, "") || "3", 10);
+  const isJunior = gradeDigits <= 5;
+  const gradeConfig = GRADE_DETAILS.find((g) => g.grade === gradeDigits) || GRADE_DETAILS[0];
+
+  // Mascot emotion
+  const [mascotMood, setMascotMood] = useState("happy");
+
+  // Fields: Student Sign-in
   const [username, setUsername] = useState("");
   const [pin, setPin] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  // Adult / Teacher fields
+  // Fields: Adult Sign-in (Teacher / Parent)
   const [adultIdentifier, setAdultIdentifier] = useState("");
   const [adultPassword, setAdultPassword] = useState("");
 
-  // Join code fields
+  // Fields: Join Class
   const [joinCode, setJoinCode] = useState("");
   const [joinNickname, setJoinNickname] = useState("");
 
-  // UI status
+  // Fields: Student Sign-up
+  const [regNickname, setRegNickname] = useState("");
+  const [regSecret, setRegSecret] = useState("");
+  const [regConfirmSecret, setRegConfirmSecret] = useState("");
+  const [regAvatar, setRegAvatar] = useState("owl");
+  const [regClassCode, setRegClassCode] = useState("");
+  const [usernameStatus, setUsernameStatus] = useState(null); // { available: bool, message: string }
+
+  // Fields: Teacher Sign-up
+  const [teacherName, setTeacherName] = useState("");
+  const [teacherEmail, setTeacherEmail] = useState("");
+  const [teacherPassword, setTeacherPassword] = useState("");
+  const [teacherInviteCode, setTeacherInviteCode] = useState("");
+
+  // Fields: Parent Sign-up
+  const [parentName, setParentName] = useState("");
+  const [parentEmail, setParentEmail] = useState("");
+  const [parentPassword, setParentPassword] = useState("");
+  const [parentChildName, setParentChildName] = useState("");
+  const [parentLinkCode, setParentLinkCode] = useState("");
+
+  // UI Status
   const [submitting, setSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [showHelp, setShowHelp] = useState(false);
+  const [showDemoDisclosure, setShowDemoDisclosure] = useState(false);
 
   const fromPath = location.state?.from?.pathname || "/";
-
-  const gradeDigits = parseInt(selectedGrade.replace(/\D/g, "") || "3", 10);
-  const isJunior = gradeDigits <= 5;
+  const isDemoEnabled = import.meta.env.VITE_DEMO_MODE !== "false";
 
   const handleGradeSelect = (g) => {
     setSelectedGrade(g);
@@ -67,16 +125,51 @@ export default function Login() {
   };
 
   const handlePinKey = (digit) => {
-    if (pin.length < 6) {
-      setPin((prev) => prev + digit);
+    playClick();
+    if (pin.length < 4) {
+      const nextPin = pin + digit;
+      setPin(nextPin);
+      setMascotMood("thinking");
     }
   };
 
   const handlePinBackspace = () => {
+    playClick();
     setPin((prev) => prev.slice(0, -1));
   };
 
-  const handleStudentSubmit = async (e) => {
+  // Check username availability on blur
+  const handleCheckUsername = async () => {
+    const u = regNickname.trim();
+    if (u.length < 3) {
+      setUsernameStatus(null);
+      return;
+    }
+    try {
+      const res = await checkUsernameAvailableApi(u);
+      setUsernameStatus(res);
+      if (res.available) {
+        setMascotMood("happy");
+      }
+    } catch (e) {
+      setUsernameStatus(null);
+    }
+  };
+
+  // Trigger celebration on successful authentication
+  const triggerSuccess = (targetRoute = "/") => {
+    playSuccess();
+    setMascotMood("cheering");
+    try {
+      confetti({ particleCount: 75, spread: 70, origin: { y: 0.6 } });
+    } catch (e) {}
+    setTimeout(() => {
+      navigate(targetRoute, { replace: true });
+    }, 450);
+  };
+
+  // 1. Submit: Student Login
+  const handleStudentLogin = async (e) => {
     if (e) e.preventDefault();
     setErrorMsg("");
 
@@ -93,6 +186,7 @@ export default function Login() {
     }
 
     setSubmitting(true);
+    setMascotMood("thinking");
     try {
       const res = await login({
         username: u,
@@ -101,29 +195,31 @@ export default function Login() {
       });
 
       if (res && (res.success || res.status === "ok")) {
-        setGrade(selectedGrade);
-        const targetPath = fromPath && fromPath !== "/login" ? fromPath : "/";
-        navigate(targetPath, { replace: true });
+        triggerSuccess(fromPath && fromPath !== "/login" ? fromPath : "/");
       } else {
-        setErrorMsg(res?.error || "Login failed. Please check your username and secret!");
+        setErrorMsg(res?.error || "Login failed. Check your nickname and secret!");
+        setMascotMood("curious");
       }
     } catch (err) {
-      setErrorMsg(err.message || "Login failed. Please check your username and secret!");
+      setErrorMsg(err.message || "Login failed. Check your nickname and secret!");
+      setMascotMood("curious");
     } finally {
       setSubmitting(false);
     }
   };
 
-  const handleAdultSubmit = async (e) => {
-    e.preventDefault();
+  // 2. Submit: Teacher Login
+  const handleTeacherLogin = async (e) => {
+    if (e) e.preventDefault();
     setErrorMsg("");
 
     if (!adultIdentifier.trim() || !adultPassword) {
-      setErrorMsg("Please enter your username/email and password.");
+      setErrorMsg("Please enter your teacher email/username and password.");
       return;
     }
 
     setSubmitting(true);
+    setMascotMood("thinking");
     try {
       const res = await login({
         identifier: adultIdentifier.trim(),
@@ -131,26 +227,92 @@ export default function Login() {
       });
 
       if (res && (res.success || res.status === "ok")) {
-        navigate("/grown-ups", { replace: true });
+        triggerSuccess("/grown-ups");
       } else {
-        setErrorMsg(res?.error || "Invalid teacher/admin credentials.");
+        setErrorMsg(res?.error || "Invalid teacher credentials.");
+        setMascotMood("curious");
       }
     } catch (err) {
-      setErrorMsg(err.message || "Invalid teacher/admin credentials.");
+      setErrorMsg(err.message || "Invalid teacher credentials.");
+      setMascotMood("curious");
     } finally {
       setSubmitting(false);
     }
   };
 
+  // 3. Submit: Parent Login
+  const handleParentLogin = async (e) => {
+    if (e) e.preventDefault();
+    setErrorMsg("");
+
+    if (!adultIdentifier.trim() || !adultPassword) {
+      setErrorMsg("Please enter your email and password.");
+      return;
+    }
+
+    setSubmitting(true);
+    setMascotMood("thinking");
+    try {
+      const res = await login({
+        identifier: adultIdentifier.trim(),
+        password: adultPassword,
+      });
+
+      if (res && (res.success || res.status === "ok")) {
+        triggerSuccess("/parent");
+      } else {
+        setErrorMsg(res?.error || "Invalid parent credentials.");
+        setMascotMood("curious");
+      }
+    } catch (err) {
+      setErrorMsg(err.message || "Invalid parent credentials.");
+      setMascotMood("curious");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  // 4. Submit: Join Class by Code
+  const handleJoinSubmit = async (e) => {
+    if (e) e.preventDefault();
+    setErrorMsg("");
+
+    if (!joinCode.trim()) {
+      setErrorMsg("Please enter the class join code from your teacher.");
+      return;
+    }
+
+    setSubmitting(true);
+    setMascotMood("thinking");
+    try {
+      const res = await joinWithClassCode({
+        code: joinCode.trim().toUpperCase(),
+        display_name: joinNickname.trim(),
+      });
+
+      if (res && (res.success || res.status === "ok")) {
+        triggerSuccess(fromPath && fromPath !== "/login" ? fromPath : "/");
+      } else {
+        setErrorMsg(res?.error || "Could not join class. Check your code.");
+        setMascotMood("curious");
+      }
+    } catch (err) {
+      setErrorMsg(err.message || "Could not join class. Check your code.");
+      setMascotMood("curious");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  // 5. Submit: Guest Login
   const handleGuestSubmit = async () => {
     setErrorMsg("");
     setSubmitting(true);
+    setMascotMood("thinking");
     try {
       const res = await loginAsGuest(selectedGrade);
       if (res && (res.success || res.status === "ok")) {
-        setGrade(selectedGrade);
-        const targetPath = fromPath && fromPath !== "/login" ? fromPath : "/";
-        navigate(targetPath, { replace: true });
+        triggerSuccess(fromPath && fromPath !== "/login" ? fromPath : "/");
       } else {
         setErrorMsg(res?.error || "Could not start guest session.");
       }
@@ -161,30 +323,115 @@ export default function Login() {
     }
   };
 
-  const handleJoinSubmit = async (e) => {
-    e.preventDefault();
+  // 6. Submit: Student Sign-up
+  const handleStudentRegister = async (e) => {
+    if (e) e.preventDefault();
     setErrorMsg("");
 
-    if (!joinCode.trim()) {
-      setErrorMsg("Please enter the class join code from your teacher.");
+    const u = regNickname.trim();
+    if (!u) {
+      setErrorMsg("Please choose a student nickname!");
+      return;
+    }
+    if (!regSecret) {
+      setErrorMsg(isJunior ? "Please create a 4-digit secret PIN!" : "Please create a password (at least 8 chars)!");
+      return;
+    }
+    if (regSecret !== regConfirmSecret) {
+      setErrorMsg("Secrets do not match! Please check and confirm.");
       return;
     }
 
     setSubmitting(true);
+    setMascotMood("thinking");
     try {
-      const res = await joinWithClassCode({
-        code: joinCode.trim().toUpperCase(),
-        display_name: joinNickname.trim(),
+      const res = await registerStudent({
+        username: u,
+        secret: regSecret,
+        confirm_secret: regConfirmSecret,
+        grade: selectedGrade,
+        avatar: regAvatar,
+        class_code: regClassCode.trim() || undefined,
       });
 
       if (res && (res.success || res.status === "ok")) {
-        const targetPath = fromPath && fromPath !== "/login" ? fromPath : "/";
-        navigate(targetPath, { replace: true });
+        triggerSuccess("/");
       } else {
-        setErrorMsg(res?.error || "Could not join class. Check your code.");
+        setErrorMsg(res?.error || "Registration failed. Try a different nickname.");
+        setMascotMood("curious");
       }
     } catch (err) {
-      setErrorMsg(err.message || "Could not join class. Check your code.");
+      setErrorMsg(err.message || "Registration failed. Try a different nickname.");
+      setMascotMood("curious");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  // 7. Submit: Teacher Sign-up
+  const handleTeacherRegister = async (e) => {
+    if (e) e.preventDefault();
+    setErrorMsg("");
+
+    if (!teacherName.trim() || !teacherEmail.trim() || !teacherPassword) {
+      setErrorMsg("Please fill in your name, email, and password.");
+      return;
+    }
+    if (!teacherInviteCode.trim()) {
+      setErrorMsg("Teacher invite code is required to register.");
+      return;
+    }
+
+    setSubmitting(true);
+    setMascotMood("thinking");
+    try {
+      const res = await registerTeacher({
+        name: teacherName.trim(),
+        email: teacherEmail.trim(),
+        password: teacherPassword,
+        invite_code: teacherInviteCode.trim(),
+      });
+
+      if (res && (res.success || res.status === "ok")) {
+        triggerSuccess("/grown-ups");
+      } else {
+        setErrorMsg(res?.error || "Registration failed. Check your invite code.");
+      }
+    } catch (err) {
+      setErrorMsg(err.message || "Registration failed. Check your invite code.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  // 8. Submit: Parent Sign-up
+  const handleParentRegister = async (e) => {
+    if (e) e.preventDefault();
+    setErrorMsg("");
+
+    if (!parentName.trim() || !parentEmail.trim() || !parentPassword) {
+      setErrorMsg("Please fill in your name, email, and password.");
+      return;
+    }
+
+    setSubmitting(true);
+    setMascotMood("thinking");
+    try {
+      const res = await registerParent({
+        name: parentName.trim(),
+        email: parentEmail.trim(),
+        password: parentPassword,
+        child_username: parentChildName.trim() || undefined,
+        link_code: parentLinkCode.trim().toUpperCase() || undefined,
+      });
+
+      if (res && (res.success || res.status === "ok")) {
+        triggerSuccess("/parent");
+      } else {
+        setErrorMsg(res?.error || "Registration failed.");
+      }
+    } catch (err) {
+      setErrorMsg(err.message || "Registration failed.");
     } finally {
       setSubmitting(false);
     }
@@ -203,7 +450,8 @@ export default function Login() {
     setErrorMsg("");
   };
 
-  const fillDemoTeacher = (ident, pw) => {
+  const fillDemoAdult = (ident, pw, roleTarget) => {
+    setRoleMode(roleTarget);
     setAdultIdentifier(ident);
     setAdultPassword(pw);
     setErrorMsg("");
@@ -213,943 +461,1107 @@ export default function Login() {
     <div
       style={{
         minHeight: "100vh",
-        background: "linear-gradient(135deg, #EFF6FF 0%, #F8FAFC 50%, #FFFBEB 100%)",
+        background: "linear-gradient(135deg, #F0F4FF 0%, #FAF5FF 50%, #FFFBEB 100%)",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        padding: "24px 16px",
+        padding: "16px",
         fontFamily: "var(--font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif)",
+        position: "relative",
+        overflow: "hidden",
       }}
     >
-      {/* Brand Header */}
+      {/* Decorative Soft Background Shapes */}
       <div
         style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 12,
-          marginBottom: 20,
+          position: "absolute",
+          top: -80,
+          left: -80,
+          width: 240,
+          height: 240,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(234, 88, 12, 0.12) 0%, transparent 70%)",
+          pointerEvents: "none",
         }}
-      >
-        <div
-          style={{
-            width: 44,
-            height: 44,
-            borderRadius: 14,
-            background: "linear-gradient(135deg, #EA580C, #F97316)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: "#FFF",
-            boxShadow: "0 4px 12px rgba(234, 88, 12, 0.3)",
-          }}
-        >
-          <Sparkles size={24} />
-        </div>
-        <div>
-          <h1 style={{ fontSize: 24, fontWeight: 900, color: "#0F172A", margin: 0 }}>
-            Parivestra <span style={{ color: "#EA580C" }}>AI Tutor</span>
-          </h1>
-          <p style={{ fontSize: 13, color: "#64748B", margin: 0, fontWeight: 600 }}>
-            Classes 3 to 10 · Learn AI & Future Skills
-          </p>
-        </div>
-      </div>
+      />
+      <div
+        style={{
+          position: "absolute",
+          bottom: -100,
+          right: -100,
+          width: 320,
+          height: 320,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(79, 70, 229, 0.12) 0%, transparent 70%)",
+          pointerEvents: "none",
+        }}
+      />
 
-      {/* Main Container Card */}
+      {/* Main 2-Column Responsive Card (Fits 1366x768 without scrolling) */}
       <div
         style={{
           width: "100%",
-          maxWidth: mode === "student" ? 780 : 500,
-          background: "#FFFFFF",
+          maxWidth: 900,
+          background: "rgba(255, 255, 255, 0.94)",
+          backdropFilter: "blur(12px)",
           borderRadius: 24,
-          boxShadow: "0 10px 40px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.05)",
-          border: "1px solid #E2E8F0",
+          boxShadow: "0 12px 40px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(0,0,0,0.04)",
+          border: "1.5px solid rgba(226, 232, 240, 0.9)",
           overflow: "hidden",
-          transition: "max-width 0.3s ease",
+          display: "flex",
+          flexDirection: "row",
+          flexWrap: "wrap",
+          maxHeight: "min(92vh, 660px)",
         }}
       >
-        {/* Navigation Tabs */}
+        {/* LEFT COLUMN: Mascot & Edition Preview (~310px wide) */}
         <div
           style={{
+            flex: "1 1 290px",
+            background: "linear-gradient(180deg, #F8FAFC 0%, #F1F5F9 100%)",
+            borderRight: "1px solid #E2E8F0",
+            padding: "24px 22px",
             display: "flex",
-            borderBottom: "1px solid #E2E8F0",
-            background: "#F8FAFC",
-            padding: "8px 12px 0 12px",
-            gap: 6,
+            flexDirection: "column",
+            justifyContent: "space-between",
           }}
         >
-          <button
-            type="button"
-            onClick={() => { setMode("student"); setErrorMsg(""); }}
-            style={{
-              padding: "10px 16px",
-              borderTopLeftRadius: 12,
-              borderTopRightRadius: 12,
-              border: "none",
-              borderBottom: mode === "student" ? "3px solid #EA580C" : "3px solid transparent",
-              background: mode === "student" ? "#FFFFFF" : "transparent",
-              color: mode === "student" ? "#EA580C" : "#64748B",
-              fontWeight: 800,
-              fontSize: 14,
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-            }}
-          >
-            <GraduationCap size={18} />
-            Student Login
-          </button>
-
-          <button
-            type="button"
-            onClick={() => { setMode("teacher"); setErrorMsg(""); }}
-            style={{
-              padding: "10px 16px",
-              borderTopLeftRadius: 12,
-              borderTopRightRadius: 12,
-              border: "none",
-              borderBottom: mode === "teacher" ? "3px solid #2563EB" : "3px solid transparent",
-              background: mode === "teacher" ? "#FFFFFF" : "transparent",
-              color: mode === "teacher" ? "#2563EB" : "#64748B",
-              fontWeight: 800,
-              fontSize: 14,
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-            }}
-          >
-            <ShieldCheck size={18} />
-            Teacher / Grown-ups
-          </button>
-
-          <button
-            type="button"
-            onClick={() => { setMode("join"); setErrorMsg(""); }}
-            style={{
-              padding: "10px 16px",
-              borderTopLeftRadius: 12,
-              borderTopRightRadius: 12,
-              border: "none",
-              borderBottom: mode === "join" ? "3px solid #16A34A" : "3px solid transparent",
-              background: mode === "join" ? "#FFFFFF" : "transparent",
-              color: mode === "join" ? "#16A34A" : "#64748B",
-              fontWeight: 800,
-              fontSize: 14,
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-            }}
-          >
-            <Users size={18} />
-            Join Class
-          </button>
-        </div>
-
-        {/* Content Body */}
-        <div style={{ padding: 24 }}>
-          {/* Error Banner */}
-          {errorMsg && (
-            <div
-              style={{
-                background: "#FEF2F2",
-                border: "1px solid #FCA5A5",
-                borderRadius: 12,
-                padding: "12px 16px",
-                color: "#B91C1C",
-                fontSize: 14,
-                fontWeight: 600,
-                marginBottom: 20,
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-              }}
-            >
-              <span style={{ fontSize: 18 }}>⚠️</span>
-              <div style={{ flex: 1 }}>{errorMsg}</div>
-            </div>
-          )}
-
-          {/* MODE 1: STUDENT LOGIN */}
-          {mode === "student" && (
-            <div>
+          {/* Brand Header */}
+          <div>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
               <div
                 style={{
+                  width: 38,
+                  height: 38,
+                  borderRadius: 12,
+                  background: `linear-gradient(135deg, ${gradeConfig.color}, #F97316)`,
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "space-between",
-                  marginBottom: 16,
+                  justifyContent: "center",
+                  color: "#FFF",
+                  boxShadow: `0 4px 10px ${gradeConfig.color}44`,
+                  transition: "background 0.3s ease",
                 }}
               >
-                <div>
-                  <h2 style={{ fontSize: 20, fontWeight: 800, color: "#1E293B", margin: 0 }}>
-                    Step 1: Pick Your Class
-                  </h2>
-                  <p style={{ fontSize: 13, color: "#64748B", margin: "2px 0 0 0" }}>
-                    Select your grade to personalize your workbook, games, and Pari tutor!
-                  </p>
-                </div>
-                <Mascot mood="happy" size={56} animated />
+                <Sparkles size={20} />
               </div>
+              <div>
+                <h1 style={{ fontSize: 18, fontWeight: 900, color: "#0F172A", margin: 0 }}>
+                  Parivestra <span style={{ color: gradeConfig.color }}>AI Tutor</span>
+                </h1>
+                <p style={{ fontSize: 11, color: "#64748B", margin: 0, fontWeight: 700 }}>
+                  Classes 3 to 10 · AI & Future Skills
+                </p>
+              </div>
+            </div>
 
-              {/* Grade Grid */}
-              <div style={{ marginBottom: 24 }}>
-                <GradeGrid
-                  selectedGrade={selectedGrade}
-                  onSelectGrade={handleGradeSelect}
+            {/* Mascot Interactive Showcase */}
+            <div style={{ textAlign: "center", margin: "14px 0 10px 0" }}>
+              <Mascot mood={mascotMood} size={76} animated />
+            </div>
+
+            {/* Active Edition Preview Card */}
+            <div
+              style={{
+                background: "#FFFFFF",
+                borderRadius: 16,
+                padding: "12px 14px",
+                border: `1.5px solid ${gradeConfig.color}44`,
+                boxShadow: "0 2px 6px rgba(0,0,0,0.03)",
+                transition: "all 0.3s ease",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 4 }}>
+                <span
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 800,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.5px",
+                    color: gradeConfig.color,
+                  }}
+                >
+                  {gradeConfig.band} Band
+                </span>
+                <span
+                  style={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: "50%",
+                    background: gradeConfig.color,
+                  }}
                 />
               </div>
+              <div style={{ fontSize: 15, fontWeight: 900, color: "#0F172A" }}>
+                {selectedGrade} · {gradeConfig.title}
+              </div>
+              <div style={{ fontSize: 12, color: "#64748B", marginTop: 2 }}>
+                Tagline: <em>{gradeConfig.tagline}</em>
+              </div>
+            </div>
+          </div>
 
-              {/* Step 2: Credentials */}
-              <div
-                style={{
-                  background: "#F8FAFC",
-                  borderRadius: 16,
-                  padding: 20,
-                  border: "1px solid #E2E8F0",
-                }}
-              >
-                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
-                  <div
+          {/* Left Column Footer Note */}
+          <div
+            style={{
+              paddingTop: 12,
+              borderTop: "1px solid #E2E8F0",
+              fontSize: 11,
+              color: "#64748B",
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+            }}
+          >
+            <ShieldCheck size={14} color="#16A34A" />
+            <span>Zero Student PII · 100% Kid Safe</span>
+          </div>
+        </div>
+
+        {/* RIGHT COLUMN: Auth Tabs & Form Controls (~450px wide) */}
+        <div
+          style={{
+            flex: "1 1 360px",
+            display: "flex",
+            flexDirection: "column",
+            overflowY: "auto",
+            maxHeight: "min(92vh, 660px)",
+          }}
+        >
+          {/* Top Primary Tabs: Sign in vs Create account */}
+          <div
+            style={{
+              display: "flex",
+              borderBottom: "1px solid #E2E8F0",
+              background: "#F8FAFC",
+            }}
+          >
+            <button
+              type="button"
+              onClick={() => { setAuthTab("signin"); setErrorMsg(""); playClick(); }}
+              style={{
+                flex: 1,
+                padding: "12px 14px",
+                border: "none",
+                borderBottom: authTab === "signin" ? `3px solid ${gradeConfig.color}` : "3px solid transparent",
+                background: authTab === "signin" ? "#FFFFFF" : "transparent",
+                color: authTab === "signin" ? "#0F172A" : "#64748B",
+                fontWeight: 800,
+                fontSize: 14,
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 6,
+                transition: "all 0.15s ease",
+              }}
+            >
+              <LogIn size={16} />
+              Sign In
+            </button>
+            <button
+              type="button"
+              onClick={() => { setAuthTab("signup"); setErrorMsg(""); playClick(); }}
+              style={{
+                flex: 1,
+                padding: "12px 14px",
+                border: "none",
+                borderBottom: authTab === "signup" ? `3px solid ${gradeConfig.color}` : "3px solid transparent",
+                background: authTab === "signup" ? "#FFFFFF" : "transparent",
+                color: authTab === "signup" ? "#0F172A" : "#64748B",
+                fontWeight: 800,
+                fontSize: 14,
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 6,
+                transition: "all 0.15s ease",
+              }}
+            >
+              <UserPlus size={16} />
+              Create Account
+            </button>
+          </div>
+
+          {/* Role Chooser Segmented Control */}
+          <div style={{ padding: "12px 20px 4px 20px" }}>
+            <div
+              style={{
+                display: "flex",
+                background: "#F1F5F9",
+                borderRadius: 12,
+                padding: 3,
+                gap: 2,
+              }}
+            >
+              {[
+                { id: "student", label: "Student", icon: GraduationCap },
+                { id: "teacher", label: "Teacher", icon: ShieldCheck },
+                { id: "parent", label: "Parent", icon: HeartHandshake },
+                ...(authTab === "signin" ? [{ id: "join", label: "Class Code", icon: Users }] : []),
+              ].map((r) => {
+                const isSelected = roleMode === r.id;
+                const Icon = r.icon;
+                return (
+                  <button
+                    key={r.id}
+                    type="button"
+                    onClick={() => { setRoleMode(r.id); setErrorMsg(""); playClick(); }}
                     style={{
-                      width: 28,
-                      height: 28,
-                      borderRadius: "50%",
-                      background: "#EA580C",
-                      color: "#FFF",
+                      flex: 1,
+                      padding: "6px 8px",
+                      borderRadius: 10,
+                      border: "none",
+                      background: isSelected ? "#FFFFFF" : "transparent",
+                      color: isSelected ? "#0F172A" : "#64748B",
+                      fontWeight: 700,
+                      fontSize: 12,
+                      cursor: "pointer",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      fontWeight: 800,
-                      fontSize: 14,
+                      gap: 4,
+                      boxShadow: isSelected ? "0 1px 3px rgba(0,0,0,0.06)" : "none",
+                      transition: "all 0.15s ease",
                     }}
                   >
-                    2
-                  </div>
-                  <h3 style={{ fontSize: 17, fontWeight: 800, color: "#0F172A", margin: 0 }}>
-                    Enter Your Student Secret
-                  </h3>
-                  <span
-                    style={{
-                      marginLeft: "auto",
-                      fontSize: 12,
-                      fontWeight: 700,
-                      color: isJunior ? "#EA580C" : "#4F46E5",
-                      background: isJunior ? "#FFEDD5" : "#EEF2FF",
-                      padding: "4px 10px",
-                      borderRadius: 12,
-                    }}
-                  >
-                    {isJunior ? "4-Digit Secret PIN" : "Password Protected"}
-                  </span>
-                </div>
+                    <Icon size={14} />
+                    <span>{r.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
 
-                <form onSubmit={handleStudentSubmit}>
-                  {/* Username / Nickname field */}
-                  <div style={{ marginBottom: 16 }}>
-                    <label
+          {/* Body Content */}
+          <div style={{ padding: "14px 20px 16px 20px", flex: 1 }}>
+            {/* Error Message Banner */}
+            {errorMsg && (
+              <div
+                style={{
+                  background: "#FEF2F2",
+                  border: "1px solid #FCA5A5",
+                  borderRadius: 10,
+                  padding: "8px 12px",
+                  color: "#B91C1C",
+                  fontSize: 12,
+                  fontWeight: 600,
+                  marginBottom: 12,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                }}
+              >
+                <AlertCircle size={15} />
+                <span>{errorMsg}</span>
+              </div>
+            )}
+
+            {/* TAB 1: SIGN IN */}
+            {authTab === "signin" && (
+              <div>
+                {/* 1.1 STUDENT SIGN IN */}
+                {roleMode === "student" && (
+                  <form onSubmit={handleStudentLogin}>
+                    {/* Class Selector Dropdown */}
+                    <div style={{ marginBottom: 12 }}>
+                      <label style={{ display: "block", fontSize: 11, fontWeight: 800, color: "#475569", marginBottom: 4, textTransform: "uppercase" }}>
+                        Your Class
+                      </label>
+                      <ClassDropdown
+                        variant="form"
+                        value={selectedGrade}
+                        onChange={handleGradeSelect}
+                        label="Student Grade"
+                      />
+                    </div>
+
+                    {/* Nickname */}
+                    <div style={{ marginBottom: 12 }}>
+                      <label style={{ display: "block", fontSize: 11, fontWeight: 800, color: "#475569", marginBottom: 4, textTransform: "uppercase" }}>
+                        Nickname or Username
+                      </label>
+                      <div style={{ position: "relative" }}>
+                        <User size={16} style={{ position: "absolute", left: 12, top: 11, color: "#94A3B8" }} />
+                        <input
+                          type="text"
+                          value={username}
+                          onChange={(e) => setUsername(e.target.value)}
+                          placeholder="e.g. kid3, ananya_3"
+                          style={{
+                            width: "100%",
+                            padding: "9px 12px 9px 36px",
+                            borderRadius: 10,
+                            border: "1.5px solid #CBD5E1",
+                            fontSize: 14,
+                            fontWeight: 600,
+                            outline: "none",
+                            boxSizing: "border-box",
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Secret Input: PIN (Junior) or Password (Middle/Senior) */}
+                    {isJunior ? (
+                      <div style={{ marginBottom: 14 }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                          <span style={{ fontSize: 11, fontWeight: 800, color: "#475569", textTransform: "uppercase" }}>
+                            4-Digit Secret PIN
+                          </span>
+                          <span style={{ fontSize: 11, color: gradeConfig.color, fontWeight: 700 }}>
+                            Junior Band
+                          </span>
+                        </div>
+
+                        {/* PIN Dots */}
+                        <div style={{ display: "flex", justifyContent: "center", gap: 12, marginBottom: 10 }}>
+                          {[0, 1, 2, 3].map((idx) => (
+                            <div
+                              key={idx}
+                              style={{
+                                width: 16,
+                                height: 16,
+                                borderRadius: "50%",
+                                border: `2px solid ${gradeConfig.color}`,
+                                background: pin.length > idx ? gradeConfig.color : "transparent",
+                                transition: "all 0.15s ease",
+                              }}
+                            />
+                          ))}
+                        </div>
+
+                        {/* Compact Numeric Keypad */}
+                        <div
+                          style={{
+                            display: "grid",
+                            gridTemplateColumns: "repeat(3, 1fr)",
+                            gap: 6,
+                            maxWidth: 220,
+                            margin: "0 auto",
+                          }}
+                        >
+                          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
+                            <button
+                              key={num}
+                              type="button"
+                              onClick={() => handlePinKey(num.toString())}
+                              style={{
+                                height: 36,
+                                fontSize: 17,
+                                fontWeight: 800,
+                                background: "#FFFFFF",
+                                border: "1.5px solid #E2E8F0",
+                                borderRadius: 10,
+                                cursor: "pointer",
+                                color: "#0F172A",
+                              }}
+                            >
+                              {num}
+                            </button>
+                          ))}
+                          <button
+                            type="button"
+                            onClick={handlePinBackspace}
+                            style={{
+                              height: 36,
+                              background: "#F1F5F9",
+                              border: "1.5px solid #E2E8F0",
+                              borderRadius: 10,
+                              cursor: "pointer",
+                              color: "#64748B",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <Delete size={16} />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handlePinKey("0")}
+                            style={{
+                              height: 36,
+                              fontSize: 17,
+                              fontWeight: 800,
+                              background: "#FFFFFF",
+                              border: "1.5px solid #E2E8F0",
+                              borderRadius: 10,
+                              cursor: "pointer",
+                              color: "#0F172A",
+                            }}
+                          >
+                            0
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setPin("")}
+                            style={{
+                              height: 36,
+                              fontSize: 11,
+                              fontWeight: 800,
+                              background: "#FEE2E2",
+                              border: "1.5px solid #FECACA",
+                              borderRadius: 10,
+                              cursor: "pointer",
+                              color: "#DC2626",
+                            }}
+                          >
+                            Clear
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div style={{ marginBottom: 14 }}>
+                        <label style={{ display: "block", fontSize: 11, fontWeight: 800, color: "#475569", marginBottom: 4, textTransform: "uppercase" }}>
+                          Student Password
+                        </label>
+                        <div style={{ position: "relative" }}>
+                          <Lock size={16} style={{ position: "absolute", left: 12, top: 11, color: "#94A3B8" }} />
+                          <input
+                            type={showPassword ? "text" : "password"}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="Enter your student password"
+                            style={{
+                              width: "100%",
+                              padding: "9px 36px 9px 36px",
+                              borderRadius: 10,
+                              border: "1.5px solid #CBD5E1",
+                              fontSize: 14,
+                              fontWeight: 600,
+                              outline: "none",
+                              boxSizing: "border-box",
+                            }}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            style={{
+                              position: "absolute",
+                              right: 10,
+                              top: 9,
+                              background: "none",
+                              border: "none",
+                              cursor: "pointer",
+                              color: "#94A3B8",
+                            }}
+                          >
+                            {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Submit Button */}
+                    <button
+                      type="submit"
+                      disabled={submitting}
                       style={{
-                        display: "block",
-                        fontSize: 13,
-                        fontWeight: 700,
-                        color: "#334155",
-                        marginBottom: 6,
+                        width: "100%",
+                        padding: "11px",
+                        borderRadius: 12,
+                        background: `linear-gradient(135deg, ${gradeConfig.color}, #EA580C)`,
+                        border: "none",
+                        color: "#FFFFFF",
+                        fontSize: 15,
+                        fontWeight: 800,
+                        cursor: submitting ? "not-allowed" : "pointer",
+                        boxShadow: `0 4px 12px ${gradeConfig.color}44`,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 8,
                       }}
                     >
-                      Your Student Username or Nickname
-                    </label>
-                    <div style={{ position: "relative" }}>
-                      <User
-                        size={18}
-                        style={{
-                          position: "absolute",
-                          left: 14,
-                          top: 14,
-                          color: "#94A3B8",
-                        }}
-                      />
+                      {submitting ? "Signing in..." : `Start Learning (${selectedGrade})`}
+                      <ArrowRight size={16} />
+                    </button>
+                  </form>
+                )}
+
+                {/* 1.2 TEACHER SIGN IN */}
+                {roleMode === "teacher" && (
+                  <form onSubmit={handleTeacherLogin}>
+                    <div style={{ marginBottom: 12 }}>
+                      <label style={{ display: "block", fontSize: 11, fontWeight: 800, color: "#475569", marginBottom: 4, textTransform: "uppercase" }}>
+                        Teacher Email or Username
+                      </label>
                       <input
                         type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        placeholder="e.g. kid3, aarav_4, priya"
+                        value={adultIdentifier}
+                        onChange={(e) => setAdultIdentifier(e.target.value)}
+                        placeholder="e.g. ms_sharma or teacher@school.edu"
                         style={{
                           width: "100%",
-                          padding: "12px 14px 12px 42px",
-                          borderRadius: 12,
+                          padding: "9px 12px",
+                          borderRadius: 10,
                           border: "1.5px solid #CBD5E1",
-                          fontSize: 15,
+                          fontSize: 14,
                           fontWeight: 600,
                           outline: "none",
                           boxSizing: "border-box",
                         }}
                       />
                     </div>
-                  </div>
-
-                  {/* Secret Input: PIN Pad for Junior, Password for Middle/Senior */}
-                  {isJunior ? (
-                    <div>
-                      <label
-                        style={{
-                          display: "block",
-                          fontSize: 13,
-                          fontWeight: 700,
-                          color: "#334155",
-                          marginBottom: 8,
-                        }}
-                      >
-                        4-Digit Secret PIN:
+                    <div style={{ marginBottom: 16 }}>
+                      <label style={{ display: "block", fontSize: 11, fontWeight: 800, color: "#475569", marginBottom: 4, textTransform: "uppercase" }}>
+                        Password
                       </label>
-
-                      {/* Visual PIN Dots */}
-                      <div
+                      <input
+                        type="password"
+                        value={adultPassword}
+                        onChange={(e) => setAdultPassword(e.target.value)}
+                        placeholder="Enter teacher password"
                         style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          gap: 16,
-                          marginBottom: 16,
+                          width: "100%",
+                          padding: "9px 12px",
+                          borderRadius: 10,
+                          border: "1.5px solid #CBD5E1",
+                          fontSize: 14,
+                          fontWeight: 600,
+                          outline: "none",
+                          boxSizing: "border-box",
                         }}
-                      >
-                        {[0, 1, 2, 3].map((idx) => (
-                          <div
-                            key={idx}
-                            style={{
-                              width: 22,
-                              height: 22,
-                              borderRadius: "50%",
-                              border: "2px solid #EA580C",
-                              background: pin.length > idx ? "#EA580C" : "transparent",
-                              boxShadow:
-                                pin.length > idx
-                                  ? "0 0 10px rgba(234, 88, 12, 0.4)"
-                                  : "none",
-                              transition: "all 0.15s ease",
-                            }}
-                          />
-                        ))}
-                      </div>
-
-                      {/* Numeric Keypad */}
-                      <div
-                        style={{
-                          display: "grid",
-                          gridTemplateColumns: "repeat(3, 1fr)",
-                          gap: 10,
-                          maxWidth: 280,
-                          margin: "0 auto 16px auto",
-                        }}
-                      >
-                        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
-                          <button
-                            key={num}
-                            type="button"
-                            onClick={() => handlePinKey(num.toString())}
-                            style={{
-                              padding: "14px 0",
-                              fontSize: 22,
-                              fontWeight: 800,
-                              background: "#FFFFFF",
-                              border: "1.5px solid #E2E8F0",
-                              borderRadius: 12,
-                              cursor: "pointer",
-                              color: "#1E293B",
-                              boxShadow: "0 2px 4px rgba(0,0,0,0.03)",
-                            }}
-                          >
-                            {num}
-                          </button>
-                        ))}
-                        <button
-                          type="button"
-                          onClick={handlePinBackspace}
-                          style={{
-                            padding: "14px 0",
-                            fontSize: 16,
-                            fontWeight: 700,
-                            background: "#F1F5F9",
-                            border: "1.5px solid #E2E8F0",
-                            borderRadius: 12,
-                            cursor: "pointer",
-                            color: "#64748B",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                          }}
-                        >
-                          <Delete size={20} />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handlePinKey("0")}
-                          style={{
-                            padding: "14px 0",
-                            fontSize: 22,
-                            fontWeight: 800,
-                            background: "#FFFFFF",
-                            border: "1.5px solid #E2E8F0",
-                            borderRadius: 12,
-                            cursor: "pointer",
-                            color: "#1E293B",
-                            boxShadow: "0 2px 4px rgba(0,0,0,0.03)",
-                          }}
-                        >
-                          0
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setPin("")}
-                          style={{
-                            padding: "14px 0",
-                            fontSize: 14,
-                            fontWeight: 800,
-                            background: "#FEE2E2",
-                            border: "1.5px solid #FECACA",
-                            borderRadius: 12,
-                            cursor: "pointer",
-                            color: "#DC2626",
-                          }}
-                        >
-                          Clear
-                        </button>
-                      </div>
+                      />
                     </div>
-                  ) : (
-                    <div style={{ marginBottom: 20 }}>
-                      <label
-                        style={{
-                          display: "block",
-                          fontSize: 13,
-                          fontWeight: 700,
-                          color: "#334155",
-                          marginBottom: 6,
-                        }}
-                      >
-                        Student Password
+                    <button
+                      type="submit"
+                      disabled={submitting}
+                      style={{
+                        width: "100%",
+                        padding: "11px",
+                        borderRadius: 12,
+                        background: "linear-gradient(135deg, #2563EB, #1D4ED8)",
+                        border: "none",
+                        color: "#FFFFFF",
+                        fontSize: 15,
+                        fontWeight: 800,
+                        cursor: submitting ? "not-allowed" : "pointer",
+                      }}
+                    >
+                      {submitting ? "Signing In..." : "Open Grown-ups Portal"}
+                    </button>
+                  </form>
+                )}
+
+                {/* 1.3 PARENT SIGN IN */}
+                {roleMode === "parent" && (
+                  <form onSubmit={handleParentLogin}>
+                    <div style={{ marginBottom: 12 }}>
+                      <label style={{ display: "block", fontSize: 11, fontWeight: 800, color: "#475569", marginBottom: 4, textTransform: "uppercase" }}>
+                        Parent Email or Username
                       </label>
-                      <div style={{ position: "relative" }}>
-                        <Lock
-                          size={18}
-                          style={{
-                            position: "absolute",
-                            left: 14,
-                            top: 14,
-                            color: "#94A3B8",
-                          }}
-                        />
+                      <input
+                        type="text"
+                        value={adultIdentifier}
+                        onChange={(e) => setAdultIdentifier(e.target.value)}
+                        placeholder="e.g. parent@example.com"
+                        style={{
+                          width: "100%",
+                          padding: "9px 12px",
+                          borderRadius: 10,
+                          border: "1.5px solid #CBD5E1",
+                          fontSize: 14,
+                          fontWeight: 600,
+                          outline: "none",
+                          boxSizing: "border-box",
+                        }}
+                      />
+                    </div>
+                    <div style={{ marginBottom: 16 }}>
+                      <label style={{ display: "block", fontSize: 11, fontWeight: 800, color: "#475569", marginBottom: 4, textTransform: "uppercase" }}>
+                        Password
+                      </label>
+                      <input
+                        type="password"
+                        value={adultPassword}
+                        onChange={(e) => setAdultPassword(e.target.value)}
+                        placeholder="Enter password"
+                        style={{
+                          width: "100%",
+                          padding: "9px 12px",
+                          borderRadius: 10,
+                          border: "1.5px solid #CBD5E1",
+                          fontSize: 14,
+                          fontWeight: 600,
+                          outline: "none",
+                          boxSizing: "border-box",
+                        }}
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      disabled={submitting}
+                      style={{
+                        width: "100%",
+                        padding: "11px",
+                        borderRadius: 12,
+                        background: "linear-gradient(135deg, #4F46E5, #4338CA)",
+                        border: "none",
+                        color: "#FFFFFF",
+                        fontSize: 15,
+                        fontWeight: 800,
+                        cursor: submitting ? "not-allowed" : "pointer",
+                      }}
+                    >
+                      {submitting ? "Signing In..." : "Open Parent Portal"}
+                    </button>
+                  </form>
+                )}
+
+                {/* 1.4 JOIN CLASS BY CODE */}
+                {roleMode === "join" && (
+                  <form onSubmit={handleJoinSubmit}>
+                    <div style={{ marginBottom: 12 }}>
+                      <label style={{ display: "block", fontSize: 11, fontWeight: 800, color: "#475569", marginBottom: 4, textTransform: "uppercase" }}>
+                        Class Join Code
+                      </label>
+                      <input
+                        type="text"
+                        value={joinCode}
+                        onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
+                        placeholder="e.g. PARI-3A"
+                        maxLength={10}
+                        style={{
+                          width: "100%",
+                          padding: "10px",
+                          borderRadius: 10,
+                          border: "2px solid #16A34A",
+                          fontSize: 18,
+                          fontWeight: 900,
+                          letterSpacing: 2,
+                          textAlign: "center",
+                          outline: "none",
+                          boxSizing: "border-box",
+                          background: "#F0FDF4",
+                          color: "#166534",
+                        }}
+                      />
+                    </div>
+                    <div style={{ marginBottom: 16 }}>
+                      <label style={{ display: "block", fontSize: 11, fontWeight: 800, color: "#475569", marginBottom: 4, textTransform: "uppercase" }}>
+                        Your Nickname (Optional)
+                      </label>
+                      <input
+                        type="text"
+                        value={joinNickname}
+                        onChange={(e) => setJoinNickname(e.target.value)}
+                        placeholder="e.g. Aarav"
+                        style={{
+                          width: "100%",
+                          padding: "9px 12px",
+                          borderRadius: 10,
+                          border: "1.5px solid #CBD5E1",
+                          fontSize: 14,
+                          fontWeight: 600,
+                          outline: "none",
+                          boxSizing: "border-box",
+                        }}
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      disabled={submitting}
+                      style={{
+                        width: "100%",
+                        padding: "11px",
+                        borderRadius: 12,
+                        background: "linear-gradient(135deg, #16A34A, #15803D)",
+                        border: "none",
+                        color: "#FFFFFF",
+                        fontSize: 15,
+                        fontWeight: 800,
+                        cursor: submitting ? "not-allowed" : "pointer",
+                      }}
+                    >
+                      {submitting ? "Joining..." : "Join Class"}
+                    </button>
+                  </form>
+                )}
+              </div>
+            )}
+
+            {/* TAB 2: CREATE ACCOUNT */}
+            {authTab === "signup" && (
+              <div>
+                {/* 2.1 STUDENT SIGN UP */}
+                {roleMode === "student" && (
+                  <form onSubmit={handleStudentRegister}>
+                    <div style={{ marginBottom: 10 }}>
+                      <label style={{ display: "block", fontSize: 11, fontWeight: 800, color: "#475569", marginBottom: 3, textTransform: "uppercase" }}>
+                        Select Your Class
+                      </label>
+                      <ClassDropdown
+                        variant="form"
+                        value={selectedGrade}
+                        onChange={handleGradeSelect}
+                        label="Student Grade"
+                      />
+                    </div>
+
+                    <div style={{ marginBottom: 10 }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 2 }}>
+                        <label style={{ fontSize: 11, fontWeight: 800, color: "#475569", textTransform: "uppercase" }}>
+                          Choose Nickname
+                        </label>
+                        <span style={{ fontSize: 10, color: "#64748B" }}>No real names</span>
+                      </div>
+                      <input
+                        type="text"
+                        value={regNickname}
+                        onChange={(e) => { setRegNickname(e.target.value); setUsernameStatus(null); }}
+                        onBlur={handleCheckUsername}
+                        placeholder="e.g. astro_kid, priya_4"
+                        style={{
+                          width: "100%",
+                          padding: "8px 10px",
+                          borderRadius: 9,
+                          border: "1.5px solid #CBD5E1",
+                          fontSize: 13,
+                          fontWeight: 600,
+                          outline: "none",
+                          boxSizing: "border-box",
+                        }}
+                      />
+                      {usernameStatus && (
+                        <div style={{ fontSize: 11, marginTop: 2, color: usernameStatus.available ? "#16A34A" : "#DC2626", fontWeight: 700 }}>
+                          {usernameStatus.available ? "✓ Nickname is available!" : `✗ ${usernameStatus.reason}`}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Secret Fields */}
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 10 }}>
+                      <div>
+                        <label style={{ display: "block", fontSize: 11, fontWeight: 800, color: "#475569", marginBottom: 3, textTransform: "uppercase" }}>
+                          {isJunior ? "4-Digit PIN" : "Password"}
+                        </label>
                         <input
-                          type={showPassword ? "text" : "password"}
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          placeholder="Enter your student password"
+                          type={isJunior ? "text" : "password"}
+                          value={regSecret}
+                          maxLength={isJunior ? 4 : 50}
+                          onChange={(e) => setRegSecret(e.target.value)}
+                          placeholder={isJunior ? "4 digits" : "8+ chars"}
                           style={{
                             width: "100%",
-                            padding: "12px 42px 12px 42px",
-                            borderRadius: 12,
+                            padding: "8px 10px",
+                            borderRadius: 9,
                             border: "1.5px solid #CBD5E1",
-                            fontSize: 15,
+                            fontSize: 13,
                             fontWeight: 600,
                             outline: "none",
                             boxSizing: "border-box",
                           }}
                         />
-                        <button
-                          type="button"
-                          onClick={() => setShowPassword(!showPassword)}
+                      </div>
+                      <div>
+                        <label style={{ display: "block", fontSize: 11, fontWeight: 800, color: "#475569", marginBottom: 3, textTransform: "uppercase" }}>
+                          Confirm
+                        </label>
+                        <input
+                          type={isJunior ? "text" : "password"}
+                          value={regConfirmSecret}
+                          maxLength={isJunior ? 4 : 50}
+                          onChange={(e) => setRegConfirmSecret(e.target.value)}
+                          placeholder={isJunior ? "Repeat PIN" : "Repeat Password"}
                           style={{
-                            position: "absolute",
-                            right: 12,
-                            top: 12,
-                            background: "none",
-                            border: "none",
-                            cursor: "pointer",
-                            color: "#94A3B8",
+                            width: "100%",
+                            padding: "8px 10px",
+                            borderRadius: 9,
+                            border: "1.5px solid #CBD5E1",
+                            fontSize: 13,
+                            fontWeight: 600,
+                            outline: "none",
+                            boxSizing: "border-box",
                           }}
-                        >
-                          {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                        </button>
+                        />
                       </div>
                     </div>
-                  )}
 
-                  {/* Submit Button */}
-                  <button
-                    type="submit"
-                    disabled={submitting}
-                    style={{
-                      width: "100%",
-                      padding: "14px 20px",
-                      borderRadius: 14,
-                      background: "linear-gradient(135deg, #EA580C, #F97316)",
-                      border: "none",
-                      color: "#FFFFFF",
-                      fontSize: 16,
-                      fontWeight: 800,
-                      cursor: submitting ? "not-allowed" : "pointer",
-                      boxShadow: "0 4px 14px rgba(234, 88, 12, 0.35)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: 8,
-                      transition: "transform 0.1s ease",
-                    }}
-                  >
-                    {submitting ? "Checking in..." : `Start Learning (${selectedGrade})`}
-                    <ArrowRight size={18} />
-                  </button>
-                </form>
+                    {/* Avatar Picker */}
+                    <div style={{ marginBottom: 10 }}>
+                      <label style={{ display: "block", fontSize: 11, fontWeight: 800, color: "#475569", marginBottom: 4, textTransform: "uppercase" }}>
+                        Pick Avatar
+                      </label>
+                      <div style={{ display: "flex", gap: 6, overflowX: "auto", paddingBottom: 2 }}>
+                        {AVATARS.slice(0, 6).map((av) => {
+                          const isSel = regAvatar === av.id;
+                          return (
+                            <button
+                              key={av.id}
+                              type="button"
+                              onClick={() => setRegAvatar(av.id)}
+                              style={{
+                                width: 34,
+                                height: 34,
+                                borderRadius: "50%",
+                                border: isSel ? `2px solid ${gradeConfig.color}` : "1.5px solid #E2E8F0",
+                                background: isSel ? "#FFF7ED" : "#FFFFFF",
+                                cursor: "pointer",
+                                padding: 2,
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                flexShrink: 0,
+                              }}
+                            >
+                              {av.render ? av.render(26) : null}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
 
-                {/* Demo Quick-Fills */}
-                <div
-                  style={{
-                    marginTop: 16,
-                    paddingTop: 14,
-                    borderTop: "1px dashed #CBD5E1",
-                    display: "flex",
-                    flexWrap: "wrap",
-                    alignItems: "center",
-                    gap: 8,
-                  }}
-                >
-                  <span style={{ fontSize: 12, color: "#64748B", fontWeight: 700 }}>
-                    Quick Demo Accounts:
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => fillDemoStudent("kid3", "1234", "Class 3")}
-                    style={{
-                      fontSize: 11,
-                      padding: "4px 8px",
-                      borderRadius: 8,
-                      border: "1px solid #E2E8F0",
-                      background: "#FFFFFF",
-                      cursor: "pointer",
-                      fontWeight: 600,
-                      color: "#0F172A",
-                    }}
-                  >
-                    Class 3 (kid3 / PIN 1234)
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => fillDemoStudent("kid4", "1234", "Class 4")}
-                    style={{
-                      fontSize: 11,
-                      padding: "4px 8px",
-                      borderRadius: 8,
-                      border: "1px solid #E2E8F0",
-                      background: "#FFFFFF",
-                      cursor: "pointer",
-                      fontWeight: 600,
-                      color: "#0F172A",
-                    }}
-                  >
-                    Class 4 (kid4 / PIN 1234)
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => fillDemoStudent("student6", "learn-ai-2026", "Class 6")}
-                    style={{
-                      fontSize: 11,
-                      padding: "4px 8px",
-                      borderRadius: 8,
-                      border: "1px solid #E2E8F0",
-                      background: "#FFFFFF",
-                      cursor: "pointer",
-                      fontWeight: 600,
-                      color: "#0F172A",
-                    }}
-                  >
-                    Class 6 (student6 / learn-ai-2026)
-                  </button>
-                </div>
+                    {/* Optional Class Code */}
+                    <div style={{ marginBottom: 12 }}>
+                      <input
+                        type="text"
+                        value={regClassCode}
+                        onChange={(e) => setRegClassCode(e.target.value.toUpperCase())}
+                        placeholder="Class code from teacher (optional)"
+                        style={{
+                          width: "100%",
+                          padding: "7px 10px",
+                          borderRadius: 8,
+                          border: "1px dashed #CBD5E1",
+                          fontSize: 12,
+                          fontWeight: 600,
+                          outline: "none",
+                          boxSizing: "border-box",
+                        }}
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={submitting}
+                      style={{
+                        width: "100%",
+                        padding: "10px",
+                        borderRadius: 12,
+                        background: `linear-gradient(135deg, ${gradeConfig.color}, #EA580C)`,
+                        border: "none",
+                        color: "#FFFFFF",
+                        fontSize: 14,
+                        fontWeight: 800,
+                        cursor: submitting ? "not-allowed" : "pointer",
+                      }}
+                    >
+                      {submitting ? "Creating..." : "Create Account & Start Learning"}
+                    </button>
+                  </form>
+                )}
+
+                {/* 2.2 TEACHER SIGN UP */}
+                {roleMode === "teacher" && (
+                  <form onSubmit={handleTeacherRegister}>
+                    <div style={{ marginBottom: 10 }}>
+                      <input
+                        type="text"
+                        value={teacherName}
+                        onChange={(e) => setTeacherName(e.target.value)}
+                        placeholder="Full Name (e.g. Ms. Sharma)"
+                        style={{ width: "100%", padding: "8px 10px", borderRadius: 9, border: "1.5px solid #CBD5E1", fontSize: 13, boxSizing: "border-box" }}
+                      />
+                    </div>
+                    <div style={{ marginBottom: 10 }}>
+                      <input
+                        type="email"
+                        value={teacherEmail}
+                        onChange={(e) => setTeacherEmail(e.target.value)}
+                        placeholder="Teacher School Email"
+                        style={{ width: "100%", padding: "8px 10px", borderRadius: 9, border: "1.5px solid #CBD5E1", fontSize: 13, boxSizing: "border-box" }}
+                      />
+                    </div>
+                    <div style={{ marginBottom: 10 }}>
+                      <input
+                        type="password"
+                        value={teacherPassword}
+                        onChange={(e) => setTeacherPassword(e.target.value)}
+                        placeholder="Password (min 8 characters)"
+                        style={{ width: "100%", padding: "8px 10px", borderRadius: 9, border: "1.5px solid #CBD5E1", fontSize: 13, boxSizing: "border-box" }}
+                      />
+                    </div>
+                    <div style={{ marginBottom: 14 }}>
+                      <input
+                        type="text"
+                        value={teacherInviteCode}
+                        onChange={(e) => setTeacherInviteCode(e.target.value)}
+                        placeholder="Teacher Secret Invite Code"
+                        style={{ width: "100%", padding: "8px 10px", borderRadius: 9, border: "1.5px solid #2563EB", fontSize: 13, boxSizing: "border-box", fontWeight: 700 }}
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      disabled={submitting}
+                      style={{
+                        width: "100%",
+                        padding: "10px",
+                        borderRadius: 12,
+                        background: "linear-gradient(135deg, #2563EB, #1D4ED8)",
+                        border: "none",
+                        color: "#FFFFFF",
+                        fontSize: 14,
+                        fontWeight: 800,
+                        cursor: submitting ? "not-allowed" : "pointer",
+                      }}
+                    >
+                      {submitting ? "Registering..." : "Create Teacher Account"}
+                    </button>
+                  </form>
+                )}
+
+                {/* 2.3 PARENT SIGN UP */}
+                {roleMode === "parent" && (
+                  <form onSubmit={handleParentRegister}>
+                    <div style={{ marginBottom: 10 }}>
+                      <input
+                        type="text"
+                        value={parentName}
+                        onChange={(e) => setParentName(e.target.value)}
+                        placeholder="Parent Name"
+                        style={{ width: "100%", padding: "8px 10px", borderRadius: 9, border: "1.5px solid #CBD5E1", fontSize: 13, boxSizing: "border-box" }}
+                      />
+                    </div>
+                    <div style={{ marginBottom: 10 }}>
+                      <input
+                        type="email"
+                        value={parentEmail}
+                        onChange={(e) => setParentEmail(e.target.value)}
+                        placeholder="Parent Email Address"
+                        style={{ width: "100%", padding: "8px 10px", borderRadius: 9, border: "1.5px solid #CBD5E1", fontSize: 13, boxSizing: "border-box" }}
+                      />
+                    </div>
+                    <div style={{ marginBottom: 10 }}>
+                      <input
+                        type="password"
+                        value={parentPassword}
+                        onChange={(e) => setParentPassword(e.target.value)}
+                        placeholder="Password (min 8 characters)"
+                        style={{ width: "100%", padding: "8px 10px", borderRadius: 9, border: "1.5px solid #CBD5E1", fontSize: 13, boxSizing: "border-box" }}
+                      />
+                    </div>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 14 }}>
+                      <input
+                        type="text"
+                        value={parentChildName}
+                        onChange={(e) => setParentChildName(e.target.value)}
+                        placeholder="Child's nickname (opt)"
+                        style={{ width: "100%", padding: "8px 10px", borderRadius: 9, border: "1px dashed #CBD5E1", fontSize: 12, boxSizing: "border-box" }}
+                      />
+                      <input
+                        type="text"
+                        value={parentLinkCode}
+                        onChange={(e) => setParentLinkCode(e.target.value.toUpperCase())}
+                        placeholder="Teacher Link Code (opt)"
+                        style={{ width: "100%", padding: "8px 10px", borderRadius: 9, border: "1px dashed #CBD5E1", fontSize: 12, boxSizing: "border-box", fontWeight: 700 }}
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      disabled={submitting}
+                      style={{
+                        width: "100%",
+                        padding: "10px",
+                        borderRadius: 12,
+                        background: "linear-gradient(135deg, #4F46E5, #4338CA)",
+                        border: "none",
+                        color: "#FFFFFF",
+                        fontSize: 14,
+                        fontWeight: 800,
+                        cursor: submitting ? "not-allowed" : "pointer",
+                      }}
+                    >
+                      {submitting ? "Registering..." : "Create Parent Account"}
+                    </button>
+                  </form>
+                )}
               </div>
+            )}
 
-              {/* Guest explorer 1-click alternative */}
-              <div
+            {/* Guest Explorer 1-Click Link */}
+            <div style={{ marginTop: 12, textAlign: "center" }}>
+              <button
+                type="button"
+                onClick={handleGuestSubmit}
+                disabled={submitting}
                 style={{
-                  marginTop: 16,
-                  textAlign: "center",
+                  background: "none",
+                  border: "none",
+                  color: "#EA580C",
+                  fontWeight: 700,
+                  fontSize: 12,
+                  cursor: "pointer",
+                  textDecoration: "underline",
                 }}
               >
+                ⚡ Explore instantly as a Guest Explorer (No secret required)
+              </button>
+            </div>
+
+            {/* Quick Demo Disclosure (Hidden unless DEMO_MODE) */}
+            {isDemoEnabled && (
+              <div style={{ marginTop: 10, textAlign: "center" }}>
                 <button
                   type="button"
-                  onClick={handleGuestSubmit}
-                  disabled={submitting}
+                  onClick={() => setShowDemoDisclosure(!showDemoDisclosure)}
                   style={{
                     background: "none",
                     border: "none",
-                    color: "#EA580C",
-                    fontWeight: 700,
-                    fontSize: 14,
+                    fontSize: 11,
+                    color: "#94A3B8",
                     cursor: "pointer",
                     textDecoration: "underline",
                   }}
                 >
-                  ⚡ Or explore instantly as a Guest Explorer (No login needed)
+                  {showDemoDisclosure ? "Hide quick demo logins" : "Demo logins"}
                 </button>
-              </div>
-            </div>
-          )}
 
-          {/* MODE 2: TEACHER / GROWN-UPS LOGIN */}
-          {mode === "teacher" && (
-            <div>
-              <div style={{ textAlign: "center", marginBottom: 20 }}>
-                <div
-                  style={{
-                    width: 52,
-                    height: 52,
-                    borderRadius: 16,
-                    background: "#EEF2FF",
-                    color: "#4F46E5",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginBottom: 10,
-                  }}
-                >
-                  <ShieldCheck size={28} />
-                </div>
-                <h2 style={{ fontSize: 20, fontWeight: 800, color: "#1E293B", margin: 0 }}>
-                  Teacher & Grown-ups Portal
-                </h2>
-                <p style={{ fontSize: 13, color: "#64748B", margin: "4px 0 0 0" }}>
-                  Manage classes, review AI content, and view student progress cards.
-                </p>
-              </div>
-
-              <form onSubmit={handleAdultSubmit}>
-                <div style={{ marginBottom: 16 }}>
-                  <label
+                {showDemoDisclosure && (
+                  <div
                     style={{
-                      display: "block",
-                      fontSize: 13,
-                      fontWeight: 700,
-                      color: "#334155",
-                      marginBottom: 6,
+                      marginTop: 6,
+                      padding: 8,
+                      background: "#F8FAFC",
+                      borderRadius: 10,
+                      border: "1px dashed #CBD5E1",
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: 6,
+                      justifyContent: "center",
                     }}
                   >
-                    Teacher Email or Username
-                  </label>
-                  <div style={{ position: "relative" }}>
-                    <User
-                      size={18}
-                      style={{
-                        position: "absolute",
-                        left: 14,
-                        top: 14,
-                        color: "#94A3B8",
-                      }}
-                    />
-                    <input
-                      type="text"
-                      value={adultIdentifier}
-                      onChange={(e) => setAdultIdentifier(e.target.value)}
-                      placeholder="e.g. ms_sharma or teacher@school.edu"
-                      style={{
-                        width: "100%",
-                        padding: "12px 14px 12px 42px",
-                        borderRadius: 12,
-                        border: "1.5px solid #CBD5E1",
-                        fontSize: 15,
-                        fontWeight: 600,
-                        outline: "none",
-                        boxSizing: "border-box",
-                      }}
-                    />
+                    <button
+                      type="button"
+                      onClick={() => fillDemoStudent("kid3", "8392", "Class 3")}
+                      style={{ fontSize: 10, padding: "3px 6px", borderRadius: 6, background: "#FFF", border: "1px solid #CBD5E1", cursor: "pointer" }}
+                    >
+                      Class 3 (kid3/8392)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => fillDemoStudent("kid4", "4321", "Class 4")}
+                      style={{ fontSize: 10, padding: "3px 6px", borderRadius: 6, background: "#FFF", border: "1px solid #CBD5E1", cursor: "pointer" }}
+                    >
+                      Class 4 (kid4/4321)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => fillDemoAdult("ms_sharma", "teach123", "teacher")}
+                      style={{ fontSize: 10, padding: "3px 6px", borderRadius: 6, background: "#FFF", border: "1px solid #CBD5E1", cursor: "pointer" }}
+                    >
+                      Teacher (ms_sharma)
+                    </button>
                   </div>
-                </div>
-
-                <div style={{ marginBottom: 20 }}>
-                  <label
-                    style={{
-                      display: "block",
-                      fontSize: 13,
-                      fontWeight: 700,
-                      color: "#334155",
-                      marginBottom: 6,
-                    }}
-                  >
-                    Password
-                  </label>
-                  <div style={{ position: "relative" }}>
-                    <Lock
-                      size={18}
-                      style={{
-                        position: "absolute",
-                        left: 14,
-                        top: 14,
-                        color: "#94A3B8",
-                      }}
-                    />
-                    <input
-                      type="password"
-                      value={adultPassword}
-                      onChange={(e) => setAdultPassword(e.target.value)}
-                      placeholder="Enter teacher password"
-                      style={{
-                        width: "100%",
-                        padding: "12px 14px 12px 42px",
-                        borderRadius: 12,
-                        border: "1.5px solid #CBD5E1",
-                        fontSize: 15,
-                        fontWeight: 600,
-                        outline: "none",
-                        boxSizing: "border-box",
-                      }}
-                    />
-                  </div>
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  style={{
-                    width: "100%",
-                    padding: "14px 20px",
-                    borderRadius: 14,
-                    background: "linear-gradient(135deg, #2563EB, #1D4ED8)",
-                    border: "none",
-                    color: "#FFFFFF",
-                    fontSize: 16,
-                    fontWeight: 800,
-                    cursor: submitting ? "not-allowed" : "pointer",
-                    boxShadow: "0 4px 14px rgba(37, 99, 235, 0.35)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 8,
-                  }}
-                >
-                  {submitting ? "Signing In..." : "Open Grown-ups Portal"}
-                  <ArrowRight size={18} />
-                </button>
-              </form>
-
-              {/* Demo Fill */}
-              <div
-                style={{
-                  marginTop: 18,
-                  padding: "12px 14px",
-                  background: "#F8FAFC",
-                  borderRadius: 12,
-                  border: "1px dashed #CBD5E1",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
-                <div>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: "#0F172A" }}>
-                    Demo Teacher Account:
-                  </div>
-                  <div style={{ fontSize: 11, color: "#64748B" }}>
-                    ms_sharma / teach123
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => fillDemoTeacher("ms_sharma", "teach123")}
-                  style={{
-                    fontSize: 12,
-                    fontWeight: 700,
-                    color: "#2563EB",
-                    background: "#EFF6FF",
-                    border: "1px solid #BFDBFE",
-                    borderRadius: 8,
-                    padding: "6px 12px",
-                    cursor: "pointer",
-                  }}
-                >
-                  Quick Fill
-                </button>
+                )}
               </div>
-            </div>
-          )}
-
-          {/* MODE 3: JOIN CLASS BY CODE */}
-          {mode === "join" && (
-            <div>
-              <div style={{ textAlign: "center", marginBottom: 20 }}>
-                <div
-                  style={{
-                    width: 52,
-                    height: 52,
-                    borderRadius: 16,
-                    background: "#DCFCE7",
-                    color: "#16A34A",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginBottom: 10,
-                  }}
-                >
-                  <Users size={28} />
-                </div>
-                <h2 style={{ fontSize: 20, fontWeight: 800, color: "#1E293B", margin: 0 }}>
-                  Join Your School Class
-                </h2>
-                <p style={{ fontSize: 13, color: "#64748B", margin: "4px 0 0 0" }}>
-                  Enter the 6-character class code given by your teacher!
-                </p>
-              </div>
-
-              <form onSubmit={handleJoinSubmit}>
-                <div style={{ marginBottom: 16 }}>
-                  <label
-                    style={{
-                      display: "block",
-                      fontSize: 13,
-                      fontWeight: 700,
-                      color: "#334155",
-                      marginBottom: 6,
-                    }}
-                  >
-                    Class Code
-                  </label>
-                  <input
-                    type="text"
-                    value={joinCode}
-                    onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
-                    placeholder="e.g. PARI-4A"
-                    maxLength={10}
-                    style={{
-                      width: "100%",
-                      padding: "14px",
-                      borderRadius: 12,
-                      border: "2px solid #16A34A",
-                      fontSize: 20,
-                      fontWeight: 800,
-                      textAlign: "center",
-                      letterSpacing: 3,
-                      color: "#166534",
-                      outline: "none",
-                      boxSizing: "border-box",
-                      background: "#F0FDF4",
-                    }}
-                  />
-                </div>
-
-                <div style={{ marginBottom: 20 }}>
-                  <label
-                    style={{
-                      display: "block",
-                      fontSize: 13,
-                      fontWeight: 700,
-                      color: "#334155",
-                      marginBottom: 6,
-                    }}
-                  >
-                    Your Student Nickname (Optional)
-                  </label>
-                  <input
-                    type="text"
-                    value={joinNickname}
-                    onChange={(e) => setJoinNickname(e.target.value)}
-                    placeholder="e.g. Aarav, Maya"
-                    style={{
-                      width: "100%",
-                      padding: "12px 14px",
-                      borderRadius: 12,
-                      border: "1.5px solid #CBD5E1",
-                      fontSize: 15,
-                      fontWeight: 600,
-                      outline: "none",
-                      boxSizing: "border-box",
-                    }}
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  style={{
-                    width: "100%",
-                    padding: "14px 20px",
-                    borderRadius: 14,
-                    background: "linear-gradient(135deg, #16A34A, #15803D)",
-                    border: "none",
-                    color: "#FFFFFF",
-                    fontSize: 16,
-                    fontWeight: 800,
-                    cursor: submitting ? "not-allowed" : "pointer",
-                    boxShadow: "0 4px 14px rgba(22, 163, 74, 0.35)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 8,
-                  }}
-                >
-                  {submitting ? "Joining Class..." : "Join Class Now"}
-                  <ArrowRight size={18} />
-                </button>
-              </form>
-            </div>
-          )}
-        </div>
-
-        {/* Footer Help */}
-        <div
-          style={{
-            background: "#F8FAFC",
-            borderTop: "1px solid #E2E8F0",
-            padding: "12px 20px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            fontSize: 12,
-            color: "#64748B",
-          }}
-        >
-          <span>🔒 Safe & Private · Zero PII Collected</span>
-          <button
-            type="button"
-            onClick={() => setShowHelp(!showHelp)}
-            style={{
-              background: "none",
-              border: "none",
-              color: "#64748B",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: 4,
-              fontSize: 12,
-              fontWeight: 600,
-            }}
-          >
-            <HelpCircle size={14} />
-            Forgot Secret?
-          </button>
+            )}
+          </div>
         </div>
       </div>
-
-      {/* Forgot Secret Help Popover */}
-      {showHelp && (
-        <div
-          style={{
-            marginTop: 16,
-            background: "#FFFFFF",
-            borderRadius: 12,
-            padding: 16,
-            maxWidth: 400,
-            boxShadow: "0 4px 16px rgba(0,0,0,0.08)",
-            border: "1px solid #E2E8F0",
-            fontSize: 13,
-            color: "#334155",
-            lineHeight: 1.5,
-          }}
-        >
-          <strong>Forgot your student PIN or password?</strong>
-          <p style={{ margin: "6px 0 0 0" }}>
-            Don't worry! Ask your teacher or school admin. They can generate a fresh 1-click secret reset or print your student login card from their Grown-ups dashboard.
-          </p>
-        </div>
-      )}
     </div>
   );
 }
-

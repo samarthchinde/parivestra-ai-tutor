@@ -28,3 +28,10 @@ CORS_ORIGINS: list[str] = [
     if origin.strip()
 ]
 
+# Registration & Multi-Role Configuration
+TEACHER_INVITE_CODE: str = os.getenv("TEACHER_INVITE_CODE", "TEACH-PARIVESTRA-2026")
+DEMO_MODE: bool = os.getenv("DEMO_MODE", "true").lower() in ("true", "1", "yes")
+ALLOW_SELF_SIGNUP: bool = os.getenv("ALLOW_SELF_SIGNUP", "true").lower() in ("true", "1", "yes")
+REQUIRE_CLASS_CODE: bool = os.getenv("REQUIRE_CLASS_CODE", "false").lower() in ("true", "1", "yes")
+
+

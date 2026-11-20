@@ -53,6 +53,8 @@ from backend.models import (
 from backend.video.provider import StoryPlayerProvider
 from backend.routes.workbook_router import router as workbook_router
 from backend.routes.auth_router import router as auth_router
+from backend.routes.parent_router import router as parent_router
+from backend.routes.teacher_router import router as teacher_router
 from backend.auth.dependencies import get_current_user, get_active_grade
 
 logging.basicConfig(level=logging.INFO)
@@ -75,9 +77,11 @@ app = FastAPI(
     redoc_url="/redoc",
 )
 
-# Include Authentication and AI Workbooks routers
+# Include Authentication, Parent, Teacher, and AI Workbooks routers
 app.include_router(auth_router)
 app.include_router(workbook_router)
+app.include_router(parent_router)
+app.include_router(teacher_router)
 
 # Configure CORS
 app.add_middleware(

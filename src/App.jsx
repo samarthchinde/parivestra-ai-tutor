@@ -25,6 +25,7 @@ import WorkbookUnit from "./pages/WorkbookUnit";
 import WordBank from "./pages/WordBank";
 import CertificateView from "./pages/CertificateView";
 import FinalProjectView from "./pages/FinalProjectView";
+import ParentDashboard from "./pages/ParentDashboard";
 
 export default function App() {
   return (
@@ -72,6 +73,16 @@ export default function App() {
               element={
                 <ProtectedRoute allowedRoles={["teacher", "admin", "guest"]}>
                   <GrownUps />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Read-Only Parent Portal */}
+            <Route
+              path="parent"
+              element={
+                <ProtectedRoute allowedRoles={["parent", "teacher", "admin"]}>
+                  <ParentDashboard />
                 </ProtectedRoute>
               }
             />

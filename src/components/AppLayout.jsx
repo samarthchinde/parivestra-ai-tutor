@@ -6,7 +6,7 @@ import { getAvatar } from "../data/avatars";
 import { useAuth } from "../context/AuthContext";
 import { useGrade } from "../context/GradeContext";
 import Mascot from "./Mascot";
-import GradeGrid from "./GradeGrid";
+import ClassDropdown from "./ClassDropdown";
 import { XPChip } from "./UI";
 import { isSoundEnabled, toggleSound, playClick } from "../utils/sound";
 import {
@@ -20,6 +20,7 @@ import {
   Clock,
   Sparkles,
   ShieldCheck,
+  Users,
 } from "lucide-react";
 
 export default function AppLayout() {
@@ -27,7 +28,6 @@ export default function AppLayout() {
   const { activeGrade, setGrade, allowGradeSwitch, band, bandConfig } = useGrade();
   const [health, setHealth] = useState({ status: "checking" });
   const [soundOn, setSoundOn] = useState(isSoundEnabled());
-  const [gradeModalOpen, setGradeModalOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -138,21 +138,20 @@ export default function AppLayout() {
     }
   }
 
+  // Inject Parent Portal link if user is parent or teacher
+  if (user?.role === "parent" || user?.role === "teacher" || user?.role === "admin") {
+    if (!navWithReport.some((n) => n.path === "/parent")) {
+      navWithReport.push({
+        label: "Parent Portal",
+        path: "/parent",
+        icon: Users,
+        mobileTab: false,
+      });
+    }
+  }
+
   return (
     <div className="app-shell" data-band={band}>
-      {/* Grade Selector Modal */}
-      {gradeModalOpen && (
-        <GradeGrid
-          isModal
-          selectedGrade={activeGrade}
-          onSelectGrade={(g) => {
-            setGrade(g);
-            setGradeModalOpen(false);
-          }}
-          onClose={() => setGradeModalOpen(false)}
-        />
-      )}
-
       {/* Idle Warning Modal */}
       {idleWarning && (
         <div
@@ -242,38 +241,18 @@ export default function AppLayout() {
           </div>
         </div>
 
-        {/* Grade Scoping Quick Badge in Sidebar */}
+        {/* Grade Scoping Quick Dropdown in Sidebar */}
         <div style={{ padding: "0 12px 14px 12px" }}>
-          <button
-            type="button"
-            onClick={() => setGradeModalOpen(true)}
-            style={{
-              width: "100%",
-              padding: "8px 12px",
-              borderRadius: 12,
-              background: "var(--bg-card-tint)",
-              border: "1.5px solid var(--border)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              cursor: allowGradeSwitch ? "pointer" : "default",
-              color: "var(--text-main)",
-              textAlign: "left",
-            }}
-            title={allowGradeSwitch ? "Click to switch active grade" : "Locked to your class"}
-          >
-            <div>
-              <div style={{ fontSize: 10, fontWeight: 800, color: "var(--color-primary)", textTransform: "uppercase" }}>
-                Active Grade
-              </div>
-              <div style={{ fontSize: 13, fontWeight: 900 }}>{activeGrade}</div>
-            </div>
-            {allowGradeSwitch ? (
-              <ChevronDown size={16} color="var(--text-muted)" />
-            ) : (
-              <Lock size={14} color="#94A3B8" />
-            )}
-          </button>
+          <div style={{ fontSize: 10, fontWeight: 800, color: "var(--color-primary)", textTransform: "uppercase", marginBottom: 4 }}>
+            Active Grade
+          </div>
+          <ClassDropdown
+            variant="form"
+            value={activeGrade}
+            onChange={setGrade}
+            allowSwitch={allowGradeSwitch}
+            label="Active Grade Selector"
+          />
         </div>
 
         <p className="nav-caption">
@@ -334,29 +313,14 @@ export default function AppLayout() {
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             {getPariStatusBadge()}
 
-            {/* Active Grade Chip with 1-Click Switcher */}
-            <button
-              type="button"
-              onClick={() => setGradeModalOpen(true)}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 6,
-                background: "#FFF7ED",
-                border: "1.5px solid #FFEDD5",
-                borderRadius: "var(--radius-full)",
-                padding: "5px 12px",
-                fontSize: 13,
-                fontWeight: 800,
-                color: "#EA580C",
-                cursor: allowGradeSwitch ? "pointer" : "default",
-              }}
-              title={allowGradeSwitch ? "Switch Grade (Classes 3 to 10)" : "Locked to your class"}
-            >
-              <Sparkles size={14} />
-              <span>{activeGrade}</span>
-              {allowGradeSwitch ? <ChevronDown size={14} /> : <Lock size={12} />}
-            </button>
+            {/* Active Grade Dropdown Switcher */}
+            <ClassDropdown
+              variant="header"
+              value={activeGrade}
+              onChange={setGrade}
+              allowSwitch={allowGradeSwitch}
+              label="Switch Grade"
+            />
 
             <button
               onClick={handleSoundToggle}

@@ -12,7 +12,8 @@ from sqlalchemy.orm import Session
 
 from backend import config
 from backend.database import get_db
-from backend.models import User, Class, AuthSession, AuditLog
+from backend.models import User, Class, AuthSession, AuditLog, ParentChildLink, ParentLinkCode, SystemSetting
+from backend.auth.validation import validate_username, validate_pin, validate_password, check_rate_limit
 from backend.auth.security import (
     hash_secret,
     verify_secret,
@@ -87,6 +88,33 @@ class BulkImportRequest(BaseModel):
 
 class ResetSecretRequest(BaseModel):
     new_secret: Optional[str] = None
+
+
+class StudentRegisterRequest(BaseModel):
+    username: str = Field(..., min_length=2, max_length=50)
+    secret: str = Field(..., min_length=4)
+    confirm_secret: Optional[str] = None
+    grade: Optional[str] = "Class 3"
+    avatar: Optional[str] = "owl"
+    display_name: Optional[str] = None
+    class_code: Optional[str] = None
+    role: Optional[str] = None  # Defense against role escalation
+
+
+class TeacherRegisterRequest(BaseModel):
+    name: str = Field(..., min_length=2)
+    email: str = Field(..., min_length=5)
+    password: str = Field(..., min_length=8)
+    invite_code: str = Field(..., min_length=1)
+
+
+class ParentRegisterRequest(BaseModel):
+    name: str = Field(..., min_length=2)
+    email: str = Field(..., min_length=5)
+    password: str = Field(..., min_length=8)
+    child_username: Optional[str] = None
+    link_code: Optional[str] = None
+
 
 
 # ========================================================
@@ -321,6 +349,7 @@ def login(
             "display_name": user.display_name or user.name,
             "role": user.role or "student",
             "avatar": user.avatar or "owl",
+            "grade": target_grade,
             "default_grade": user.default_grade or user.grade or "Class 3",
             "active_grade": target_grade,
             "class_id": user.class_id,
@@ -329,6 +358,380 @@ def login(
         },
         "active_grade": target_grade,
     }
+
+
+def issue_user_session(
+    db: Session,
+    user: User,
+    target_grade: str,
+    response: Response,
+    user_agent: str,
+    is_secure: bool,
+    ip: Optional[str] = None,
+    event: str = "login_success",
+    detail: str = "User session created",
+) -> dict:
+    now = utc_now()
+    raw_token = generate_session_token()
+    tok_hash = hash_token(raw_token)
+    session_hours = getattr(config, "SESSION_HOURS", 24)
+    expires_at = now + timedelta(hours=session_hours)
+
+    auth_sess = AuthSession(
+        id=f"sess-{uuid.uuid4().hex[:12]}",
+        user_id=user.id,
+        token_hash=tok_hash,
+        active_grade=target_grade,
+        expires_at=expires_at,
+        last_seen_at=now,
+        device_label=user_agent[:100] if user_agent else "browser",
+        created_at=now,
+    )
+    db.add(auth_sess)
+    user.last_login_at = now
+    db.commit()
+
+    response.set_cookie(
+        key="session_token",
+        value=raw_token,
+        httponly=True,
+        samesite="lax",
+        max_age=session_hours * 3600,
+        secure=is_secure,
+    )
+
+    log_audit(db, event, detail, user_id=user.id, ip=ip)
+
+    return {
+        "status": "ok",
+        "token": raw_token,
+        "user": {
+            "id": user.id,
+            "username": user.username or user.id,
+            "display_name": user.display_name or user.name,
+            "role": user.role or "student",
+            "avatar": user.avatar or "owl",
+            "grade": target_grade,
+            "default_grade": user.default_grade or user.grade or "Class 3",
+            "active_grade": target_grade,
+            "class_id": user.class_id,
+            "xp": user.xp or 0,
+            "streak": user.streak or 1,
+        },
+        "active_grade": target_grade,
+    }
+
+
+def _perform_child_link(db: Session, parent_id: str, child_username: str, link_code_str: str) -> User:
+    now = utc_now()
+    code_clean = link_code_str.strip().upper()
+    link_record = db.query(ParentLinkCode).filter(ParentLinkCode.code == code_clean).first()
+    if not link_record:
+        raise HTTPException(status_code=400, detail="Invalid parent link code.")
+    if link_record.used:
+        raise HTTPException(status_code=400, detail="This link code has already been used.")
+
+    expires_at = link_record.expires_at
+    if expires_at.tzinfo is None:
+        expires_at = expires_at.replace(tzinfo=timezone.utc)
+    if now > expires_at:
+        raise HTTPException(status_code=400, detail="This link code has expired. Please ask the teacher for a new one.")
+
+    child = db.query(User).filter(User.username.ilike(child_username.strip())).first()
+    if not child or child.id != link_record.student_id:
+        raise HTTPException(status_code=400, detail="Child username does not match the link code.")
+
+    existing_link = db.query(ParentChildLink).filter(
+        ParentChildLink.parent_id == parent_id,
+        ParentChildLink.child_id == child.id,
+    ).first()
+    if not existing_link:
+        new_link = ParentChildLink(parent_id=parent_id, child_id=child.id)
+        db.add(new_link)
+
+    link_record.used = True
+    link_record.used_by_parent_id = parent_id
+    db.commit()
+    return child
+
+
+@router.get("/username-available")
+def check_username_available(
+    username: str,
+    request: Request,
+    db: Session = Depends(get_db),
+):
+    """Rate-limited check for student username/nickname availability."""
+    ip, _, _ = _extract_request_meta(request)
+    if not check_rate_limit(f"useravail_{ip}", limit=30, window_seconds=60):
+        raise HTTPException(status_code=429, detail="Too many checks. Please wait a minute.")
+
+    valid, err = validate_username(username, db=db)
+    if not valid:
+        return {"available": False, "reason": err}
+    return {"available": True, "message": "Nickname is available!"}
+
+
+@router.post("/register")
+def register_student(
+    payload: StudentRegisterRequest,
+    response: Response,
+    request: Request,
+    db: Session = Depends(get_db),
+):
+    """Self-registration for students.
+    Validates nickname, enforces age-appropriate PIN/password rules, checks class codes,
+    rejects role escalation, auto-creates session and logs audit event.
+    """
+    ip, user_agent, is_secure = _extract_request_meta(request)
+
+    # 1. Rate limiting
+    if not check_rate_limit(f"reg_student_{ip}", limit=10, window_seconds=60):
+        raise HTTPException(status_code=429, detail="Too many registration attempts. Please wait a moment.")
+
+    # 2. Defense against role escalation
+    if payload.role and payload.role.strip().lower() != "student":
+        log_audit(db, "role_escalation_attempt", f"Attempted role: {payload.role}", ip=ip)
+        raise HTTPException(status_code=400, detail="Registration role escalation is forbidden.")
+
+    # 3. System settings check
+    allow_signup_rec = db.query(SystemSetting).filter(SystemSetting.key == "allow_self_signup").first()
+    allow_self_signup = (allow_signup_rec.value.lower() in ("true", "1")) if allow_signup_rec else getattr(config, "ALLOW_SELF_SIGNUP", True)
+    if not allow_self_signup:
+        raise HTTPException(status_code=403, detail="Self-registration is currently disabled. Please ask your teacher to add you.")
+
+    req_code_rec = db.query(SystemSetting).filter(SystemSetting.key == "require_class_code").first()
+    require_class_code = (req_code_rec.value.lower() in ("true", "1")) if req_code_rec else getattr(config, "REQUIRE_CLASS_CODE", False)
+    if require_class_code and not (payload.class_code and payload.class_code.strip()):
+        raise HTTPException(status_code=400, detail="A class code from your teacher is required to create an account.")
+
+    # 4. Username format & anti-PII check
+    valid_name, name_err = validate_username(payload.username, db=db)
+    if not valid_name:
+        raise HTTPException(status_code=400, detail=name_err)
+
+    # 5. Secret validation based on grade band
+    grade_digits = "".join(filter(str.isdigit, payload.grade or "3"))
+    grade_num = int(grade_digits) if grade_digits else 3
+    is_junior = grade_num <= 5
+
+    if is_junior:
+        valid_pin, pin_err = validate_pin(payload.secret)
+        if not valid_pin:
+            raise HTTPException(status_code=400, detail=pin_err)
+    else:
+        valid_pw, pw_err = validate_password(payload.secret)
+        if not valid_pw:
+            raise HTTPException(status_code=400, detail=pw_err)
+
+    if payload.confirm_secret and payload.confirm_secret != payload.secret:
+        raise HTTPException(status_code=400, detail="Secrets do not match. Please verify your secret.")
+
+    # 6. Optional Class Code lookup
+    class_id = None
+    if payload.class_code and payload.class_code.strip():
+        code_clean = payload.class_code.strip().upper()
+        found_cls = db.query(Class).filter(Class.join_code == code_clean).first()
+        if not found_cls:
+            raise HTTPException(status_code=400, detail=f"Class code '{code_clean}' not found. Please verify with your teacher.")
+        class_id = found_cls.id
+
+    # 7. Persist new student
+    hashed_secret = hash_secret(payload.secret)
+    cleaned_name = payload.username.strip()
+    target_grade = payload.grade or "Class 3"
+
+    new_user = User(
+        id=f"user-{uuid.uuid4().hex[:12]}",
+        username=cleaned_name,
+        name=payload.display_name or cleaned_name,
+        display_name=payload.display_name or cleaned_name,
+        avatar=payload.avatar or "owl",
+        role="student",
+        grade=target_grade,
+        default_grade=target_grade,
+        class_id=class_id,
+        pin_hash=hashed_secret if is_junior else None,
+        password_hash=hashed_secret,
+        active=True,
+    )
+    db.add(new_user)
+    db.commit()
+
+    return issue_user_session(
+        db, new_user, target_grade, response, user_agent, is_secure, ip,
+        event="account_created", detail=f"Student account created: {cleaned_name} ({target_grade})"
+    )
+
+
+@router.post("/register-teacher")
+def register_teacher(
+    payload: TeacherRegisterRequest,
+    response: Response,
+    request: Request,
+    db: Session = Depends(get_db),
+):
+    """Register teacher with secret invite code."""
+    ip, user_agent, is_secure = _extract_request_meta(request)
+
+    if not check_rate_limit(f"reg_teacher_{ip}", limit=5, window_seconds=60):
+        raise HTTPException(status_code=429, detail="Too many attempts. Please try again later.")
+
+    expected_invite = getattr(config, "TEACHER_INVITE_CODE", "TEACH-PARIVESTRA-2026")
+    if payload.invite_code.strip() != expected_invite:
+        log_audit(db, "invalid_teacher_invite", f"Attempt with code: {payload.invite_code}", ip=ip)
+        raise HTTPException(status_code=403, detail="Invalid teacher invite code.")
+
+    valid_pw, pw_err = validate_password(payload.password)
+    if not valid_pw:
+        raise HTTPException(status_code=400, detail=pw_err)
+
+    email_clean = payload.email.strip().lower()
+    existing = db.query(User).filter(User.email == email_clean).first()
+    if existing:
+        raise HTTPException(status_code=400, detail="An account with this email already exists.")
+
+    new_teacher = User(
+        id=f"teacher-{uuid.uuid4().hex[:12]}",
+        username=email_clean.split("@")[0],
+        email=email_clean,
+        name=payload.name.strip(),
+        display_name=payload.name.strip(),
+        avatar="teacher",
+        role="teacher",
+        grade="Class 3",
+        default_grade="Class 3",
+        password_hash=hash_secret(payload.password),
+        active=True,
+    )
+    db.add(new_teacher)
+    db.commit()
+
+    return issue_user_session(
+        db, new_teacher, "Class 3", response, user_agent, is_secure, ip,
+        event="teacher_account_created", detail=f"Teacher registered: {email_clean}"
+    )
+
+
+@router.post("/register-parent")
+def register_parent(
+    payload: ParentRegisterRequest,
+    response: Response,
+    request: Request,
+    db: Session = Depends(get_db),
+):
+    """Register parent account with optional child link code."""
+    ip, user_agent, is_secure = _extract_request_meta(request)
+
+    if not check_rate_limit(f"reg_parent_{ip}", limit=5, window_seconds=60):
+        raise HTTPException(status_code=429, detail="Too many attempts. Please try again later.")
+
+    valid_pw, pw_err = validate_password(payload.password)
+    if not valid_pw:
+        raise HTTPException(status_code=400, detail=pw_err)
+
+    email_clean = payload.email.strip().lower()
+    existing = db.query(User).filter(User.email == email_clean).first()
+    if existing:
+        raise HTTPException(status_code=400, detail="An account with this email already exists.")
+
+    new_parent = User(
+        id=f"parent-{uuid.uuid4().hex[:12]}",
+        username=email_clean.split("@")[0],
+        email=email_clean,
+        name=payload.name.strip(),
+        display_name=payload.name.strip(),
+        avatar="parent",
+        role="parent",
+        grade="Class 3",
+        default_grade="Class 3",
+        password_hash=hash_secret(payload.password),
+        active=True,
+    )
+    db.add(new_parent)
+    db.commit()
+
+    # Link child if provided during sign-up
+    if payload.child_username and payload.link_code:
+        try:
+            _perform_child_link(db, new_parent.id, payload.child_username, payload.link_code)
+        except HTTPException as e:
+            # Let registration succeed even if link code had a typo, but log it
+            log_audit(db, "parent_signup_link_failed", f"Failed child link: {e.detail}", user_id=new_parent.id)
+
+    return issue_user_session(
+        db, new_parent, "Class 3", response, user_agent, is_secure, ip,
+        event="parent_account_created", detail=f"Parent registered: {email_clean}"
+    )
+
+
+class LinkChildRequestAuth(BaseModel):
+    child_username: str = Field(..., min_length=2)
+    link_code: str = Field(..., min_length=4)
+
+
+@router.post("/parent/link-child")
+def auth_link_child(
+    payload: LinkChildRequestAuth,
+    auth: Tuple[User, AuthSession] = Depends(require_role(["parent"])),
+    db: Session = Depends(get_db),
+):
+    parent, _ = auth
+    child = _perform_child_link(db, parent.id, payload.child_username, payload.link_code)
+    log_audit(db, "parent_child_linked", f"Parent {parent.id} linked child {child.username}", user_id=parent.id)
+    return {
+        "status": "ok",
+        "message": f"Successfully linked {child.display_name or child.username}!",
+        "child": {
+            "id": child.id,
+            "username": child.username,
+            "display_name": child.display_name or child.name,
+            "grade": child.grade,
+            "avatar": child.avatar,
+        },
+    }
+
+
+class CreateLinkCodeRequestAuth(BaseModel):
+    student_id: str = Field(...)
+
+
+@router.post("/teacher/link-codes")
+def auth_create_link_code(
+    payload: CreateLinkCodeRequestAuth,
+    auth: Tuple[User, AuthSession] = Depends(require_role(["teacher", "admin"])),
+    db: Session = Depends(get_db),
+):
+    teacher, _ = auth
+    student = db.query(User).filter(User.id == payload.student_id, User.role == "student").first()
+    if not student:
+        raise HTTPException(status_code=404, detail="Student not found.")
+
+    code = f"LINK-{uuid.uuid4().hex[:6].upper()}"
+    now = utc_now()
+    expires_at = now + timedelta(days=7)
+
+    record = ParentLinkCode(
+        code=code,
+        student_id=student.id,
+        teacher_id=teacher.id,
+        expires_at=expires_at,
+        used=False,
+    )
+    db.add(record)
+    db.commit()
+
+    log_audit(db, "parent_link_code_created", f"Created link code {code} for student {student.username}", user_id=teacher.id)
+
+    return {
+        "status": "ok",
+        "code": code,
+        "student_id": student.id,
+        "student_username": student.username,
+        "student_name": student.display_name or student.name,
+        "expires_at": expires_at.isoformat(),
+    }
+
 
 
 @router.post("/logout")

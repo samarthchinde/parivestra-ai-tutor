@@ -99,6 +99,18 @@ class User(Base):
     projects = relationship("ProjectEntry", back_populates="user", cascade="all, delete-orphan")
     glossary_masteries = relationship("GlossaryMastery", back_populates="user", cascade="all, delete-orphan")
     certificates = relationship("WorkbookCertificate", back_populates="user", cascade="all, delete-orphan")
+    linked_children = relationship(
+        "ParentChildLink",
+        foreign_keys="ParentChildLink.parent_id",
+        back_populates="parent",
+        cascade="all, delete-orphan",
+    )
+    linked_parents = relationship(
+        "ParentChildLink",
+        foreign_keys="ParentChildLink.child_id",
+        back_populates="child",
+        cascade="all, delete-orphan",
+    )
 
 
 class Session(Base):
@@ -396,3 +408,40 @@ class WorkbookCertificate(Base):
     issued_at = Column(DateTime, default=utc_now)
 
     user = relationship("User", back_populates="certificates")
+
+
+class ParentChildLink(Base):
+    __tablename__ = "parent_child_links"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    parent_id = Column(String(64), ForeignKey("users.id"), nullable=False, index=True)
+    child_id = Column(String(64), ForeignKey("users.id"), nullable=False, index=True)
+    created_at = Column(DateTime, default=utc_now)
+
+    parent = relationship("User", foreign_keys=[parent_id], back_populates="linked_children")
+    child = relationship("User", foreign_keys=[child_id], back_populates="linked_parents")
+
+
+class ParentLinkCode(Base):
+    __tablename__ = "parent_link_codes"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    code = Column(String(32), unique=True, index=True, nullable=False)
+    student_id = Column(String(64), ForeignKey("users.id"), nullable=False, index=True)
+    teacher_id = Column(String(64), ForeignKey("users.id"), nullable=False, index=True)
+    expires_at = Column(DateTime, nullable=False)
+    used = Column(Boolean, default=False)
+    used_by_parent_id = Column(String(64), ForeignKey("users.id"), nullable=True)
+    created_at = Column(DateTime, default=utc_now)
+
+    student = relationship("User", foreign_keys=[student_id])
+    teacher = relationship("User", foreign_keys=[teacher_id])
+
+
+class SystemSetting(Base):
+    __tablename__ = "system_settings"
+
+    key = Column(String(64), primary_key=True, index=True)
+    value = Column(String(255), nullable=False)
+    updated_at = Column(DateTime, default=utc_now, onupdate=utc_now)
+

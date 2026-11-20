@@ -19,6 +19,10 @@ import {
   resetStudentSecretApi,
   getClassLoginCards,
   getTeacherStudents,
+  createTeacherLinkCodeApi,
+  getTeacherUnassignedStudentsApi,
+  getTeacherAuthSettingsApi,
+  updateTeacherAuthSettingsApi,
 } from "../api/client";
 import { useAuth } from "../context/AuthContext";
 import {
@@ -93,6 +97,9 @@ export default function GrownUps() {
   const [loginCardsData, setLoginCardsData] = useState(null);
 
   const [secretResetResult, setSecretResetResult] = useState(null);
+  const [linkCodeModal, setLinkCodeModal] = useState(null);
+  const [unassignedStudents, setUnassignedStudents] = useState([]);
+  const [authSettings, setAuthSettings] = useState({ allow_self_signup: true, require_class_code: false });
 
   // AI Workbooks Teacher State
   const [wbProjects, setWbProjects] = useState([]);
@@ -143,10 +150,52 @@ export default function GrownUps() {
           setSelectedClassId(res.classes[0].id);
         }
       }
+      loadUnassignedAndSettings();
     } catch (e) {
       console.warn("Could not load classes:", e);
     } finally {
       setLoadingClasses(false);
+    }
+  };
+
+  const loadUnassignedAndSettings = async () => {
+    try {
+      const [unassignedRes, settingsRes] = await Promise.all([
+        getTeacherUnassignedStudentsApi().catch(() => ({ students: [] })),
+        getTeacherAuthSettingsApi().catch(() => ({ allow_self_signup: true, require_class_code: false })),
+      ]);
+      setUnassignedStudents(unassignedRes.students || []);
+      setAuthSettings({
+        allow_self_signup: settingsRes.allow_self_signup ?? true,
+        require_class_code: settingsRes.require_class_code ?? false,
+      });
+    } catch (e) {
+      console.warn("Could not load unassigned/settings:", e);
+    }
+  };
+
+  const handleGenerateParentLinkCode = async (studentId, studentName) => {
+    try {
+      const res = await createTeacherLinkCodeApi(studentId);
+      setLinkCodeModal({
+        code: res.code,
+        studentName: res.student_name || studentName,
+        expiresAt: res.expires_at,
+      });
+      playSuccess();
+    } catch (err) {
+      alert(err.message || "Could not generate link code");
+    }
+  };
+
+  const handleToggleSetting = async (key) => {
+    const nextVal = !authSettings[key];
+    const update = { [key]: nextVal };
+    setAuthSettings((prev) => ({ ...prev, ...update }));
+    try {
+      await updateTeacherAuthSettingsApi(update);
+    } catch (err) {
+      alert("Could not update settings: " + err.message);
     }
   };
 
@@ -694,11 +743,114 @@ export default function GrownUps() {
                             >
                               Reset PIN/PW
                             </button>
+                            <button
+                              type="button"
+                              onClick={() => handleGenerateParentLinkCode(st.id, st.display_name || st.username)}
+                              style={{
+                                padding: "4px 8px",
+                                borderRadius: 6,
+                                border: "1px solid #C7D2FE",
+                                background: "#EEF2FF",
+                                fontSize: 12,
+                                fontWeight: 700,
+                                cursor: "pointer",
+                                color: "#4338CA",
+                                marginLeft: 6,
+                              }}
+                              title="Generate single-use 7-day parent link code"
+                            >
+                              Parent Code
+                            </button>
                           </td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
+                </div>
+              )}
+            </div>
+
+            {/* Self-Registration Settings & Unassigned Students */}
+            <div style={{ marginTop: 24, paddingTop: 20, borderTop: "1.5px dashed #E2E8F0" }}>
+              <h4 style={{ fontSize: 15, fontWeight: 800, color: "#1E293B", marginBottom: 12, display: "flex", alignItems: "center", gap: 8 }}>
+                <ShieldCheck size={18} color="#4F46E5" />
+                Self-Registration & Class Code Policies
+              </h4>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 16, marginBottom: 20 }}>
+                <label
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    fontSize: 13,
+                    fontWeight: 700,
+                    cursor: "pointer",
+                    background: "#F8FAFC",
+                    padding: "8px 14px",
+                    borderRadius: 10,
+                    border: "1px solid #E2E8F0",
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={authSettings.allow_self_signup}
+                    onChange={() => handleToggleSetting("allow_self_signup")}
+                  />
+                  <span>Allow Student Self-Registration</span>
+                </label>
+
+                <label
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    fontSize: 13,
+                    fontWeight: 700,
+                    cursor: "pointer",
+                    background: "#F8FAFC",
+                    padding: "8px 14px",
+                    borderRadius: 10,
+                    border: "1px solid #E2E8F0",
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={authSettings.require_class_code}
+                    onChange={() => handleToggleSetting("require_class_code")}
+                  />
+                  <span>Require Class Join Code on Registration</span>
+                </label>
+              </div>
+
+              {/* Unassigned Students Section */}
+              {unassignedStudents.length > 0 && (
+                <div style={{ background: "#FFFBEB", border: "1px solid #FDE68A", borderRadius: 14, padding: 16 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+                    <AlertTriangle size={18} color="#D97706" />
+                    <strong style={{ fontSize: 14, color: "#B45309" }}>
+                      Needs Class Assignment ({unassignedStudents.length} Students)
+                    </strong>
+                  </div>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                    {unassignedStudents.map((st) => (
+                      <div
+                        key={st.id}
+                        style={{
+                          background: "#FFFFFF",
+                          border: "1px solid #FCD34D",
+                          borderRadius: 8,
+                          padding: "6px 12px",
+                          fontSize: 12,
+                          fontWeight: 700,
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 6,
+                        }}
+                      >
+                        <span>{st.display_name} (@{st.username}) · {st.grade}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
@@ -1111,6 +1263,35 @@ export default function GrownUps() {
                 </div>
               </div>
             ))}
+          </div>
+        </Modal>
+      )}
+      {/* MODAL: PARENT LINK CODE */}
+      {linkCodeModal && (
+        <Modal title={`Parent Link Code · ${linkCodeModal.studentName}`} onClose={() => setLinkCodeModal(null)}>
+          <div style={{ textAlign: "center", padding: "16px 8px" }}>
+            <p style={{ color: "#64748B", fontSize: 14, margin: "0 0 16px 0" }}>
+              Share this single-use 7-day link code with the parent of <strong>{linkCodeModal.studentName}</strong>:
+            </p>
+            <div
+              style={{
+                fontSize: 28,
+                fontWeight: 900,
+                letterSpacing: "3px",
+                color: "#4338CA",
+                background: "#EEF2FF",
+                padding: "16px 24px",
+                borderRadius: 14,
+                border: "2px dashed #C7D2FE",
+                display: "inline-block",
+                marginBottom: 16,
+              }}
+            >
+              {linkCodeModal.code}
+            </div>
+            <p style={{ fontSize: 12, color: "#94A3B8", margin: 0 }}>
+              The parent enters this code on the Parent Sign-up or "Link a Child" screen. Expires in 7 days.
+            </p>
           </div>
         </Modal>
       )}
