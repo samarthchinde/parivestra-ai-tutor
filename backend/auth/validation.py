@@ -140,3 +140,4 @@ def validate_password(password: str) -> Tuple[bool, Optional[str]]:
         return False, "Password is too common. Please pick a stronger password."
 
     return True, None
+

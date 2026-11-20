@@ -172,3 +172,4 @@ def update_auth_settings(
     log_audit(db, "settings_updated", f"Settings updated by {teacher.username}", user_id=teacher.id)
 
     return get_auth_settings(auth=auth, db=db)
+

@@ -133,3 +133,4 @@ flowchart TD
   - Role escalation prevention.
   - Parent linking & access control verification (parent cannot read unlinked student data).
   - Persistence across sessions.
+
